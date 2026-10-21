@@ -440,6 +440,276 @@ function startEditGame(game) {
 }
 
 if (saveGameBtn) {
+  saveGameBtn.addEventListener("click", async () => {
+    if (isSpectatorMode) {
+      alert("Estás en modo espectador. No tienes permisos para alterar este estante.");
+      return;
+    }
+    const title = sanitizeInput(gameSearch.value);
+    if (!title) {
+      alert("Por favor escribe el nombre del videojuego.");
+      gameSearch.focus();
+      return;
+    }
+
+    const finalCover = currentSelectedCover || CanvasPoster.generateSmartPoster(title);
+    const parsedTags = gameTags.value
+      .split(",")
+      .map(t => sanitizeInput(t))
+      .filter(t => t.length > 0)
+      .map(t => t.startsWith("#") ? t : "#" + t);
+
+    const parsedYear = gameCompletedYear && gameCompletedYear.value 
+      ? parseInt(gameCompletedYear.value, 10) 
+      : new Date().getFullYear();
+
+    const gameData = {
+      title: title,
+      coverUrl: finalCover,
+      status: activeStatus,
+      platforms: [...activePlatforms],
+      rating: parseFloat(scoreRange.value),
+      hours: parseInt(gameHours.value, 10) || 0,
+      targetHours: parseInt(gameTargetHours.value, 10) || 0,
+      completedYear: parsedYear,
+      favorite: isFavorite,
+      tags: parsedTags,
+      notes: sanitizeInput(gameNotes.value)
+    };
+
+    if (activeStatus === "platinum") SoundFX.playTrophy();
+    else SoundFX.playClick();
+
+    if (editingGameId) {
+      StorageManager.updateGame(editingGameId, gameData);
+    } else {
+      StorageManager.addGame({ id: Date.now(), ...gameData });
+    }
+
+    // Sincronizar de forma inmediata con Supabase
+    if (window.DB) {
+      await DB.syncLocalToCloud(StorageManager.getGames());
+    }
+
+    renderLibrary();
+    resetForm();
+    toggleForm(false);
+  });
+}
+
+function renderTagChips(tags = []) {
+  if (!tags || tags.length === 0) return "";
+  return tags.map(tag => {
+    const t = tag.toLowerCase();
+    let colorClass = "bg-indigo-950/60 border-indigo-500/40 text-indigo-300";
+    if (t.includes("souls") || t.includes("rpg")) {
+      colorClass = "bg-rose-950/60 border-rose-500/50 text-rose-300";
+    } else if (t.includes("indie") || t.includes("metroid")) {
+      colorClass = "bg-emerald-950/60 border-emerald-500/50 text-emerald-300";
+    } else if (t.includes("goty") || t.includes("top")) {
+      colorClass = "bg-amber-950/60 border-amber-500/50 text-amvePlatforms.push(plat);
+      btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-indigo-500 bg-indigo-500/20 text-white transition flex items-center gap-1.5 cursor-pointer";
+    }
+  });
+});
+
+function setPlatformBadges(plats) {
+  activePlatforms = plats && plats.length ? plats : ["PC"];
+  platBtns.forEach(btn => {
+    if (activePlatforms.includes(btn.dataset.platform)) {
+      btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-indigo-500 bg-indigo-500/20 text-white transition flex items-center gap-1.5 cursor-pointer";
+    } else {
+      btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-[#121623] text-slate-300 hover:border-slate-500 transition flex items-center gap-1.5 cursor-pointer";
+    }
+  });
+}
+
+if (favoriteToggleBtn) {
+  favoriteToggleBtn.addEventListener("click", () => {
+    SoundFX.playClick();
+    isFavorite = !isFavorite;
+    updateFavoriteUI();
+  });
+}
+
+function updateFavoriteUI() {
+  if (!favoriteToggleBtn || !favText) return;
+  if (isFavorite) {
+    favoriteToggleBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 text-xs font-bold cursor-pointer";
+    favText.innerText = "¡Es Favorito!";
+  } else {
+    favoriteToggleBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 hover:border-amber-500/50 hover:text-amber-400 transition flex items-center justify-center gap-2 text-xs font-bold cursor-pointer";
+    favText.innerText = "Marcar Favorito";
+  }
+}
+
+if (scoreRange) {
+  scoreRange.addEventListener("input", (e) => {
+    if (scoreDisplay) scoreDisplay.innerText = parseFloat(e.target.value).toFixed(1);
+  });
+}
+
+if (manualCoverBtn) {
+  manualCoverBtn.addEventListener("click", () => {
+    const url = prompt("Pega aquí el enlace directo de la imagen:");
+    if (url && url.trim().startsWith("http")) {
+      currentSelectedCover = url.trim();
+      coverPreview.src = currentSelectedCover;
+      coverPreview.classList.remove("hidden");
+      posterIcon.classList.add("hidden");
+      coverStatusText.innerText = "Portada manual lista";
+    }
+  });
+}
+
+function onSearchTrigger() {
+  const term = sanitizeInput(gameSearch.value);
+  if (term.length < 2) return;
+
+  searchIcon.className = "fa-solid fa-spinner fa-spin";
+  searchBtnText.innerText = "...";
+
+  SearchEngine.search(term, (items) => {
+    searchIcon.className = "fa-solid fa-magnifying-glass";
+    searchBtnText.innerText = "Buscar";
+    renderSearchResults(items, term);
+  });
+}
+
+function renderSearchResults(items, originalQuery) {
+  searchResults.innerHTML = "";
+
+  const directLi = document.createElement("li");
+  directLi.className = "flex items-center gap-3 p-3 bg-indigo-950/60 hover:bg-indigo-900/80 cursor-pointer transition text-indigo-300 font-semibold text-xs";
+  directLi.innerHTML = `<i class="fa-solid fa-check-circle"></i> Usar "${originalQuery}" directamente`;
+  directLi.addEventListener("click", () => {
+    SoundFX.playClick();
+    gameSearch.value = originalQuery;
+    currentSelectedCover = CanvasPoster.generateSmartPoster(originalQuery);
+    coverPreview.src = currentSelectedCover;
+    coverPreview.classList.remove("hidden");
+    posterIcon.classList.add("hidden");
+    coverStatusText.innerText = originalQuery;
+    searchResults.classList.add("hidden");
+  });
+  searchResults.appendChild(directLi);
+
+  items.forEach(item => {
+    const li = document.createElement("li");
+    li.className = "flex items-center gap-3 p-2.5 hover:bg-white/10 cursor-pointer transition";
+    const thumb = item.image || CanvasPoster.generateSmartPoster(item.title);
+    li.innerHTML = `
+      <img src="${thumb}" class="w-10 h-14 object-cover rounded-lg shadow shrink-0 bg-slate-950">
+      <div class="overflow-hidden">
+        <p class="text-xs font-bold text-white truncate">${item.title}</p>
+        <p class="text-[11px] text-slate-400 mt-0.5 truncate">${item.desc}</p>
+      </div>
+    `;
+    li.addEventListener("click", () => {
+      SoundFX.playClick();
+      gameSearch.value = item.title;
+      currentSelectedCover = item.image || CanvasPoster.generateSmartPoster(item.title);
+      coverPreview.src = currentSelectedCover;
+      coverPreview.classList.remove("hidden");
+      posterIcon.classList.add("hidden");
+      coverStatusText.innerText = item.title;
+      searchResults.classList.add("hidden");
+    });
+    searchResults.appendChild(li);
+  });
+
+  searchResults.classList.remove("hidden");
+}
+
+if (searchBtn) searchBtn.addEventListener("click", onSearchTrigger);
+if (gameSearch) {
+  gameSearch.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSearchTrigger();
+    }
+  });
+
+  let debounceTimer;
+  gameSearch.addEventListener("input", (e) => {
+    clearTimeout(debounceTimer);
+    const val = e.target.value.trim();
+    if (val.length >= 2) {
+      debounceTimer = setTimeout(onSearchTrigger, 400);
+    } else {
+      searchResults.classList.add("hidden");
+    }
+  });
+}
+
+document.addEventListener("click", (e) => {
+  if (gameSearch && !gameSearch.contains(e.target) && searchResults && !searchResults.contains(e.target) && searchBtn && !searchBtn.contains(e.target)) {
+    searchResults.classList.add("hidden");
+  }
+});
+
+function resetForm() {
+  editingGameId = null;
+  formTitle.innerText = "Añadir Título";
+  formSubtitle.innerText = "Registra un juego completado, en proceso o en pausa";
+  formIconBox.className = "w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 text-lg";
+  formIcon.className = "fa-solid fa-plus";
+  saveBtnText.innerText = "Guardar en mi estante";
+
+  gameSearch.value = "";
+  currentSelectedCover = "";
+  coverPreview.classList.add("hidden");
+  posterIcon.classList.remove("hidden");
+  coverStatusText.innerText = "Sin carátula (se genera al guardar)";
+  setStatus("completed");
+  setPlatformBadges(["PC"]);
+  isFavorite = false;
+  updateFavoriteUI();
+  scoreRange.value = 9;
+  scoreDisplay.innerText = "9.0";
+  gameHours.value = "";
+  gameTargetHours.value = "";
+  if (gameCompletedYear) gameCompletedYear.value = new Date().getFullYear();
+  gameTags.value = "";
+  gameNotes.value = "";
+}
+
+if (cancelEditBtn) cancelEditBtn.addEventListener("click", () => toggleForm(false));
+
+function startEditGame(game) {
+  if (isSpectatorMode) return;
+  SoundFX.playWhoosh();
+  editingGameId = game.id;
+  formTitle.innerText = `Editando: ${game.title}`;
+  formSubtitle.innerText = "Modifica los datos y pulsa Actualizar registro";
+  formIconBox.className = "w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center border border-amber-500/30 text-lg";
+  formIcon.className = "fa-solid fa-pen";
+  saveBtnText.innerText = "Actualizar registro";
+
+  gameSearch.value = game.title;
+  currentSelectedCover = game.coverUrl;
+  coverPreview.src = game.coverUrl;
+  coverPreview.classList.remove("hidden");
+  posterIcon.classList.add("hidden");
+  coverStatusText.innerText = game.title;
+
+  setStatus(game.status || "completed");
+  setPlatformBadges(game.platforms || ["PC"]);
+  isFavorite = Boolean(game.favorite);
+  updateFavoriteUI();
+
+  scoreRange.value = game.rating || 8;
+  scoreDisplay.innerText = (game.rating || 8).toFixed(1);
+  gameHours.value = game.hours || "";
+  gameTargetHours.value = game.targetHours || "";
+  if (gameCompletedYear) gameCompletedYear.value = game.completedYear || new Date().getFullYear();
+  gameTags.value = (game.tags || []).join(", ");
+  gameNotes.value = game.notes || "";
+
+  toggleForm(true);
+}
+
+if (saveGameBtn) {
   saveGameBtn.addEventListener("click", () => {
     if (isSpectatorMode) {
       alert("Estás en modo espectador. No tienes permisos para alterar este estante.");
