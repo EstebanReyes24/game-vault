@@ -1,5 +1,6 @@
 /**
  * Conexión y cliente de Supabase - Game Vault / Paindex
+ * Manejo de cuentas, estante en la nube, perfiles públicos y comunidad.
  */
 const SUPABASE_URL = "https://epouactrnuhdbzzvzxor.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_i2sc-SaHk8H6e3c-Dwf0IQ_hhdBlx_I";
@@ -46,7 +47,6 @@ const DB = {
     await supabaseClient.auth.signOut();
   },
 
-  // Requerido por landing.js:101
   async isAdmin() {
     if (!supabaseClient) return false;
     const { data: { user } } = await supabaseClient.auth.getUser();
@@ -69,7 +69,7 @@ const DB = {
       .eq('user_id', user.id);
 
     if (error) {
-      console.error("Error al obtener juegos propios:", error);
+      console.error("Error al obtener juegos de Supabase:", error);
       return [];
     }
     return data || [];
@@ -85,7 +85,7 @@ const DB = {
       .ilike('username', cleanUsername);
 
     if (error) {
-      console.warn("Error al cargar perfil de usuario:", error);
+      console.error("Error al obtener perfil público:", error);
       return [];
     }
     return data || [];
@@ -93,10 +93,21 @@ const DB = {
 
   async syncLocalToCloud(localGames) {
     if (!supabaseClient) return;
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) return;
 
-    const username = user.user_metadata?.username || user.email.split('@')[0];
+    let user = null;
+    try {
+      const { data } = await supabaseClient.auth.getUser();
+      user = data?.user || null;
+    } catch (e) {
+      user = null;
+    }
+
+    if (!user) {
+      console.warn("No hay sesión activa para sincronizar en la nube.");
+      return;
+    }
+
+    const username = (user.user_metadata?.username || user.email.split('@')[0]).trim().toLowerCase();
 
     const payload = localGames.map(g => ({
       id: g.id,
@@ -122,7 +133,7 @@ const DB = {
       .upsert(payload, { onConflict: 'id' });
 
     if (error) {
-      console.error("Error sincronizando catálogo:", error);
+      console.error("Error sincronizando catálogo con Supabase:", error.message);
     }
   },
 
@@ -146,7 +157,6 @@ const DB = {
   // ==========================================
   // POSTS / CRÓNICAS (TABLA: posts)
   // ==========================================
-  // Requerido por landing.js:644
   async getPublicPosts() {
     if (!supabaseClient) return [];
     const { data, error } = await supabaseClient
@@ -155,7 +165,7 @@ const DB = {
       .order('id', { ascending: false });
 
     if (error) {
-      console.error("Error al obtener posts:", error);
+      console.error("Error al obtener publicaciones:", error);
       return [];
     }
     return data || [];
@@ -164,7 +174,6 @@ const DB = {
   // ==========================================
   // MÉTRICAS DE COMUNIDAD
   // ==========================================
-  // Requerido por landing.js:222
   async getCommunityStats() {
     if (!supabaseClient) {
       return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
@@ -197,14 +206,9 @@ const DB = {
         }
       }
 
-      return {
-        totalHours,
-        totalGames,
-        totalPlatinums,
-        mostPopular
-      };
+      return { totalHours, totalGames, totalPlatinums, mostPopular };
     } catch (e) {
-      console.error("Error calculando métricas:", e);
+      console.error("Error calculando estadísticas:", e);
       return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
     }
   },
@@ -232,7 +236,7 @@ const DB = {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error("Debes iniciar sesión para comentar");
 
-    const username = user.user_metadata?.username || user.email.split('@')[0];
+    const username = (user.user_metadata?.username || user.email.split('@')[0]).trim().toLowerCase();
 
     const { data, error } = await supabaseClient
       .from('post_comments')
@@ -276,7 +280,7 @@ const DB = {
   }
 };
 
-// Aliases de compatibilidad
+// Aliases requeridos por páginas legacy
 DB.getPosts = DB.getPublicPosts;
 DB.getPublicFeed = DB.getPublicPosts;
 
