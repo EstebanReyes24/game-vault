@@ -14,9 +14,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="p-4 sm:p-8 flex flex-col items-center justify-between min-h-screen">
 
@@ -137,15 +134,146 @@
   <footer class="w-full max-w-md py-4 text-center text-xs text-slate-500">
     <span>Game Vault • © 2026 Pain • Conexión Segura vía Supabase</span>
   </footer>
-<!-- 1. CDN Oficial de Supabase (Siempre de primero) -->
+
+  <!-- 1. CDN Oficial de Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <!-- 2. Tu archivo de base de datos donde se define DB -->
   <script src="js/supabase.js"></script>
 
-  <!-- 3. El script que maneja el formulario de login -->
+  <!-- 3. Manejador de Login y Registro -->
   <script>
-    // Tu código actual de inicio de sesión/registro que ya tienes en login.html
+    let isRegisterMode = false;
+
+    const authForm = document.getElementById('authForm');
+    const authTitle = document.getElementById('authTitle');
+    const authSubtitle = document.getElementById('authSubtitle');
+    const headerIcon = document.getElementById('headerIcon');
+    const authAlert = document.getElementById('authAlert');
+    const btnText = document.getElementById('btnText');
+    const btnIcon = document.getElementById('btnIcon');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const toggleAuthBtn = document.getElementById('toggleAuthBtn');
+
+    const usernameField = document.getElementById('usernameField');
+    const confirmPasswordField = document.getElementById('confirmPasswordField');
+    const platformField = document.getElementById('platformField');
+    const termsField = document.getElementById('termsField');
+
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const authUsername = document.getElementById('authUsername');
+    const authConfirmPassword = document.getElementById('authConfirmPassword');
+    const authTerms = document.getElementById('authTerms');
+
+    function showAlert(msg, isError = true) {
+      authAlert.classList.remove('hidden', 'bg-red-500/20', 'border-red-500/40', 'text-red-300', 'bg-emerald-500/20', 'border-emerald-500/40', 'text-emerald-300');
+      if (isError) {
+        authAlert.classList.add('bg-red-500/20', 'border-red-500/40', 'text-red-300');
+        authAlert.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>${msg}</span>`;
+      } else {
+        authAlert.classList.add('bg-emerald-500/20', 'border-emerald-500/40', 'text-emerald-300');
+        authAlert.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>`;
+      }
+    }
+
+    function hideAlert() {
+      authAlert.classList.add('hidden');
+    }
+
+    // Alternar entre Iniciar Sesión y Registrarse
+    toggleAuthBtn.addEventListener('click', () => {
+      hideAlert();
+      isRegisterMode = !isRegisterMode;
+
+      if (isRegisterMode) {
+        authTitle.innerText = "Crear Cuenta";
+        authSubtitle.innerText = "Únete a la estación para guardar tus juegos";
+        headerIcon.className = "fa-solid fa-user-plus";
+        btnText.innerText = "CREAR MI CUENTA";
+        btnIcon.className = "fa-solid fa-sparkles";
+        toggleAuthBtn.innerText = "¿Ya tienes cuenta? Inicia sesión aquí";
+
+        usernameField.classList.remove('hidden');
+        confirmPasswordField.classList.remove('hidden');
+        platformField.classList.remove('hidden');
+        termsField.classList.remove('hidden');
+
+        authUsername.required = true;
+        authConfirmPassword.required = true;
+      } else {
+        authTitle.innerText = "Iniciar Sesión";
+        authSubtitle.innerText = "Conecta tu cuenta para sincronizar tus juegos en la nube";
+        headerIcon.className = "fa-solid fa-user-astronaut";
+        btnText.innerText = "ENTRAR A MI ESTANTE";
+        btnIcon.className = "fa-solid fa-arrow-right-to-bracket";
+        toggleAuthBtn.innerText = "¿No tienes cuenta? Regístrate aquí";
+
+        usernameField.classList.add('hidden');
+        confirmPasswordField.classList.add('hidden');
+        platformField.classList.add('hidden');
+        termsField.classList.add('hidden');
+
+        authUsername.required = false;
+        authConfirmPassword.required = false;
+      }
+    });
+
+    // Enviar Formulario
+    authForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      if (typeof DB === 'undefined') {
+        showAlert("Error de carga: js/supabase.js no se ha encontrado.", true);
+        return;
+      }
+
+      const email = authEmail.value.trim();
+      const password = authPassword.value;
+
+      authSubmitBtn.disabled = true;
+      btnIcon.className = "fa-solid fa-spinner fa-spin";
+
+      try {
+        if (isRegisterMode) {
+          const username = authUsername.value.trim();
+          const confirmPassword = authConfirmPassword.value;
+
+          if (password !== confirmPassword) {
+            throw new Error("Las contraseñas no coinciden.");
+          }
+          if (!authTerms.checked) {
+            throw new Error("Debes aceptar los términos y condiciones.");
+          }
+
+          await DB.signUp(email, password, username);
+          showAlert("¡Cuenta creada exitosamente! Redirigiendo...", false);
+          setTimeout(() => {
+            window.location.href = "app.html";
+          }, 1000);
+
+        } else {
+          await DB.signIn(email, password);
+          showAlert("Sesión iniciada. Entrando al estante...", false);
+          setTimeout(() => {
+            window.location.href = "app.html";
+          }, 700);
+        }
+      } catch (err) {
+        console.error(err);
+        let errorMsg = err.message || "Error al procesar la solicitud.";
+        if (errorMsg.includes("Invalid login credentials")) {
+          errorMsg = "Correo o contraseña incorrectos.";
+        } else if (errorMsg.includes("Email not confirmed")) {
+          errorMsg = "Debes confirmar tu correo antes de entrar.";
+        }
+        showAlert(errorMsg, true);
+      } finally {
+        authSubmitBtn.disabled = false;
+        btnIcon.className = isRegisterMode ? "fa-solid fa-sparkles" : "fa-solid fa-arrow-right-to-bracket";
+      }
+    });
   </script>
 </body>
 </html>
