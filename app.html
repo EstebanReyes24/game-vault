@@ -19,7 +19,7 @@
 
   <div class="w-full max-w-7xl space-y-6 pb-16">
     
-    <!-- Banner de Modo Espectador (Visible solo si se ve un perfil ajeno) -->
+    <!-- Banner de Modo Espectador -->
     <div id="spectatorBanner" class="hidden w-full glass-panel border border-indigo-500/40 p-3 rounded-2xl flex flex-wrap items-center justify-between gap-3 shadow-lg bg-indigo-950/40">
       <div class="flex items-center gap-2.5 text-xs text-indigo-300 font-bold">
         <i class="fa-solid fa-eye text-indigo-400"></i>
@@ -53,14 +53,12 @@
           <kbd class="px-1.5 py-0.5 rounded bg-black/40 border border-white/10 text-[10px] font-mono text-slate-400">Ctrl K</kbd>
         </button>
 
-        <!-- Botón para copiar enlace público -->
         <button type="button" id="shareProfileBtn" title="Copiar enlace a mi perfil público"
                 class="glass-panel px-3 py-2 rounded-xl border border-white/10 text-slate-300 hover:text-white transition flex items-center gap-1.5 text-xs font-bold cursor-pointer">
           <i class="fa-solid fa-share-nodes text-indigo-400"></i>
           <span class="hidden md:inline">Compartir</span>
         </button>
 
-        <!-- Indicador de Usuario / Enlace a Login -->
         <a href="login.html" id="appAuthBtn" title="Cuenta en la Nube"
            class="px-3 py-1.5 rounded-xl console-input border border-white/10 text-xs font-bold text-slate-300 hover:text-white transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-user text-indigo-400" id="appUserIcon"></i>
@@ -91,7 +89,7 @@
     <!-- Bento Showcase: Hero Hub -->
     <section class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch relative z-10">
       
-      <!-- Bento 1: Now Playing Spotlight / Hero Banner con Transición Suave -->
+      <!-- Bento 1: Now Playing Spotlight / Hero Banner -->
       <div id="nowPlayingSection" class="lg:col-span-7 console-hero rounded-3xl p-5 sm:p-6 relative overflow-hidden flex flex-col justify-between shadow-2xl min-h-[230px]">
         <div id="npCoverBg" class="absolute inset-0 bg-cover bg-center crossfade-bg pointer-events-none scale-125 filter blur-md opacity-80"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-[#07090e]/85 via-[#07090e]/40 to-transparent pointer-events-none"></div>
@@ -334,77 +332,88 @@
       </div>
     </section>
 
-    <!-- Toolbar -->
-    <div class="glass-panel rounded-2xl p-3 sm:p-3.5 shadow-lg relative z-20 flex flex-wrap xl:flex-nowrap justify-between items-center gap-3">
-      <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full xl:w-auto">
-        <select id="filterStatusSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer shrink-0">
-          <option value="all">🎮 Todos los Estados</option>
-          <option value="playing">🔥 Jugando</option>
-          <option value="completed">🏆 Pasados</option>
-          <option value="platinum">👑 Platinos</option>
-          <option value="favorite">⭐ Favoritos</option>
-          <option value="tier-masterpiece">🌟 Obras Maestras (9.0+)</option>
-          <option value="onhold">⏸️ Pausa</option>
-        </select>
+    <!-- Toolbar Principal -->
+    <div class="glass-panel rounded-2xl p-3 sm:p-3.5 shadow-lg relative z-20 flex flex-col gap-3">
+      
+      <!-- Fila 1: Filtros y Selector de Vistas -->
+      <div class="flex flex-wrap lg:flex-nowrap justify-between items-center gap-3 w-full">
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full lg:w-auto">
+          <select id="filterStatusSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="all">🎮 Todos los Estados</option>
+            <option value="playing">🔥 Jugando</option>
+            <option value="completed">🏆 Pasados</option>
+            <option value="platinum">👑 Platinos</option>
+            <option value="favorite">⭐ Favoritos</option>
+            <option value="tier-masterpiece">🌟 Obras Maestras (9.0+)</option>
+            <option value="onhold">⏸️ Pausa</option>
+          </select>
 
-        <select id="filterPlatformSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
-          <option value="all">🕹️ Plataformas</option>
-          <option value="PC">💻 PC</option>
-          <option value="PlayStation">🎮 PlayStation</option>
-          <option value="Xbox">🟢 Xbox</option>
-          <option value="Nintendo">🔴 Nintendo</option>
-          <option value="Retro">👾 Retro</option>
-        </select>
+          <select id="filterPlatformSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="all">🕹️ Plataformas</option>
+            <option value="PC">💻 PC</option>
+            <option value="PlayStation">🎮 PlayStation</option>
+            <option value="Xbox">🟢 Xbox</option>
+            <option value="Nintendo">🔴 Nintendo</option>
+            <option value="Retro">👾 Retro</option>
+          </select>
 
-        <select id="sortBySelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
-          <option value="recent">Más recientes</option>
-          <option value="rating-desc">Mejor nota (10-1)</option>
-          <option value="rating-asc">Peor nota (1-10)</option>
-          <option value="hours-desc">Más horas</option>
-          <option value="title-asc">A - Z</option>
-        </select>
+          <select id="sortBySelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="recent">Más recientes</option>
+            <option value="rating-desc">Mejor nota (10-1)</option>
+            <option value="rating-asc">Peor nota (1-10)</option>
+            <option value="hours-desc">Más horas</option>
+            <option value="title-asc">A - Z</option>
+          </select>
 
-        <div class="relative flex-1 min-w-[150px]">
-          <input type="text" id="filterInput" placeholder="Buscar juego o #tag..." 
-                 class="w-full console-input rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:outline-none">
-          <i class="fa-solid fa-filter absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
+          <div class="relative flex-1 min-w-[140px]">
+            <input type="text" id="filterInput" placeholder="Buscar título o #tag..." 
+                   class="w-full console-input rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:outline-none">
+            <i class="fa-solid fa-filter absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="flex rounded-xl console-input p-0.5 border border-white/10 shrink-0">
+            <button type="button" id="viewGridBtn" title="Vista de Pósters" 
+                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer">
+              <i class="fa-solid fa-table-cells"></i>
+            </button>
+            <button type="button" id="viewListBtn" title="Vista de Lista" 
+                    class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
+              <i class="fa-solid fa-list-ul"></i>
+            </button>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-center justify-between sm:justify-end gap-2 w-full xl:w-auto shrink-0 border-t xl:border-t-0 pt-2 xl:pt-0 border-white/10">
-        <div class="flex rounded-xl console-input p-0.5 border border-white/10 shrink-0">
-          <button type="button" id="viewGridBtn" title="Vista de Pósters" 
-                  class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer">
-            <i class="fa-solid fa-table-cells"></i>
-          </button>
-          <button type="button" id="viewListBtn" title="Vista de Lista" 
-                  class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
-            <i class="fa-solid fa-list-ul"></i>
-          </button>
-        </div>
+      <!-- Fila 2: Barra de Acciones y Herramientas (100% visible y scrolleable en móvil) -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-2 border-t border-white/10 custom-scrollbar select-none">
+        <button id="openSteamSyncBtn" title="Sincronizar Steam" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600/30 to-indigo-600/30 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer shadow">
+          <i class="fa-brands fa-steam text-blue-400"></i> STEAM
+        </button>
 
-        <div class="hidden lg:flex items-center gap-2 shrink-0">
-          <button id="openWrappedBtn" title="Ver Player Wrapped" class="px-3 py-2 rounded-xl bg-gradient-to-r from-purple-600/30 to-indigo-600/30 border border-purple-500/40 text-purple-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> WRAPPED
-          </button>
-          <button id="openStatsBtn" title="Estadísticas" class="px-3 py-2 rounded-xl glass-panel text-slate-300 hover:text-indigo-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-chart-pie text-indigo-400"></i> STATS
-          </button>
-          <button id="openTop5Btn" title="Generar póster Top" class="px-3 py-2 rounded-xl glass-panel text-slate-300 hover:text-amber-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-camera text-amber-400"></i> TOP
-          </button>
-          <button id="exportBtn" title="Descargar copia JSON" class="p-2.5 rounded-xl glass-panel text-slate-400 hover:text-white text-xs transition cursor-pointer">
-            <i class="fa-solid fa-download"></i>
-          </button>
-          <button id="importBtn" title="Restaurar JSON" class="p-2.5 rounded-xl glass-panel text-slate-400 hover:text-white text-xs transition cursor-pointer">
-            <i class="fa-solid fa-upload"></i>
-          </button>
-          <input type="file" id="fileInput" accept=".json" class="hidden">
-          <button id="openSteamSyncBtn" title="Sincronizar Steam" class="px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600/30 to-indigo-600/30 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-brands fa-steam text-blue-400"></i> STEAM
-          </button>
-        </div>
+        <button id="openWrappedBtn" title="Ver Player Wrapped" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600/30 to-indigo-600/30 border border-purple-500/40 text-purple-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer shadow">
+          <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> WRAPPED
+        </button>
+
+        <button id="openStatsBtn" title="Estadísticas de Biblioteca" class="px-3 py-2 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-indigo-400 text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <i class="fa-solid fa-chart-pie text-indigo-400"></i> STATS
+        </button>
+
+        <button id="openTop5Btn" title="Generar póster Top" class="px-3 py-2 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-amber-400 text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <i class="fa-solid fa-camera text-amber-400"></i> TOP
+        </button>
+
+        <button id="exportBtn" title="Descargar copia JSON de seguridad" class="px-3 py-2 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <i class="fa-solid fa-download text-indigo-400"></i> Exportar JSON
+        </button>
+
+        <button id="importBtn" title="Restaurar copia JSON" class="px-3 py-2 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <i class="fa-solid fa-upload text-indigo-400"></i> Importar JSON
+        </button>
+        <input type="file" id="fileInput" accept=".json" class="hidden">
       </div>
+
     </div>
 
     <!-- Catálogo de Juegos -->
@@ -417,7 +426,7 @@
       <div class="flex items-center gap-2">
         <i class="fa-solid fa-terminal text-indigo-500"></i>
         <a href="legal.html" class="font-semibold hover:text-indigo-400 transition">
-          Game Vault • © 2026 Pain • Términos & Licencia
+          Game Vault • © 2026 Paindex • Términos & Licencia
         </a>
       </div>
       <div id="ownerFooterControls" class="flex items-center gap-4">
@@ -443,52 +452,6 @@
         <kbd class="text-[10px] bg-black/40 px-2 py-0.5 rounded border border-white/10 text-slate-400">ESC</kbd>
       </div>
       <div id="commandResults" class="max-h-72 overflow-y-auto custom-scrollbar divide-y divide-white/5 space-y-1"></div>
-    </div>
-  </div>
-
-  <!-- Modales complementarios -->
-  <div id="wrappedModal" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-    <div class="glass-panel max-w-lg w-full rounded-3xl p-6 sm:p-8 border border-purple-500/30 shadow-2xl relative space-y-5 overflow-hidden">
-      <div class="flex justify-between items-start border-b border-white/10 pb-4 relative z-10">
-        <div>
-          <span class="text-[10px] uppercase font-black tracking-widest text-purple-400 block">Season Recap</span>
-          <h3 class="text-2xl font-black text-white console-font">PLAYER WRAPPED</h3>
-        </div>
-        <div class="flex items-center gap-3">
-          <select id="wrappedYearSelect" class="console-input rounded-xl px-2.5 py-1.5 text-xs text-purple-300 font-bold focus:outline-none cursor-pointer">
-            <option value="2026">2026</option>
-            <option value="all">Histórico Global</option>
-          </select>
-          <button id="closeWrappedBtn" class="text-slate-400 hover:text-white text-lg cursor-pointer">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      </div>
-      <div class="space-y-4 relative z-10">
-        <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-purple-950/40 border border-indigo-500/30 flex items-center justify-between">
-          <div>
-            <span class="text-xs text-slate-400 font-bold block" id="wrappedPeriodLabel">Tiempo Jugado</span>
-            <span class="text-3xl font-black text-indigo-300 console-font" id="wrappedHours">0 Horas</span>
-          </div>
-          <i class="fa-solid fa-hourglass-half text-3xl text-indigo-400/40"></i>
-        </div>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="console-input p-3.5 rounded-2xl border border-white/10">
-            <span class="text-[10px] uppercase font-bold text-slate-400 block">Top Valorado</span>
-            <span class="text-sm font-black text-amber-400 console-font truncate block mt-1" id="wrappedTopGame">-</span>
-            <span class="text-xs text-slate-400" id="wrappedTopGameScore">★ 0.0</span>
-          </div>
-          <div class="console-input p-3.5 rounded-2xl border border-white/10">
-            <span class="text-[10px] uppercase font-bold text-slate-400 block">Mayor Obsesión</span>
-            <span class="text-sm font-black text-orange-400 console-font truncate block mt-1" id="wrappedMostPlayed">-</span>
-            <span class="text-xs text-slate-400" id="wrappedMostPlayedHours">0 hrs</span>
-          </div>
-        </div>
-        <div class="p-4 rounded-2xl console-input border border-white/10">
-          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">ADN Gamer</span>
-          <div id="wrappedTopTags" class="flex flex-wrap gap-1.5 mt-2"></div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -530,6 +493,107 @@
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Steam (Completamente funcional y testeado) -->
+  <div id="steamModal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+    <div class="glass-panel max-w-xl w-full rounded-3xl p-6 sm:p-8 border border-blue-500/30 shadow-2xl relative space-y-5">
+      <div class="flex justify-between items-center border-b border-white/10 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-lg">
+            <i class="fa-brands fa-steam"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-black text-white console-font">Sincronizar con Steam</h3>
+            <p class="text-xs text-slate-400">Importa tus juegos y horas reales directamente</p>
+          </div>
+        </div>
+        <button id="closeSteamModalBtn" class="text-slate-400 hover:text-white text-lg cursor-pointer">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+            Steam ID (64-bits) o Nombre de Perfil Público
+          </label>
+          <div class="flex gap-2">
+            <input type="text" id="steamIdInput" placeholder="Ej: 76561198399070811 o tu vanity URL" 
+                   class="w-full console-input rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none">
+            <button type="button" id="fetchSteamBtn" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-black console-font rounded-xl transition flex items-center gap-1.5 shrink-0 shadow-lg shadow-blue-600/30 cursor-pointer">
+              <i class="fa-solid fa-cloud-arrow-down" id="fetchSteamIcon"></i> 
+              <span id="fetchSteamText">Consultar</span>
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">
+            * Tu perfil de Steam y los detalles de tus juegos deben estar en <strong>Público</strong> para poder consultarlos.
+          </p>
+        </div>
+
+        <div id="steamPreviewContainer" class="hidden space-y-3">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-200 font-bold" id="steamFoundCount">0 juegos encontrados</span>
+            <button type="button" id="selectAllSteamBtn" class="text-blue-400 hover:text-blue-300 font-semibold cursor-pointer text-[11px]">Marcar todos</button>
+          </div>
+
+          <div id="steamGamesList" class="max-h-60 overflow-y-auto custom-scrollbar divide-y divide-white/5 console-input rounded-2xl p-2 border border-white/10 space-y-1"></div>
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" id="confirmImportSteamBtn" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:brightness-110 text-white font-black console-font text-xs shadow-lg cursor-pointer flex items-center gap-2">
+              <i class="fa-solid fa-file-import"></i>
+              <span>Importar seleccionados a mi estante</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modales complementarios: Wrapped, Stats, Top, ShareCard -->
+  <div id="wrappedModal" class="fixed inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+    <div class="glass-panel max-w-lg w-full rounded-3xl p-6 sm:p-8 border border-purple-500/30 shadow-2xl relative space-y-5 overflow-hidden">
+      <div class="flex justify-between items-start border-b border-white/10 pb-4 relative z-10">
+        <div>
+          <span class="text-[10px] uppercase font-black tracking-widest text-purple-400 block">Season Recap</span>
+          <h3 class="text-2xl font-black text-white console-font">PLAYER WRAPPED</h3>
+        </div>
+        <div class="flex items-center gap-3">
+          <select id="wrappedYearSelect" class="console-input rounded-xl px-2.5 py-1.5 text-xs text-purple-300 font-bold focus:outline-none cursor-pointer">
+            <option value="2026">2026</option>
+            <option value="all">Histórico Global</option>
+          </select>
+          <button id="closeWrappedBtn" class="text-slate-400 hover:text-white text-lg cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="space-y-4 relative z-10">
+        <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-950/40 to-purple-950/40 border border-indigo-500/30 flex items-center justify-between">
+          <div>
+            <span class="text-xs text-slate-400 font-bold block" id="wrappedPeriodLabel">Tiempo Jugado</span>
+            <span class="text-3xl font-black text-indigo-300 console-font" id="wrappedHours">0 Horas</span>
+          </div>
+          <i class="fa-solid fa-hourglass-half text-3xl text-indigo-400/40"></i>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="console-input p-3.5 rounded-2xl border border-white/10">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Top Valorado</span>
+            <span class="text-sm font-black text-amber-400 console-font truncate block mt-1" id="wrappedTopGame">-</span>
+            <span class="text-xs text-slate-400" id="wrappedTopGameScore">★ 0.0</span>
+          </div>
+          <div class="console-input p-3.5 rounded-2xl border border-white/10">
+            <span class="text-[10px] uppercase font-bold text-slate-400 block">Mayor Obsesión</span>
+            <span class="text-sm font-black text-orange-400 console-font truncate block mt-1" id="wrappedMostPlayed">-</span>
+            <span class="text-xs text-slate-400" id="wrappedMostPlayedHours">0 hrs</span>
+          </div>
+        </div>
+        <div class="p-4 rounded-2xl console-input border border-white/10">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">ADN Gamer</span>
+          <div id="wrappedTopTags" class="flex flex-wrap gap-1.5 mt-2"></div>
         </div>
       </div>
     </div>
@@ -615,36 +679,6 @@
         <button id="downloadTop5Btn" class="px-6 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 text-black font-black console-font text-xs rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer">
           <i class="fa-solid fa-download"></i> Descargar Imagen (PNG)
         </button>
-      </div>
-    </div>
-  </div>
-
-  <div id="steamModal" class="fixed inset-0 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-    <div class="glass-panel max-w-xl w-full rounded-3xl p-6 sm:p-8 border border-blue-500/30 shadow-2xl relative space-y-5">
-      <div class="flex justify-between items-center border-b border-white/10 pb-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-600/20 text-blue-400 border border-blue-500/30 flex items-center justify-center text-lg"><i class="fa-brands fa-steam"></i></div>
-          <div>
-            <h3 class="text-xl font-black text-white console-font">Sincronizar con Steam</h3>
-            <p class="text-xs text-slate-400">Importa tus juegos y horas reales en un clic</p>
-          </div>
-        </div>
-        <button id="closeSteamModalBtn" class="text-slate-400 hover:text-white text-lg cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="space-y-4">
-        <div class="flex gap-2">
-          <input type="text" id="steamIdInput" placeholder="Ej: 76561198399070811" class="w-full console-input rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none">
-          <button type="button" id="fetchSteamBtn" class="px-4 py-2 bg-blue-600 text-white text-xs font-black console-font rounded-xl transition flex items-center gap-1.5 shrink-0 shadow-lg cursor-pointer">
-            <i class="fa-solid fa-cloud-arrow-down" id="fetchSteamIcon"></i> <span id="fetchSteamText">Consultar</span>
-          </button>
-        </div>
-        <div id="steamPreviewContainer" class="hidden space-y-3">
-          <span class="text-slate-300 font-bold text-xs" id="steamFoundCount">0 juegos encontrados</span>
-          <div id="steamGamesList" class="max-h-60 overflow-y-auto custom-scrollbar divide-y divide-white/5 console-input rounded-2xl p-2 border border-white/10"></div>
-          <div class="flex justify-end pt-2">
-            <button type="button" id="confirmImportSteamBtn" class="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black console-font text-xs shadow-lg cursor-pointer">Importar a mi estante</button>
-          </div>
-        </div>
       </div>
     </div>
   </div>
