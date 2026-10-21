@@ -1,6 +1,6 @@
 /**
  * Controlador Principal - Game Vault Console Edition
- * Soporte para Perfiles Públicos, Crossfade, Barra de Herramientas Mobile y Sincronización Steam Real
+ * Soporte para Perfiles Públicos Blindados, Modo Espectador Read-Only y Sincronización Steam
  */
 let currentSelectedCover = "";
 let activeStatus = "completed";
@@ -16,10 +16,10 @@ let isAudioEnabled = localStorage.getItem("gv_sound") !== "false";
 let nowPlayingInterval = null;
 let currentPlayingIndex = 0;
 
-// Detección de Modo Espectador (?u=gamertag)
+// Detección estricta de Modo Espectador (?u=gamertag)
 const urlParams = new URLSearchParams(window.location.search);
 const publicProfileTarget = urlParams.get("u");
-const isSpectatorMode = !!publicProfileTarget;
+const isSpectatorMode = Boolean(publicProfileTarget && publicProfileTarget.trim().length > 0);
 let spectatorGames = [];
 
 // ==========================================
@@ -95,7 +95,7 @@ const SoundFX = {
   }
 };
 
-// Elementos DOM
+// Referencias del DOM
 const gameSearch = document.getElementById("gameSearch");
 const searchBtn = document.getElementById("searchBtn");
 const searchBtnText = document.getElementById("searchBtnText");
@@ -177,13 +177,13 @@ const npProgressBar = document.getElementById("npProgressBar");
 if (shareProfileBtn) {
   shareProfileBtn.addEventListener("click", async () => {
     SoundFX.playClick();
-    const user = await DB.getUser();
+    const user = window.DB ? await DB.getUser() : null;
     const alias = user?.user_metadata?.username || user?.email?.split('@')[0] || "player";
     const shareUrl = `${window.location.origin}${window.location.pathname}?u=${encodeURIComponent(alias)}`;
 
     if (navigator.clipboard) {
       await navigator.clipboard.writeText(shareUrl);
-      alert(`¡Enlace copiado al portapapeles!\n\n${shareUrl}\n\nCompártelo para que cualquiera pueda ver tu estante.`);
+      alert(`¡Enlace copiado al portapapeles!\n\n${shareUrl}\n\nCompártelo para que vean tu colección.`);
     } else {
       prompt("Copia tu enlace público:", shareUrl);
     }
@@ -196,13 +196,13 @@ function toggleForm(open = null) {
   SoundFX.playWhoosh();
   if (shouldOpen) {
     formSection.classList.remove("hidden");
-    toggleFormIcon.className = "fa-solid fa-chevron-up text-sm";
-    toggleFormText.innerText = "CERRAR PANEL";
+    if (toggleFormIcon) toggleFormIcon.className = "fa-solid fa-chevron-up text-sm";
+    if (toggleFormText) toggleFormText.innerText = "CERRAR PANEL";
     formSection.scrollIntoView({ behavior: 'smooth' });
   } else {
     formSection.classList.add("hidden");
-    toggleFormIcon.className = "fa-solid fa-plus-circle text-sm";
-    toggleFormText.innerText = "REGISTRAR";
+    if (toggleFormIcon) toggleFormIcon.className = "fa-solid fa-plus-circle text-sm";
+    if (toggleFormText) toggleFormText.innerText = "REGISTRAR";
   }
 }
 
@@ -254,13 +254,16 @@ function setPlatformBadges(plats) {
   });
 }
 
-favoriteToggleBtn.addEventListener("click", () => {
-  SoundFX.playClick();
-  isFavorite = !isFavorite;
-  updateFavoriteUI();
-});
+if (favoriteToggleBtn) {
+  favoriteToggleBtn.addEventListener("click", () => {
+    SoundFX.playClick();
+    isFavorite = !isFavorite;
+    updateFavoriteUI();
+  });
+}
 
 function updateFavoriteUI() {
+  if (!favoriteToggleBtn || !favText) return;
   if (isFavorite) {
     favoriteToggleBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 text-xs font-bold cursor-pointer";
     favText.innerText = "¡Es Favorito!";
@@ -270,20 +273,24 @@ function updateFavoriteUI() {
   }
 }
 
-scoreRange.addEventListener("input", (e) => {
-  scoreDisplay.innerText = parseFloat(e.target.value).toFixed(1);
-});
+if (scoreRange) {
+  scoreRange.addEventListener("input", (e) => {
+    if (scoreDisplay) scoreDisplay.innerText = parseFloat(e.target.value).toFixed(1);
+  });
+}
 
-manualCoverBtn.addEventListener("click", () => {
-  const url = prompt("Pega aquí el enlace de la imagen:");
-  if (url && url.trim().startsWith("http")) {
-    currentSelectedCover = url.trim();
-    coverPreview.src = currentSelectedCover;
-    coverPreview.classList.remove("hidden");
-    posterIcon.classList.add("hidden");
-    coverStatusText.innerText = "Portada manual lista";
-  }
-});
+if (manualCoverBtn) {
+  manualCoverBtn.addEventListener("click", () => {
+    const url = prompt("Pega aquí el enlace directo de la imagen:");
+    if (url && url.trim().startsWith("http")) {
+      currentSelectedCover = url.trim();
+      coverPreview.src = currentSelectedCover;
+      coverPreview.classList.remove("hidden");
+      posterIcon.classList.add("hidden");
+      coverStatusText.innerText = "Portada manual lista";
+    }
+  });
+}
 
 function onSearchTrigger() {
   const term = sanitizeInput(gameSearch.value);
@@ -344,27 +351,29 @@ function renderSearchResults(items, originalQuery) {
   searchResults.classList.remove("hidden");
 }
 
-searchBtn.addEventListener("click", onSearchTrigger);
-gameSearch.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    onSearchTrigger();
-  }
-});
+if (searchBtn) searchBtn.addEventListener("click", onSearchTrigger);
+if (gameSearch) {
+  gameSearch.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      onSearchTrigger();
+    }
+  });
 
-let debounceTimer;
-gameSearch.addEventListener("input", (e) => {
-  clearTimeout(debounceTimer);
-  const val = e.target.value.trim();
-  if (val.length >= 2) {
-    debounceTimer = setTimeout(onSearchTrigger, 400);
-  } else {
-    searchResults.classList.add("hidden");
-  }
-});
+  let debounceTimer;
+  gameSearch.addEventListener("input", (e) => {
+    clearTimeout(debounceTimer);
+    const val = e.target.value.trim();
+    if (val.length >= 2) {
+      debounceTimer = setTimeout(onSearchTrigger, 400);
+    } else {
+      searchResults.classList.add("hidden");
+    }
+  });
+}
 
 document.addEventListener("click", (e) => {
-  if (!gameSearch.contains(e.target) && !searchResults.contains(e.target) && !searchBtn.contains(e.target)) {
+  if (gameSearch && !gameSearch.contains(e.target) && searchResults && !searchResults.contains(e.target) && searchBtn && !searchBtn.contains(e.target)) {
     searchResults.classList.add("hidden");
   }
 });
@@ -395,7 +404,7 @@ function resetForm() {
   gameNotes.value = "";
 }
 
-cancelEditBtn.addEventListener("click", () => toggleForm(false));
+if (cancelEditBtn) cancelEditBtn.addEventListener("click", () => toggleForm(false));
 
 function startEditGame(game) {
   if (isSpectatorMode) return;
@@ -416,7 +425,7 @@ function startEditGame(game) {
 
   setStatus(game.status || "completed");
   setPlatformBadges(game.platforms || ["PC"]);
-  isFavorite = !!game.favorite;
+  isFavorite = Boolean(game.favorite);
   updateFavoriteUI();
 
   scoreRange.value = game.rating || 8;
@@ -430,57 +439,62 @@ function startEditGame(game) {
   toggleForm(true);
 }
 
-saveGameBtn.addEventListener("click", () => {
-  if (isSpectatorMode) return;
-  const title = sanitizeInput(gameSearch.value);
-  if (!title) {
-    alert("Por favor escribe el nombre del videojuego.");
-    gameSearch.focus();
-    return;
-  }
+if (saveGameBtn) {
+  saveGameBtn.addEventListener("click", () => {
+    if (isSpectatorMode) {
+      alert("Estás en modo espectador. No tienes permisos para alterar este estante.");
+      return;
+    }
+    const title = sanitizeInput(gameSearch.value);
+    if (!title) {
+      alert("Por favor escribe el nombre del videojuego.");
+      gameSearch.focus();
+      return;
+    }
 
-  const finalCover = currentSelectedCover || CanvasPoster.generateSmartPoster(title);
-  const parsedTags = gameTags.value
-    .split(",")
-    .map(t => sanitizeInput(t))
-    .filter(t => t.length > 0)
-    .map(t => t.startsWith("#") ? t : "#" + t);
+    const finalCover = currentSelectedCover || CanvasPoster.generateSmartPoster(title);
+    const parsedTags = gameTags.value
+      .split(",")
+      .map(t => sanitizeInput(t))
+      .filter(t => t.length > 0)
+      .map(t => t.startsWith("#") ? t : "#" + t);
 
-  const parsedYear = gameCompletedYear && gameCompletedYear.value 
-    ? parseInt(gameCompletedYear.value, 10) 
-    : new Date().getFullYear();
+    const parsedYear = gameCompletedYear && gameCompletedYear.value 
+      ? parseInt(gameCompletedYear.value, 10) 
+      : new Date().getFullYear();
 
-  const gameData = {
-    title: title,
-    coverUrl: finalCover,
-    status: activeStatus,
-    platforms: [...activePlatforms],
-    rating: parseFloat(scoreRange.value),
-    hours: parseInt(gameHours.value, 10) || 0,
-    targetHours: parseInt(gameTargetHours.value, 10) || 0,
-    completedYear: parsedYear,
-    favorite: isFavorite,
-    tags: parsedTags,
-    notes: sanitizeInput(gameNotes.value)
-  };
+    const gameData = {
+      title: title,
+      coverUrl: finalCover,
+      status: activeStatus,
+      platforms: [...activePlatforms],
+      rating: parseFloat(scoreRange.value),
+      hours: parseInt(gameHours.value, 10) || 0,
+      targetHours: parseInt(gameTargetHours.value, 10) || 0,
+      completedYear: parsedYear,
+      favorite: isFavorite,
+      tags: parsedTags,
+      notes: sanitizeInput(gameNotes.value)
+    };
 
-  if (activeStatus === "platinum") SoundFX.playTrophy();
-  else SoundFX.playClick();
+    if (activeStatus === "platinum") SoundFX.playTrophy();
+    else SoundFX.playClick();
 
-  if (editingGameId) {
-    StorageManager.updateGame(editingGameId, gameData);
-  } else {
-    StorageManager.addGame({ id: Date.now(), ...gameData });
-  }
+    if (editingGameId) {
+      StorageManager.updateGame(editingGameId, gameData);
+    } else {
+      StorageManager.addGame({ id: Date.now(), ...gameData });
+    }
 
-  if (window.DB) {
-    DB.syncLocalToCloud(StorageManager.getGames());
-  }
+    if (window.DB) {
+      DB.syncLocalToCloud(StorageManager.getGames());
+    }
 
-  renderLibrary();
-  resetForm();
-  toggleForm(false);
-});
+    renderLibrary();
+    resetForm();
+    toggleForm(false);
+  });
+}
 
 function renderTagChips(tags = []) {
   if (!tags || tags.length === 0) return "";
@@ -565,6 +579,7 @@ if (commandInput) {
   });
 }
 
+// Retorna estrictamente los juegos del usuario público si estamos en modo espectador
 function getCurrentDataset() {
   return isSpectatorMode ? spectatorGames : StorageManager.getGames();
 }
@@ -616,15 +631,15 @@ if (filterPlatformSelect) {
   });
 }
 
-filterInput.addEventListener("input", () => renderLibrary());
-sortBySelect.addEventListener("change", () => {
-  SoundFX.playClick();
-  renderLibrary();
-});
+if (filterInput) filterInput.addEventListener("input", () => renderLibrary());
+if (sortBySelect) {
+  sortBySelect.addEventListener("change", () => {
+    SoundFX.playClick();
+    renderLibrary();
+  });
+}
 
-// ==========================================
-// CARRUSEL CROSSFADE SUAVE
-// ==========================================
+// Carrusel crossfade
 function setupNowPlayingCarousel(playingGames) {
   if (nowPlayingInterval) {
     clearInterval(nowPlayingInterval);
@@ -632,14 +647,24 @@ function setupNowPlayingCarousel(playingGames) {
   }
 
   if (!playingGames || playingGames.length === 0) {
-    npCover.removeAttribute("src");
-    npCover.classList.add("hidden");
+    if (npCover) {
+      npCover.removeAttribute("src");
+      npCover.classList.add("hidden");
+    }
     if (npPlaceholderIcon) npPlaceholderIcon.classList.remove("hidden");
     if (npCoverBg) npCoverBg.style.backgroundImage = "none";
-    npTitle.innerText = "Comienza tu colección";
-    npMeta.innerText = "Haz clic en 'Registrar' para comenzar";
-    npProgressContainer.classList.add("hidden");
-    npActionBtn.onclick = () => toggleForm(true);
+    
+    if (npTitle) npTitle.innerText = isSpectatorMode ? "Sin actividad activa" : "Comienza tu colección";
+    if (npMeta) npMeta.innerText = isSpectatorMode ? "El jugador no tiene títulos marcados en curso." : "Haz clic en 'Registrar' para comenzar";
+    
+    if (npProgressContainer) npProgressContainer.classList.add("hidden");
+    if (npActionBtn) {
+      if (isSpectatorMode) npActionBtn.classList.add("hidden");
+      else {
+        npActionBtn.classList.remove("hidden");
+        npActionBtn.onclick = () => toggleForm(true);
+      }
+    }
     return;
   }
 
@@ -651,45 +676,53 @@ function setupNowPlayingCarousel(playingGames) {
     const game = playingGames[index];
     if (!game) return;
 
-    npCover.style.opacity = "0.2";
-    npCover.style.transform = "scale(0.96)";
-    npTitle.style.opacity = "0.2";
-    npMeta.style.opacity = "0.2";
+    if (npCover) {
+      npCover.style.opacity = "0.2";
+      npCover.style.transform = "scale(0.96)";
+    }
+    if (npTitle) npTitle.style.opacity = "0.2";
+    if (npMeta) npMeta.style.opacity = "0.2";
     if (npCoverBg) npCoverBg.style.opacity = "0.15";
 
     setTimeout(() => {
-      npCover.src = game.coverUrl;
-      npCover.classList.remove("hidden");
+      if (npCover) {
+        npCover.src = game.coverUrl;
+        npCover.classList.remove("hidden");
+      }
       if (npPlaceholderIcon) npPlaceholderIcon.classList.add("hidden");
 
       if (npCoverBg) {
         npCoverBg.style.backgroundImage = `url('${game.coverUrl}')`;
       }
 
-      npTitle.innerText = game.title;
+      if (npTitle) npTitle.innerText = game.title;
       const countLabel = playingGames.length > 1 ? ` • (${index + 1}/${playingGames.length})` : "";
-      npMeta.innerText = `${(game.platforms || []).join(", ")} • ${game.hours || 0} hrs dedicadas${countLabel}`;
+      if (npMeta) npMeta.innerText = `${(game.platforms || []).join(", ")} • ${game.hours || 0} hrs dedicadas${countLabel}`;
 
       if (isSpectatorMode) {
-        npActionBtn.classList.add("hidden");
+        if (npActionBtn) npActionBtn.classList.add("hidden");
       } else {
-        npActionBtn.classList.remove("hidden");
-        npActionBtn.onclick = () => startEditGame(game);
+        if (npActionBtn) {
+          npActionBtn.classList.remove("hidden");
+          npActionBtn.onclick = () => startEditGame(game);
+        }
       }
 
       if (game.targetHours && game.targetHours > 0) {
         const pct = Math.min(100, Math.round((game.hours / game.targetHours) * 100));
-        npProgressText.innerText = `${pct}% (${game.hours}h / ${game.targetHours}h)`;
-        npProgressBar.style.width = `${pct}%`;
-        npProgressContainer.classList.remove("hidden");
+        if (npProgressText) npProgressText.innerText = `${pct}% (${game.hours}h / ${game.targetHours}h)`;
+        if (npProgressBar) npProgressBar.style.width = `${pct}%`;
+        if (npProgressContainer) npProgressContainer.classList.remove("hidden");
       } else {
-        npProgressContainer.classList.add("hidden");
+        if (npProgressContainer) npProgressContainer.classList.add("hidden");
       }
 
-      npCover.style.opacity = "1";
-      npCover.style.transform = "scale(1)";
-      npTitle.style.opacity = "1";
-      npMeta.style.opacity = "1";
+      if (npCover) {
+        npCover.style.opacity = "1";
+        npCover.style.transform = "scale(1)";
+      }
+      if (npTitle) npTitle.style.opacity = "1";
+      if (npMeta) npMeta.style.opacity = "1";
       if (npCoverBg) npCoverBg.style.opacity = "0.8";
     }, 250);
   }
@@ -706,24 +739,32 @@ function setupNowPlayingCarousel(playingGames) {
 
 function renderLibrary() {
   const lib = getCurrentDataset();
-  const term = filterInput.value.toLowerCase().trim();
-  const sortBy = sortBySelect.value;
+  const term = filterInput ? filterInput.value.toLowerCase().trim() : "";
+  const sortBy = sortBySelect ? sortBySelect.value : "recent";
 
   const playingGames = lib.filter(g => g.status === 'playing');
   const completedCount = lib.filter(g => g.status === 'completed' || g.status === 'extras' || g.status === 'platinum').length;
   const platinumCount = lib.filter(g => g.status === 'platinum').length;
   const totalHours = lib.reduce((acc, g) => acc + (g.hours || 0), 0);
 
-  document.getElementById("statPlaying").innerText = playingGames.length;
-  document.getElementById("statCompleted").innerText = completedCount;
-  document.getElementById("statPlatinum").innerText = platinumCount;
-  document.getElementById("statHours").innerText = totalHours > 0 ? `${totalHours}h` : "0h";
+  const elPlaying = document.getElementById("statPlaying");
+  const elCompleted = document.getElementById("statCompleted");
+  const elPlatinum = document.getElementById("statPlatinum");
+  const elHours = document.getElementById("statHours");
+  const elAvg = document.getElementById("statAvg");
 
-  if (lib.length > 0) {
-    const avg = lib.reduce((acc, g) => acc + g.rating, 0) / lib.length;
-    document.getElementById("statAvg").innerText = avg.toFixed(1);
-  } else {
-    document.getElementById("statAvg").innerText = "0.0";
+  if (elPlaying) elPlaying.innerText = playingGames.length;
+  if (elCompleted) elCompleted.innerText = completedCount;
+  if (elPlatinum) elPlatinum.innerText = platinumCount;
+  if (elHours) elHours.innerText = totalHours > 0 ? `${totalHours}h` : "0h";
+
+  if (elAvg) {
+    if (lib.length > 0) {
+      const avg = lib.reduce((acc, g) => acc + g.rating, 0) / lib.length;
+      elAvg.innerText = avg.toFixed(1);
+    } else {
+      elAvg.innerText = "0.0";
+    }
   }
 
   setupNowPlayingCarousel(playingGames);
@@ -768,19 +809,29 @@ function renderLibrary() {
 
   gamesGrid.innerHTML = "";
 
+  // Estado vacío blindado: si no hay registros o el usuario espectado no existe
   if (filtered.length === 0) {
     gamesGrid.className = "block";
+    const emptyMsg = isSpectatorMode 
+      ? `El usuario <span class="text-indigo-400 font-black">@${publicProfileTarget}</span> no existe o no tiene ningún título registrado.`
+      : `No se encontraron títulos en esta categoría.`;
+
     gamesGrid.innerHTML = `
-      <div class="py-20 text-center glass-panel rounded-3xl border border-white/10">
-        <i class="fa-solid fa-gamepad text-5xl text-slate-600 mb-3 block"></i>
-        <p class="text-sm font-bold text-slate-400 console-font">No se encontraron títulos en esta categoría.</p>
+      <div class="py-20 text-center glass-panel rounded-3xl border border-white/10 p-6">
+        <i class="fa-solid fa-ghost text-5xl text-slate-600 mb-3 block"></i>
+        <p class="text-sm font-bold text-slate-300 console-font">${emptyMsg}</p>
+        ${isSpectatorMode ? `
+          <a href="app.html" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black console-font transition shadow-lg">
+            <i class="fa-solid fa-house"></i> Volver a mi estante
+          </a>
+        ` : ''}
       </div>
     `;
     return;
   }
 
   if (currentViewMode === "grid") {
-    gamesGrid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 perspective-container";
+    gamesGrid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-6 perspective-container";
     
     filtered.forEach(game => {
       const card = document.createElement("div");
@@ -932,36 +983,41 @@ const shareCardCanvas = document.getElementById("shareCardCanvas");
 function openDetailModal(game) {
   SoundFX.playWhoosh();
   activeModalGameId = game.id;
-  modalCover.src = game.coverUrl;
-  modalCoverThumb.src = game.coverUrl;
-  modalTitle.innerText = game.title;
-  modalRating.innerText = game.rating.toFixed(1);
-  modalReview.innerText = game.notes || "Sin reseña escrita.";
+  if (modalCover) modalCover.src = game.coverUrl;
+  if (modalCoverThumb) modalCoverThumb.src = game.coverUrl;
+  if (modalTitle) modalTitle.innerText = game.title;
+  if (modalRating) modalRating.innerText = game.rating.toFixed(1);
+  if (modalReview) modalReview.innerText = game.notes || "Sin reseña escrita.";
 
   let statusBadge = game.status === 'playing' ? '🔥 Jugando actualmente' : 
                     (game.status === 'platinum' ? '🏆 Platinado / 100%' : 
                     (game.status === 'extras' ? '⭐ Campaña + Extras' : 
                     (game.status === 'onhold' ? '⏸️ En Pausa' : '✅ Historia Principal')));
 
-  modalBadges.innerHTML = `
-    <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded text-[11px] border border-indigo-500/30">${statusBadge}</span>
-    <span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]">${(game.platforms || []).join(", ")}</span>
-    ${game.hours ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-clock mr-1"></i>${game.hours}h</span>` : ''}
-    ${game.completedYear ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-calendar mr-1"></i>${game.completedYear}</span>` : ''}
-    ${game.targetHours ? `<span class="px-2 py-0.5 bg-orange-500/20 text-orange-300 rounded text-[11px]">Meta: ${game.targetHours}h</span>` : ''}
-  `;
-
-  modalTagsContainer.innerHTML = renderTagChips(game.tags || []);
-
-  if (isSpectatorMode) {
-    modalEditBtn.classList.add("hidden");
-    modalDeleteBtn.classList.add("hidden");
-  } else {
-    modalEditBtn.classList.remove("hidden");
-    modalDeleteBtn.classList.remove("hidden");
+  if (modalBadges) {
+    modalBadges.innerHTML = `
+      <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded text-[11px] border border-indigo-500/30">${statusBadge}</span>
+      <span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]">${(game.platforms || []).join(", ")}</span>
+      ${game.hours ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-clock mr-1"></i>${game.hours}h</span>` : ''}
+      ${game.completedYear ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-calendar mr-1"></i>${game.completedYear}</span>` : ''}
+      ${game.targetHours ? `<span class="px-2 py-0.5 bg-orange-500/20 text-orange-300 rounded text-[11px]">Meta: ${game.targetHours}h</span>` : ''}
+    `;
   }
 
-  detailModal.classList.remove("hidden");
+  if (modalTagsContainer) {
+    modalTagsContainer.innerHTML = renderTagChips(game.tags || []);
+  }
+
+  // Si estamos de espectadores, congelar controles de edición y eliminación
+  if (isSpectatorMode) {
+    if (modalEditBtn) modalEditBtn.classList.add("hidden");
+    if (modalDeleteBtn) modalDeleteBtn.classList.add("hidden");
+  } else {
+    if (modalEditBtn) modalEditBtn.classList.remove("hidden");
+    if (modalDeleteBtn) modalDeleteBtn.classList.remove("hidden");
+  }
+
+  if (detailModal) detailModal.classList.remove("hidden");
 }
 
 if (closeModalBtn) closeModalBtn.addEventListener("click", () => detailModal.classList.add("hidden"));
@@ -973,6 +1029,7 @@ if (detailModal) {
 
 if (modalEditBtn) {
   modalEditBtn.addEventListener("click", () => {
+    if (isSpectatorMode) return;
     const lib = getCurrentDataset();
     const target = lib.find(g => g.id === activeModalGameId);
     if (target) {
@@ -984,8 +1041,10 @@ if (modalEditBtn) {
 
 if (modalDeleteBtn) {
   modalDeleteBtn.addEventListener("click", () => {
+    if (isSpectatorMode) return;
     if (confirm("¿Seguro que deseas eliminar este juego de tu colección?")) {
       StorageManager.deleteGame(activeModalGameId);
+      if (window.DB) DB.syncLocalToCloud(StorageManager.getGames());
       renderLibrary();
       detailModal.classList.add("hidden");
     }
@@ -1031,9 +1090,9 @@ function updateWrappedUI(selectedYear) {
   if (selectedYear !== "all") {
     const y = parseInt(selectedYear, 10);
     games = lib.filter(g => (g.completedYear || new Date(g.id).getFullYear()) === y);
-    wrappedPeriodLabel.innerText = `Tiempo Jugado en ${selectedYear}`;
+    if (wrappedPeriodLabel) wrappedPeriodLabel.innerText = `Tiempo Jugado en ${selectedYear}`;
   } else {
-    wrappedPeriodLabel.innerText = "Tiempo Jugado Histórico";
+    if (wrappedPeriodLabel) wrappedPeriodLabel.innerText = "Tiempo Jugado Histórico";
   }
 
   if (games.length === 0) {
@@ -1202,33 +1261,40 @@ if (openStatsBtn) {
     const pOnhold = (onhold / lib.length) * 100;
 
     const statusBar = document.getElementById("statusBarBreakdown");
-    statusBar.innerHTML = `
-      <div style="width: ${pCompleted}%" class="bg-emerald-500 h-full" title="Completados"></div>
-      <div style="width: ${pPlaying}%" class="bg-orange-500 h-full" title="Jugando"></div>
-      <div style="width: ${pOnhold}%" class="bg-yellow-500 h-full" title="En Pausa"></div>
-    `;
+    if (statusBar) {
+      statusBar.innerHTML = `
+        <div style="width: ${pCompleted}%" class="bg-emerald-500 h-full" title="Completados"></div>
+        <div style="width: ${pPlaying}%" class="bg-orange-500 h-full" title="Jugando"></div>
+        <div style="width: ${pOnhold}%" class="bg-yellow-500 h-full" title="En Pausa"></div>
+      `;
+    }
 
-    document.getElementById("statusBarLegend").innerHTML = `
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> ${completed} Pasados</span>
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> ${playing} Jugando</span>
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> ${onhold} En Pausa</span>
-    `;
+    const statusLegend = document.getElementById("statusBarLegend");
+    if (statusLegend) {
+      statusLegend.innerHTML = `
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> ${completed} Pasados</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> ${playing} Jugando</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> ${onhold} En Pausa</span>
+      `;
+    }
 
     const platList = document.getElementById("platformBreakdownList");
-    platList.innerHTML = Object.entries(platCounts).map(([plat, count]) => {
-      const perc = Math.round((count / lib.length) * 100);
-      return `
-        <div class="flex items-center justify-between text-xs">
-          <span class="text-slate-300 font-semibold">${plat}</span>
-          <div class="flex items-center gap-2">
-            <div class="w-28 bg-slate-800 h-2 rounded-full overflow-hidden">
-              <div class="bg-indigo-500 h-full" style="width: ${perc}%"></div>
+    if (platList) {
+      platList.innerHTML = Object.entries(platCounts).map(([plat, count]) => {
+        const perc = Math.round((count / lib.length) * 100);
+        return `
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-slate-300 font-semibold">${plat}</span>
+            <div class="flex items-center gap-2">
+              <div class="w-28 bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div class="bg-indigo-500 h-full" style="width: ${perc}%"></div>
+              </div>
+              <span class="text-slate-400 font-bold w-6 text-right">${count}</span>
             </div>
-            <span class="text-slate-400 font-bold w-6 text-right">${count}</span>
           </div>
-        </div>
-      `;
-    }).join("");
+        `;
+      }).join("");
+    }
 
     statsModal.classList.remove("hidden");
   });
@@ -1247,7 +1313,10 @@ document.getElementById("exportBtn")?.addEventListener("click", () => {
 });
 
 document.getElementById("importBtn")?.addEventListener("click", () => {
-  if (isSpectatorMode) return;
+  if (isSpectatorMode) {
+    alert("No puedes importar copias de seguridad en el estante de otro usuario.");
+    return;
+  }
   document.getElementById("fileInput").click();
 });
 
@@ -1260,6 +1329,7 @@ document.getElementById("fileInput")?.addEventListener("change", (e) => {
       const parsed = JSON.parse(event.target.result);
       if (Array.isArray(parsed)) {
         StorageManager.saveGames(parsed);
+        if (window.DB) DB.syncLocalToCloud(parsed);
         renderLibrary();
         SoundFX.playTrophy();
         alert("¡Colección restaurada con éxito!");
@@ -1271,25 +1341,26 @@ document.getElementById("fileInput")?.addEventListener("change", (e) => {
   reader.readAsText(file);
 });
 
-// ==========================================
-// INTEGRACIÓN & SINCRONIZACIÓN STEAM
-// ==========================================
+// Steam Modal Controls
 const openSteamSyncBtn = document.getElementById("openSteamSyncBtn");
 const steamModal = document.getElementById("steamModal");
 const closeSteamModalBtn = document.getElementById("closeSteamModalBtn");
-const fetchSteamBtn = document.getElementById("fetchSteamBtn");
-const fetchSteamIcon = document.getElementById("fetchSteamIcon");
-const fetchSteamText = document.getElementById("fetchSteamText");
-const steamIdInput = document.getElementById("steamIdInput");
-const steamPreviewContainer = document.getElementById("steamPreviewContainer");
-const steamFoundCount = document.getElementById("steamFoundCount");
-const steamGamesList = document.getElementById("steamGamesList");
 const confirmImportSteamBtn = document.getElementById("confirmImportSteamBtn");
 const selectAllSteamBtn = document.getElementById("selectAllSteamBtn");
+const steamGamesList = document.getElementById("steamGamesList");
 
-let fetchedSteamGames = [];
+window.fetchedSteamGames = [];
 
-if (openSteamSyncBtn) openSteamSyncBtn.addEventListener("click", () => steamModal.classList.remove("hidden"));
+if (openSteamSyncBtn) {
+  openSteamSyncBtn.addEventListener("click", () => {
+    if (isSpectatorMode) {
+      alert("Estás viendo el estante de otro jugador. Para sincronizar tu propia cuenta de Steam entra a tu propio estante.");
+      return;
+    }
+    steamModal.classList.remove("hidden");
+  });
+}
+
 if (closeSteamModalBtn) closeSteamModalBtn.addEventListener("click", () => steamModal.classList.add("hidden"));
 
 if (selectAllSteamBtn) {
@@ -1301,86 +1372,78 @@ if (selectAllSteamBtn) {
   });
 }
 
-if (fetchSteamBtn) {
-  fetchSteamBtn.addEventListener("click", async () => {
-    const rawInput = steamIdInput.value.trim();
-    if (!rawInput) {
-      alert("Por favor introduce tu Steam ID (ej: 76561198389070811).");
-      steamIdInput.focus();
+// ==========================================
+// FUNCIÓN GLOBAL CONSULTA STEAM DIRECTA
+// ==========================================
+window.ejecutarConsultaSteam = async function() {
+  if (isSpectatorMode) {
+    alert("No puedes importar títulos en el perfil de otra persona.");
+    return;
+  }
+
+  const inputEl = document.getElementById("steamIdInput");
+  const btnEl = document.getElementById("fetchSteamBtn");
+  const iconEl = document.getElementById("fetchSteamIcon");
+  const textEl = document.getElementById("fetchSteamText");
+  const previewContainer = document.getElementById("steamPreviewContainer");
+  const countEl = document.getElementById("steamFoundCount");
+  const listEl = document.getElementById("steamGamesList");
+
+  const rawInput = inputEl ? inputEl.value.trim() : "";
+  if (!rawInput) {
+    alert("Por favor introduce tu SteamID64 numérico (17 dígitos).");
+    if (inputEl) inputEl.focus();
+    return;
+  }
+
+  let steamId = rawInput;
+  if (steamId.includes("/profiles/")) {
+    steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
+  } else if (steamId.includes("/id/")) {
+    steamId = steamId.split("/id/")[1].replace(/\//g, "");
+  }
+
+  if (btnEl) btnEl.disabled = true;
+  if (iconEl) iconEl.className = "fa-solid fa-spinner fa-spin";
+  if (textEl) textEl.innerText = "Consultando...";
+
+  try {
+    const res = await fetch(`/api/steam?steamid=${steamId}&_t=${Date.now()}`);
+    
+    if (!res.ok) {
+      const errData = await res.json().catch(() => null);
+      throw new Error(errData?.error || `Error ${res.status}: no se pudo conectar con Steam.`);
+    }
+
+    const data = await res.json();
+    const rawGames = data?.response?.games;
+
+    if (!rawGames || rawGames.length === 0) {
+      throw new Error("Steam no devolvió títulos. Verifica que tu perfil y la lista de juegos estén en PÚBLICO y desmarques 'Ocultar tiempo total de juego'.");
+    }
+
+    window.fetchedSteamGames = rawGames
+      .filter(g => (g.playtime_forever || 0) >= 30)
+      .sort((a, b) => b.playtime_forever - a.playtime_forever)
+      .map(g => {
+        const hours = Math.round(g.playtime_forever / 60);
+        return {
+          appId: g.appid,
+          title: g.name,
+          hours: hours,
+          coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
+          status: hours > 40 ? 'completed' : 'playing'
+        };
+      });
+
+    if (window.fetchedSteamGames.length === 0) {
+      alert("Perfil público detectado, pero sin títulos con más de 30 minutos registrados.");
       return;
     }
 
-    fetchSteamBtn.disabled = true;
-    fetchSteamIcon.className = "fa-solid fa-spinner fa-spin";
-    fetchSteamText.innerText = "Consultando...";
-
-    try {
-      let steamId = rawInput;
-      if (steamId.includes("/profiles/")) {
-        steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
-      } else if (steamId.includes("/id/")) {
-        steamId = steamId.split("/id/")[1].replace(/\//g, "");
-      }
-
-      // Validar que sean 17 dígitos numéricos
-      if (!/^\d{17}$/.test(steamId)) {
-        throw new Error("Por favor usa tu SteamID64 numérico de 17 dígitos (ej: 76561198389070811). Puedes verificarlo en steamid.io");
-      }
-
-      let parsedData = null;
-
-      // 1. Intento principal: Serverless Function de Vercel (/api/steam)
-      try {
-        const response = await fetch(`/api/steam?steamid=${steamId}`);
-        if (response.ok) {
-          parsedData = await response.json();
-        }
-      } catch (errLocal) {
-        console.warn("Fallo en endpoint /api/steam, probando fallback...");
-      }
-
-      // 2. Fallback en caso de entorno local sin función serverless
-      if (!parsedData || !parsedData.response) {
-        const targetSteamUrl = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=D47B3E25DE187514E2976D49BC94E782&steamid=${steamId}&include_appinfo=true&include_played_free_games=true&format=json`;
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetSteamUrl)}`;
-        const res = await fetch(proxyUrl);
-        const json = await res.json();
-        
-        if (json && json.contents) {
-          // Si devuelve HTML es porque Steam o el proxy bloquearon
-          if (json.contents.trim().startsWith("<")) {
-            throw new Error("Steam bloqueó la petición temporalmente. Asegúrate de haber subido la carpeta /api a Vercel.");
-          }
-          parsedData = JSON.parse(json.contents);
-        }
-      }
-
-      if (!parsedData || !parsedData.response || !parsedData.response.games) {
-        throw new Error("Steam no devolvió juegos. Confirma en Privacidad de Steam que 'Detalles de los juegos' esté en 'Público' y desmarca 'Ocultar tiempo total de juego'.");
-      }
-
-      const rawGames = parsedData.response.games;
-      fetchedSteamGames = rawGames
-        .filter(g => (g.playtime_forever || 0) >= 30) // Juegos con más de 30 min
-        .sort((a, b) => b.playtime_forever - a.playtime_forever)
-        .map(g => {
-          const hours = Math.round(g.playtime_forever / 60);
-          return {
-            appId: g.appid,
-            title: g.name,
-            hours: hours,
-            coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
-            status: hours > 40 ? 'completed' : 'playing'
-          };
-        });
-
-      if (fetchedSteamGames.length === 0) {
-        alert("Tu perfil es público, pero no se encontraron juegos con tiempo acumulado.");
-        return;
-      }
-
-      steamFoundCount.innerText = `${fetchedSteamGames.length} juegos listos para importar`;
-      steamGamesList.innerHTML = fetchedSteamGames.map((g, idx) => `
+    if (countEl) countEl.innerText = `${window.fetchedSteamGames.length} juegos listos para importar`;
+    if (listEl) {
+      listEl.innerHTML = window.fetchedSteamGames.map((g, idx) => `
         <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition">
           <div class="flex items-center gap-3">
             <input type="checkbox" data-index="${idx}" checked class="rounded border-white/20 accent-blue-500 h-4 w-4">
@@ -1392,20 +1455,31 @@ if (fetchSteamBtn) {
           </div>
         </label>
       `).join("");
-
-      steamPreviewContainer.classList.remove("hidden");
-    } catch (err) {
-      alert("Error al conectar con Steam: " + err.message);
-    } finally {
-      fetchSteamBtn.disabled = false;
-      fetchSteamIcon.className = "fa-solid fa-cloud-arrow-down";
-      fetchSteamText.innerText = "Consultar";
     }
-  });
+
+    if (previewContainer) previewContainer.classList.remove("hidden");
+
+  } catch (err) {
+    alert("Error al conectar con Steam: " + err.message);
+  } finally {
+    if (btnEl) btnEl.disabled = false;
+    if (iconEl) iconEl.className = "fa-solid fa-cloud-arrow-down";
+    if (textEl) textEl.innerText = "Consultar";
+  }
+};
+
+const fetchSteamBtn = document.getElementById("fetchSteamBtn");
+if (fetchSteamBtn) {
+  fetchSteamBtn.addEventListener("click", window.ejecutarConsultaSteam);
 }
 
 if (confirmImportSteamBtn) {
   confirmImportSteamBtn.addEventListener("click", () => {
+    if (isSpectatorMode) {
+      alert("Acción no permitida en modo espectador.");
+      return;
+    }
+
     const checkboxes = steamGamesList.querySelectorAll("input[type='checkbox']:checked");
     if (checkboxes.length === 0) {
       alert("Selecciona al menos un juego para importar.");
@@ -1418,7 +1492,7 @@ if (confirmImportSteamBtn) {
 
     checkboxes.forEach(cb => {
       const idx = parseInt(cb.dataset.index, 10);
-      const g = fetchedSteamGames[idx];
+      const g = window.fetchedSteamGames[idx];
       if (g && !existingTitles.has(g.title.toLowerCase().trim())) {
         toImport.push({
           id: Date.now() + Math.floor(Math.random() * 100000),
@@ -1438,7 +1512,7 @@ if (confirmImportSteamBtn) {
     });
 
     if (toImport.length === 0) {
-      alert("Los juegos seleccionados ya estaban previamente en tu estante.");
+      alert("Los títulos seleccionados ya estaban en tu estante.");
       steamModal.classList.add("hidden");
       return;
     }
@@ -1455,7 +1529,7 @@ if (confirmImportSteamBtn) {
   });
 }
 
-// Demo & Clear
+// Cargar Demo & Limpiar
 document.getElementById("loadDemoBtn")?.addEventListener("click", () => {
   if (isSpectatorMode) return;
   SoundFX.playTrophy();
@@ -1499,12 +1573,13 @@ document.getElementById("clearAllBtn")?.addEventListener("click", () => {
   if (isSpectatorMode) return;
   if (confirm("¿Seguro que deseas vaciar tu estante?")) {
     StorageManager.clearAll();
+    if (window.DB) DB.syncLocalToCloud([]);
     renderLibrary();
     resetForm();
   }
 });
 
-// Theme
+// Theme Mode
 const themeToggleBtn = document.getElementById("themeToggleBtn");
 const themeIcon = document.getElementById("themeIcon");
 
@@ -1528,43 +1603,56 @@ if (themeToggleBtn) {
   });
 }
 
-// Sesión & Arranque
+// Sesión & Arranque Blindado
 const appAuthBtn = document.getElementById("appAuthBtn");
 const appUserLabel = document.getElementById("appUserLabel");
 const appUserIcon = document.getElementById("appUserIcon");
 
 async function initDashboard() {
+  // BLOQUE MODO ESPECTADOR: Blindaje total de lectura
   if (isSpectatorMode) {
-    spectatorBanner.classList.remove("hidden");
-    spectatorTargetUser.innerText = `@${publicProfileTarget}`;
-    toggleFormBtn?.classList.add("hidden");
-    ownerFooterControls?.classList.add("hidden");
+    if (spectatorBanner) spectatorBanner.classList.remove("hidden");
+    if (spectatorTargetUser) spectatorTargetUser.innerText = `@${publicProfileTarget}`;
+    if (toggleFormBtn) toggleFormBtn.classList.add("hidden");
+    if (ownerFooterControls) ownerFooterControls.classList.add("hidden");
     if (shareProfileBtn) shareProfileBtn.classList.add("hidden");
 
     try {
-      const cloudGames = await DB.getGamesByUsername(publicProfileTarget);
-      spectatorGames = (cloudGames || []).map(cg => ({
-        id: cg.id,
-        title: cg.title,
-        coverUrl: cg.cover_url,
-        status: cg.status,
-        platforms: cg.platforms || ["PC"],
-        rating: parseFloat(cg.rating),
-        hours: cg.hours || 0,
-        targetHours: cg.target_hours || 0,
-        completedYear: cg.completed_year || new Date().getFullYear(),
-        favorite: !!cg.favorite,
-        tags: cg.tags || [],
-        notes: cg.notes || ""
-      }));
+      if (window.DB && typeof DB.getGamesByUsername === "function") {
+        const cloudGames = await DB.getGamesByUsername(publicProfileTarget);
+        
+        // Si el usuario no existe en Supabase o no tiene juegos, la lista queda estrictamente vacía
+        if (!cloudGames || cloudGames.length === 0) {
+          spectatorGames = [];
+        } else {
+          spectatorGames = cloudGames.map(cg => ({
+            id: cg.id,
+            title: cg.title,
+            coverUrl: cg.cover_url,
+            status: cg.status,
+            platforms: cg.platforms || ["PC"],
+            rating: parseFloat(cg.rating),
+            hours: cg.hours || 0,
+            targetHours: cg.target_hours || 0,
+            completedYear: cg.completed_year || new Date().getFullYear(),
+            favorite: Boolean(cg.favorite),
+            tags: cg.tags || [],
+            notes: cg.notes || ""
+          }));
+        }
+      } else {
+        spectatorGames = [];
+      }
     } catch (e) {
       console.warn("Fallo cargando perfil público:", e);
+      spectatorGames = [];
     }
 
     renderLibrary();
     return;
   }
 
+  // MODO DUEÑO / LOCAL
   renderLibrary();
 
   if (!window.supabaseClient) return;
@@ -1601,7 +1689,7 @@ async function initDashboard() {
             hours: cg.hours || 0,
             targetHours: cg.target_hours || 0,
             completedYear: cg.completed_year || new Date().getFullYear(),
-            favorite: !!cg.favorite,
+            favorite: Boolean(cg.favorite),
             tags: cg.tags || [],
             notes: cg.notes || ""
           }));
@@ -1632,95 +1720,5 @@ async function initDashboard() {
     syncUserSession(session?.user || null);
   });
 }
-// ==========================================
-// FUNCIÓN GLOBAL DIRECTA PARA STEAM (A PRUEBA DE FALLOS)
-// ==========================================
-window.ejecutarConsultaSteam = async function() {
-  const inputEl = document.getElementById("steamIdInput");
-  const btnEl = document.getElementById("fetchSteamBtn");
-  const iconEl = document.getElementById("fetchSteamIcon");
-  const textEl = document.getElementById("fetchSteamText");
-  const previewContainer = document.getElementById("steamPreviewContainer");
-  const countEl = document.getElementById("steamFoundCount");
-  const listEl = document.getElementById("steamGamesList");
-
-  const rawInput = inputEl ? inputEl.value.trim() : "";
-  if (!rawInput) {
-    alert("Por favor escribe tu SteamID64 (ej: 76561198389070811).");
-    if (inputEl) inputEl.focus();
-    return;
-  }
-
-  let steamId = rawInput;
-  if (steamId.includes("/profiles/")) {
-    steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
-  } else if (steamId.includes("/id/")) {
-    steamId = steamId.split("/id/")[1].replace(/\//g, "");
-  }
-
-  if (btnEl) btnEl.disabled = true;
-  if (iconEl) iconEl.className = "fa-solid fa-spinner fa-spin";
-  if (textEl) textEl.innerText = "Consultando...";
-
-  try {
-    const res = await fetch(`/api/steam?steamid=${steamId}`);
-    
-    if (!res.ok) {
-      const errData = await res.json().catch(() => null);
-      throw new Error(errData?.error || `Error ${res.status}: Revisa que la carpeta /api esté subida a Vercel.`);
-    }
-
-    const data = await res.json();
-    const rawGames = data?.response?.games;
-
-    if (!rawGames || rawGames.length === 0) {
-      throw new Error("Steam no devolvió juegos. Confirma que tu perfil y la lista de juegos estén en modo PÚBLICO y desmarques 'Ocultar tiempo total de juego'.");
-    }
-
-    window.fetchedSteamGames = rawGames
-      .filter(g => (g.playtime_forever || 0) >= 30)
-      .sort((a, b) => b.playtime_forever - a.playtime_forever)
-      .map(g => {
-        const hours = Math.round(g.playtime_forever / 60);
-        return {
-          appId: g.appid,
-          title: g.name,
-          hours: hours,
-          coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
-          status: hours > 40 ? 'completed' : 'playing'
-        };
-      });
-
-    if (window.fetchedSteamGames.length === 0) {
-      alert("Tu cuenta es pública pero no tiene títulos con más de 30 minutos registrados.");
-      return;
-    }
-
-    if (countEl) countEl.innerText = `${window.fetchedSteamGames.length} juegos listos para importar`;
-    if (listEl) {
-      listEl.innerHTML = window.fetchedSteamGames.map((g, idx) => `
-        <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition">
-          <div class="flex items-center gap-3">
-            <input type="checkbox" data-index="${idx}" checked class="rounded border-white/20 accent-blue-500 h-4 w-4">
-            <img src="${g.coverUrl}" class="w-8 h-11 object-cover rounded bg-slate-950 shrink-0" onerror="this.src='https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appId}/header.jpg'">
-            <div>
-              <p class="text-xs font-bold text-white line-clamp-1">${g.title}</p>
-              <p class="text-[10px] text-slate-400">${g.hours} horas registradas en Steam</p>
-            </div>
-          </div>
-        </label>
-      `).join("");
-    }
-
-    if (previewContainer) previewContainer.classList.remove("hidden");
-
-  } catch (err) {
-    alert("Error al conectar con Steam: " + err.message);
-  } finally {
-    if (btnEl) btnEl.disabled = false;
-    if (iconEl) iconEl.className = "fa-solid fa-cloud-arrow-down";
-    if (textEl) textEl.innerText = "Consultar";
-  }
-};
 
 initDashboard();
