@@ -210,7 +210,22 @@ const DB = {
     if (error) throw error;
     return data[0];
   },
-
+/**
+ * Sanitiza texto para prevenir XSS y caracteres de escape peligrosos
+ */
+function sanitizeInput(str) {
+  if (typeof str !== 'string') return '';
+  return str
+    // Remueve etiquetas HTML completas (<script>, <img ...>, etc.)
+    .replace(/<[^>]*>?/gm, '')
+    // Escapa caracteres especiales residuales
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .trim();
+}
   // --- MÉTRICAS GLOBALES DE LA COMUNIDAD ---
   async getCommunityStats() {
     try {
