@@ -10,7 +10,7 @@ const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_U
 
 const DB = {
   // ==========================================
-  // AUTENTICACIÓN
+  // AUTENTICACIÓN Y ROLES
   // ==========================================
   async signIn(email, password) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
@@ -44,6 +44,15 @@ const DB = {
   async signOut() {
     if (!supabaseClient) return;
     await supabaseClient.auth.signOut();
+  },
+
+  // Requerido por landing.js:101
+  async isAdmin() {
+    if (!supabaseClient) return false;
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) return false;
+    const userRole = user.user_metadata?.role || user.app_metadata?.role;
+    return userRole === "admin" || user.email === ADMIN_EMAIL;
   },
 
   // ==========================================
@@ -135,9 +144,10 @@ const DB = {
   },
 
   // ==========================================
-  // COMUNIDAD (TABLAS: posts, post_comments, post_likes)
+  // POSTS / CRÓNICAS (TABLA: posts)
   // ==========================================
-  async getPosts() {
+  // Requerido por landing.js:644
+  async getPublicPosts() {
     if (!supabaseClient) return [];
     const { data, error } = await supabaseClient
       .from('posts')
@@ -151,6 +161,57 @@ const DB = {
     return data || [];
   },
 
+  // ==========================================
+  // MÉTRICAS DE COMUNIDAD
+  // ==========================================
+  // Requerido por landing.js:222
+  async getCommunityStats() {
+    if (!supabaseClient) {
+      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+    }
+
+    try {
+      const { data: allGames, error } = await supabaseClient
+        .from('games')
+        .select('title, hours, status');
+
+      if (error || !allGames || allGames.length === 0) {
+        return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+      }
+
+      const totalHours = allGames.reduce((acc, g) => acc + (Number(g.hours) || 0), 0);
+      const totalGames = allGames.length;
+      const totalPlatinums = allGames.filter(g => g.status === 'platinum').length;
+
+      const frequency = {};
+      allGames.forEach(g => {
+        if (g.title) frequency[g.title] = (frequency[g.title] || 0) + 1;
+      });
+
+      let mostPopular = "-";
+      let maxCount = 0;
+      for (const [title, count] of Object.entries(frequency)) {
+        if (count > maxCount) {
+          maxCount = count;
+          mostPopular = title;
+        }
+      }
+
+      return {
+        totalHours,
+        totalGames,
+        totalPlatinums,
+        mostPopular
+      };
+    } catch (e) {
+      console.error("Error calculando métricas:", e);
+      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+    }
+  },
+
+  // ==========================================
+  // COMUNIDAD (TABLAS: post_comments, post_likes)
+  // ==========================================
   async getComments(postId) {
     if (!supabaseClient || !postId) return [];
     const { data, error } = await supabaseClient
@@ -192,7 +253,6 @@ const DB = {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error("Debes iniciar sesión para dar like");
 
-    // Verificar si ya dio like
     const { data: existingLike } = await supabaseClient
       .from('post_likes')
       .select('*')
@@ -206,18 +266,19 @@ const DB = {
         .delete()
         .eq('post_id', postId)
         .eq('user_id', user.id);
-      return false; // Like retirado
+      return false;
     } else {
       await supabaseClient
         .from('post_likes')
         .insert([{ post_id: postId, user_id: user.id }]);
-      return true; // Like añadido
+      return true;
     }
   }
 };
 
 // Aliases de compatibilidad
-DB.getPublicFeed = DB.getPosts;
+DB.getPosts = DB.getPublicPosts;
+DB.getPublicFeed = DB.getPublicPosts;
 
 window.DB = DB;
 window.supabaseClient = supabaseClient;
