@@ -1651,7 +1651,6 @@ window.ejecutarConsultaSteam = async function() {
     return;
   }
 
-  // Extraer ID si pegan URL completa
   let steamId = rawInput;
   if (steamId.includes("/profiles/")) {
     steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
@@ -1664,46 +1663,22 @@ window.ejecutarConsultaSteam = async function() {
   if (textEl) textEl.innerText = "Consultando...";
 
   try {
-    let rawGames = null;
-
-    // Intento 1: Servidor propio en Vercel
-    try {
-      const resVercel = await fetch(`/api/steam?steamid=${steamId}`);
-      if (resVercel.ok) {
-        const dataVercel = await resVercel.json();
-        if (dataVercel?.response?.games) {
-          rawGames = dataVercel.response.games;
-        }
-      }
-    } catch (e1) {
-      console.warn("No respondió /api/steam, probando proxy directo...", e1);
+    const res = await fetch(`/api/steam?steamid=${steamId}`);
+    
+    if (!res.ok) {
+      const errData = await res.json().catch(() => null);
+      throw new Error(errData?.error || `Error ${res.status}: Revisa que la carpeta /api esté subida a Vercel.`);
     }
 
-    // Intento 2: Proxy alternativo directo si falla Vercel
-    if (!rawGames) {
-      const steamUrl = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=D47B3E25DE187514E2976D49BC94E782&steamid=${steamId}&include_appinfo=true&include_played_free_games=true&format=json`;
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(steamUrl)}`;
-      
-      const resProxy = await fetch(proxyUrl);
-      const resText = await resProxy.text();
-
-      if (resText.trim().startsWith("<")) {
-        throw new Error("Steam bloqueó la petición temporal. Asegúrate de que la carpeta /api esté subida a Vercel.");
-      }
-
-      const parsed = JSON.parse(resText);
-      if (parsed?.response?.games) {
-        rawGames = parsed.response.games;
-      }
-    }
+    const data = await res.json();
+    const rawGames = data?.response?.games;
 
     if (!rawGames || rawGames.length === 0) {
-      throw new Error("Steam respondió pero no devolvió juegos. Verifica que en Steam > Privacidad: 'Detalles de los juegos' esté en PÚBLICO y desmarques 'Ocultar tiempo de juego'.");
+      throw new Error("Steam no devolvió juegos. Confirma que tu perfil y la lista de juegos estén en modo PÚBLICO y desmarques 'Ocultar tiempo total de juego'.");
     }
 
-    // Procesar lista de juegos
     window.fetchedSteamGames = rawGames
-      .filter(g => (g.playtime_forever || 0) >= 30) // más de 30 mins
+      .filter(g => (g.playtime_forever || 0) >= 30)
       .sort((a, b) => b.playtime_forever - a.playtime_forever)
       .map(g => {
         const hours = Math.round(g.playtime_forever / 60);
@@ -1717,7 +1692,7 @@ window.ejecutarConsultaSteam = async function() {
       });
 
     if (window.fetchedSteamGames.length === 0) {
-      alert("Tu perfil es público pero no se detectaron juegos con más de media hora jugada.");
+      alert("Tu cuenta es pública pero no tiene títulos con más de 30 minutos registrados.");
       return;
     }
 
@@ -1740,7 +1715,7 @@ window.ejecutarConsultaSteam = async function() {
     if (previewContainer) previewContainer.classList.remove("hidden");
 
   } catch (err) {
-    alert("Resultado de la consulta:\n" + err.message);
+    alert("Error al conectar con Steam: " + err.message);
   } finally {
     if (btnEl) btnEl.disabled = false;
     if (iconEl) iconEl.className = "fa-solid fa-cloud-arrow-down";
