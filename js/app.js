@@ -1,6 +1,6 @@
 /**
  * Controlador Principal - Game Vault Console Edition
- * Soporte para Perfiles Públicos Compartibles (?u=usuario) y Carrusel Crossfade Cinematográfico
+ * Soporte para Perfiles Públicos, Crossfade, Barra de Herramientas Mobile y Sincronización Steam Real
  */
 let currentSelectedCover = "";
 let activeStatus = "completed";
@@ -13,7 +13,6 @@ let activeModalGameId = null;
 let currentViewMode = "grid";
 let isAudioEnabled = localStorage.getItem("gv_sound") !== "false";
 
-let focusedCardIndex = -1;
 let nowPlayingInterval = null;
 let currentPlayingIndex = 0;
 
@@ -164,7 +163,6 @@ const npProgressContainer = document.getElementById("npProgressContainer");
 const npProgressText = document.getElementById("npProgressText");
 const npProgressBar = document.getElementById("npProgressBar");
 
-// Botón para compartir perfil
 if (shareProfileBtn) {
   shareProfileBtn.addEventListener("click", async () => {
     SoundFX.playClick();
@@ -174,7 +172,7 @@ if (shareProfileBtn) {
 
     if (navigator.clipboard) {
       await navigator.clipboard.writeText(shareUrl);
-      alert(`¡Enlace copiado al portapapeles!\n\n${shareUrl}\n\nCompártelo para que cualquiera pueda ver tu estante en tiempo real.`);
+      alert(`¡Enlace copiado al portapapeles!\n\n${shareUrl}\n\nCompártelo para que cualquiera pueda ver tu estante.`);
     } else {
       prompt("Copia tu enlace público:", shareUrl);
     }
@@ -455,11 +453,8 @@ saveGameBtn.addEventListener("click", () => {
     notes: gameNotes.value.trim()
   };
 
-  if (activeStatus === "platinum") {
-    SoundFX.playTrophy();
-  } else {
-    SoundFX.playClick();
-  }
+  if (activeStatus === "platinum") SoundFX.playTrophy();
+  else SoundFX.playClick();
 
   if (editingGameId) {
     StorageManager.updateGame(editingGameId, gameData);
@@ -617,7 +612,7 @@ sortBySelect.addEventListener("change", () => {
 });
 
 // ==========================================
-// CARRUSEL CON EFECTO CINEMATOGRÁFICO SUAVE
+// CARRUSEL CROSSFADE SUAVE
 // ==========================================
 function setupNowPlayingCarousel(playingGames) {
   if (nowPlayingInterval) {
@@ -645,14 +640,12 @@ function setupNowPlayingCarousel(playingGames) {
     const game = playingGames[index];
     if (!game) return;
 
-    // 1. Difuminado hacia fuera (Fade-out suave)
     npCover.style.opacity = "0.2";
     npCover.style.transform = "scale(0.96)";
     npTitle.style.opacity = "0.2";
     npMeta.style.opacity = "0.2";
     if (npCoverBg) npCoverBg.style.opacity = "0.15";
 
-    // 2. Intercambio fluido tras 250ms
     setTimeout(() => {
       npCover.src = game.coverUrl;
       npCover.classList.remove("hidden");
@@ -682,7 +675,6 @@ function setupNowPlayingCarousel(playingGames) {
         npProgressContainer.classList.add("hidden");
       }
 
-      // 3. Difuminado hacia dentro (Fade-in suave)
       npCover.style.opacity = "1";
       npCover.style.transform = "scale(1)";
       npTitle.style.opacity = "1";
@@ -1150,7 +1142,7 @@ if (downloadTop5Btn) {
   });
 }
 
-// Estadísticas
+// Estadísticas Modal
 const statsModal = document.getElementById("statsModal");
 const openStatsBtn = document.getElementById("openStatsBtn");
 const closeStatsModalBtn = document.getElementById("closeStatsModalBtn");
@@ -1268,21 +1260,165 @@ document.getElementById("fileInput")?.addEventListener("change", (e) => {
   reader.readAsText(file);
 });
 
-// Steam Modal Controls
+// ==========================================
+// INTEGRACIÓN & SINCRONIZACIÓN STEAM REAL
+// ==========================================
 const openSteamSyncBtn = document.getElementById("openSteamSyncBtn");
 const steamModal = document.getElementById("steamModal");
 const closeSteamModalBtn = document.getElementById("closeSteamModalBtn");
 const fetchSteamBtn = document.getElementById("fetchSteamBtn");
+const fetchSteamIcon = document.getElementById("fetchSteamIcon");
+const fetchSteamText = document.getElementById("fetchSteamText");
 const steamIdInput = document.getElementById("steamIdInput");
 const steamPreviewContainer = document.getElementById("steamPreviewContainer");
 const steamFoundCount = document.getElementById("steamFoundCount");
 const steamGamesList = document.getElementById("steamGamesList");
 const confirmImportSteamBtn = document.getElementById("confirmImportSteamBtn");
+const selectAllSteamBtn = document.getElementById("selectAllSteamBtn");
 
 let fetchedSteamGames = [];
 
 if (openSteamSyncBtn) openSteamSyncBtn.addEventListener("click", () => steamModal.classList.remove("hidden"));
 if (closeSteamModalBtn) closeSteamModalBtn.addEventListener("click", () => steamModal.classList.add("hidden"));
+
+if (selectAllSteamBtn) {
+  selectAllSteamBtn.addEventListener("click", () => {
+    const checkboxes = steamGamesList.querySelectorAll("input[type='checkbox']");
+    const anyUnchecked = Array.from(checkboxes).some(c => !c.checked);
+    checkboxes.forEach(c => c.checked = anyUnchecked);
+    selectAllSteamBtn.innerText = anyUnchecked ? "Desmarcar todos" : "Marcar todos";
+  });
+}
+
+if (fetchSteamBtn) {
+  fetchSteamBtn.addEventListener("click", async () => {
+    const rawInput = steamIdInput.value.trim();
+    if (!rawInput) {
+      alert("Por favor introduce tu Steam ID (ej: 76561198399070811) o perfil público.");
+      steamIdInput.focus();
+      return;
+    }
+
+    fetchSteamBtn.disabled = true;
+    fetchSteamIcon.className = "fa-solid fa-spinner fa-spin";
+    fetchSteamText.innerText = "Consultando...";
+
+    try {
+      // Extraemos el ID numérico si pegan la URL completa
+      let steamId = rawInput;
+      if (steamId.includes("/profiles/")) {
+        steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
+      } else if (steamId.includes("/id/")) {
+        steamId = steamId.split("/id/")[1].replace(/\//g, "");
+      }
+
+      // Endpoint CORS Proxy público para consultar la lista de juegos de Steam
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=D47B3E25DE187514E2976D49BC94E782&steamid=${steamId}&include_appinfo=true&include_played_free_games=true&format=json`)}`;
+      
+      const response = await fetch(proxyUrl);
+      const data = await response.json();
+      const parsedData = JSON.parse(data.contents);
+
+      if (!parsedData || !parsedData.response || !parsedData.response.games) {
+        throw new Error("No se encontraron juegos. Asegúrate de que tu perfil y la lista de juegos estén en modo 'Público' en la configuración de privacidad de Steam.");
+      }
+
+      const rawGames = parsedData.response.games;
+      // Filtramos juegos con al menos 1 hora jugada y ordenamos por horas
+      fetchedSteamGames = rawGames
+        .filter(g => (g.playtime_forever || 0) >= 60)
+        .sort((a, b) => b.playtime_forever - a.playtime_forever)
+        .map(g => {
+          const hours = Math.round(g.playtime_forever / 60);
+          return {
+            appId: g.appid,
+            title: g.name,
+            hours: hours,
+            coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
+            status: hours > 40 ? 'completed' : 'playing'
+          };
+        });
+
+      if (fetchedSteamGames.length === 0) {
+        alert("Tu perfil es público pero no se detectaron juegos con más de 1 hora de juego.");
+        return;
+      }
+
+      steamFoundCount.innerText = `${fetchedSteamGames.length} juegos listos para importar`;
+      steamGamesList.innerHTML = fetchedSteamGames.map((g, idx) => `
+        <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" data-index="${idx}" checked class="rounded border-white/20 accent-blue-500 h-4 w-4">
+            <img src="${g.coverUrl}" class="w-8 h-11 object-cover rounded bg-slate-900 shrink-0" onerror="this.src='https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appId}/header.jpg'">
+            <div>
+              <p class="text-xs font-bold text-white line-clamp-1">${g.title}</p>
+              <p class="text-[10px] text-slate-400">${g.hours} horas registradas en Steam</p>
+            </div>
+          </div>
+        </label>
+      `).join("");
+
+      steamPreviewContainer.classList.remove("hidden");
+    } catch (err) {
+      alert("Error al conectar con Steam: " + err.message);
+    } finally {
+      fetchSteamBtn.disabled = false;
+      fetchSteamIcon.className = "fa-solid fa-cloud-arrow-down";
+      fetchSteamText.innerText = "Consultar";
+    }
+  });
+}
+
+if (confirmImportSteamBtn) {
+  confirmImportSteamBtn.addEventListener("click", () => {
+    const checkboxes = steamGamesList.querySelectorAll("input[type='checkbox']:checked");
+    if (checkboxes.length === 0) {
+      alert("Selecciona al menos un juego para importar.");
+      return;
+    }
+
+    const currentGames = StorageManager.getGames();
+    const existingTitles = new Set(currentGames.map(g => g.title.toLowerCase().trim()));
+    const toImport = [];
+
+    checkboxes.forEach(cb => {
+      const idx = parseInt(cb.dataset.index, 10);
+      const g = fetchedSteamGames[idx];
+      if (g && !existingTitles.has(g.title.toLowerCase().trim())) {
+        toImport.push({
+          id: Date.now() + Math.floor(Math.random() * 100000),
+          title: g.title,
+          coverUrl: g.coverUrl,
+          status: g.status,
+          platforms: ["PC"],
+          rating: 8.5,
+          hours: g.hours,
+          targetHours: 0,
+          completedYear: new Date().getFullYear(),
+          favorite: false,
+          tags: ["#Steam"],
+          notes: "Importado automáticamente desde Steam."
+        });
+      }
+    });
+
+    if (toImport.length === 0) {
+      alert("Los juegos seleccionados ya estaban previamente en tu estante.");
+      steamModal.classList.add("hidden");
+      return;
+    }
+
+    StorageManager.saveGames([...currentGames, ...toImport]);
+    if (window.DB) {
+      DB.syncLocalToCloud(StorageManager.getGames());
+    }
+
+    renderLibrary();
+    SoundFX.playTrophy();
+    steamModal.classList.add("hidden");
+    alert(`¡Se han importado ${toImport.length} títulos desde Steam con éxito!`);
+  });
+}
 
 // Demo & Clear
 document.getElementById("loadDemoBtn")?.addEventListener("click", () => {
@@ -1357,15 +1493,12 @@ if (themeToggleBtn) {
   });
 }
 
-// ==========================================
-// CONTROL DE SESIÓN Y MODO ESPECTADOR
-// ==========================================
+// Sesión & Arranque
 const appAuthBtn = document.getElementById("appAuthBtn");
 const appUserLabel = document.getElementById("appUserLabel");
 const appUserIcon = document.getElementById("appUserIcon");
 
 async function initDashboard() {
-  // Caso 1: Modo Espectador (Visitando perfil público ?u=...)
   if (isSpectatorMode) {
     spectatorBanner.classList.remove("hidden");
     spectatorTargetUser.innerText = `@${publicProfileTarget}`;
@@ -1390,14 +1523,13 @@ async function initDashboard() {
         notes: cg.notes || ""
       }));
     } catch (e) {
-      console.warn("Fallo cargando perfil ajeno:", e);
+      console.warn("Fallo cargando perfil público:", e);
     }
 
     renderLibrary();
     return;
   }
 
-  // Caso 2: Modo Dueño / Local
   renderLibrary();
 
   if (!window.supabaseClient) return;
@@ -1418,7 +1550,6 @@ async function initDashboard() {
         };
       }
 
-      // Sincronizar catálogo desde la nube
       try {
         const cloudGames = await DB.getCloudGames();
         if (cloudGames && cloudGames.length > 0) {
