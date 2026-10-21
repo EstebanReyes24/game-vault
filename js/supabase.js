@@ -10,7 +10,7 @@ const ADMIN_EMAIL = "estebanreyes2402@gmail.com";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const DB = {
-  // ==========================================
+ // ==========================================
   // AUTENTICACIÓN Y ROLES
   // ==========================================
   async signIn(email, password) {
@@ -172,11 +172,11 @@ const DB = {
   },
 
   // ==========================================
-  // MÉTRICAS DE COMUNIDAD
+  // MÉTRICAS DE COMUNIDAD (CALCULADAS SIN UNDEFINED)
   // ==========================================
   async getCommunityStats() {
     if (!supabaseClient) {
-      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
     }
 
     try {
@@ -185,7 +185,7 @@ const DB = {
         .select('title, hours, status');
 
       if (error || !allGames || allGames.length === 0) {
-        return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+        return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
       }
 
       const totalHours = allGames.reduce((acc, g) => acc + (Number(g.hours) || 0), 0);
@@ -193,12 +193,19 @@ const DB = {
       const totalPlatinums = allGames.filter(g => g.status === 'platinum').length;
 
       const frequency = {};
+      const hoursByTitle = {};
+
       allGames.forEach(g => {
-        if (g.title) frequency[g.title] = (frequency[g.title] || 0) + 1;
+        const cleanTitle = (g.title || "").trim();
+        if (cleanTitle) {
+          frequency[cleanTitle] = (frequency[cleanTitle] || 0) + 1;
+          hoursByTitle[cleanTitle] = (hoursByTitle[cleanTitle] || 0) + (Number(g.hours) || 0);
+        }
       });
 
       let mostPopular = "-";
       let maxCount = 0;
+
       for (const [title, count] of Object.entries(frequency)) {
         if (count > maxCount) {
           maxCount = count;
@@ -206,10 +213,31 @@ const DB = {
         }
       }
 
-      return { totalHours, totalGames, totalPlatinums, mostPopular };
+      if (maxCount <= 1 && Object.keys(hoursByTitle).length > 0) {
+        let maxHours = -1;
+        for (const [title, h] of Object.entries(hoursByTitle)) {
+          if (h > maxHours) {
+            maxHours = h;
+            mostPopular = title;
+          }
+        }
+      }
+
+      if (!mostPopular || mostPopular === "-") {
+        mostPopular = allGames[0]?.title || "-";
+      }
+
+      return { 
+        totalHours, 
+        totalGames, 
+        totalPlatinums, 
+        mostPopular, 
+        popular: mostPopular, 
+        topGame: mostPopular 
+      };
     } catch (e) {
       console.error("Error calculando estadísticas:", e);
-      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
     }
   },
 
@@ -280,7 +308,6 @@ const DB = {
   }
 };
 
-// Aliases requeridos por páginas legacy
 DB.getPosts = DB.getPublicPosts;
 DB.getPublicFeed = DB.getPublicPosts;
 
