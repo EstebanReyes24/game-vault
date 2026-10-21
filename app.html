@@ -33,7 +33,7 @@
     <!-- Header Adaptado para Móvil y PC -->
     <header class="console-nav rounded-2xl px-3 sm:px-5 py-3 flex flex-col sm:flex-row justify-between items-center gap-3 shadow-xl relative z-30">
       
-      <!-- Fila Superior: Logo + Botón Principal Registrar -->
+      <!-- Fila Superior: Logo + Botón Principal Registrar en Móvil -->
       <div class="flex justify-between items-center w-full sm:w-auto">
         <div class="flex items-center gap-2.5">
           <a href="index.html" title="Ir a la Portada" class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
@@ -47,14 +47,13 @@
           </div>
         </div>
 
-        <!-- Botón Registrar destacado en móvil -->
         <button type="button" id="toggleFormBtn" class="sm:hidden btn-primary-action px-3 py-1.5 rounded-xl text-xs font-black console-font flex items-center gap-1.5 cursor-pointer shadow-lg">
           <i class="fa-solid fa-plus-circle text-xs" id="toggleFormIcon"></i>
           <span id="toggleFormText">REGISTRAR</span>
         </button>
       </div>
 
-      <!-- Fila de Acciones: Ajustada para no amontonarse -->
+      <!-- Fila de Acciones -->
       <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto overflow-x-auto py-0.5">
         <button type="button" id="openCommandBtn" title="Buscador rápido (Ctrl + K)"
                 class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl console-input text-xs text-slate-300 hover:text-white border border-white/10 transition cursor-pointer shrink-0">
@@ -86,8 +85,7 @@
           </button>
         </div>
 
-        <!-- Botón Registrar para PC -->
-        <button type="button" class="hidden sm:flex btn-primary-action px-4 py-2 rounded-xl text-xs font-black console-font items-center gap-2 cursor-pointer shadow-lg">
+        <button type="button" class="hidden sm:flex btn-primary-action px-4 py-2 rounded-xl text-xs font-black console-font items-center gap-2 cursor-pointer shadow-lg" onclick="document.getElementById('toggleFormBtn').click()">
           <i class="fa-solid fa-plus-circle text-sm"></i>
           <span>REGISTRAR</span>
         </button>
@@ -139,7 +137,7 @@
         </div>
       </div>
 
-      <!-- Bento 2: Quick Metrics Dashboard -->
+      <!-- Bento 2: Métricas Rápidas -->
       <div class="lg:col-span-5 grid grid-cols-3 gap-2.5 sm:gap-3">
         <div class="glass-panel p-3 rounded-2xl flex flex-col justify-between border border-white/10 text-center stat-card">
           <span class="text-[10px] text-slate-400 font-extrabold uppercase tracking-wider">Pasados</span>
@@ -180,34 +178,86 @@
 
     </section>
 
-    <!-- BARRA DEDICADA DE HERRAMIENTAS (STEAM, WRAPPED, STATS, TOP, EXPORT/IMPORT) -->
-    <section class="glass-panel rounded-2xl p-2.5 border border-white/10 shadow-lg relative z-20">
-      <div class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 custom-scrollbar select-none">
+    <!-- Toolbar Consolidada y Unificada (Filtros + Herramientas Balanceadas) -->
+    <section class="glass-panel rounded-2xl p-3 sm:p-3.5 shadow-xl border border-white/10 relative z-20 space-y-3">
+      
+      <!-- Fila 1: Filtros de Catálogo y Switch Cuadrícula/Lista -->
+      <div class="flex flex-wrap lg:flex-nowrap items-center justify-between gap-3">
         
-        <button id="openSteamSyncBtn" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-blue-600/40 to-indigo-600/40 border border-blue-500/50 text-blue-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer shadow">
-          <i class="fa-brands fa-steam text-blue-400 text-sm"></i> <span>STEAM SYNC</span>
-        </button>
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full lg:w-auto">
+          <select id="filterStatusSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="all">🎮 Todos los Estados</option>
+            <option value="playing">🔥 Jugando</option>
+            <option value="completed">🏆 Pasados</option>
+            <option value="platinum">👑 Platinos</option>
+            <option value="favorite">⭐ Favoritos</option>
+            <option value="tier-masterpiece">🌟 Obras Maestras (9.0+)</option>
+            <option value="onhold">⏸️ Pausa</option>
+          </select>
 
-        <button id="openWrappedBtn" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-purple-600/40 to-indigo-600/40 border border-purple-500/50 text-purple-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer shadow">
-          <i class="fa-solid fa-wand-magic-sparkles text-purple-400 text-sm"></i> <span>WRAPPED</span>
-        </button>
+          <select id="filterPlatformSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="all">🕹️ Plataformas</option>
+            <option value="PC">💻 PC</option>
+            <option value="PlayStation">🎮 PlayStation</option>
+            <option value="Xbox">🟢 Xbox</option>
+            <option value="Nintendo">🔴 Nintendo</option>
+          </select>
 
-        <button id="openStatsBtn" class="px-3 py-2 rounded-xl console-input border border-white/10 text-slate-300 hover:text-indigo-400 text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer">
-          <i class="fa-solid fa-chart-pie text-indigo-400"></i> <span>STATS</span>
-        </button>
+          <select id="sortBySelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="recent">Recientes</option>
+            <option value="rating-desc">Nota (10-1)</option>
+            <option value="hours-desc">Más horas</option>
+            <option value="title-asc">A - Z</option>
+          </select>
 
-        <button id="openTop5Btn" class="px-3 py-2 rounded-xl console-input border border-white/10 text-slate-300 hover:text-amber-400 text-xs font-black console-font transition flex items-center gap-1.5 shrink-0 cursor-pointer">
-          <i class="fa-solid fa-camera text-amber-400"></i> <span>TOP CARDS</span>
-        </button>
+          <div class="relative flex-1 min-w-[150px]">
+            <input type="text" id="filterInput" placeholder="Buscar título o #tag..." 
+                   class="w-full console-input rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:outline-none">
+            <i class="fa-solid fa-filter absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+        </div>
 
-        <button id="exportBtn" class="px-3 py-2 rounded-xl console-input border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer">
-          <i class="fa-solid fa-download text-indigo-400"></i> <span>Exportar</span>
-        </button>
+        <div class="flex rounded-xl console-input p-0.5 border border-white/10 shrink-0 self-end sm:self-auto">
+          <button type="button" id="viewGridBtn" title="Cuadrícula" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer">
+            <i class="fa-solid fa-table-cells"></i>
+          </button>
+          <button type="button" id="viewListBtn" title="Lista" class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
+            <i class="fa-solid fa-list-ul"></i>
+          </button>
+        </div>
+      </div>
 
-        <button id="importBtn" class="px-3 py-2 rounded-xl console-input border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer">
-          <i class="fa-solid fa-upload text-indigo-400"></i> <span>Importar</span>
-        </button>
-        <input type="file" id="fileInput" accept=".json" class="hidden">
+      <!-- Fila 2: Herramientas Distribuidas de Extremo a Extremo -->
+      <div class="flex items-center justify-between gap-2 pt-2.5 border-t border-white/10 overflow-x-auto custom-scrollbar select-none">
+        
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="openSteamSyncBtn" class="px-3.5 py-1.5 rounded-xl bg-blue-600/25 hover:bg-blue-600/40 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer shadow">
+            <i class="fa-brands fa-steam text-blue-400"></i> STEAM SYNC
+          </button>
+
+          <button id="openWrappedBtn" class="px-3.5 py-1.5 rounded-xl bg-purple-600/25 hover:bg-purple-600/40 border border-purple-500/40 text-purple-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer shadow">
+            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> WRAPPED
+          </button>
+
+          <button id="openStatsBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-indigo-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-chart-pie text-indigo-400"></i> STATS
+          </button>
+
+          <button id="openTop5Btn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-amber-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-camera text-amber-400"></i> TOP CARDS
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 ml-auto">
+          <button id="exportBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-download text-indigo-400"></i> Exportar
+          </button>
+
+          <button id="importBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-upload text-indigo-400"></i> Importar
+          </button>
+          <input type="file" id="fileInput" accept=".json" class="hidden">
+        </div>
 
       </div>
     </section>
@@ -340,92 +390,6 @@
             </button>
           </div>
         </div>
-      </div>
-    </section>
-
-<!-- Toolbar Consolidada y Responsiva -->
-    <section class="glass-panel rounded-2xl p-3 sm:p-3.5 shadow-xl border border-white/10 relative z-20 space-y-3">
-      
-      <!-- Fila Principal: Filtros y Acciones Rápidas -->
-      <div class="flex flex-wrap lg:flex-nowrap items-center justify-between gap-3">
-        
-        <!-- Grupo Filtros -->
-        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full lg:w-auto">
-          <select id="filterStatusSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer shrink-0">
-            <option value="all">🎮 Todos los Estados</option>
-            <option value="playing">🔥 Jugando</option>
-            <option value="completed">🏆 Pasados</option>
-            <option value="platinum">👑 Platinos</option>
-            <option value="favorite">⭐ Favoritos</option>
-            <option value="tier-masterpiece">🌟 Obras Maestras (9.0+)</option>
-            <option value="onhold">⏸️ Pausa</option>
-          </select>
-
-          <select id="filterPlatformSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
-            <option value="all">🕹️ Plataformas</option>
-            <option value="PC">💻 PC</option>
-            <option value="PlayStation">🎮 PlayStation</option>
-            <option value="Xbox">🟢 Xbox</option>
-            <option value="Nintendo">🔴 Nintendo</option>
-          </select>
-
-          <select id="sortBySelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
-            <option value="recent">Recientes</option>
-            <option value="rating-desc">Nota (10-1)</option>
-            <option value="hours-desc">Más horas</option>
-            <option value="title-asc">A - Z</option>
-          </select>
-
-          <div class="relative flex-1 min-w-[150px]">
-            <input type="text" id="filterInput" placeholder="Buscar título o #tag..." 
-                   class="w-full console-input rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:outline-none">
-            <i class="fa-solid fa-filter absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
-          </div>
-        </div>
-
-        <!-- Grupo Switch Vista (Grid / Lista) -->
-        <div class="flex rounded-xl console-input p-0.5 border border-white/10 shrink-0 self-end sm:self-auto">
-          <button type="button" id="viewGridBtn" title="Cuadrícula" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer">
-            <i class="fa-solid fa-table-cells"></i>
-          </button>
-          <button type="button" id="viewListBtn" title="Lista" class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
-            <i class="fa-solid fa-list-ul"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Fila de Herramientas: Balanceada en PC y Deslizable en Móvil -->
-      <div class="flex items-center justify-between gap-2 pt-2.5 border-t border-white/10 overflow-x-auto custom-scrollbar select-none">
-        
-        <div class="flex items-center gap-2 shrink-0">
-          <button id="openSteamSyncBtn" class="px-3.5 py-1.5 rounded-xl bg-blue-600/25 hover:bg-blue-600/40 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer shadow">
-            <i class="fa-brands fa-steam text-blue-400"></i> STEAM SYNC
-          </button>
-
-          <button id="openWrappedBtn" class="px-3.5 py-1.5 rounded-xl bg-purple-600/25 hover:bg-purple-600/40 border border-purple-500/40 text-purple-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer shadow">
-            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> WRAPPED
-          </button>
-
-          <button id="openStatsBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-indigo-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-chart-pie text-indigo-400"></i> STATS
-          </button>
-
-          <button id="openTop5Btn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-amber-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-camera text-amber-400"></i> TOP CARDS
-          </button>
-        </div>
-
-        <div class="flex items-center gap-2 shrink-0 ml-auto">
-          <button id="exportBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-download text-indigo-400"></i> Exportar
-          </button>
-
-          <button id="importBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-            <i class="fa-solid fa-upload text-indigo-400"></i> Importar
-          </button>
-          <input type="file" id="fileInput" accept=".json" class="hidden">
-        </div>
-
       </div>
     </section>
 
