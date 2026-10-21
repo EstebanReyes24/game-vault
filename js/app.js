@@ -1632,5 +1632,120 @@ async function initDashboard() {
     syncUserSession(session?.user || null);
   });
 }
+// ==========================================
+// FUNCIÓN GLOBAL DIRECTA PARA STEAM (A PRUEBA DE FALLOS)
+// ==========================================
+window.ejecutarConsultaSteam = async function() {
+  const inputEl = document.getElementById("steamIdInput");
+  const btnEl = document.getElementById("fetchSteamBtn");
+  const iconEl = document.getElementById("fetchSteamIcon");
+  const textEl = document.getElementById("fetchSteamText");
+  const previewContainer = document.getElementById("steamPreviewContainer");
+  const countEl = document.getElementById("steamFoundCount");
+  const listEl = document.getElementById("steamGamesList");
+
+  const rawInput = inputEl ? inputEl.value.trim() : "";
+  if (!rawInput) {
+    alert("Por favor escribe tu SteamID64 (ej: 76561198389070811).");
+    if (inputEl) inputEl.focus();
+    return;
+  }
+
+  // Extraer ID si pegan URL completa
+  let steamId = rawInput;
+  if (steamId.includes("/profiles/")) {
+    steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
+  } else if (steamId.includes("/id/")) {
+    steamId = steamId.split("/id/")[1].replace(/\//g, "");
+  }
+
+  if (btnEl) btnEl.disabled = true;
+  if (iconEl) iconEl.className = "fa-solid fa-spinner fa-spin";
+  if (textEl) textEl.innerText = "Consultando...";
+
+  try {
+    let rawGames = null;
+
+    // Intento 1: Servidor propio en Vercel
+    try {
+      const resVercel = await fetch(`/api/steam?steamid=${steamId}`);
+      if (resVercel.ok) {
+        const dataVercel = await resVercel.json();
+        if (dataVercel?.response?.games) {
+          rawGames = dataVercel.response.games;
+        }
+      }
+    } catch (e1) {
+      console.warn("No respondió /api/steam, probando proxy directo...", e1);
+    }
+
+    // Intento 2: Proxy alternativo directo si falla Vercel
+    if (!rawGames) {
+      const steamUrl = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=D47B3E25DE187514E2976D49BC94E782&steamid=${steamId}&include_appinfo=true&include_played_free_games=true&format=json`;
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(steamUrl)}`;
+      
+      const resProxy = await fetch(proxyUrl);
+      const resText = await resProxy.text();
+
+      if (resText.trim().startsWith("<")) {
+        throw new Error("Steam bloqueó la petición temporal. Asegúrate de que la carpeta /api esté subida a Vercel.");
+      }
+
+      const parsed = JSON.parse(resText);
+      if (parsed?.response?.games) {
+        rawGames = parsed.response.games;
+      }
+    }
+
+    if (!rawGames || rawGames.length === 0) {
+      throw new Error("Steam respondió pero no devolvió juegos. Verifica que en Steam > Privacidad: 'Detalles de los juegos' esté en PÚBLICO y desmarques 'Ocultar tiempo de juego'.");
+    }
+
+    // Procesar lista de juegos
+    window.fetchedSteamGames = rawGames
+      .filter(g => (g.playtime_forever || 0) >= 30) // más de 30 mins
+      .sort((a, b) => b.playtime_forever - a.playtime_forever)
+      .map(g => {
+        const hours = Math.round(g.playtime_forever / 60);
+        return {
+          appId: g.appid,
+          title: g.name,
+          hours: hours,
+          coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
+          status: hours > 40 ? 'completed' : 'playing'
+        };
+      });
+
+    if (window.fetchedSteamGames.length === 0) {
+      alert("Tu perfil es público pero no se detectaron juegos con más de media hora jugada.");
+      return;
+    }
+
+    if (countEl) countEl.innerText = `${window.fetchedSteamGames.length} juegos listos para importar`;
+    if (listEl) {
+      listEl.innerHTML = window.fetchedSteamGames.map((g, idx) => `
+        <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition">
+          <div class="flex items-center gap-3">
+            <input type="checkbox" data-index="${idx}" checked class="rounded border-white/20 accent-blue-500 h-4 w-4">
+            <img src="${g.coverUrl}" class="w-8 h-11 object-cover rounded bg-slate-950 shrink-0" onerror="this.src='https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appId}/header.jpg'">
+            <div>
+              <p class="text-xs font-bold text-white line-clamp-1">${g.title}</p>
+              <p class="text-[10px] text-slate-400">${g.hours} horas registradas en Steam</p>
+            </div>
+          </div>
+        </label>
+      `).join("");
+    }
+
+    if (previewContainer) previewContainer.classList.remove("hidden");
+
+  } catch (err) {
+    alert("Resultado de la consulta:\n" + err.message);
+  } finally {
+    if (btnEl) btnEl.disabled = false;
+    if (iconEl) iconEl.className = "fa-solid fa-cloud-arrow-down";
+    if (textEl) textEl.innerText = "Consultar";
+  }
+};
 
 initDashboard();
