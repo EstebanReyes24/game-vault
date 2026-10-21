@@ -337,3 +337,12 @@ body.light-mode .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1
   color: #ffffff;
   box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
 }
+
+/* Ocultar scrollbars horizontales no deseadas */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
