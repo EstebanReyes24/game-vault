@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Falta el parámetro steamid' });
   }
 
-  const STEAM_KEY = 'D47B3E25DE187514E2976D49BC94E782';
+  const STEAM_KEY = 'AD5DEC86882BAA4DFD0AFEC622DB1A4E';
   const url = `https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${STEAM_KEY}&steamid=${steamid}&include_appinfo=true&include_played_free_games=true&format=json`;
 
   try {
