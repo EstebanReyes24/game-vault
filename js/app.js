@@ -160,8 +160,6 @@ const commandResults = document.getElementById("commandResults");
 
 const formSection = document.getElementById("formSection");
 const toggleFormBtn = document.getElementById("toggleFormBtn");
-const toggleFormIcon = document.getElementById("toggleFormIcon");
-const toggleFormText = document.getElementById("toggleFormText");
 
 const nowPlayingSection = document.getElementById("nowPlayingSection");
 const npCover = document.getElementById("npCover");
@@ -190,6 +188,7 @@ if (shareProfileBtn) {
   });
 }
 
+// TOGGLE FORMULARIOS FLOTANTES
 function toggleForm(open = null) {
   if (isSpectatorMode || !formSection) return;
   const shouldOpen = open !== null ? open : formSection.classList.contains("hidden");
@@ -261,11 +260,11 @@ if (favoriteToggleBtn) {
 function updateFavoriteUI() {
   if (!favoriteToggleBtn || !favText) return;
   if (isFavorite) {
-    favoriteToggleBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl border border-amber-500 bg-amber-500/20 text-amber-300 shadow-lg shadow-amber-500/20 transition flex items-center justify-center gap-2 text-xs font-bold cursor-pointer";
-    favText.innerText = "¡Es Favorito!";
+    favoriteToggleBtn.className = "px-2.5 py-1 rounded-lg border border-amber-500 bg-amber-500/20 text-amber-300 shadow-lg shadow-amber-500/20 transition flex items-center gap-1 text-[11px] font-bold cursor-pointer";
+    favText.innerText = "Favorito";
   } else {
-    favoriteToggleBtn.className = "w-full sm:w-auto px-4 py-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 hover:border-amber-500/50 hover:text-amber-400 transition flex items-center justify-center gap-2 text-xs font-bold cursor-pointer";
-    favText.innerText = "Marcar Favorito";
+    favoriteToggleBtn.className = "px-2.5 py-1 rounded-lg border border-white/10 bg-[#121623] text-slate-400 hover:text-amber-400 transition flex items-center gap-1 text-[11px] font-bold cursor-pointer";
+    favText.innerText = "Favorito";
   }
 }
 
@@ -377,7 +376,7 @@ document.addEventListener("click", (e) => {
 function resetForm() {
   editingGameId = null;
   formTitle.innerText = "Añadir Título";
-  formSubtitle.innerText = "Registra un juego completado, en proceso o en pausa";
+  formSubtitle.innerText = "Registra tu juego en segundos con carátula oficial";
   formIconBox.className = "w-10 h-10 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center border border-indigo-500/30 text-lg";
   formIcon.className = "fa-solid fa-plus";
   saveBtnText.innerText = "Guardar en mi estante";
@@ -386,7 +385,7 @@ function resetForm() {
   currentSelectedCover = "";
   coverPreview.classList.add("hidden");
   posterIcon.classList.remove("hidden");
-  coverStatusText.innerText = "Sin carátula (se genera al guardar)";
+  coverStatusText.innerText = "Sin carátula (automática)";
   setStatus("completed");
   setPlatformBadges(["PC"]);
   isFavorite = false;
@@ -482,7 +481,7 @@ if (saveGameBtn) {
       StorageManager.addGame({ id: Date.now(), ...gameData });
     }
 
-    // Sincronizar de forma inmediata con Supabase
+    // Sincronizar de inmediato con Supabase
     if (window.DB) {
       await DB.syncLocalToCloud(StorageManager.getGames());
     }
@@ -560,6 +559,9 @@ window.addEventListener("keydown", (e) => {
     if (detailModal && !detailModal.classList.contains("hidden")) detailModal.classList.add("hidden");
     if (steamModal && !steamModal.classList.contains("hidden")) steamModal.classList.add("hidden");
     if (shareCardModal && !shareCardModal.classList.contains("hidden")) shareCardModal.classList.add("hidden");
+    if (formSection && !formSection.classList.contains("hidden")) toggleForm(false);
+    if (statsModal && !statsModal.classList.contains("hidden")) statsModal.classList.add("hidden");
+    if (wrappedModal && !wrappedModal.classList.contains("hidden")) wrappedModal.classList.add("hidden");
     return;
   }
 });
@@ -826,7 +828,7 @@ function renderLibrary() {
   }
 
   if (currentViewMode === "grid") {
-    gamesGrid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-6 perspective-container";
+    gamesGrid.className = "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5 sm:gap-6";
     
     filtered.forEach(game => {
       const card = document.createElement("div");
@@ -871,12 +873,12 @@ function renderLibrary() {
       }
 
       const notesBlock = game.notes ? `
-        <p class="text-[11px] text-slate-300 line-clamp-2 italic console-input p-2 rounded-lg border border-white/5 leading-snug">"${game.notes}"</p>
+        <p class="text-[11px] text-slate-300 line-clamp-2 italic p-2 rounded-lg bg-black/30 border border-white/5 leading-snug">"${game.notes}"</p>
       ` : '';
 
       card.innerHTML = `
-        <div class="relative aspect-[3/4] overflow-hidden bg-slate-950 poster-sheen">
-          <img src="${game.coverUrl}" alt="${game.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" onerror="this.src='${CanvasPoster.generateSmartPoster(game.title)}'">
+        <div class="relative aspect-[3/4] overflow-hidden bg-slate-950">
+          <img src="${game.coverUrl}" alt="${game.title}" class="w-full h-full object-cover transition" onerror="this.src='${CanvasPoster.generateSmartPoster(game.title)}'">
           
           <div class="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5">
             ${badgeHtml}
@@ -1039,7 +1041,6 @@ if (modalDeleteBtn) {
     if (confirm("¿Seguro que deseas eliminar este juego de tu colección?")) {
       StorageManager.deleteGame(activeModalGameId);
       if (window.DB) {
-        // En caso de que tengas supabaseClient directo o deletes en DB
         if (window.supabaseClient) {
           await supabaseClient.from('games').delete().eq('id', activeModalGameId);
         }
@@ -1212,37 +1213,44 @@ if (downloadTop5Btn) {
   });
 }
 
-// Estadísticas Modal
+// ==========================================
+// MODAL DE ESTADÍSTICAS BLINDADO (SIN ERRORES NULL)
+// ==========================================
 const statsModal = document.getElementById("statsModal");
 const openStatsBtn = document.getElementById("openStatsBtn");
 const closeStatsModalBtn = document.getElementById("closeStatsModalBtn");
 
-if (openStatsBtn) {
+if (openStatsBtn && statsModal) {
   openStatsBtn.addEventListener("click", () => {
     SoundFX.playWhoosh();
     const lib = getCurrentDataset();
-    if (lib.length === 0) {
+
+    if (!lib || lib.length === 0) {
       alert("No hay registros en la biblioteca.");
       return;
     }
 
     const completed = lib.filter(g => ['completed', 'extras', 'platinum'].includes(g.status)).length;
     const rate = Math.round((completed / lib.length) * 100);
-    document.getElementById("statCompletionRate").innerText = `${rate}%`;
+    const elRate = document.getElementById("statCompletionRate");
+    if (elRate) elRate.innerText = `${rate}%`;
 
     const gamesWithHours = lib.filter(g => g.hours && g.hours > 0);
     const avgHours = gamesWithHours.length ? Math.round(gamesWithHours.reduce((acc, g) => acc + g.hours, 0) / gamesWithHours.length) : 0;
-    document.getElementById("statAvgHours").innerText = `${avgHours}h`;
+    const elAvgHours = document.getElementById("statAvgHours");
+    if (elAvgHours) elAvgHours.innerText = `${avgHours}h`;
 
     const masters = lib.filter(g => g.rating >= 9).length;
-    document.getElementById("statMasterpieces").innerText = masters;
+    const elMasters = document.getElementById("statMasterpieces");
+    if (elMasters) elMasters.innerText = masters;
 
     const platCounts = {};
     lib.forEach(g => {
-      (g.platforms || []).forEach(p => {
+      (g.platforms || ["PC"]).forEach(p => {
         platCounts[p] = (platCounts[p] || 0) + 1;
       });
     });
+
     let topPlat = "-";
     let topCount = 0;
     for (const [p, count] of Object.entries(platCounts)) {
@@ -1251,14 +1259,15 @@ if (openStatsBtn) {
         topPlat = p;
       }
     }
-    document.getElementById("statTopPlatform").innerText = topPlat;
+    const elTopPlat = document.getElementById("statTopPlatform");
+    if (elTopPlat) elTopPlat.innerText = topPlat;
 
     const playing = lib.filter(g => g.status === 'playing').length;
     const onhold = lib.filter(g => g.status === 'onhold').length;
 
-    const pPlaying = (playing / lib.length) * 100;
-    const pCompleted = (completed / lib.length) * 100;
-    const pOnhold = (onhold / lib.length) * 100;
+    const pPlaying = Math.round((playing / lib.length) * 100);
+    const pCompleted = Math.round((completed / lib.length) * 100);
+    const pOnhold = Math.round((onhold / lib.length) * 100);
 
     const statusBar = document.getElementById("statusBarBreakdown");
     if (statusBar) {
@@ -1300,7 +1309,15 @@ if (openStatsBtn) {
   });
 }
 
-if (closeStatsModalBtn) closeStatsModalBtn.addEventListener("click", () => statsModal.classList.add("hidden"));
+if (closeStatsModalBtn && statsModal) {
+  closeStatsModalBtn.addEventListener("click", () => statsModal.classList.add("hidden"));
+}
+
+if (statsModal) {
+  statsModal.addEventListener("click", (e) => {
+    if (e.target === statsModal) statsModal.classList.add("hidden");
+  });
+}
 
 // JSON Backup
 document.getElementById("exportBtn")?.addEventListener("click", () => {
@@ -1324,12 +1341,12 @@ document.getElementById("fileInput")?.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = (event) => {
+  reader.onload = async (event) => {
     try {
       const parsed = JSON.parse(event.target.result);
       if (Array.isArray(parsed)) {
         StorageManager.saveGames(parsed);
-        if (window.DB) DB.syncLocalToCloud(parsed);
+        if (window.DB) await DB.syncLocalToCloud(parsed);
         renderLibrary();
         SoundFX.playTrophy();
         alert("¡Colección restaurada con éxito!");
@@ -1575,12 +1592,10 @@ document.getElementById("clearAllBtn")?.addEventListener("click", async () => {
   if (isSpectatorMode) return;
   if (confirm("¿Seguro que deseas vaciar tu estante?")) {
     StorageManager.clearAll();
-    if (window.DB) {
-      if (window.supabaseClient) {
-        const user = await DB.getUser();
-        if (user) {
-          await supabaseClient.from('games').delete().eq('user_id', user.id);
-        }
+    if (window.DB && window.supabaseClient) {
+      const user = await DB.getUser();
+      if (user) {
+        await supabaseClient.from('games').delete().eq('user_id', user.id);
       }
     }
     renderLibrary();
@@ -1687,7 +1702,6 @@ async function initDashboard() {
         const local = StorageManager.getGames();
 
         if (cloudGames && cloudGames.length > 0) {
-          // Si Supabase tiene registros, tomamos la versión en la nube
           const mappedCloud = cloudGames.map(cg => ({
             id: cg.id,
             title: cg.title,
@@ -1706,7 +1720,6 @@ async function initDashboard() {
           StorageManager.saveGames(mappedCloud);
           renderLibrary();
         } else if (local && local.length > 0) {
-          // Si la nube está vacía pero hay títulos en el navegador, respaldamos a la nube
           await DB.syncLocalToCloud(local);
         }
       } catch (e) {
