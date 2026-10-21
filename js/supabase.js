@@ -6,11 +6,10 @@ const SUPABASE_URL = "https://epouactrnuhdbzzvzxor.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_i2sc-SaHk8H6e3c-Dwf0IQ_hhdBlx_I";
 
 const ADMIN_EMAIL = "estebanreyes2402@gmail.com";
-
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const DB = {
- // ==========================================
+  // ==========================================
   // AUTENTICACIÓN Y ROLES
   // ==========================================
   async signIn(email, password) {
@@ -145,7 +144,7 @@ const DB = {
     const { data, error } = await supabaseClient
       .from('hall_of_fame')
       .select('*')
-      .order('rating', { ascending: false });
+      .order('id', { ascending: true });
 
     if (error) {
       console.error("Error al obtener Hall of Fame:", error);
@@ -154,8 +153,19 @@ const DB = {
     return data || [];
   },
 
+  async updateHallOfFameItem(slotId, payload) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { data, error } = await supabaseClient
+      .from('hall_of_fame')
+      .update(payload)
+      .eq('id', slotId);
+
+    if (error) throw error;
+    return data;
+  },
+
   // ==========================================
-  // POSTS / CRÓNICAS (TABLA: posts)
+  // PUBLICACIONES / CRÓNICAS (TABLA: posts)
   // ==========================================
   async getPublicPosts() {
     if (!supabaseClient) return [];
@@ -171,8 +181,151 @@ const DB = {
     return data || [];
   },
 
+  async createPost(payload) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) throw new Error("Debes iniciar sesión para publicar");
+
+    const { data, error } = await supabaseClient
+      .from('posts')
+      .insert([{
+        user_id: user.id,
+        title: payload.title,
+        category: payload.category,
+        game_tag: payload.game_tag,
+        cover_url: payload.cover_url,
+        content: payload.content
+      }])
+      .select();
+
+    if (error) throw error;
+    return data?.[0] || null;
+  },
+
+  async updatePost(postId, payload) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { data, error } = await supabaseClient
+      .from('posts')
+      .update({
+        title: payload.title,
+        category: payload.category,
+        game_tag: payload.game_tag,
+        cover_url: payload.cover_url,
+        content: payload.content
+      })
+      .eq('id', postId);
+
+    if (error) throw error;
+    return data;
+  },
+
+  async deletePost(postId) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { data, error } = await supabaseClient
+      .from('posts')
+      .delete()
+      .eq('id', postId);
+
+    if (error) throw error;
+    return data;
+  },
+
   // ==========================================
-  // MÉTRICAS DE COMUNIDAD (CALCULADAS SIN UNDEFINED)
+  // LIKES (TABLA: post_likes)
+  // ==========================================
+  async getPostLikes(postId) {
+    if (!supabaseClient || !postId) return [];
+    const { data, error } = await supabaseClient
+      .from('post_likes')
+      .select('*')
+      .eq('post_id', postId);
+
+    if (error) {
+      console.error("Error al obtener likes:", error);
+      return [];
+    }
+    return data || [];
+  },
+
+  async toggleLike(postId) {
+    if (!supabaseClient) return false;
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) throw new Error("Debes iniciar sesión para dar like");
+
+    const { data: existingLike } = await supabaseClient
+      .from('post_likes')
+      .select('*')
+      .eq('post_id', postId)
+      .eq('user_id', user.id)
+      .maybeSingle();
+
+    if (existingLike) {
+      await supabaseClient
+        .from('post_likes')
+        .delete()
+        .eq('post_id', postId)
+        .eq('user_id', user.id);
+      return false;
+    } else {
+      await supabaseClient
+        .from('post_likes')
+        .insert([{ post_id: postId, user_id: user.id }]);
+      return true;
+    }
+  },
+
+  // ==========================================
+  // COMENTARIOS (TABLA: post_comments)
+  // ==========================================
+  async getComments(postId) {
+    if (!supabaseClient || !postId) return [];
+    const { data, error } = await supabaseClient
+      .from('post_comments')
+      .select('*')
+      .eq('post_id', postId)
+      .order('id', { ascending: true });
+
+    if (error) {
+      console.error("Error al obtener comentarios:", error);
+      return [];
+    }
+    return data || [];
+  },
+
+  async addComment(postId, commentText) {
+    if (!supabaseClient) return null;
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) throw new Error("Debes iniciar sesión para comentar");
+
+    const username = (user.user_metadata?.username || user.email.split('@')[0]).trim().toLowerCase();
+
+    const { data, error } = await supabaseClient
+      .from('post_comments')
+      .insert([{
+        post_id: postId,
+        user_id: user.id,
+        username: username,
+        comment: commentText.trim()
+      }])
+      .select();
+
+    if (error) throw error;
+    return data?.[0] || null;
+  },
+
+  async deleteComment(commentId) {
+    if (!supabaseClient || !commentId) return;
+    const { data, error } = await supabaseClient
+      .from('post_comments')
+      .delete()
+      .eq('id', commentId);
+
+    if (error) throw error;
+    return data;
+  },
+
+  // ==========================================
+  // MÉTRICAS DE COMUNIDAD
   // ==========================================
   async getCommunityStats() {
     if (!supabaseClient) {
@@ -239,72 +392,6 @@ const DB = {
       console.error("Error calculando estadísticas:", e);
       return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
     }
-  },
-
-  // ==========================================
-  // COMUNIDAD (TABLAS: post_comments, post_likes)
-  // ==========================================
-  async getComments(postId) {
-    if (!supabaseClient || !postId) return [];
-    const { data, error } = await supabaseClient
-      .from('post_comments')
-      .select('*')
-      .eq('post_id', postId)
-      .order('id', { ascending: true });
-
-    if (error) {
-      console.error("Error al obtener comentarios:", error);
-      return [];
-    }
-    return data || [];
-  },
-
-  async addComment(postId, commentText) {
-    if (!supabaseClient) return null;
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) throw new Error("Debes iniciar sesión para comentar");
-
-    const username = (user.user_metadata?.username || user.email.split('@')[0]).trim().toLowerCase();
-
-    const { data, error } = await supabaseClient
-      .from('post_comments')
-      .insert([{
-        post_id: postId,
-        user_id: user.id,
-        username: username,
-        content: commentText.trim()
-      }])
-      .select();
-
-    if (error) throw error;
-    return data?.[0] || null;
-  },
-
-  async toggleLike(postId) {
-    if (!supabaseClient) return false;
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) throw new Error("Debes iniciar sesión para dar like");
-
-    const { data: existingLike } = await supabaseClient
-      .from('post_likes')
-      .select('*')
-      .eq('post_id', postId)
-      .eq('user_id', user.id)
-      .maybeSingle();
-
-    if (existingLike) {
-      await supabaseClient
-        .from('post_likes')
-        .delete()
-        .eq('post_id', postId)
-        .eq('user_id', user.id);
-      return false;
-    } else {
-      await supabaseClient
-        .from('post_likes')
-        .insert([{ post_id: postId, user_id: user.id }]);
-      return true;
-    }
   }
 };
 
@@ -313,3 +400,4 @@ DB.getPublicFeed = DB.getPublicPosts;
 
 window.DB = DB;
 window.supabaseClient = supabaseClient;
+
