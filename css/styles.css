@@ -346,3 +346,17 @@ body.light-mode .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+/* Tarjeta estable sin saltos gigantes */
+.game-console-card {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Solo iluminar borde y sombra suave, SIN cambiar el tamaño ni escalar */
+.game-console-card:hover {
+  transform: none !important; /* Desactiva el zoom exagerado */
+  border-color: rgba(99, 102, 241, 0.6) !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(99, 102, 241, 0.2) !important;
+  z-index: 2;
+}
