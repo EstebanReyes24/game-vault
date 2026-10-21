@@ -137,8 +137,13 @@
   <footer class="w-full max-w-md py-4 text-center text-xs text-slate-500">
     <span>Game Vault • © 2026 Pain • Conexión Segura vía Supabase</span>
   </footer>
-
+<!-- 1. CDN de Supabase (Obligatorio) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
+  <!-- 2. Tu archivo de base de datos -->
   <script src="js/supabase.js"></script>
-  <script src="js/login.js"></script>
+
+  <!-- 3. Tu lógica de auth/login -->
+  <script src="js/auth.js"></script>
 </body>
 </html>
