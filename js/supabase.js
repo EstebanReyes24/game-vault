@@ -9,6 +9,30 @@ const ADMIN_EMAIL = "estebanreyes2402@gmail.com";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const DB = {
+  // Autenticación requerida por login.html
+  async signIn(email, password) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: email.trim(),
+      password: password
+    });
+    if (error) throw error;
+    return data;
+  },
+
+  async signUp(email, password, username) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { data, error } = await supabaseClient.auth.signUp({
+      email: email.trim(),
+      password: password,
+      options: {
+        data: { username: username.trim().toLowerCase() }
+      }
+    });
+    if (error) throw error;
+    return data;
+  },
+
   async getUser() {
     if (!supabaseClient) return null;
     const { data: { user } } = await supabaseClient.auth.getUser();
@@ -95,6 +119,5 @@ const DB = {
 
 window.DB = DB;
 window.supabaseClient = supabaseClient;
-};
 
 window.DB = DB;
