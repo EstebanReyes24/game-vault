@@ -1,6 +1,6 @@
 /**
  * Controlador Principal - Game Vault Console Edition
- * Soporte para Perfiles Públicos Blindados, Modo Espectador Read-Only y Sincronización Steam
+ * Soporte para Perfiles Aislados, Modo Espectador Read-Only y Sincronización Steam
  */
 let currentSelectedCover = "";
 let activeStatus = "completed";
@@ -23,7 +23,7 @@ const isSpectatorMode = Boolean(publicProfileTarget && publicProfileTarget.trim(
 let spectatorGames = [];
 
 // ==========================================
-// SANITIZACIÓN DE ENTRADAS (Anti-XSS / Exploit)
+// SANITIZACIÓN DE ENTRADAS
 // ==========================================
 function sanitizeInput(str) {
   if (typeof str !== 'string') return '';
@@ -579,7 +579,6 @@ if (commandInput) {
   });
 }
 
-// Retorna estrictamente los juegos del usuario público si estamos en modo espectador
 function getCurrentDataset() {
   return isSpectatorMode ? spectatorGames : StorageManager.getGames();
 }
@@ -639,7 +638,7 @@ if (sortBySelect) {
   });
 }
 
-// Carrusel crossfade
+// Carrusel Now Playing
 function setupNowPlayingCarousel(playingGames) {
   if (nowPlayingInterval) {
     clearInterval(nowPlayingInterval);
@@ -809,7 +808,6 @@ function renderLibrary() {
 
   gamesGrid.innerHTML = "";
 
-  // Estado vacío blindado: si no hay registros o el usuario espectado no existe
   if (filtered.length === 0) {
     gamesGrid.className = "block";
     const emptyMsg = isSpectatorMode 
@@ -1008,7 +1006,6 @@ function openDetailModal(game) {
     modalTagsContainer.innerHTML = renderTagChips(game.tags || []);
   }
 
-  // Si estamos de espectadores, congelar controles de edición y eliminación
   if (isSpectatorMode) {
     if (modalEditBtn) modalEditBtn.classList.add("hidden");
     if (modalDeleteBtn) modalDeleteBtn.classList.add("hidden");
@@ -1373,7 +1370,7 @@ if (selectAllSteamBtn) {
 }
 
 // ==========================================
-// FUNCIÓN GLOBAL CONSULTA STEAM DIRECTA
+// FUNCIÓN CONSULTA STEAM DIRECTA
 // ==========================================
 window.ejecutarConsultaSteam = async function() {
   if (isSpectatorMode) {
@@ -1566,6 +1563,7 @@ document.getElementById("loadDemoBtn")?.addEventListener("click", () => {
   ];
 
   StorageManager.saveGames(demoGames);
+  if (window.DB) DB.syncLocalToCloud(demoGames);
   renderLibrary();
 });
 
@@ -1579,7 +1577,7 @@ document.getElementById("clearAllBtn")?.addEventListener("click", () => {
   }
 });
 
-// Theme Mode
+// Tema
 const themeToggleBtn = document.getElementById("themeToggleBtn");
 const themeIcon = document.getElementById("themeIcon");
 
@@ -1609,7 +1607,7 @@ const appUserLabel = document.getElementById("appUserLabel");
 const appUserIcon = document.getElementById("appUserIcon");
 
 async function initDashboard() {
-  // BLOQUE MODO ESPECTADOR: Blindaje total de lectura
+  // 1. MODO ESPECTADOR READ-ONLY
   if (isSpectatorMode) {
     if (spectatorBanner) spectatorBanner.classList.remove("hidden");
     if (spectatorTargetUser) spectatorTargetUser.innerText = `@${publicProfileTarget}`;
@@ -1621,7 +1619,6 @@ async function initDashboard() {
       if (window.DB && typeof DB.getGamesByUsername === "function") {
         const cloudGames = await DB.getGamesByUsername(publicProfileTarget);
         
-        // Si el usuario no existe en Supabase o no tiene juegos, la lista queda estrictamente vacía
         if (!cloudGames || cloudGames.length === 0) {
           spectatorGames = [];
         } else {
@@ -1652,7 +1649,7 @@ async function initDashboard() {
     return;
   }
 
-  // MODO DUEÑO / LOCAL
+  // 2. MODO DUEÑO CON AISLAMIENTO DE USUARIO
   renderLibrary();
 
   if (!window.supabaseClient) return;
@@ -1667,6 +1664,8 @@ async function initDashboard() {
         appAuthBtn.href = "javascript:void(0)";
         appAuthBtn.onclick = async () => {
           if (confirm(`Sesión activa como ${user.email}.\n¿Deseas cerrar sesión?`)) {
+            // Limpiar la memoria local antes de salir para no contaminar al siguiente
+            StorageManager.clearAll();
             await DB.signOut();
             window.location.reload();
           }
@@ -1674,34 +1673,30 @@ async function initDashboard() {
       }
 
       try {
+        // Traer ÚNICAMENTE los juegos registrados por este usuario en Supabase
         const cloudGames = await DB.getCloudGames();
-        if (cloudGames && cloudGames.length > 0) {
-          const local = StorageManager.getGames();
-          const localIds = new Set(local.map(g => g.id));
-          
-          const mappedCloud = cloudGames.map(cg => ({
-            id: cg.id,
-            title: cg.title,
-            coverUrl: cg.cover_url,
-            status: cg.status,
-            platforms: cg.platforms || ["PC"],
-            rating: parseFloat(cg.rating),
-            hours: cg.hours || 0,
-            targetHours: cg.target_hours || 0,
-            completedYear: cg.completed_year || new Date().getFullYear(),
-            favorite: Boolean(cg.favorite),
-            tags: cg.tags || [],
-            notes: cg.notes || ""
-          }));
+        
+        const mappedCloud = (cloudGames || []).map(cg => ({
+          id: cg.id,
+          title: cg.title,
+          coverUrl: cg.cover_url,
+          status: cg.status,
+          platforms: cg.platforms || ["PC"],
+          rating: parseFloat(cg.rating),
+          hours: cg.hours || 0,
+          targetHours: cg.target_hours || 0,
+          completedYear: cg.completed_year || new Date().getFullYear(),
+          favorite: Boolean(cg.favorite),
+          tags: cg.tags || [],
+          notes: cg.notes || ""
+        }));
 
-          const missing = mappedCloud.filter(g => !localIds.has(g.id));
-          if (missing.length > 0) {
-            StorageManager.saveGames([...local, ...missing]);
-            renderLibrary();
-          }
-        }
+        // Sobrescribir el almacenamiento local con los datos exclusivos de la cuenta
+        StorageManager.saveGames(mappedCloud);
+        renderLibrary();
+
       } catch (e) {
-        console.warn("Error sincronizando catálogo:", e);
+        console.warn("Error sincronizando catálogo propio:", e);
       }
     } else {
       if (appUserLabel) appUserLabel.innerText = "Invitado";
