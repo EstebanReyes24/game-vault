@@ -82,6 +82,14 @@ const DB = {
     if (error) throw error;
     return data[0];
   },
+  
+// Bloquea en tiempo real caracteres potencialmente peligrosos (<, >, comillas triples, etc.)
+document.querySelectorAll("input[type='text'], textarea").forEach(el => {
+  el.addEventListener("input", (e) => {
+    // Elimina signos < y > inmediatamente para que no puedan armar etiquetas HTML
+    e.target.value = e.target.value.replace(/[<>]/g, "");
+  });
+});
 
   async deletePost(postId) {
     const isAdmin = await this.isAdmin();
