@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acerca de & Términos | Game Vault</title>
+  
+  <meta name="theme-color" content="#07090e">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="p-4 sm:p-8 flex flex-col items-center justify-between min-h-screen">
+
+  <header class="w-full max-w-4xl flex justify-between items-center py-4">
+    <a href="index.html" class="flex items-center gap-2.5">
+      <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white shadow-md">
+        <i class="fa-solid fa-gamepad text-sm"></i>
+      </div>
+      <span class="text-lg font-black console-font text-white">GAME VAULT</span>
+    </a>
+
+    <a href="app.html" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-black console-font transition">
+      IR AL ESTANTE <i class="fa-solid fa-arrow-right ml-1"></i>
+    </a>
+  </header>
+
+  <main class="w-full max-w-3xl my-10 space-y-8 text-left">
+    <div class="space-y-2">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-black console-font bg-indigo-500/15 border border-indigo-500/30 text-indigo-400">
+        AUTORÍA & PROPIEDAD
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-black text-white console-font">Acerca del Proyecto</h1>
+      <p class="text-sm text-slate-400">Diseño, arquitectura y lineamientos de uso de Game Vault.</p>
+    </div>
+
+    <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-white/10 space-y-6 text-sm text-slate-300 leading-relaxed">
+      <div>
+        <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-crown text-amber-400 text-sm"></i> Creador & Desarrollador
+        </h2>
+        <p>
+          Este software y su diseño de interfaz fueron conceptualizados y desarrollados por <strong>Pain</strong> como una estación personalizada para coleccionistas, entusiastas y creadores de contenido que buscan catalogar su trayectoria por el mundo del videojuego.
+        </p>
+      </div>
+
+      <div class="border-t border-white/10 pt-4">
+        <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-scale-balanced text-indigo-400 text-sm"></i> Derechos de Marcas y Propiedad Intelectual
+        </h2>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Todos los títulos de videojuegos, logotipos de plataformas (Steam, PlayStation, Xbox, Nintendo), carátulas, arte promocional y metadatos son marcas registradas de sus respectivos propietarios (Valve Corporation, Sony Interactive Entertainment, Microsoft Corporation, Nintendo Co., Ltd., etc.).
+        </p>
+        <p class="text-xs text-slate-400 leading-relaxed mt-2">
+          Game Vault opera como una herramienta de archivo y reseña personal sin fines comerciales, amparada bajo el uso legítimo de material referencial público.
+        </p>
+      </div>
+
+      <div class="border-t border-white/10 pt-4">
+        <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-database text-emerald-400 text-sm"></i> Privacidad de tus Datos
+        </h2>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Toda tu biblioteca, notas y calificaciones se almacenan exclusivamente de forma local en tu navegador (<code class="text-indigo-300 font-mono">localStorage</code>). Ningún dato personal es recopilado ni enviado a servidores externos sin tu consentimiento.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="w-full max-w-4xl py-6 border-t border-white/10 flex justify-between items-center text-xs text-slate-500">
+    <span>© 2026 Game Vault • Todos los derechos reservados</span>
+    <a href="index.html" class="hover:text-white transition">Volver al Inicio</a>
+  </footer>
+
+</body>
+</html>
