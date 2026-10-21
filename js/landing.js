@@ -217,18 +217,37 @@ if (liveSearchInput) {
   liveSearchInput.addEventListener("input", (e) => renderSearchResults(e.target.value));
 }
 
-// Métricas de la Comunidad
+// ==========================================
+// MÉTRICAS DE LA COMUNIDAD (BLINDADAS)
+// ==========================================
 async function loadCommunityMetrics() {
-  const stats = await DB.getCommunityStats();
-  if (stats) {
-    if (commStatHours) commStatHours.innerText = `${stats.totalHours}h`;
-    if (commStatGames) commStatGames.innerText = stats.totalGames;
-    if (commStatPlatinums) commStatPlatinums.innerText = stats.totalPlatinums;
-    if (commStatTopGame) commStatTopGame.innerText = stats.topGame;
+  try {
+    const stats = await DB.getCommunityStats();
+    if (!stats) return;
+
+    if (commStatHours && stats.totalHours !== undefined) {
+      commStatHours.innerText = `${stats.totalHours}h`;
+    }
+    if (commStatGames && stats.totalGames !== undefined) {
+      commStatGames.innerText = stats.totalGames;
+    }
+    if (commStatPlatinums && stats.totalPlatinums !== undefined) {
+      commStatPlatinums.innerText = stats.totalPlatinums;
+    }
+    if (commStatTopGame) {
+      const top = stats.mostPopular || stats.topGame || stats.popular;
+      commStatTopGame.innerText = (top && top !== "undefined" && String(top).trim().length > 0) 
+        ? top 
+        : "-";
+    }
+  } catch (err) {
+    console.error("Error cargando métricas comunitarias:", err);
   }
 }
 
-// Hall of Fame Dinámico
+// ==========================================
+// HALL OF FAME DINÁMICO
+// ==========================================
 async function loadHallOfFame() {
   if (!hofGrid) return;
   cachedHof = await DB.getHallOfFame();
@@ -481,7 +500,7 @@ async function loadPostComments(postId) {
             ${deleteBtn}
           </div>
         </div>
-        <p class="text-slate-200 leading-relaxed">${c.comment}</p>
+        <p class="text-slate-200 leading-relaxed">${c.content || c.comment || ""}</p>
       </div>
     `;
   }).join("");
