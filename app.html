@@ -41,7 +41,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Tarjetas estables sin saltos gigantes ni desbordes */
+    /* Tarjetas estables */
     .game-console-card {
       background: #111522;
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -63,23 +63,62 @@
     .badge-platinum { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
     .badge-onhold { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
 
-    /* Estilo modo claro */
+    /* ========================================== */
+    /* MODO CLARO - AZUL CLARO Y TEXTOS LEGIBLES  */
+    /* ========================================== */
     body.light-mode {
-      background-color: #f1f5f9;
-      color: black;
-      background-image: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.08), transparent 45%);
+      background-color: #e8f0fe !important;
+      color: #0f172a !important;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.18), transparent 50%),
+        linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px) !important;
     }
+
     body.light-mode .glass-panel {
-      background: rgba(255, 255, 255, 0.85);
-      border-color: rgba(0, 0, 0, 0.08);
-      color: #0f172a;
+      background: rgba(255, 255, 255, 0.9) !important;
+      border: 1px solid rgba(148, 163, 184, 0.35) !important;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
     }
+
     body.light-mode .game-console-card {
-      background: #ffffff;
-      border-color: rgba(0, 0, 0, 0.08);
+      background: #ffffff !important;
+      border: 1px solid rgba(148, 163, 184, 0.35) !important;
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08) !important;
     }
-    body.light-mode h1, body.light-mode h2, body.light-mode h3, body.light-mode p {
-      color: #0f172a;
+
+    /* Textos oscuros de alto contraste */
+    body.light-mode h1,
+    body.light-mode h2,
+    body.light-mode h3,
+    body.light-mode #npTitle,
+    body.light-mode #statCompleted,
+    body.light-mode #statPlatinum,
+    body.light-mode #statPlaying,
+    body.light-mode #statHours {
+      color: #0f172a !important;
+    }
+
+    body.light-mode p,
+    body.light-mode span.text-slate-400,
+    body.light-mode span.text-slate-300,
+    body.light-mode #npMeta {
+      color: #334155 !important;
+    }
+
+    /* Inputs y selects legibles */
+    body.light-mode input,
+    body.light-mode select,
+    body.light-mode textarea {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border-color: rgba(148, 163, 184, 0.5) !important;
+    }
+
+    /* Banner hero Now Playing con fondo translúcido nítido */
+    body.light-mode #nowPlayingSection {
+      background: #ffffff !important;
+      border: 1px solid rgba(148, 163, 184, 0.35) !important;
     }
   </style>
 </head>
