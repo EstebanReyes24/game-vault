@@ -343,50 +343,91 @@
       </div>
     </section>
 
-    <!-- Filtros de Catálogo -->
-    <div class="glass-panel rounded-2xl p-2.5 shadow-lg relative z-20 flex flex-wrap gap-2 items-center justify-between">
-      <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5 flex-1">
-        <select id="filterStatusSelect" class="console-input rounded-xl px-2.5 py-1.5 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer">
-          <option value="all">🎮 Todos</option>
-          <option value="playing">🔥 Jugando</option>
-          <option value="completed">🏆 Pasados</option>
-          <option value="platinum">👑 Platinos</option>
-          <option value="favorite">⭐ Favoritos</option>
-          <option value="tier-masterpiece">🌟 Obras Maestras (9.0+)</option>
-          <option value="onhold">⏸️ Pausa</option>
-        </select>
+<!-- Toolbar Consolidada y Responsiva -->
+    <section class="glass-panel rounded-2xl p-3 sm:p-3.5 shadow-xl border border-white/10 relative z-20 space-y-3">
+      
+      <!-- Fila Principal: Filtros y Acciones Rápidas -->
+      <div class="flex flex-wrap lg:flex-nowrap items-center justify-between gap-3">
+        
+        <!-- Grupo Filtros -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 flex-1 w-full lg:w-auto">
+          <select id="filterStatusSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="all">🎮 Todos los Estados</option>
+            <option value="playing">🔥 Jugando</option>
+            <option value="completed">🏆 Pasados</option>
+            <option value="platinum">👑 Platinos</option>
+            <option value="favorite">⭐ Favoritos</option>
+            <option value="tier-masterpiece">🌟 Obras Maestras (9.0+)</option>
+            <option value="onhold">⏸️ Pausa</option>
+          </select>
 
-        <select id="filterPlatformSelect" class="console-input rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer">
-          <option value="all">🕹️ Plataformas</option>
-          <option value="PC">💻 PC</option>
-          <option value="PlayStation">🎮 PlayStation</option>
-          <option value="Xbox">🟢 Xbox</option>
-          <option value="Nintendo">🔴 Nintendo</option>
-        </select>
+          <select id="filterPlatformSelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="all">🕹️ Plataformas</option>
+            <option value="PC">💻 PC</option>
+            <option value="PlayStation">🎮 PlayStation</option>
+            <option value="Xbox">🟢 Xbox</option>
+            <option value="Nintendo">🔴 Nintendo</option>
+          </select>
 
-        <select id="sortBySelect" class="console-input rounded-xl px-2.5 py-1.5 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer">
-          <option value="recent">Recientes</option>
-          <option value="rating-desc">Nota (10-1)</option>
-          <option value="hours-desc">Más horas</option>
-          <option value="title-asc">A - Z</option>
-        </select>
+          <select id="sortBySelect" class="console-input rounded-xl px-3 py-2 text-xs text-slate-300 font-bold focus:outline-none cursor-pointer shrink-0">
+            <option value="recent">Recientes</option>
+            <option value="rating-desc">Nota (10-1)</option>
+            <option value="hours-desc">Más horas</option>
+            <option value="title-asc">A - Z</option>
+          </select>
 
-        <div class="relative flex-1 min-w-[120px]">
-          <input type="text" id="filterInput" placeholder="Buscar título..." 
-                 class="w-full console-input rounded-xl pl-7 pr-2.5 py-1.5 text-xs text-white focus:outline-none">
-          <i class="fa-solid fa-filter absolute left-2.5 top-2 text-slate-500 text-[10px]"></i>
+          <div class="relative flex-1 min-w-[150px]">
+            <input type="text" id="filterInput" placeholder="Buscar título o #tag..." 
+                   class="w-full console-input rounded-xl pl-8 pr-3 py-2 text-xs text-white focus:outline-none">
+            <i class="fa-solid fa-filter absolute left-2.5 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+        </div>
+
+        <!-- Grupo Switch Vista (Grid / Lista) -->
+        <div class="flex rounded-xl console-input p-0.5 border border-white/10 shrink-0 self-end sm:self-auto">
+          <button type="button" id="viewGridBtn" title="Cuadrícula" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer">
+            <i class="fa-solid fa-table-cells"></i>
+          </button>
+          <button type="button" id="viewListBtn" title="Lista" class="px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
+            <i class="fa-solid fa-list-ul"></i>
+          </button>
         </div>
       </div>
 
-      <div class="flex rounded-xl console-input p-0.5 border border-white/10 shrink-0">
-        <button type="button" id="viewGridBtn" class="px-2 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white cursor-pointer">
-          <i class="fa-solid fa-table-cells"></i>
-        </button>
-        <button type="button" id="viewListBtn" class="px-2 py-1 rounded-lg text-xs font-bold text-slate-400 hover:text-white cursor-pointer">
-          <i class="fa-solid fa-list-ul"></i>
-        </button>
+      <!-- Fila de Herramientas: Balanceada en PC y Deslizable en Móvil -->
+      <div class="flex items-center justify-between gap-2 pt-2.5 border-t border-white/10 overflow-x-auto custom-scrollbar select-none">
+        
+        <div class="flex items-center gap-2 shrink-0">
+          <button id="openSteamSyncBtn" class="px-3.5 py-1.5 rounded-xl bg-blue-600/25 hover:bg-blue-600/40 border border-blue-500/40 text-blue-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer shadow">
+            <i class="fa-brands fa-steam text-blue-400"></i> STEAM SYNC
+          </button>
+
+          <button id="openWrappedBtn" class="px-3.5 py-1.5 rounded-xl bg-purple-600/25 hover:bg-purple-600/40 border border-purple-500/40 text-purple-300 hover:text-white text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer shadow">
+            <i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> WRAPPED
+          </button>
+
+          <button id="openStatsBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-indigo-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-chart-pie text-indigo-400"></i> STATS
+          </button>
+
+          <button id="openTop5Btn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-amber-400 text-xs font-black console-font transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-camera text-amber-400"></i> TOP CARDS
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0 ml-auto">
+          <button id="exportBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-download text-indigo-400"></i> Exportar
+          </button>
+
+          <button id="importBtn" class="px-3 py-1.5 rounded-xl glass-panel border border-white/10 text-slate-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-upload text-indigo-400"></i> Importar
+          </button>
+          <input type="file" id="fileInput" accept=".json" class="hidden">
+        </div>
+
       </div>
-    </div>
+    </section>
 
     <!-- Catálogo de Juegos -->
     <main class="relative z-10">
