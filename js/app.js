@@ -191,18 +191,14 @@ if (shareProfileBtn) {
 }
 
 function toggleForm(open = null) {
-  if (isSpectatorMode) return;
+  if (isSpectatorMode || !formSection) return;
   const shouldOpen = open !== null ? open : formSection.classList.contains("hidden");
   SoundFX.playWhoosh();
   if (shouldOpen) {
     formSection.classList.remove("hidden");
-    if (toggleFormIcon) toggleFormIcon.className = "fa-solid fa-chevron-up text-sm";
-    if (toggleFormText) toggleFormText.innerText = "CERRAR PANEL";
-    formSection.scrollIntoView({ behavior: 'smooth' });
   } else {
     formSection.classList.add("hidden");
-    if (toggleFormIcon) toggleFormIcon.className = "fa-solid fa-plus-circle text-sm";
-    if (toggleFormText) toggleFormText.innerText = "REGISTRAR";
+    resetForm();
   }
 }
 
