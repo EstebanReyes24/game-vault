@@ -1,16 +1,21 @@
 {
-  "name": "Game Vault | Paindex",
-  "short_name": "GameVault",
-  "start_url": "./index.html",
+  "name": "Game Vault • Paindex",
+  "short_name": "Game Vault",
+  "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#07090e",
-  "theme_color": "#07090e",
-  "description": "Estante gamer y crónicas oficiales de Paindex",
+  "background_color": "#0d1326",
+  "theme_color": "#6366f1",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml",
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
