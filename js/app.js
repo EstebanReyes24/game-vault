@@ -907,6 +907,28 @@ function setupNowPlayingCarousel(playingGames) {
   }
 }
 
+/** Primer paso para un estante vacío: importar de Steam o añadir a mano. */
+function bienvenidaHTML() {
+  const invitado = !cloudUserId;
+  return `
+    <section class="bienvenida">
+      <h2>Arma tu estante en un minuto.</h2>
+      <p class="bienvenida-bajada">Trae tu biblioteca de Steam de una vez o empieza con el juego que tienes entre manos. Después le pones nota y estado a cada uno.</p>
+      <div class="bienvenida-opciones">
+        <button type="button" class="bienvenida-opcion principal" data-bienvenida="steam">
+          <i class="fa-brands fa-steam" aria-hidden="true"></i>
+          <span><b>Importar desde Steam</b><small>Tus juegos con más de 30 minutos, con horas y portada.</small></span>
+        </button>
+        <button type="button" class="bienvenida-opcion" data-bienvenida="manual">
+          <i class="fa-solid fa-plus" aria-hidden="true"></i>
+          <span><b>Añadir un juego</b><small>Lo buscas por nombre y la portada sale sola.</small></span>
+        </button>
+      </div>
+      ${invitado ? `<p class="bienvenida-nota">Estás como invitado: lo que añadas se guarda solo en este navegador. <a href="login.html">Crea una cuenta</a> para tenerlo en cualquier dispositivo y poder compartirlo.</p>` : ""}
+      <button type="button" class="bienvenida-demo" data-bienvenida="demo">Ver cómo se ve con juegos de ejemplo</button>
+    </section>`;
+}
+
 function renderLibrary() {
   const lib = getCurrentDataset();
   const term = filterInput ? filterInput.value.toLowerCase().trim() : "";
@@ -985,6 +1007,15 @@ function renderLibrary() {
   }
 
   gamesGrid.innerHTML = "";
+
+  // Estante totalmente vacío: bienvenida en vez de un "no hay resultados"
+  const estanteVacio = !isSpectatorMode && StorageManager.getGames().length === 0;
+  document.body.classList.toggle("estante-vacio", estanteVacio);
+  if (estanteVacio) {
+    gamesGrid.className = "block";
+    gamesGrid.innerHTML = bienvenidaHTML();
+    return;
+  }
 
   if (filtered.length === 0) {
     gamesGrid.className = "block";
@@ -1657,7 +1688,7 @@ window.ejecutarConsultaSteam = async function() {
       }));
 
     if (window.fetchedSteamGames.length === 0) {
-      alert("Perfil público detectado, pero sin títulos con más de 30 minutos registrados.");
+      alert("Steam no devolvió juegos con más de 30 minutos jugados.\n\nSi sabes que tienes juegos, lo más probable es que tu perfil sea privado: en Steam ve a tu perfil → Editar perfil → Configuración de privacidad y pon \"Detalles del juego\" en Público. Luego vuelve a intentarlo.");
       return;
     }
 
@@ -2042,3 +2073,15 @@ async function initDashboard() {
 }
 
 initDashboard();
+
+// Botones de la bienvenida (estante vacío)
+if (gamesGrid) {
+  gamesGrid.addEventListener("click", (e) => {
+    const opcion = e.target.closest("[data-bienvenida]");
+    if (!opcion) return;
+    const accion = opcion.dataset.bienvenida;
+    if (accion === "steam") document.getElementById("openSteamSyncBtn")?.click();
+    if (accion === "manual") document.getElementById("toggleFormBtn")?.click();
+    if (accion === "demo") document.getElementById("loadDemoBtn")?.click();
+  });
+}

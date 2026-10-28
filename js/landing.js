@@ -268,40 +268,133 @@ async function loadCommunityMetrics() {
 // ==========================================
 // HALL OF FAME DINÁMICO (BLINDADO CON FALLBACK)
 // ==========================================
-// Portada: las tres primeras tapas del Hall of Fame, en abanico.
+// Portada: las tapas del Hall of Fame en abanico, rotando una cada pocos segundos.
+let portadaTimer = null;
 function pintarPortada(items) {
   const estante = document.getElementById("portadaEstante");
   const tapas = document.getElementById("portadaTapas");
   if (!estante || !tapas) return;
-  const validas = (items || []).filter(i => /^https:\/\//i.test(String(i.cover_url || ""))).slice(0, 3);
+  const validas = (items || []).filter(i => /^https:\/\//i.test(String(i.cover_url || ""))).slice(0, 8);
   if (validas.length < 3) return; // sin tapas suficientes queda la P sola
-  const [frente, izq, der] = validas;
-  const tapa = (item, pos) => `
-    <figure class="tapa tapa-${pos}">
-      <img src="${escapeHTML(String(item.cover_url))}" alt="" loading="eager" onerror="this.closest('.tapa').remove()">
-    </figure>`;
-  const nota = frente.rating ? parseFloat(frente.rating).toFixed(1) : "";
-  tapas.innerHTML = tapa(izq, "izq") + tapa(der, "der") + tapa(frente, "frente") + `
-    <div class="tapa-ficha">
-      <span>${escapeHTML(String(frente.title || ""))}</span>
-      ${nota ? `<b>${nota}</b>` : ""}
-    </div>`;
+
+  tapas.innerHTML = validas.map((item, i) => `
+    <button type="button" class="tapa" data-i="${i}" tabindex="-1" aria-label="Ver ${escapeHTML(String(item.title || ""))}">
+      <img src="${escapeHTML(String(item.cover_url))}" alt="" loading="${i < 3 ? "eager" : "lazy"}">
+    </button>`).join("") + `
+    <div class="tapa-ficha" aria-live="polite"><span></span><b></b></div>`;
   estante.classList.add("con-tapas");
+  estante.removeAttribute("aria-hidden");
+
+  const botones = [...tapas.querySelectorAll(".tapa")];
+  const ficha = tapas.querySelector(".tapa-ficha");
+  let orden = botones.map((_, i) => i); // orden[0] = la de enfrente
+  const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function colocar(primeraVez) {
+    const pos = {};
+    pos[orden[0]] = "frente";
+    pos[orden[1]] = "der";
+    pos[orden[orden.length - 1]] = "izq";
+    botones.forEach((b, i) => {
+      b.dataset.pos = pos[i] || "";
+      b.tabIndex = pos[i] === "der" || pos[i] === "izq" ? 0 : -1;
+    });
+    const item = validas[orden[0]];
+    const escribir = () => {
+      ficha.querySelector("span").textContent = item.title || "";
+      ficha.querySelector("b").textContent = item.rating ? parseFloat(item.rating).toFixed(1) : "";
+      ficha.classList.remove("cambiando");
+    };
+    if (primeraVez || quieto) { escribir(); return; }
+    ficha.classList.add("cambiando");
+    setTimeout(escribir, 350);
+  }
+
+  function avanzar(pasos = 1) {
+    for (let k = 0; k < pasos; k++) orden.push(orden.shift());
+    colocar(false);
+  }
+
+  // Entrada: todas empiezan escondidas y se abren en abanico.
+  requestAnimationFrame(() => requestAnimationFrame(() => colocar(true)));
+
+  // Clic en una de las de atrás: pasa al frente.
+  botones.forEach((b, i) => b.addEventListener("click", () => {
+    const pasos = orden.indexOf(i);
+    if (pasos <= 0) return;
+    avanzar(pasos);
+    reiniciar();
+  }));
+
+  function reiniciar() {
+    clearInterval(portadaTimer);
+    if (quieto) return;
+    portadaTimer = setInterval(() => {
+      if (document.hidden || estante.matches(":hover")) return; // pausa al pasar el ratón o con la pestaña oculta
+      avanzar(1);
+    }, 4500);
+  }
+  reiniciar();
+}
+
+// Esenciales de la semana: los fijados a mano + los mejor puntuados del estante,
+// escogidos con la semana del año como semilla (todos ven lo mismo y cambia cada lunes).
+const ESTADOS_ESENCIALES = {
+  platinum: "Platinado", extras: "Campaña + extras", completed: "Pasado",
+  playing: "Jugando", onhold: "En pausa", backlog: "Pendiente"
+};
+
+function semanaDelAnio(fecha = new Date()) {
+  const d = new Date(Date.UTC(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()));
+  const dia = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dia);
+  const inicio = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return d.getUTCFullYear() * 100 + Math.ceil(((d - inicio) / 86400000 + 1) / 7);
+}
+
+function barajarConSemilla(lista, semilla) {
+  const a = [...lista];
+  let x = semilla >>> 0;
+  const azar = () => { x = (x + 0x6D2B79F5) >>> 0; let t = Math.imul(x ^ (x >>> 15), 1 | x); t ^= t + Math.imul(t ^ (t >>> 7), 61 | t); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(azar() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+function armarEsenciales(fijados, automaticos, total = 8) {
+  const clave = (t) => String(t || "").toLowerCase().trim();
+  const vistos = new Set(fijados.map(f => clave(f.title)));
+  const candidatos = automaticos
+    .filter(g => !vistos.has(clave(g.title)))
+    .map(g => ({
+      title: g.title,
+      cover_url: g.cover_url,
+      rating: g.rating,
+      tag: (Array.isArray(g.tags) && g.tags[0]) ? (String(g.tags[0]).startsWith("#") ? g.tags[0] : "#" + g.tags[0]) : (Array.isArray(g.platforms) && g.platforms[0] ? "#" + g.platforms[0] : "#Paindex"),
+      progress: [ESTADOS_ESENCIALES[g.status] || "Jugado", g.hours ? `${g.hours}h` : ""].filter(Boolean).join(" • "),
+      automatico: true
+    }));
+  const semana = semanaDelAnio();
+  const elegidos = barajarConSemilla(candidatos, semana).slice(0, Math.max(0, total - fijados.length));
+  // El orden también cambia cada semana para que la portada no abra siempre con el mismo
+  return barajarConSemilla([...fijados, ...elegidos], semana + 7);
 }
 
 async function loadHallOfFame() {
   if (!hofGrid) return;
 
+  let automaticos = [];
   try {
-    const data = await DB.getHallOfFame();
+    const [data, auto] = await Promise.all([DB.getHallOfFame(), DB.getEsencialesAuto()]);
     cachedHof = (Array.isArray(data) && data.length > 0) ? data : [];
+    automaticos = Array.isArray(auto) ? auto : [];
   } catch (err) {
     console.warn("Fallo al traer Hall of Fame de Supabase:", err);
     cachedHof = [];
   }
+  const esenciales = armarEsenciales(cachedHof, automaticos);
 
   // Sin datos no se inventan juegos: se muestra un aviso honesto.
-  if (cachedHof.length === 0) {
+  if (esenciales.length === 0) {
     hofGrid.innerHTML = `
       <div class="col-span-full py-10 text-center glass-panel rounded-2xl border border-white/10">
         <p class="text-xs font-bold text-slate-400">No se pudo cargar el Hall of Fame en este momento.</p>
@@ -310,9 +403,9 @@ async function loadHallOfFame() {
     return;
   }
 
-  pintarPortada(cachedHof);
+  pintarPortada(esenciales);
 
-  hofGrid.innerHTML = cachedHof.map(item => {
+  hofGrid.innerHTML = esenciales.map(item => {
     const title = escapeHTML(String(item.title || "Sin título"));
     const cover = escapeHTML(String(item.cover_url || ""));
     const tag = escapeHTML(String(item.tag || "#Juego"));

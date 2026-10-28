@@ -247,6 +247,17 @@ const DB = {
   // ==========================================
   // HALL OF FAME (TABLA: hall_of_fame)
   // ==========================================
+  // Juegos mejor puntuados de Paindex para los Esenciales automáticos (migración 004)
+  async getEsencialesAuto() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("paindex_esenciales");
+    if (error) {
+      console.warn("Esenciales automáticos no disponibles (¿falta la migración 004?):", error.message);
+      return [];
+    }
+    return data || [];
+  },
+
   async getHallOfFame() {
     if (!supabaseClient) return [];
     const { data, error } = await supabaseClient

@@ -227,25 +227,40 @@ body {
 .tapas { position: absolute; inset: 0; }
 .tapa {
   position: absolute;
+  left: 23%;
+  top: 2%;
+  width: 54%;
   margin: 0;
-  width: 52%;
+  padding: 0;
+  border: 0;
   aspect-ratio: 3 / 4;
   border-radius: 10px;
   overflow: hidden;
   background: var(--grafito);
+  cursor: pointer;
   box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(236, 231, 238, 0.14);
+  transform: translateY(14%) scale(0.8);
   opacity: 0;
-  animation: abrir 0.8s cubic-bezier(.2,.8,.2,1) forwards;
+  z-index: 0;
+  transition:
+    transform 0.9s cubic-bezier(.2,.8,.2,1),
+    opacity 0.6s ease,
+    filter 0.9s ease,
+    z-index 0s linear 0.3s;
 }
-.tapa img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.tapa-izq    { left: 2%;  top: 12%; --giro: -9deg; --desde: 40%;  animation-delay: 0.15s; filter: brightness(.85) saturate(.9); }
-.tapa-der    { right: 2%; top: 12%; --giro: 9deg;  --desde: -40%; animation-delay: 0.25s; filter: brightness(.85) saturate(.9); }
-.tapa-frente { left: 24%; top: 2%;  --giro: 0deg;  --desde: 0%;   animation-delay: 0.05s; z-index: 2; width: 54%;
+.tapa img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+/* Posiciones del abanico: la de enfrente y las dos que asoman detrás */
+.tapa[data-pos="frente"] { transform: none; opacity: 1; z-index: 3; cursor: default;
   box-shadow: 0 30px 60px -16px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(236, 231, 238, 0.22); }
+.tapa[data-pos="der"] { transform: translate(44%, 9%) rotate(9deg) scale(0.9); opacity: 1; z-index: 2; filter: brightness(.8) saturate(.9); }
+.tapa[data-pos="izq"] { transform: translate(-44%, 9%) rotate(-9deg) scale(0.9); opacity: 1; z-index: 1; filter: brightness(.8) saturate(.9); }
+.tapa[data-pos="der"]:hover, .tapa[data-pos="izq"]:hover { filter: brightness(.95); }
+.tapa:focus-visible { outline: 2px solid var(--senal); outline-offset: 3px; }
+
 .tapa-ficha {
   position: absolute;
-  z-index: 3;
-  left: 24%;
+  z-index: 4;
+  left: 23%;
   width: 54%;
   top: calc(2% + 54% * 4 / 3 * 1.02 - 1px);
   display: flex;
@@ -258,9 +273,9 @@ body {
   color: #14111a;
   font-size: 0.85rem;
   font-weight: 700;
-  opacity: 0;
-  animation: aparecer 0.4s 0.75s ease-out forwards;
+  transition: opacity 0.35s ease;
 }
+.tapa-ficha.cambiando { opacity: 0; }
 .tapa-ficha span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tapa-ficha b { font-family: var(--display); font-weight: 900; font-size: 1.25rem; line-height: 1; color: #c4102e; }
 
@@ -284,10 +299,6 @@ body {
 .sello .p { stroke: var(--hueso); stroke-dasharray: 160; stroke-dashoffset: 160; animation: trazo 0.9s 0.2s cubic-bezier(.6,0,.2,1) forwards; }
 .sello .ojo { fill: var(--senal); opacity: 0.08; animation: encender 0.5s 1.05s steps(1, end) forwards, latido 0.18s 1.1s 2 alternate; filter: drop-shadow(0 0 3px rgba(255, 42, 72, 0.9)); }
 
-@keyframes abrir {
-  from { opacity: 0; transform: translateX(var(--desde)) translateY(12px) rotate(0deg); }
-  to   { opacity: 1; transform: translateX(0) rotate(var(--giro)); }
-}
 @keyframes aparecer { to { opacity: 1; } }
 @keyframes trazo { to { stroke-dashoffset: 0; } }
 @keyframes encender { to { opacity: 1; } }
@@ -298,8 +309,8 @@ body {
   .sello .p { stroke-dashoffset: 0; animation: none; }
   .sello .ojo { opacity: 1; animation: none; }
   .portada-estante::before { opacity: 0.55; animation: none; }
-  .tapa { opacity: 1; animation: none; transform: rotate(var(--giro)); }
-  .tapa-ficha { opacity: 1; animation: none; }
+  .tapa { transition: none; }
+  .tapa-ficha { transition: none; }
 }
 
 @media (max-width: 760px) {
@@ -425,3 +436,52 @@ body.light-mode #openTop5Btn {
 .borrador-acciones { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 .borrador-acciones button:disabled { opacity: 0.5; cursor: wait; }
 .borrador-vacio { color: var(--niebla); padding: 1rem 0; margin: 0; }
+
+/* ---------- bienvenida del estante vacío ---------- */
+.bienvenida {
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  background:
+    radial-gradient(600px 300px at 100% 0%, rgba(255, 42, 72, 0.12), transparent 70%),
+    var(--carbon);
+}
+.bienvenida h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  line-height: 0.92;
+  margin: 0;
+  color: var(--hueso);
+}
+.bienvenida-bajada { max-width: 34rem; margin: 0.9rem 0 1.75rem; color: var(--niebla); line-height: 1.6; }
+.bienvenida-opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.85rem; max-width: 46rem; }
+.bienvenida-opcion {
+  display: flex; align-items: flex-start; gap: 0.9rem; text-align: left;
+  padding: 1.1rem 1.2rem; border-radius: 12px; cursor: pointer;
+  background: var(--grafito); border: 1px solid var(--border-light); color: var(--hueso);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.bienvenida-opcion:hover { border-color: rgba(236, 231, 238, 0.4); }
+.bienvenida-opcion i { font-size: 1.5rem; margin-top: 0.1rem; width: 1.6rem; text-align: center; color: var(--niebla); }
+.bienvenida-opcion b { display: block; font-size: 1rem; }
+.bienvenida-opcion small { display: block; margin-top: 0.25rem; font-size: 0.85rem; color: var(--niebla); line-height: 1.45; }
+.bienvenida-opcion.principal { background: var(--senal); border-color: var(--senal); color: #fff; }
+.bienvenida-opcion.principal i, .bienvenida-opcion.principal small { color: rgba(255, 255, 255, 0.88); }
+.bienvenida-opcion.principal:hover { background: #ff4560; }
+.bienvenida-nota { margin: 1.4rem 0 0; max-width: 40rem; font-size: 0.9rem; color: var(--niebla); line-height: 1.55; }
+.bienvenida-nota a { color: var(--hueso); text-decoration: underline; text-underline-offset: 3px; }
+.bienvenida-demo { margin-top: 1.1rem; padding: 0; background: none; border: 0; color: var(--niebla); font-size: 0.85rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.bienvenida-demo:hover { color: var(--hueso); }
+
+.steam-ayuda { font-size: 0.85rem; color: var(--niebla); }
+.steam-ayuda summary { cursor: pointer; color: var(--hueso); font-weight: 600; }
+.steam-ayuda ol { margin: 0.6rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; list-style: decimal; }
+.steam-ayuda b { color: var(--hueso); font-weight: 600; }
+.steam-ayuda p { margin: 0.6rem 0 0; }
+body.light-mode .bienvenida { background: #fff; }
+body.light-mode .bienvenida h2, body.light-mode .bienvenida-opcion:not(.principal) { color: #16121a; }
+body.light-mode .bienvenida-opcion:not(.principal) { background: #f7f4f8; }
+
+/* Con el estante vacío se esconde lo que solo tiene sentido con juegos */
+body.estante-vacio .solo-con-juegos { display: none !important; }
