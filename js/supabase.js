@@ -10,7 +10,7 @@ const SUPABASE_URL = "https://epouactrnuhdbzzvzxor.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_i2sc-SaHk8H6e3c-Dwf0IQ_hhdBlx_I";
 
 // Solo decide qué botones ve la interfaz. Quién puede escribir lo deciden las RLS.
-const ADMIN_EMAIL = "estebanreyes2402@gmail.com";
+let adminCache = null; // respuesta de es_admin() para no preguntar en cada pantalla
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const CLOUD_COMPLETED_STATUSES = ["completed", "extras", "platinum"];
@@ -127,7 +127,13 @@ const DB = {
     const user = await currentUser();
     if (!user) return false;
     // Solo app_metadata: user_metadata la puede editar cualquier usuario.
-    return user.app_metadata?.role === "admin" || user.email === ADMIN_EMAIL;
+    if (user.app_metadata?.role === "admin") return true;
+    // Si el rol se asignó después de iniciar sesión, el token aún no lo trae: se pregunta a la base
+    if (adminCache === null) {
+      const { data } = await supabaseClient.rpc("es_admin");
+      adminCache = data === true;
+    }
+    return adminCache;
   },
 
   async deleteMyAccount() {
