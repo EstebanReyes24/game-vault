@@ -41,7 +41,7 @@
 
 ## 🗄️ Esquema de Base de Datos (Supabase SQL)
 
-El proyecto utiliza las siguientes tablas y políticas de seguridad (RLS):
+El proyecto utiliza las siguientes tablas base. **Después de crearlas, aplica la migración [`supabase/migrations/001_fase0.sql`](supabase/migrations/001_fase0.sql)**, que añade la tabla `profiles` (usuarios únicos y estante público/privado), cambia la clave de `games` a `(user_id, id)`, reemplaza las políticas RLS de `games`, protege los comentarios y crea las funciones `community_stats`, `username_available` y `delete_my_account`.
 
 ```sql
 -- 1. Tabla de Catálogo de Juegos
@@ -139,10 +139,15 @@ create policy "Solo admin edita hall of fame" on public.hall_of_fame
 ```text
 ├── css/
 │   └── styles.css          # Reglas personalizadas, animaciones neón y temas
+├── api/
+│   └── steam.js            # Función serverless: importación desde Steam (usa STEAM_API_KEY)
+├── supabase/
+│   └── migrations/         # SQL a ejecutar en Supabase (en orden)
 ├── js/
 │   ├── app.js              # Controlador principal del estante de juegos
 │   ├── canvas-poster.js    # Generador gráfico Canvas para portadas y tarjetas
 │   ├── landing.js          # Lógica del portal, crónicas, likes y comentarios
+│   ├── login.js            # Login, registro y recuperación de contraseña
 │   ├── search.js           # Búsqueda en catálogos externos de portadas
 │   ├── storage.js          # Abstracción de LocalStorage
 │   └── supabase.js         # Cliente y API methods para Supabase
@@ -162,7 +167,8 @@ create policy "Solo admin edita hall of fame" on public.hall_of_fame
 ### En Vercel
 1. Conecta tu repositorio de GitHub en [vercel.com](https://vercel.com).
 2. Deja la configuración de compilación por defecto (proyecto estático sin build step).
-3. Haz clic en **Deploy**.
+3. En **Settings → Environment Variables** crea `STEAM_API_KEY` con tu clave de [steamcommunity.com/dev/apikey](https://steamcommunity.com/dev/apikey). **Nunca** escribas la clave en el código: el repositorio es público.
+4. Haz clic en **Deploy**.
 
 ### En Netlify
 1. Arrastra la carpeta raíz de tu proyecto sobre [app.netlify.com/drop](https://app.netlify.com/drop).

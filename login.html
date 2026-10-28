@@ -56,14 +56,15 @@
         <div id="usernameField" class="hidden">
           <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">Nombre de Usuario</label>
           <div class="relative">
-            <input type="text" id="authUsername" autocomplete="username" placeholder="Tu gamertag o alias"
+            <input type="text" id="authUsername" autocomplete="username" maxlength="20" placeholder="Tu gamertag o alias"
                    class="w-full console-input rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none">
             <i class="fa-solid fa-id-badge absolute left-3 top-2.5 text-slate-500 text-xs"></i>
           </div>
+          <p id="usernameHint" class="text-[10px] text-slate-500 mt-1">3 a 20 caracteres: letras, números y _. Será tu enlace público.</p>
         </div>
 
         <!-- Campo: Correo -->
-        <div>
+        <div id="emailField">
           <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">Correo Electrónico</label>
           <div class="relative">
             <input type="email" id="authEmail" required autocomplete="email" placeholder="gamer@ejemplo.com"
@@ -73,12 +74,15 @@
         </div>
 
         <!-- Campo: Contraseña -->
-        <div>
+        <div id="passwordField">
           <label class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">Contraseña</label>
           <div class="relative">
             <input type="password" id="authPassword" required minlength="6" autocomplete="current-password" placeholder="Mínimo 6 caracteres"
                    class="w-full console-input rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none">
             <i class="fa-solid fa-lock absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+          </div>
+          <div id="forgotRow" class="text-right mt-1">
+            <button type="button" id="forgotBtn" class="text-[11px] text-slate-400 hover:text-indigo-300 transition cursor-pointer">¿Olvidaste tu contraseña?</button>
           </div>
         </div>
 
@@ -111,7 +115,7 @@
         <div id="termsField" class="hidden pt-1">
           <label class="flex items-start gap-2 cursor-pointer text-[11px] text-slate-400 select-none">
             <input type="checkbox" id="authTerms" class="rounded accent-indigo-500 mt-0.5">
-            <span>Acepto las normas de autoría y privacidad descritas en <a href="legal.html" target="_blank" class="text-indigo-400 hover:underline">Términos & Licencia</a>.</span>
+            <span>Acepto los <a href="legal.html" target="_blank" rel="noopener" class="text-indigo-400 hover:underline">términos y la política de privacidad</a>.</span>
           </label>
         </div>
 
@@ -141,139 +145,7 @@
   <!-- 2. Tu archivo de base de datos donde se define DB -->
   <script src="js/supabase.js"></script>
 
-  <!-- 3. Manejador de Login y Registro -->
-  <script>
-    let isRegisterMode = false;
-
-    const authForm = document.getElementById('authForm');
-    const authTitle = document.getElementById('authTitle');
-    const authSubtitle = document.getElementById('authSubtitle');
-    const headerIcon = document.getElementById('headerIcon');
-    const authAlert = document.getElementById('authAlert');
-    const btnText = document.getElementById('btnText');
-    const btnIcon = document.getElementById('btnIcon');
-    const authSubmitBtn = document.getElementById('authSubmitBtn');
-    const toggleAuthBtn = document.getElementById('toggleAuthBtn');
-
-    const usernameField = document.getElementById('usernameField');
-    const confirmPasswordField = document.getElementById('confirmPasswordField');
-    const platformField = document.getElementById('platformField');
-    const termsField = document.getElementById('termsField');
-
-    const authEmail = document.getElementById('authEmail');
-    const authPassword = document.getElementById('authPassword');
-    const authUsername = document.getElementById('authUsername');
-    const authConfirmPassword = document.getElementById('authConfirmPassword');
-    const authTerms = document.getElementById('authTerms');
-
-    function showAlert(msg, isError = true) {
-      authAlert.classList.remove('hidden', 'bg-red-500/20', 'border-red-500/40', 'text-red-300', 'bg-emerald-500/20', 'border-emerald-500/40', 'text-emerald-300');
-      if (isError) {
-        authAlert.classList.add('bg-red-500/20', 'border-red-500/40', 'text-red-300');
-        authAlert.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <span>${msg}</span>`;
-      } else {
-        authAlert.classList.add('bg-emerald-500/20', 'border-emerald-500/40', 'text-emerald-300');
-        authAlert.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${msg}</span>`;
-      }
-    }
-
-    function hideAlert() {
-      authAlert.classList.add('hidden');
-    }
-
-    // Alternar entre Iniciar Sesión y Registrarse
-    toggleAuthBtn.addEventListener('click', () => {
-      hideAlert();
-      isRegisterMode = !isRegisterMode;
-
-      if (isRegisterMode) {
-        authTitle.innerText = "Crear Cuenta";
-        authSubtitle.innerText = "Únete a la estación para guardar tus juegos";
-        headerIcon.className = "fa-solid fa-user-plus";
-        btnText.innerText = "CREAR MI CUENTA";
-        btnIcon.className = "fa-solid fa-sparkles";
-        toggleAuthBtn.innerText = "¿Ya tienes cuenta? Inicia sesión aquí";
-
-        usernameField.classList.remove('hidden');
-        confirmPasswordField.classList.remove('hidden');
-        platformField.classList.remove('hidden');
-        termsField.classList.remove('hidden');
-
-        authUsername.required = true;
-        authConfirmPassword.required = true;
-      } else {
-        authTitle.innerText = "Iniciar Sesión";
-        authSubtitle.innerText = "Conecta tu cuenta para sincronizar tus juegos en la nube";
-        headerIcon.className = "fa-solid fa-user-astronaut";
-        btnText.innerText = "ENTRAR A MI ESTANTE";
-        btnIcon.className = "fa-solid fa-arrow-right-to-bracket";
-        toggleAuthBtn.innerText = "¿No tienes cuenta? Regístrate aquí";
-
-        usernameField.classList.add('hidden');
-        confirmPasswordField.classList.add('hidden');
-        platformField.classList.add('hidden');
-        termsField.classList.add('hidden');
-
-        authUsername.required = false;
-        authConfirmPassword.required = false;
-      }
-    });
-
-    // Enviar Formulario
-    authForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      hideAlert();
-
-      if (typeof DB === 'undefined') {
-        showAlert("Error de carga: js/supabase.js no se ha encontrado.", true);
-        return;
-      }
-
-      const email = authEmail.value.trim();
-      const password = authPassword.value;
-
-      authSubmitBtn.disabled = true;
-      btnIcon.className = "fa-solid fa-spinner fa-spin";
-
-      try {
-        if (isRegisterMode) {
-          const username = authUsername.value.trim();
-          const confirmPassword = authConfirmPassword.value;
-
-          if (password !== confirmPassword) {
-            throw new Error("Las contraseñas no coinciden.");
-          }
-          if (!authTerms.checked) {
-            throw new Error("Debes aceptar los términos y condiciones.");
-          }
-
-          await DB.signUp(email, password, username);
-          showAlert("¡Cuenta creada exitosamente! Redirigiendo...", false);
-          setTimeout(() => {
-            window.location.href = "app.html";
-          }, 1000);
-
-        } else {
-          await DB.signIn(email, password);
-          showAlert("Sesión iniciada. Entrando al estante...", false);
-          setTimeout(() => {
-            window.location.href = "app.html";
-          }, 700);
-        }
-      } catch (err) {
-        console.error(err);
-        let errorMsg = err.message || "Error al procesar la solicitud.";
-        if (errorMsg.includes("Invalid login credentials")) {
-          errorMsg = "Correo o contraseña incorrectos.";
-        } else if (errorMsg.includes("Email not confirmed")) {
-          errorMsg = "Debes confirmar tu correo antes de entrar.";
-        }
-        showAlert(errorMsg, true);
-      } finally {
-        authSubmitBtn.disabled = false;
-        btnIcon.className = isRegisterMode ? "fa-solid fa-sparkles" : "fa-solid fa-arrow-right-to-bracket";
-      }
-    });
-  </script>
+  <!-- 3. Login, registro y recuperación de contraseña -->
+  <script src="js/login.js"></script>
 </body>
 </html>

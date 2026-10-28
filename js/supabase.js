@@ -1,14 +1,70 @@
 /**
  * Conexión y cliente de Supabase - Game Vault / Paindex
- * Manejo de cuentas, estante en la nube, perfiles públicos y comunidad.
+ * Manejo de cuentas, perfiles, estante en la nube y comunidad.
+ *
+ * La clave "publishable" de Supabase puede ir en el navegador: la seguridad
+ * real la ponen las políticas RLS de la base de datos
+ * (ver supabase/migrations/001_fase0.sql).
  */
 const SUPABASE_URL = "https://epouactrnuhdbzzvzxor.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_i2sc-SaHk8H6e3c-Dwf0IQ_hhdBlx_I";
 
+// Solo decide qué botones ve la interfaz. Quién puede escribir lo deciden las RLS.
 const ADMIN_EMAIL = "estebanreyes2402@gmail.com";
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
+const CLOUD_COMPLETED_STATUSES = ["completed", "extras", "platinum"];
+
+function cloudRowToGame(row) {
+  const rating = row.rating === null || row.rating === undefined ? null : parseFloat(row.rating);
+  return {
+    id: Number(row.id),
+    title: row.title,
+    coverUrl: row.cover_url || "",
+    status: row.status,
+    platforms: row.platforms && row.platforms.length ? row.platforms : ["PC"],
+    rating: Number.isFinite(rating) ? rating : null,
+    hours: row.hours || 0,
+    targetHours: row.target_hours || 0,
+    completedYear: row.completed_year || null,
+    favorite: Boolean(row.favorite),
+    tags: row.tags || [],
+    notes: row.notes || ""
+  };
+}
+
+function gameToCloudRow(game, userId) {
+  const cover = typeof game.coverUrl === "string" && game.coverUrl.startsWith("https://") ? game.coverUrl : null;
+  return {
+    id: game.id,
+    user_id: userId,
+    title: String(game.title || "").slice(0, 150),
+    cover_url: cover,
+    status: game.status,
+    platforms: game.platforms && game.platforms.length ? game.platforms : ["PC"],
+    rating: Number.isFinite(game.rating) ? game.rating : null,
+    hours: Math.max(0, parseInt(game.hours, 10) || 0),
+    target_hours: Math.max(0, parseInt(game.targetHours, 10) || 0),
+    completed_year: CLOUD_COMPLETED_STATUSES.includes(game.status) ? (game.completedYear || null) : null,
+    favorite: Boolean(game.favorite),
+    tags: game.tags || [],
+    notes: String(game.notes || "").slice(0, 2000)
+  };
+}
+
+async function currentUser() {
+  if (!supabaseClient) return null;
+  try {
+    const { data } = await supabaseClient.auth.getUser();
+    return data?.user || null;
+  } catch (e) {
+    return null;
+  }
+}
+
 const DB = {
+  fromCloud: cloudRowToGame,
+
   // ==========================================
   // AUTENTICACIÓN Y ROLES
   // ==========================================
@@ -22,24 +78,45 @@ const DB = {
     return data;
   },
 
-  async signUp(email, password, username) {
+  async signUp(email, password, username, extraMetadata = {}) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const { data, error } = await supabaseClient.auth.signUp({
       email: email.trim(),
       password: password,
       options: {
-        data: { username: username.trim().toLowerCase() }
+        data: { ...extraMetadata, username: username.trim().toLowerCase() },
+        emailRedirectTo: `${window.location.origin}/app.html`
       }
     });
     if (error) throw error;
     return data;
   },
 
-  async getUser() {
-    if (!supabaseClient) return null;
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    return user;
+  async sendPasswordReset(email) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/login.html?reset=1`
+    });
+    if (error) throw error;
   },
+
+  async updatePassword(newPassword) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { error } = await supabaseClient.auth.updateUser({ password: newPassword });
+    if (error) throw error;
+  },
+
+  async usernameAvailable(username) {
+    if (!supabaseClient) return true;
+    const { data, error } = await supabaseClient.rpc("username_available", { name: username });
+    if (error) {
+      console.warn("No se pudo comprobar el nombre de usuario:", error.message);
+      return true; // el servidor igual garantiza que sea único
+    }
+    return Boolean(data);
+  },
+
+  getUser: currentUser,
 
   async signOut() {
     if (!supabaseClient) return;
@@ -47,93 +124,124 @@ const DB = {
   },
 
   async isAdmin() {
-    if (!supabaseClient) return false;
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const user = await currentUser();
     if (!user) return false;
-    const userRole = user.user_metadata?.role || user.app_metadata?.role;
-    return userRole === "admin" || user.email === ADMIN_EMAIL;
+    // Solo app_metadata: user_metadata la puede editar cualquier usuario.
+    return user.app_metadata?.role === "admin" || user.email === ADMIN_EMAIL;
+  },
+
+  async deleteMyAccount() {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { error } = await supabaseClient.rpc("delete_my_account");
+    if (error) throw error;
+    await supabaseClient.auth.signOut();
+  },
+
+  // ==========================================
+  // PERFILES (TABLA: profiles)
+  // ==========================================
+  async getMyProfile() {
+    const user = await currentUser();
+    if (!user) return null;
+    const { data, error } = await supabaseClient
+      .from("profiles")
+      .select("id, username, is_public")
+      .eq("id", user.id)
+      .maybeSingle();
+    if (error) {
+      console.error("Error al obtener el perfil:", error.message);
+      return null;
+    }
+    return data;
+  },
+
+  async setProfilePublic(isPublic) {
+    const user = await currentUser();
+    if (!user) throw new Error("Debes iniciar sesión");
+    const { error } = await supabaseClient
+      .from("profiles")
+      .update({ is_public: Boolean(isPublic) })
+      .eq("id", user.id);
+    if (error) throw error;
+  },
+
+  /** Devuelve los juegos de un perfil público, o null si no existe o es privado. */
+  async getGamesByUsername(username) {
+    if (!supabaseClient || !username) return null;
+    const clean = String(username).trim().toLowerCase();
+    if (!/^[a-z0-9_]{3,20}$/.test(clean)) return null;
+
+    const { data: profile, error: profileError } = await supabaseClient
+      .from("profiles")
+      .select("id, username")
+      .eq("username", clean)
+      .maybeSingle();
+    if (profileError || !profile) return null;
+
+    const { data, error } = await supabaseClient
+      .from("games")
+      .select("*")
+      .eq("user_id", profile.id);
+    if (error) {
+      console.error("Error al obtener perfil público:", error.message);
+      return null;
+    }
+    return (data || []).map(cloudRowToGame);
   },
 
   // ==========================================
   // ESTANTE PERSONAL (TABLA: games)
+  // Cada cambio sube o borra SOLO el juego afectado, así dos pestañas o
+  // dispositivos abiertos no se pisan entre sí.
   // ==========================================
   async getCloudGames() {
-    if (!supabaseClient) return [];
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const user = await currentUser();
     if (!user) return [];
-
     const { data, error } = await supabaseClient
-      .from('games')
-      .select('*')
-      .eq('user_id', user.id);
-
+      .from("games")
+      .select("*")
+      .eq("user_id", user.id);
     if (error) {
-      console.error("Error al obtener juegos de Supabase:", error);
-      return [];
+      console.error("Error al obtener juegos de Supabase:", error.message);
+      throw error;
     }
-    return data || [];
+    return (data || []).map(cloudRowToGame);
   },
 
-  async getGamesByUsername(username) {
-    if (!supabaseClient || !username) return [];
-    const cleanUsername = username.trim().toLowerCase();
-
-    const { data, error } = await supabaseClient
-      .from('games')
-      .select('*')
-      .ilike('username', cleanUsername);
-
-    if (error) {
-      console.error("Error al obtener perfil público:", error);
-      return [];
+  async upsertGames(games) {
+    const user = await currentUser();
+    if (!user || !games || games.length === 0) return;
+    const rows = games.map(g => gameToCloudRow(g, user.id));
+    for (let i = 0; i < rows.length; i += 200) {
+      const { error } = await supabaseClient
+        .from("games")
+        .upsert(rows.slice(i, i + 200), { onConflict: "user_id,id" });
+      if (error) throw error;
     }
-    return data || [];
   },
 
-  async syncLocalToCloud(localGames) {
-    if (!supabaseClient) return;
+  async upsertGame(game) {
+    return this.upsertGames([game]);
+  },
 
-    let user = null;
-    try {
-      const { data } = await supabaseClient.auth.getUser();
-      user = data?.user || null;
-    } catch (e) {
-      user = null;
-    }
-
-    if (!user) {
-      console.warn("No hay sesión activa para sincronizar en la nube.");
-      return;
-    }
-
-    const username = (user.user_metadata?.username || user.email.split('@')[0]).trim().toLowerCase();
-
-    const payload = localGames.map(g => ({
-      id: g.id,
-      user_id: user.id,
-      username: username,
-      title: g.title,
-      cover_url: g.coverUrl,
-      status: g.status,
-      platforms: g.platforms || ["PC"],
-      rating: g.rating,
-      hours: g.hours || 0,
-      target_hours: g.targetHours || 0,
-      completed_year: g.completedYear || new Date().getFullYear(),
-      favorite: Boolean(g.favorite),
-      tags: g.tags || [],
-      notes: g.notes || ""
-    }));
-
-    if (payload.length === 0) return;
-
+  async deleteGame(gameId) {
+    const user = await currentUser();
+    if (!user) return;
     const { error } = await supabaseClient
-      .from('games')
-      .upsert(payload, { onConflict: 'id' });
+      .from("games")
+      .delete()
+      .eq("user_id", user.id)
+      .eq("id", gameId);
+    if (error) throw error;
+  },
 
-    if (error) {
-      console.error("Error sincronizando catálogo con Supabase:", error.message);
-    }
+  /** Reemplaza el estante completo en la nube (importar copia, vaciar). */
+  async replaceAllGames(games) {
+    const user = await currentUser();
+    if (!user) return;
+    const { error } = await supabaseClient.from("games").delete().eq("user_id", user.id);
+    if (error) throw error;
+    await this.upsertGames(games);
   },
 
   // ==========================================
@@ -142,9 +250,9 @@ const DB = {
   async getHallOfFame() {
     if (!supabaseClient) return [];
     const { data, error } = await supabaseClient
-      .from('hall_of_fame')
-      .select('*')
-      .order('id', { ascending: true });
+      .from("hall_of_fame")
+      .select("*")
+      .order("id", { ascending: true });
 
     if (error) {
       console.error("Error al obtener Hall of Fame:", error);
@@ -156,9 +264,9 @@ const DB = {
   async updateHallOfFameItem(slotId, payload) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const { data, error } = await supabaseClient
-      .from('hall_of_fame')
+      .from("hall_of_fame")
       .update(payload)
-      .eq('id', slotId);
+      .eq("id", slotId);
 
     if (error) throw error;
     return data;
@@ -170,9 +278,9 @@ const DB = {
   async getPublicPosts() {
     if (!supabaseClient) return [];
     const { data, error } = await supabaseClient
-      .from('posts')
-      .select('*')
-      .order('id', { ascending: false });
+      .from("posts")
+      .select("*")
+      .order("id", { ascending: false });
 
     if (error) {
       console.error("Error al obtener publicaciones:", error);
@@ -183,11 +291,11 @@ const DB = {
 
   async createPost(payload) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const user = await currentUser();
     if (!user) throw new Error("Debes iniciar sesión para publicar");
 
     const { data, error } = await supabaseClient
-      .from('posts')
+      .from("posts")
       .insert([{
         user_id: user.id,
         title: payload.title,
@@ -205,7 +313,7 @@ const DB = {
   async updatePost(postId, payload) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const { data, error } = await supabaseClient
-      .from('posts')
+      .from("posts")
       .update({
         title: payload.title,
         category: payload.category,
@@ -213,7 +321,7 @@ const DB = {
         cover_url: payload.cover_url,
         content: payload.content
       })
-      .eq('id', postId);
+      .eq("id", postId);
 
     if (error) throw error;
     return data;
@@ -222,9 +330,9 @@ const DB = {
   async deletePost(postId) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const { data, error } = await supabaseClient
-      .from('posts')
+      .from("posts")
       .delete()
-      .eq('id', postId);
+      .eq("id", postId);
 
     if (error) throw error;
     return data;
@@ -236,9 +344,9 @@ const DB = {
   async getPostLikes(postId) {
     if (!supabaseClient || !postId) return [];
     const { data, error } = await supabaseClient
-      .from('post_likes')
-      .select('*')
-      .eq('post_id', postId);
+      .from("post_likes")
+      .select("user_id")
+      .eq("post_id", postId);
 
     if (error) {
       console.error("Error al obtener likes:", error);
@@ -249,29 +357,32 @@ const DB = {
 
   async toggleLike(postId) {
     if (!supabaseClient) return false;
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const user = await currentUser();
     if (!user) throw new Error("Debes iniciar sesión para dar like");
 
-    const { data: existingLike } = await supabaseClient
-      .from('post_likes')
-      .select('*')
-      .eq('post_id', postId)
-      .eq('user_id', user.id)
+    const { data: existingLike, error: readError } = await supabaseClient
+      .from("post_likes")
+      .select("id")
+      .eq("post_id", postId)
+      .eq("user_id", user.id)
       .maybeSingle();
+    if (readError) throw readError;
 
     if (existingLike) {
-      await supabaseClient
-        .from('post_likes')
+      const { error } = await supabaseClient
+        .from("post_likes")
         .delete()
-        .eq('post_id', postId)
-        .eq('user_id', user.id);
+        .eq("post_id", postId)
+        .eq("user_id", user.id);
+      if (error) throw error;
       return false;
-    } else {
-      await supabaseClient
-        .from('post_likes')
-        .insert([{ post_id: postId, user_id: user.id }]);
-      return true;
     }
+
+    const { error } = await supabaseClient
+      .from("post_likes")
+      .insert([{ post_id: postId, user_id: user.id }]);
+    if (error) throw error;
+    return true;
   },
 
   // ==========================================
@@ -280,10 +391,10 @@ const DB = {
   async getComments(postId) {
     if (!supabaseClient || !postId) return [];
     const { data, error } = await supabaseClient
-      .from('post_comments')
-      .select('*')
-      .eq('post_id', postId)
-      .order('id', { ascending: true });
+      .from("post_comments")
+      .select("*")
+      .eq("post_id", postId)
+      .order("id", { ascending: true });
 
     if (error) {
       console.error("Error al obtener comentarios:", error);
@@ -294,18 +405,21 @@ const DB = {
 
   async addComment(postId, commentText) {
     if (!supabaseClient) return null;
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const user = await currentUser();
     if (!user) throw new Error("Debes iniciar sesión para comentar");
 
-    const username = (user.user_metadata?.username || user.email.split('@')[0]).trim().toLowerCase();
+    const text = String(commentText || "").trim();
+    if (!text) throw new Error("El comentario está vacío.");
+    if (text.length > 1000) throw new Error("El comentario no puede pasar de 1000 caracteres.");
 
+    // El nombre lo pone la base de datos a partir del perfil (no se puede falsificar).
     const { data, error } = await supabaseClient
-      .from('post_comments')
+      .from("post_comments")
       .insert([{
         post_id: postId,
         user_id: user.id,
-        username: username,
-        comment: commentText.trim()
+        username: "-",
+        comment: text
       }])
       .select();
 
@@ -316,82 +430,32 @@ const DB = {
   async deleteComment(commentId) {
     if (!supabaseClient || !commentId) return;
     const { data, error } = await supabaseClient
-      .from('post_comments')
+      .from("post_comments")
       .delete()
-      .eq('id', commentId);
+      .eq("id", commentId);
 
     if (error) throw error;
     return data;
   },
 
   // ==========================================
-  // MÉTRICAS DE COMUNIDAD
+  // MÉTRICAS DE COMUNIDAD (calculadas en el servidor)
   // ==========================================
   async getCommunityStats() {
-    if (!supabaseClient) {
-      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
+    const empty = { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-" };
+    if (!supabaseClient) return empty;
+
+    const { data, error } = await supabaseClient.rpc("community_stats");
+    if (error || !data) {
+      console.error("Error calculando estadísticas:", error?.message);
+      return empty;
     }
-
-    try {
-      const { data: allGames, error } = await supabaseClient
-        .from('games')
-        .select('title, hours, status');
-
-      if (error || !allGames || allGames.length === 0) {
-        return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
-      }
-
-      const totalHours = allGames.reduce((acc, g) => acc + (Number(g.hours) || 0), 0);
-      const totalGames = allGames.length;
-      const totalPlatinums = allGames.filter(g => g.status === 'platinum').length;
-
-      const frequency = {};
-      const hoursByTitle = {};
-
-      allGames.forEach(g => {
-        const cleanTitle = (g.title || "").trim();
-        if (cleanTitle) {
-          frequency[cleanTitle] = (frequency[cleanTitle] || 0) + 1;
-          hoursByTitle[cleanTitle] = (hoursByTitle[cleanTitle] || 0) + (Number(g.hours) || 0);
-        }
-      });
-
-      let mostPopular = "-";
-      let maxCount = 0;
-
-      for (const [title, count] of Object.entries(frequency)) {
-        if (count > maxCount) {
-          maxCount = count;
-          mostPopular = title;
-        }
-      }
-
-      if (maxCount <= 1 && Object.keys(hoursByTitle).length > 0) {
-        let maxHours = -1;
-        for (const [title, h] of Object.entries(hoursByTitle)) {
-          if (h > maxHours) {
-            maxHours = h;
-            mostPopular = title;
-          }
-        }
-      }
-
-      if (!mostPopular || mostPopular === "-") {
-        mostPopular = allGames[0]?.title || "-";
-      }
-
-      return { 
-        totalHours, 
-        totalGames, 
-        totalPlatinums, 
-        mostPopular, 
-        popular: mostPopular, 
-        topGame: mostPopular 
-      };
-    } catch (e) {
-      console.error("Error calculando estadísticas:", e);
-      return { totalHours: 0, totalGames: 0, totalPlatinums: 0, mostPopular: "-", popular: "-", topGame: "-" };
-    }
+    return {
+      totalHours: Number(data.total_hours) || 0,
+      totalGames: Number(data.total_games) || 0,
+      totalPlatinums: Number(data.total_platinums) || 0,
+      mostPopular: data.top_game || "-"
+    };
   }
 };
 
@@ -400,4 +464,3 @@ DB.getPublicFeed = DB.getPublicPosts;
 
 window.DB = DB;
 window.supabaseClient = supabaseClient;
-

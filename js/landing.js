@@ -116,7 +116,8 @@ async function checkUserSession() {
     const isAdmin = await DB.isAdmin();
 
     if (user) {
-      const alias = user.user_metadata?.username || user.email.split("@")[0];
+      const profile = await DB.getMyProfile();
+      const alias = profile?.username || user.email.split("@")[0];
       if (authBtnText) authBtnText.innerText = alias;
       if (authIcon) authIcon.className = "fa-solid fa-cloud-check text-emerald-400";
       if (authBtn) {
@@ -278,13 +279,14 @@ async function loadHallOfFame() {
     cachedHof = [];
   }
 
+  // Sin datos no se inventan juegos: se muestra un aviso honesto.
   if (cachedHof.length === 0) {
-    cachedHof = [
-      { id: 1, title: "Elden Ring", rating: 10, tag: "#Soulslike", progress: "Platino • 145h", cover_url: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80" },
-      { id: 2, title: "Cyberpunk 2077", rating: 9.8, tag: "#RPG", progress: "Historia • 85h", cover_url: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80" },
-      { id: 3, title: "God of War Ragnarök", rating: 9.9, tag: "#Aventura", progress: "Platino • 60h", cover_url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=80" },
-      { id: 4, title: "Red Dead Redemption 2", rating: 10, tag: "#MundoAbierto", progress: "Campaña • 120h", cover_url: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=400&q=80" }
-    ];
+    hofGrid.innerHTML = `
+      <div class="col-span-full py-10 text-center glass-panel rounded-2xl border border-white/10">
+        <p class="text-xs font-bold text-slate-400">No se pudo cargar el Hall of Fame en este momento.</p>
+      </div>
+    `;
+    return;
   }
 
   hofGrid.innerHTML = cachedHof.map(item => {
@@ -297,7 +299,7 @@ async function loadHallOfFame() {
     return `
       <div class="glass-panel glow-card rounded-2xl overflow-hidden border border-white/10 p-3 flex flex-col justify-between group">
         <div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-950 mb-2.5">
-          <img src="${cover}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="${title}" onerror="this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80'">
+          <img src="${cover}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="${title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80'">
           <div class="absolute top-2 right-2 bg-black/80 px-2 py-0.5 rounded-md text-amber-400 font-black text-[11px] console-font border border-white/10">★ ${rating}</div>
           <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[9px] font-bold text-slate-300">${tag}</div>
         </div>
@@ -647,7 +649,7 @@ function renderArticles() {
       return `
         <article class="glass-panel glow-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between hover:border-purple-500/30 transition group shadow-xl">
           <div class="relative h-48 w-full overflow-hidden bg-slate-950 cursor-pointer" onclick="openPostByIndex(${originalIdx})">
-            <img src="${escapeHTML(String(post.cover_url || ''))}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${escapeHTML(String(post.title || ''))}" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'">
+            <img src="${escapeHTML(String(post.cover_url || ''))}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${escapeHTML(String(post.title || ''))}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'">
             <div class="absolute inset-0 bg-gradient-to-t from-[#0d1326] via-transparent"></div>
             <div class="absolute top-3 left-3 flex items-center gap-1.5">
               <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${catColor} backdrop-blur-md">

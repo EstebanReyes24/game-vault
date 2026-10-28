@@ -2,6 +2,11 @@
  * Generador de Posters y Share Cards vía HTML5 Canvas
  */
 const CanvasPoster = {
+  ratingText(game) {
+    const r = game ? game.rating : null;
+    return r === null || r === undefined || !Number.isFinite(Number(r)) ? "—" : Number(r).toFixed(1);
+  },
+
   generateSmartPoster(title) {
     const canvas = document.createElement("canvas");
     canvas.width = 400;
@@ -142,7 +147,7 @@ const CanvasPoster = {
       ctx.fillStyle = "#fbbf24";
       ctx.font = "bold 10px 'Plus Jakarta Sans', sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText(`★ ${g.rating.toFixed(1)}`, x + cardWidth - 27, y + 22);
+      ctx.fillText(`★ ${this.ratingText(g)}`, x + cardWidth - 27, y + 22);
 
       ctx.fillStyle = "#ffffff";
       ctx.font = "bold 13px 'Outfit', sans-serif";
@@ -215,8 +220,14 @@ const CanvasPoster = {
     ctx.fillStyle = "#c7d2fe";
     ctx.font = "bold 13px 'Plus Jakarta Sans', sans-serif";
     ctx.textAlign = "center";
-    const statusText = game.status === "platinum" ? "🏆 100% PLATINO" :
-                       game.status === "playing" ? "🔥 JUGANDO" : "✅ COMPLETADO";
+    const statusTexts = {
+      platinum: "🏆 100% PLATINO",
+      playing: "🔥 JUGANDO",
+      extras: "⭐ CAMPAÑA + EXTRAS",
+      onhold: "⏸ EN PAUSA",
+      backlog: "📥 PENDIENTE"
+    };
+    const statusText = statusTexts[game.status] || "✅ COMPLETADO";
     ctx.fillText(statusText, textX + 80, 182);
 
     ctx.fillStyle = "#ffffff";
@@ -240,7 +251,7 @@ const CanvasPoster = {
 
     ctx.fillStyle = "#fbbf24";
     ctx.font = "900 44px 'Outfit', sans-serif";
-    ctx.fillText(`★ ${game.rating.toFixed(1)}`, textX, titleY + 65);
+    ctx.fillText(`★ ${this.ratingText(game)}`, textX, titleY + 65);
     ctx.fillStyle = "#64748b";
     ctx.font = "bold 18px 'Plus Jakarta Sans', sans-serif";
     ctx.fillText("/ 10", textX + 130, titleY + 65);

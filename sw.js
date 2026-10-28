@@ -1,4 +1,4 @@
-const CACHE_NAME = 'game-vault-v3';
+const CACHE_NAME = 'game-vault-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -38,6 +38,8 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (!event.request.url.startsWith(self.location.origin)) return;
+  // Nunca cachear la API (datos personales, p. ej. la biblioteca de Steam) ni peticiones que no sean GET
+  if (event.request.method !== 'GET' || new URL(event.request.url).pathname.startsWith('/api/')) return;
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {

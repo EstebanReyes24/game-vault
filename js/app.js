@@ -22,8 +22,14 @@ const publicProfileTarget = urlParams.get("u");
 const isSpectatorMode = Boolean(publicProfileTarget && publicProfileTarget.trim().length > 0);
 let spectatorGames = [];
 
+const COMPLETED_STATUSES = ["completed", "extras", "platinum"];
+const VALID_STATUSES = ["playing", "completed", "extras", "platinum", "onhold", "backlog"];
+
 // ==========================================
-// SANITIZACIÓN DE ENTRADAS
+// SANITIZACIÓN Y SALIDA SEGURA
+// Regla: todo dato que va dentro de innerHTML pasa por escapeHTML,
+// y toda URL de imagen pasa por safeUrl. Los datos de otros usuarios
+// (modo espectador) pueden venir manipulados.
 // ==========================================
 function sanitizeInput(str) {
   if (typeof str !== 'string') return '';
@@ -31,6 +37,138 @@ function sanitizeInput(str) {
     .replace(/<[^>]*>?/gm, '')
     .replace(/[<>]/g, '')
     .trim();
+}
+
+function escapeHTML(value) {
+  return String(value ?? '')
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+/** Devuelve la URL solo si es https:// (o una imagen data: generada aquí); si no, "". */
+function safeUrl(url) {
+  if (typeof url !== "string") return "";
+  const value = url.trim();
+  if (value.startsWith("data:image/png;base64,")) return value;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "https:" ? parsed.href : "";
+  } catch (e) {
+    return "";
+  }
+}
+
+// Las portadas automáticas se generan al mostrarlas (y se cachean en memoria);
+// ya no se guardan como base64 en localStorage ni en Supabase.
+const posterCache = new Map();
+function posterFor(title) {
+  const key = String(title || "?");
+  if (!posterCache.has(key)) posterCache.set(key, CanvasPoster.generateSmartPoster(key));
+  return posterCache.get(key);
+}
+
+function coverSrc(game) {
+  return safeUrl(game.coverUrl) || posterFor(game.title);
+}
+
+/** <img> con portada segura y respaldo automático si la imagen falla. */
+function coverImg(game, className, extraAttrs = "") {
+  return `<img src="${escapeHTML(coverSrc(game))}" data-fallback-title="${escapeHTML(game.title)}" alt="${escapeHTML(game.title)}" class="${className}" loading="lazy" ${extraAttrs}>`;
+}
+
+// Un solo manejador para todas las portadas rotas (sin onerror inline).
+document.addEventListener("error", (e) => {
+  const img = e.target;
+  if (img && img.tagName === "IMG" && img.dataset.fallbackTitle !== undefined && !img.dataset.fallbackApplied) {
+    img.dataset.fallbackApplied = "1";
+    img.src = posterFor(img.dataset.fallbackTitle);
+  }
+}, true);
+
+function hasRating(game) {
+  return game && game.rating !== null && game.rating !== undefined && Number.isFinite(Number(game.rating));
+}
+
+function fmtRating(game) {
+  return hasRating(game) ? Number(game.rating).toFixed(1) : "—";
+}
+
+function ratedGames(list) {
+  return list.filter(hasRating);
+}
+
+/**
+ * Normaliza un juego venido de localStorage, la nube o una copia JSON.
+ * No borra texto (la protección XSS está en escapeHTML al mostrar), solo
+ * corrige tipos, límites y valores imposibles. Devuelve null si no es un objeto.
+ */
+function normalizeGame(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const title = String(raw.title ?? "").trim().slice(0, 150) || "Sin título";
+  const id = Number(raw.id);
+  const status = VALID_STATUSES.includes(raw.status) ? raw.status : "backlog";
+  const rating = raw.rating === null || raw.rating === undefined || raw.rating === "" ? null : Number(raw.rating);
+  const cover = safeUrl(raw.coverUrl);
+  const platforms = Array.isArray(raw.platforms)
+    ? raw.platforms.map(p => String(p).trim().slice(0, 30)).filter(Boolean)
+    : [];
+  return {
+    id: Number.isSafeInteger(id) && id > 0 ? id : newGameId(),
+    title,
+    coverUrl: cover.startsWith("https://") ? cover : "",
+    status,
+    platforms: platforms.length ? platforms : ["PC"],
+    rating: Number.isFinite(rating) ? Math.min(10, Math.max(0, rating)) : null,
+    hours: Math.max(0, parseInt(raw.hours, 10) || 0),
+    targetHours: Math.max(0, parseInt(raw.targetHours, 10) || 0),
+    completedYear: COMPLETED_STATUSES.includes(status) ? (parseInt(raw.completedYear, 10) || null) : null,
+    favorite: Boolean(raw.favorite),
+    tags: Array.isArray(raw.tags) ? raw.tags.map(t => String(t).trim().slice(0, 40)).filter(Boolean).slice(0, 15) : [],
+    notes: String(raw.notes ?? "").slice(0, 2000)
+  };
+}
+
+let lastGeneratedId = 0;
+function newGameId() {
+  lastGeneratedId = Math.max(Date.now(), lastGeneratedId + 1);
+  return lastGeneratedId;
+}
+
+// ==========================================
+// AVISOS (toast) y nube
+// ==========================================
+function showToast(message, isError = false) {
+  let box = document.getElementById("gvToast");
+  if (!box) {
+    box = document.createElement("div");
+    box.id = "gvToast";
+    box.setAttribute("role", "status");
+    box.className = "fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] px-4 py-2.5 rounded-xl text-xs font-bold shadow-2xl transition-opacity duration-300";
+    document.body.appendChild(box);
+  }
+  box.textContent = message;
+  box.style.background = isError ? "#7f1d1d" : "#064e3b";
+  box.style.color = "#fff";
+  box.style.opacity = "1";
+  clearTimeout(box._timer);
+  box._timer = setTimeout(() => { box.style.opacity = "0"; }, isError ? 6000 : 2500);
+}
+
+let cloudUserId = null; // id del usuario con sesión activa (null = invitado)
+
+async function cloudRun(action, errorMessage) {
+  if (!cloudUserId || !window.DB) return true;
+  try {
+    await action();
+    return true;
+  } catch (err) {
+    console.error(errorMessage, err);
+    showToast(`${errorMessage} Tus cambios quedaron guardados en este navegador.`, true);
+    return false;
+  }
 }
 
 // ==========================================
@@ -175,14 +313,29 @@ const npProgressBar = document.getElementById("npProgressBar");
 if (shareProfileBtn) {
   shareProfileBtn.addEventListener("click", async () => {
     SoundFX.playClick();
-    const user = window.DB ? await DB.getUser() : null;
-    const alias = user?.user_metadata?.username || user?.email?.split('@')[0] || "player";
-    const shareUrl = `${window.location.origin}${window.location.pathname}?u=${encodeURIComponent(alias)}`;
+    const profile = window.DB ? await DB.getMyProfile() : null;
+    if (!profile) {
+      alert("Para compartir tu estante necesitas iniciar sesión.");
+      return;
+    }
 
-    if (navigator.clipboard) {
+    if (!profile.is_public) {
+      const ok = confirm("Tu estante es privado.\n\nPara compartirlo hay que hacerlo público: cualquiera con el enlace verá tus juegos, notas y horas.\n\n¿Hacerlo público?");
+      if (!ok) return;
+      try {
+        await DB.setProfilePublic(true);
+        updateVisibilityUI(true);
+      } catch (err) {
+        showToast("No se pudo cambiar la privacidad: " + err.message, true);
+        return;
+      }
+    }
+
+    const shareUrl = `${window.location.origin}${window.location.pathname}?u=${encodeURIComponent(profile.username)}`;
+    try {
       await navigator.clipboard.writeText(shareUrl);
       alert(`¡Enlace copiado al portapapeles!\n\n${shareUrl}\n\nCompártelo para que vean tu colección.`);
-    } else {
+    } catch (e) {
       prompt("Copia tu enlace público:", shareUrl);
     }
   });
@@ -268,22 +421,38 @@ function updateFavoriteUI() {
   }
 }
 
+// La nota puede quedar "sin calificar" (null), por ejemplo en juegos importados.
+let isRated = true;
+const clearScoreBtn = document.getElementById("clearScoreBtn");
+
+function setScoreUI(rating) {
+  isRated = rating !== null && rating !== undefined;
+  if (scoreRange && isRated) scoreRange.value = rating;
+  if (scoreDisplay) scoreDisplay.innerText = isRated ? Number(rating).toFixed(1) : "—";
+  if (clearScoreBtn) clearScoreBtn.classList.toggle("hidden", !isRated);
+}
+
 if (scoreRange) {
-  scoreRange.addEventListener("input", (e) => {
-    if (scoreDisplay) scoreDisplay.innerText = parseFloat(e.target.value).toFixed(1);
-  });
+  scoreRange.addEventListener("input", (e) => setScoreUI(parseFloat(e.target.value)));
+}
+if (clearScoreBtn) {
+  clearScoreBtn.addEventListener("click", () => setScoreUI(null));
 }
 
 if (manualCoverBtn) {
   manualCoverBtn.addEventListener("click", () => {
-    const url = prompt("Pega aquí el enlace directo de la imagen:");
-    if (url && url.trim().startsWith("http")) {
-      currentSelectedCover = url.trim();
-      coverPreview.src = currentSelectedCover;
-      coverPreview.classList.remove("hidden");
-      posterIcon.classList.add("hidden");
-      coverStatusText.innerText = "Portada manual lista";
+    const url = prompt("Pega aquí el enlace directo de la imagen (debe empezar por https://):");
+    if (!url) return;
+    const clean = safeUrl(url);
+    if (!clean.startsWith("https://")) {
+      alert("El enlace debe empezar por https://");
+      return;
     }
+    currentSelectedCover = clean;
+    coverPreview.src = currentSelectedCover;
+    coverPreview.classList.remove("hidden");
+    posterIcon.classList.add("hidden");
+    coverStatusText.innerText = "Portada manual lista";
   });
 }
 
@@ -306,12 +475,12 @@ function renderSearchResults(items, originalQuery) {
 
   const directLi = document.createElement("li");
   directLi.className = "flex items-center gap-3 p-3 bg-indigo-950/60 hover:bg-indigo-900/80 cursor-pointer transition text-indigo-300 font-semibold text-xs";
-  directLi.innerHTML = `<i class="fa-solid fa-check-circle"></i> Usar "${originalQuery}" directamente`;
+  directLi.innerHTML = `<i class="fa-solid fa-check-circle"></i> Usar "${escapeHTML(originalQuery)}" directamente`;
   directLi.addEventListener("click", () => {
     SoundFX.playClick();
     gameSearch.value = originalQuery;
-    currentSelectedCover = CanvasPoster.generateSmartPoster(originalQuery);
-    coverPreview.src = currentSelectedCover;
+    currentSelectedCover = "";
+    coverPreview.src = posterFor(originalQuery);
     coverPreview.classList.remove("hidden");
     posterIcon.classList.add("hidden");
     coverStatusText.innerText = originalQuery;
@@ -322,19 +491,19 @@ function renderSearchResults(items, originalQuery) {
   items.forEach(item => {
     const li = document.createElement("li");
     li.className = "flex items-center gap-3 p-2.5 hover:bg-white/10 cursor-pointer transition";
-    const thumb = item.image || CanvasPoster.generateSmartPoster(item.title);
+    const image = safeUrl(item.image).startsWith("https://") ? safeUrl(item.image) : "";
     li.innerHTML = `
-      <img src="${thumb}" class="w-10 h-14 object-cover rounded-lg shadow shrink-0 bg-slate-950">
+      ${coverImg({ title: item.title, coverUrl: image }, "w-10 h-14 object-cover rounded-lg shadow shrink-0 bg-slate-950")}
       <div class="overflow-hidden">
-        <p class="text-xs font-bold text-white truncate">${item.title}</p>
-        <p class="text-[11px] text-slate-400 mt-0.5 truncate">${item.desc}</p>
+        <p class="text-xs font-bold text-white truncate">${escapeHTML(item.title)}</p>
+        <p class="text-[11px] text-slate-400 mt-0.5 truncate">${escapeHTML(item.desc)}</p>
       </div>
     `;
     li.addEventListener("click", () => {
       SoundFX.playClick();
       gameSearch.value = item.title;
-      currentSelectedCover = item.image || CanvasPoster.generateSmartPoster(item.title);
-      coverPreview.src = currentSelectedCover;
+      currentSelectedCover = image;
+      coverPreview.src = image || posterFor(item.title);
       coverPreview.classList.remove("hidden");
       posterIcon.classList.add("hidden");
       coverStatusText.innerText = item.title;
@@ -390,8 +559,7 @@ function resetForm() {
   setPlatformBadges(["PC"]);
   isFavorite = false;
   updateFavoriteUI();
-  scoreRange.value = 9;
-  scoreDisplay.innerText = "9.0";
+  setScoreUI(9);
   gameHours.value = "";
   gameTargetHours.value = "";
   if (gameCompletedYear) gameCompletedYear.value = new Date().getFullYear();
@@ -412,8 +580,8 @@ function startEditGame(game) {
   saveBtnText.innerText = "Actualizar registro";
 
   gameSearch.value = game.title;
-  currentSelectedCover = game.coverUrl;
-  coverPreview.src = game.coverUrl;
+  currentSelectedCover = safeUrl(game.coverUrl).startsWith("https://") ? safeUrl(game.coverUrl) : "";
+  coverPreview.src = coverSrc(game);
   coverPreview.classList.remove("hidden");
   posterIcon.classList.add("hidden");
   coverStatusText.innerText = game.title;
@@ -423,8 +591,7 @@ function startEditGame(game) {
   isFavorite = Boolean(game.favorite);
   updateFavoriteUI();
 
-  scoreRange.value = game.rating || 8;
-  scoreDisplay.innerText = (game.rating || 8).toFixed(1);
+  setScoreUI(hasRating(game) ? Number(game.rating) : null);
   gameHours.value = game.hours || "";
   gameTargetHours.value = game.targetHours || "";
   if (gameCompletedYear) gameCompletedYear.value = game.completedYear || new Date().getFullYear();
@@ -440,51 +607,53 @@ if (saveGameBtn) {
       alert("Estás en modo espectador. No tienes permisos para alterar este estante.");
       return;
     }
-    const title = sanitizeInput(gameSearch.value);
+    const title = sanitizeInput(gameSearch.value).slice(0, 150);
     if (!title) {
       alert("Por favor escribe el nombre del videojuego.");
       gameSearch.focus();
       return;
     }
 
-    const finalCover = currentSelectedCover || CanvasPoster.generateSmartPoster(title);
     const parsedTags = gameTags.value
       .split(",")
-      .map(t => sanitizeInput(t))
+      .map(t => sanitizeInput(t).slice(0, 40))
       .filter(t => t.length > 0)
-      .map(t => t.startsWith("#") ? t : "#" + t);
+      .map(t => t.startsWith("#") ? t : "#" + t)
+      .slice(0, 15);
 
-    const parsedYear = gameCompletedYear && gameCompletedYear.value 
-      ? parseInt(gameCompletedYear.value, 10) 
-      : new Date().getFullYear();
+    // El año solo tiene sentido si el juego está terminado.
+    const parsedYear = COMPLETED_STATUSES.includes(activeStatus)
+      ? (parseInt(gameCompletedYear?.value, 10) || new Date().getFullYear())
+      : null;
 
     const gameData = {
       title: title,
-      coverUrl: finalCover,
+      coverUrl: currentSelectedCover.startsWith("https://") ? currentSelectedCover : "",
       status: activeStatus,
       platforms: [...activePlatforms],
-      rating: parseFloat(scoreRange.value),
-      hours: parseInt(gameHours.value, 10) || 0,
-      targetHours: parseInt(gameTargetHours.value, 10) || 0,
+      rating: isRated ? parseFloat(scoreRange.value) : null,
+      hours: Math.max(0, parseInt(gameHours.value, 10) || 0),
+      targetHours: Math.max(0, parseInt(gameTargetHours.value, 10) || 0),
       completedYear: parsedYear,
       favorite: isFavorite,
       tags: parsedTags,
-      notes: sanitizeInput(gameNotes.value)
+      notes: sanitizeInput(gameNotes.value).slice(0, 2000)
     };
 
     if (activeStatus === "platinum") SoundFX.playTrophy();
     else SoundFX.playClick();
 
+    let savedGame;
     if (editingGameId) {
       StorageManager.updateGame(editingGameId, gameData);
+      savedGame = { id: editingGameId, ...gameData };
     } else {
-      StorageManager.addGame({ id: Date.now(), ...gameData });
+      savedGame = { id: newGameId(), ...gameData };
+      StorageManager.addGame(savedGame);
     }
 
-    // Sincronizar de inmediato con Supabase
-    if (window.DB) {
-      await DB.syncLocalToCloud(StorageManager.getGames());
-    }
+    // Solo se sube el juego que cambió
+    await cloudRun(() => DB.upsertGame(savedGame), "No se pudo guardar en la nube.");
 
     renderLibrary();
     resetForm();
@@ -495,7 +664,7 @@ if (saveGameBtn) {
 function renderTagChips(tags = []) {
   if (!tags || tags.length === 0) return "";
   return tags.map(tag => {
-    const t = tag.toLowerCase();
+    const t = String(tag).toLowerCase();
     let colorClass = "bg-indigo-950/60 border-indigo-500/40 text-indigo-300";
     if (t.includes("souls") || t.includes("rpg")) {
       colorClass = "bg-rose-950/60 border-rose-500/50 text-rose-300";
@@ -506,7 +675,7 @@ function renderTagChips(tags = []) {
     } else if (t.includes("action") || t.includes("shooter")) {
       colorClass = "bg-cyan-950/60 border-cyan-500/50 text-cyan-300";
     }
-    return `<span class="text-[9px] font-extrabold px-2 py-0.5 rounded-md border ${colorClass}">${tag}</span>`;
+    return `<span class="text-[9px] font-extrabold px-2 py-0.5 rounded-md border ${colorClass}">${escapeHTML(tag)}</span>`;
   }).join(" ");
 }
 
@@ -584,7 +753,7 @@ function getCurrentDataset() {
 
 function renderCommandResults(query) {
   const lib = getCurrentDataset();
-  const matches = query ? lib.filter(g => g.title.toLowerCase().includes(query)) : lib.slice(0, 6);
+  const matches = query ? lib.filter(g => String(g.title).toLowerCase().includes(query)) : lib.slice(0, 6);
 
   commandResults.innerHTML = "";
   if (matches.length === 0) {
@@ -597,13 +766,13 @@ function renderCommandResults(query) {
     item.className = "flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition";
     item.innerHTML = `
       <div class="flex items-center gap-3">
-        <img src="${game.coverUrl}" class="w-8 h-10 object-cover rounded bg-slate-900" onerror="this.src='${CanvasPoster.generateSmartPoster(game.title)}'">
+        ${coverImg(game, "w-8 h-10 object-cover rounded bg-slate-900")}
         <div>
-          <p class="text-xs font-bold text-white console-font">${game.title}</p>
-          <p class="text-[10px] text-slate-400">${(game.platforms || []).join(", ")} • ${game.hours || 0}h</p>
+          <p class="text-xs font-bold text-white console-font">${escapeHTML(game.title)}</p>
+          <p class="text-[10px] text-slate-400">${escapeHTML((game.platforms || []).join(", "))} • ${Number(game.hours) || 0}h</p>
         </div>
       </div>
-      <span class="text-xs font-black text-amber-400 console-font"><i class="fa-solid fa-star text-[10px]"></i> ${game.rating.toFixed(1)}</span>
+      <span class="text-xs font-black text-amber-400 console-font"><i class="fa-solid fa-star text-[10px]"></i> ${fmtRating(game)}</span>
     `;
     item.onclick = () => {
       closeCommandPalette();
@@ -683,14 +852,17 @@ function setupNowPlayingCarousel(playingGames) {
     if (npCoverBg) npCoverBg.style.opacity = "0.15";
 
     setTimeout(() => {
+      const src = coverSrc(game);
       if (npCover) {
-        npCover.src = game.coverUrl;
+        npCover.dataset.fallbackTitle = game.title;
+        delete npCover.dataset.fallbackApplied;
+        npCover.src = src;
         npCover.classList.remove("hidden");
       }
       if (npPlaceholderIcon) npPlaceholderIcon.classList.add("hidden");
 
       if (npCoverBg) {
-        npCoverBg.style.backgroundImage = `url('${game.coverUrl}')`;
+        npCoverBg.style.backgroundImage = `url(${JSON.stringify(src)})`;
       }
 
       if (npTitle) npTitle.innerText = game.title;
@@ -707,8 +879,8 @@ function setupNowPlayingCarousel(playingGames) {
       }
 
       if (game.targetHours && game.targetHours > 0) {
-        const pct = Math.min(100, Math.round((game.hours / game.targetHours) * 100));
-        if (npProgressText) npProgressText.innerText = `${pct}% (${game.hours}h / ${game.targetHours}h)`;
+        const pct = Math.min(100, Math.round(((game.hours || 0) / game.targetHours) * 100));
+        if (npProgressText) npProgressText.innerText = `${pct}% (${game.hours || 0}h / ${game.targetHours}h)`;
         if (npProgressBar) npProgressBar.style.width = `${pct}%`;
         if (npProgressContainer) npProgressContainer.classList.remove("hidden");
       } else {
@@ -741,9 +913,9 @@ function renderLibrary() {
   const sortBy = sortBySelect ? sortBySelect.value : "recent";
 
   const playingGames = lib.filter(g => g.status === 'playing');
-  const completedCount = lib.filter(g => g.status === 'completed' || g.status === 'extras' || g.status === 'platinum').length;
+  const completedCount = lib.filter(g => COMPLETED_STATUSES.includes(g.status)).length;
   const platinumCount = lib.filter(g => g.status === 'platinum').length;
-  const totalHours = lib.reduce((acc, g) => acc + (g.hours || 0), 0);
+  const totalHours = lib.reduce((acc, g) => acc + (Number(g.hours) || 0), 0);
 
   const elPlaying = document.getElementById("statPlaying");
   const elCompleted = document.getElementById("statCompleted");
@@ -757,12 +929,11 @@ function renderLibrary() {
   if (elHours) elHours.innerText = totalHours > 0 ? `${totalHours}h` : "0h";
 
   if (elAvg) {
-    if (lib.length > 0) {
-      const avg = lib.reduce((acc, g) => acc + g.rating, 0) / lib.length;
-      elAvg.innerText = avg.toFixed(1);
-    } else {
-      elAvg.innerText = "0.0";
-    }
+    // El promedio ignora los juegos sin calificar
+    const rated = ratedGames(lib);
+    elAvg.innerText = rated.length > 0
+      ? (rated.reduce((acc, g) => acc + Number(g.rating), 0) / rated.length).toFixed(1)
+      : "—";
   }
 
   setupNowPlayingCarousel(playingGames);
@@ -773,9 +944,9 @@ function renderLibrary() {
     if (currentFilter === "favorite") {
       filtered = filtered.filter(g => g.favorite);
     } else if (currentFilter === "completed") {
-      filtered = filtered.filter(g => g.status === 'completed' || g.status === 'extras' || g.status === 'platinum');
+      filtered = filtered.filter(g => COMPLETED_STATUSES.includes(g.status));
     } else if (currentFilter === "tier-masterpiece") {
-      filtered = filtered.filter(g => g.rating >= 9.0);
+      filtered = filtered.filter(g => hasRating(g) && Number(g.rating) >= 9.0);
     } else {
       filtered = filtered.filter(g => g.status === currentFilter);
     }
@@ -786,21 +957,29 @@ function renderLibrary() {
   }
 
   if (term) {
-    filtered = filtered.filter(g => 
-      g.title.toLowerCase().includes(term) || 
-      (g.platforms && g.platforms.some(p => p.toLowerCase().includes(term))) ||
-      (g.tags && g.tags.some(t => t.toLowerCase().includes(term)))
+    filtered = filtered.filter(g =>
+      String(g.title).toLowerCase().includes(term) ||
+      (g.platforms && g.platforms.some(p => String(p).toLowerCase().includes(term))) ||
+      (g.tags && g.tags.some(t => String(t).toLowerCase().includes(term)))
     );
   }
 
+  // Los juegos sin calificar van siempre al final al ordenar por nota
+  const byRating = (dir) => (a, b) => {
+    if (!hasRating(a) && !hasRating(b)) return 0;
+    if (!hasRating(a)) return 1;
+    if (!hasRating(b)) return -1;
+    return dir * (Number(a.rating) - Number(b.rating));
+  };
+
   if (sortBy === 'rating-desc') {
-    filtered.sort((a, b) => b.rating - a.rating);
+    filtered.sort(byRating(-1));
   } else if (sortBy === 'rating-asc') {
-    filtered.sort((a, b) => a.rating - b.rating);
+    filtered.sort(byRating(1));
   } else if (sortBy === 'hours-desc') {
     filtered.sort((a, b) => (b.hours || 0) - (a.hours || 0));
   } else if (sortBy === 'title-asc') {
-    filtered.sort((a, b) => a.title.localeCompare(b.title));
+    filtered.sort((a, b) => String(a.title).localeCompare(String(b.title)));
   } else {
     filtered.sort((a, b) => b.id - a.id);
   }
@@ -810,7 +989,7 @@ function renderLibrary() {
   if (filtered.length === 0) {
     gamesGrid.className = "block";
     const emptyMsg = isSpectatorMode 
-      ? `El usuario <span class="text-indigo-400 font-black">@${publicProfileTarget}</span> no existe o no tiene ningún título registrado.`
+      ? `El usuario <span class="text-indigo-400 font-black">@${escapeHTML(publicProfileTarget)}</span> no existe, tiene su estante privado o no ha registrado títulos.`
       : `No se encontraron títulos en esta categoría.`;
 
     gamesGrid.innerHTML = `
@@ -843,6 +1022,8 @@ function renderLibrary() {
         badgeHtml = `<span class="badge-extras text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-star-half-stroke"></i> Extras</span>`;
       } else if (game.status === 'onhold') {
         badgeHtml = `<span class="badge-onhold text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-pause"></i> Pausa</span>`;
+      } else if (game.status === 'backlog') {
+        badgeHtml = `<span class="text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1 bg-slate-800/90 text-slate-300 border border-white/15"><i class="fa-solid fa-inbox"></i> Pendiente</span>`;
       } else {
         badgeHtml = `<span class="badge-completed text-[10px] font-bold px-2 py-0.5 rounded-md flex items-center gap-1"><i class="fa-solid fa-check"></i> Pasado</span>`;
       }
@@ -860,11 +1041,11 @@ function renderLibrary() {
         return '<i class="fa-solid fa-ghost text-purple-400"></i>';
       }).join(" ");
 
-      const hoursDisplay = game.hours ? `<span class="text-[10px] text-slate-300 font-bold bg-black/70 px-1.5 py-0.5 rounded border border-white/10"><i class="fa-regular fa-clock mr-1 text-slate-400"></i>${game.hours}h</span>` : '';
+      const hoursDisplay = game.hours ? `<span class="text-[10px] text-slate-300 font-bold bg-black/70 px-1.5 py-0.5 rounded border border-white/10"><i class="fa-regular fa-clock mr-1 text-slate-400"></i>${Number(game.hours) || 0}h</span>` : '';
 
       let progressMini = "";
       if (game.targetHours && game.targetHours > 0) {
-        const p = Math.min(100, Math.round((game.hours / game.targetHours) * 100));
+        const p = Math.min(100, Math.round(((Number(game.hours) || 0) / Number(game.targetHours)) * 100));
         progressMini = `
           <div class="w-full bg-black/50 h-1 rounded-full overflow-hidden mt-1 border border-white/5">
             <div class="bg-gradient-to-r from-orange-400 to-amber-300 h-full" style="width: ${p}%"></div>
@@ -873,20 +1054,20 @@ function renderLibrary() {
       }
 
       const notesBlock = game.notes ? `
-        <p class="text-[11px] text-slate-300 line-clamp-2 italic p-2 rounded-lg bg-black/30 border border-white/5 leading-snug">"${game.notes}"</p>
+        <p class="text-[11px] text-slate-300 line-clamp-2 italic p-2 rounded-lg bg-black/30 border border-white/5 leading-snug">"${escapeHTML(game.notes)}"</p>
       ` : '';
 
       card.innerHTML = `
         <div class="relative aspect-[3/4] overflow-hidden bg-slate-950">
-          <img src="${game.coverUrl}" alt="${game.title}" class="w-full h-full object-cover transition" onerror="this.src='${CanvasPoster.generateSmartPoster(game.title)}'">
-          
+          ${coverImg(game, "w-full h-full object-cover transition")}
+
           <div class="absolute top-2.5 left-2.5 z-10 flex items-center gap-1.5">
             ${badgeHtml}
             ${favBadge}
           </div>
 
           <div class="absolute top-2.5 right-2.5 z-10 bg-black/85 backdrop-blur-md px-2 py-0.5 rounded-lg border border-white/15 text-amber-400 font-black text-xs flex items-center gap-1 shadow-lg console-font">
-            <i class="fa-solid fa-star text-[10px]"></i> ${game.rating.toFixed(1)}
+            <i class="fa-solid fa-star text-[10px]"></i> ${fmtRating(game)}
           </div>
 
           <div class="absolute bottom-2.5 left-2.5 right-2.5 z-10 flex flex-col gap-1 drop-shadow-md">
@@ -900,7 +1081,7 @@ function renderLibrary() {
 
         <div class="p-3 sm:p-3.5 flex flex-col justify-between flex-1 gap-2.5">
           <div>
-            <h3 class="font-bold text-xs sm:text-sm text-slate-100 line-clamp-1 group-hover:text-indigo-400 transition console-font" title="${game.title}">${game.title}</h3>
+            <h3 class="font-bold text-xs sm:text-sm text-slate-100 line-clamp-1 group-hover:text-indigo-400 transition console-font" title="${escapeHTML(game.title)}">${escapeHTML(game.title)}</h3>
             <div class="flex flex-wrap gap-1 mt-1.5">
               ${renderTagChips(game.tags ? game.tags.slice(0, 2) : [])}
             </div>
@@ -929,24 +1110,24 @@ function renderLibrary() {
 
       row.innerHTML = `
         <div class="flex items-center gap-3.5 overflow-hidden">
-          <img src="${game.coverUrl}" class="w-12 h-16 object-cover rounded-xl bg-slate-950 shrink-0 border border-white/10" onerror="this.src='${CanvasPoster.generateSmartPoster(game.title)}'">
+          ${coverImg(game, "w-12 h-16 object-cover rounded-xl bg-slate-950 shrink-0 border border-white/10")}
           <div class="overflow-hidden">
             <div class="flex items-center gap-2">
-              <h3 class="font-black text-sm text-white console-font truncate">${game.title}</h3>
+              <h3 class="font-black text-sm text-white console-font truncate">${escapeHTML(game.title)}</h3>
               ${game.favorite ? '<i class="fa-solid fa-crown text-amber-400 text-xs"></i>' : ''}
             </div>
             <div class="flex items-center gap-2 mt-1 text-xs text-slate-400">
               <span>${platformIcons}</span>
               <span>•</span>
-              <span>${game.hours || 0} hrs</span>
-              ${game.targetHours ? `<span>• Meta: ${game.targetHours}h</span>` : ''}
+              <span>${Number(game.hours) || 0} hrs</span>
+              ${game.targetHours ? `<span>• Meta: ${Number(game.targetHours) || 0}h</span>` : ''}
             </div>
           </div>
         </div>
 
         <div class="flex items-center gap-4 shrink-0">
           <span class="text-sm font-black text-amber-400 console-font flex items-center gap-1">
-            <i class="fa-solid fa-star text-xs"></i> ${game.rating.toFixed(1)}
+            <i class="fa-solid fa-star text-xs"></i> ${fmtRating(game)}
           </span>
           <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
         </div>
@@ -980,24 +1161,34 @@ const shareCardCanvas = document.getElementById("shareCardCanvas");
 function openDetailModal(game) {
   SoundFX.playWhoosh();
   activeModalGameId = game.id;
-  if (modalCover) modalCover.src = game.coverUrl;
-  if (modalCoverThumb) modalCoverThumb.src = game.coverUrl;
+  [modalCover, modalCoverThumb].forEach(img => {
+    if (!img) return;
+    img.dataset.fallbackTitle = game.title;
+    delete img.dataset.fallbackApplied;
+    img.src = coverSrc(game);
+  });
   if (modalTitle) modalTitle.innerText = game.title;
-  if (modalRating) modalRating.innerText = game.rating.toFixed(1);
+  if (modalRating) modalRating.innerText = fmtRating(game);
   if (modalReview) modalReview.innerText = game.notes || "Sin reseña escrita.";
 
-  let statusBadge = game.status === 'playing' ? '🔥 Jugando actualmente' : 
-                    (game.status === 'platinum' ? '🏆 Platinado / 100%' : 
-                    (game.status === 'extras' ? '⭐ Campaña + Extras' : 
-                    (game.status === 'onhold' ? '⏸️ En Pausa' : '✅ Historia Principal')));
+  const statusLabels = {
+    playing: '🔥 Jugando actualmente',
+    platinum: '🏆 Platinado / 100%',
+    extras: '⭐ Campaña + Extras',
+    onhold: '⏸️ En Pausa',
+    backlog: '📥 Pendiente',
+    completed: '✅ Historia Principal'
+  };
+  const statusBadge = statusLabels[game.status] || statusLabels.completed;
+  const completedYear = parseInt(game.completedYear, 10);
 
   if (modalBadges) {
     modalBadges.innerHTML = `
       <span class="px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded text-[11px] border border-indigo-500/30">${statusBadge}</span>
-      <span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]">${(game.platforms || []).join(", ")}</span>
-      ${game.hours ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-clock mr-1"></i>${game.hours}h</span>` : ''}
-      ${game.completedYear ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-calendar mr-1"></i>${game.completedYear}</span>` : ''}
-      ${game.targetHours ? `<span class="px-2 py-0.5 bg-orange-500/20 text-orange-300 rounded text-[11px]">Meta: ${game.targetHours}h</span>` : ''}
+      <span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]">${escapeHTML((game.platforms || []).join(", "))}</span>
+      ${game.hours ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-clock mr-1"></i>${Number(game.hours) || 0}h</span>` : ''}
+      ${completedYear && COMPLETED_STATUSES.includes(game.status) ? `<span class="px-2 py-0.5 bg-slate-800 text-slate-300 rounded text-[11px]"><i class="fa-regular fa-calendar mr-1"></i>${completedYear}</span>` : ''}
+      ${game.targetHours ? `<span class="px-2 py-0.5 bg-orange-500/20 text-orange-300 rounded text-[11px]">Meta: ${Number(game.targetHours) || 0}h</span>` : ''}
     `;
   }
 
@@ -1039,13 +1230,9 @@ if (modalDeleteBtn) {
   modalDeleteBtn.addEventListener("click", async () => {
     if (isSpectatorMode) return;
     if (confirm("¿Seguro que deseas eliminar este juego de tu colección?")) {
-      StorageManager.deleteGame(activeModalGameId);
-      if (window.DB) {
-        if (window.supabaseClient) {
-          await supabaseClient.from('games').delete().eq('id', activeModalGameId);
-        }
-        await DB.syncLocalToCloud(StorageManager.getGames());
-      }
+      const gameId = activeModalGameId;
+      StorageManager.deleteGame(gameId);
+      await cloudRun(() => DB.deleteGame(gameId), "No se pudo borrar de la nube.");
       renderLibrary();
       detailModal.classList.add("hidden");
     }
@@ -1109,9 +1296,9 @@ function updateWrappedUI(selectedYear) {
   const totalHours = games.reduce((acc, g) => acc + (g.hours || 0), 0);
   document.getElementById("wrappedHours").innerText = `${totalHours} Horas`;
 
-  const topRated = [...games].sort((a, b) => b.rating - a.rating)[0];
-  document.getElementById("wrappedTopGame").innerText = topRated.title;
-  document.getElementById("wrappedTopGameScore").innerText = `★ ${topRated.rating.toFixed(1)} / 10`;
+  const topRated = ratedGames(games).sort((a, b) => Number(b.rating) - Number(a.rating))[0];
+  document.getElementById("wrappedTopGame").innerText = topRated ? topRated.title : "Sin calificar";
+  document.getElementById("wrappedTopGameScore").innerText = topRated ? `★ ${fmtRating(topRated)} / 10` : "★ —";
 
   const mostPlayed = [...games].sort((a, b) => (b.hours || 0) - (a.hours || 0))[0];
   document.getElementById("wrappedMostPlayed").innerText = mostPlayed.title;
@@ -1177,7 +1364,12 @@ async function renderTopPoster() {
   const lib = getCurrentDataset();
   if (lib.length === 0) return;
   const count = topCountSelect ? parseInt(topCountSelect.value, 10) : 5;
-  const topList = [...lib].sort((a, b) => b.rating - a.rating).slice(0, count);
+  const topList = ratedGames(lib).sort((a, b) => Number(b.rating) - Number(a.rating)).slice(0, count);
+  if (topList.length === 0) {
+    alert("Califica al menos un juego para generar tu Top.");
+    top5Modal.classList.add("hidden");
+    return;
+  }
   await CanvasPoster.drawTopPoster(top5Canvas, topList, count);
 }
 
@@ -1230,7 +1422,7 @@ if (openStatsBtn && statsModal) {
       return;
     }
 
-    const completed = lib.filter(g => ['completed', 'extras', 'platinum'].includes(g.status)).length;
+    const completed = lib.filter(g => COMPLETED_STATUSES.includes(g.status)).length;
     const rate = Math.round((completed / lib.length) * 100);
     const elRate = document.getElementById("statCompletionRate");
     if (elRate) elRate.innerText = `${rate}%`;
@@ -1240,7 +1432,7 @@ if (openStatsBtn && statsModal) {
     const elAvgHours = document.getElementById("statAvgHours");
     if (elAvgHours) elAvgHours.innerText = `${avgHours}h`;
 
-    const masters = lib.filter(g => g.rating >= 9).length;
+    const masters = lib.filter(g => hasRating(g) && Number(g.rating) >= 9).length;
     const elMasters = document.getElementById("statMasterpieces");
     if (elMasters) elMasters.innerText = masters;
 
@@ -1260,14 +1452,16 @@ if (openStatsBtn && statsModal) {
       }
     }
     const elTopPlat = document.getElementById("statTopPlatform");
-    if (elTopPlat) elTopPlat.innerText = topPlat;
+    if (elTopPlat) elTopPlat.textContent = topPlat;
 
     const playing = lib.filter(g => g.status === 'playing').length;
     const onhold = lib.filter(g => g.status === 'onhold').length;
+    const backlog = lib.filter(g => g.status === 'backlog').length;
 
     const pPlaying = Math.round((playing / lib.length) * 100);
     const pCompleted = Math.round((completed / lib.length) * 100);
     const pOnhold = Math.round((onhold / lib.length) * 100);
+    const pBacklog = Math.round((backlog / lib.length) * 100);
 
     const statusBar = document.getElementById("statusBarBreakdown");
     if (statusBar) {
@@ -1275,6 +1469,7 @@ if (openStatsBtn && statsModal) {
         <div style="width: ${pCompleted}%" class="bg-emerald-500 h-full" title="Completados"></div>
         <div style="width: ${pPlaying}%" class="bg-orange-500 h-full" title="Jugando"></div>
         <div style="width: ${pOnhold}%" class="bg-yellow-500 h-full" title="En Pausa"></div>
+        <div style="width: ${pBacklog}%" class="bg-slate-500 h-full" title="Pendientes"></div>
       `;
     }
 
@@ -1284,6 +1479,7 @@ if (openStatsBtn && statsModal) {
         <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> ${completed} Pasados</span>
         <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-orange-500"></span> ${playing} Jugando</span>
         <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> ${onhold} En Pausa</span>
+        <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-slate-500"></span> ${backlog} Pendientes</span>
       `;
     }
 
@@ -1293,7 +1489,7 @@ if (openStatsBtn && statsModal) {
         const perc = Math.round((count / lib.length) * 100);
         return `
           <div class="flex items-center justify-between text-xs">
-            <span class="text-slate-300 font-semibold">${plat}</span>
+            <span class="text-slate-300 font-semibold">${escapeHTML(plat)}</span>
             <div class="flex items-center gap-2">
               <div class="w-28 bg-slate-800 h-2 rounded-full overflow-hidden">
                 <div class="bg-indigo-500 h-full" style="width: ${perc}%"></div>
@@ -1342,18 +1538,34 @@ document.getElementById("fileInput")?.addEventListener("change", (e) => {
   if (!file) return;
   const reader = new FileReader();
   reader.onload = async (event) => {
+    let games;
     try {
       const parsed = JSON.parse(event.target.result);
-      if (Array.isArray(parsed)) {
-        StorageManager.saveGames(parsed);
-        if (window.DB) await DB.syncLocalToCloud(parsed);
-        renderLibrary();
-        SoundFX.playTrophy();
-        alert("¡Colección restaurada con éxito!");
-      }
-    } catch(err) {
-      alert("El archivo subido no es válido.");
+      if (!Array.isArray(parsed)) throw new Error("formato");
+      const seen = new Set();
+      games = parsed.map(normalizeGame).filter(g => {
+        if (!g || seen.has(g.id)) return false;
+        seen.add(g.id);
+        return true;
+      });
+    } catch (err) {
+      alert("El archivo subido no es una copia de seguridad válida.");
+      return;
+    } finally {
+      e.target.value = "";
     }
+
+    if (games.length === 0) {
+      alert("La copia de seguridad no contiene juegos válidos.");
+      return;
+    }
+    if (!confirm(`Esta copia tiene ${games.length} juegos y REEMPLAZARÁ tu estante actual.\n\n¿Continuar?`)) return;
+
+    StorageManager.saveGames(games);
+    await cloudRun(() => DB.replaceAllGames(games), "No se pudo restaurar la copia en la nube.");
+    renderLibrary();
+    SoundFX.playTrophy();
+    showToast(`¡Colección restaurada! ${games.length} juegos.`);
   };
   reader.readAsText(file);
 });
@@ -1408,16 +1620,9 @@ window.ejecutarConsultaSteam = async function() {
 
   const rawInput = inputEl ? inputEl.value.trim() : "";
   if (!rawInput) {
-    alert("Por favor introduce tu SteamID64 numérico (17 dígitos).");
+    alert("Introduce tu SteamID64 (17 dígitos) o el enlace de tu perfil de Steam.");
     if (inputEl) inputEl.focus();
     return;
-  }
-
-  let steamId = rawInput;
-  if (steamId.includes("/profiles/")) {
-    steamId = steamId.split("/profiles/")[1].replace(/\//g, "");
-  } else if (steamId.includes("/id/")) {
-    steamId = steamId.split("/id/")[1].replace(/\//g, "");
   }
 
   if (btnEl) btnEl.disabled = true;
@@ -1425,7 +1630,8 @@ window.ejecutarConsultaSteam = async function() {
   if (textEl) textEl.innerText = "Consultando...";
 
   try {
-    const res = await fetch(`/api/steam?steamid=${steamId}&_t=${Date.now()}`);
+    // El servidor valida el valor y resuelve las URLs personalizadas (/id/nombre)
+    const res = await fetch(`/api/steam?steamid=${encodeURIComponent(rawInput)}`);
     
     if (!res.ok) {
       const errData = await res.json().catch(() => null);
@@ -1442,16 +1648,13 @@ window.ejecutarConsultaSteam = async function() {
     window.fetchedSteamGames = rawGames
       .filter(g => (g.playtime_forever || 0) >= 30)
       .sort((a, b) => b.playtime_forever - a.playtime_forever)
-      .map(g => {
-        const hours = Math.round(g.playtime_forever / 60);
-        return {
-          appId: g.appid,
-          title: g.name,
-          hours: hours,
-          coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`,
-          status: hours > 40 ? 'completed' : 'playing'
-        };
-      });
+      .filter(g => Number.isInteger(g.appid) && typeof g.name === "string")
+      .map(g => ({
+        appId: g.appid,
+        title: sanitizeInput(g.name).slice(0, 150),
+        hours: Math.round(g.playtime_forever / 60),
+        coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`
+      }));
 
     if (window.fetchedSteamGames.length === 0) {
       alert("Perfil público detectado, pero sin títulos con más de 30 minutos registrados.");
@@ -1464,10 +1667,10 @@ window.ejecutarConsultaSteam = async function() {
         <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition">
           <div class="flex items-center gap-3">
             <input type="checkbox" data-index="${idx}" checked class="rounded border-white/20 accent-blue-500 h-4 w-4">
-            <img src="${g.coverUrl}" class="w-8 h-11 object-cover rounded bg-slate-950 shrink-0" onerror="this.src='https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appId}/header.jpg'">
+            ${coverImg(g, "w-8 h-11 object-cover rounded bg-slate-950 shrink-0")}
             <div>
-              <p class="text-xs font-bold text-white line-clamp-1">${g.title}</p>
-              <p class="text-[10px] text-slate-400">${g.hours} horas registradas en Steam</p>
+              <p class="text-xs font-bold text-white line-clamp-1">${escapeHTML(g.title)}</p>
+              <p class="text-[10px] text-slate-400">${Number(g.hours) || 0} horas registradas en Steam</p>
             </div>
           </div>
         </label>
@@ -1504,26 +1707,29 @@ if (confirmImportSteamBtn) {
     }
 
     const currentGames = StorageManager.getGames();
-    const existingTitles = new Set(currentGames.map(g => g.title.toLowerCase().trim()));
+    const existingTitles = new Set(currentGames.map(g => String(g.title).toLowerCase().trim()));
     const toImport = [];
 
+    // Steam no dice si terminaste un juego ni qué nota le das: se importan
+    // como "Pendiente" y sin calificar, para que no distorsionen tus estadísticas.
     checkboxes.forEach(cb => {
       const idx = parseInt(cb.dataset.index, 10);
       const g = window.fetchedSteamGames[idx];
       if (g && !existingTitles.has(g.title.toLowerCase().trim())) {
+        existingTitles.add(g.title.toLowerCase().trim());
         toImport.push({
-          id: Date.now() + Math.floor(Math.random() * 100000),
+          id: newGameId(),
           title: g.title,
           coverUrl: g.coverUrl,
-          status: g.status,
+          status: "backlog",
           platforms: ["PC"],
-          rating: 8.5,
+          rating: null,
           hours: g.hours,
           targetHours: 0,
-          completedYear: new Date().getFullYear(),
+          completedYear: null,
           favorite: false,
           tags: ["#Steam"],
-          notes: "Importado automáticamente desde Steam."
+          notes: ""
         });
       }
     });
@@ -1534,27 +1740,29 @@ if (confirmImportSteamBtn) {
       return;
     }
 
-    const updatedCatalog = [...currentGames, ...toImport];
-    StorageManager.saveGames(updatedCatalog);
-    if (window.DB) {
-      await DB.syncLocalToCloud(updatedCatalog);
-    }
+    StorageManager.saveGames([...currentGames, ...toImport]);
+    await cloudRun(() => DB.upsertGames(toImport), "No se pudieron subir los juegos importados a la nube.");
 
     renderLibrary();
     SoundFX.playTrophy();
     steamModal.classList.add("hidden");
-    alert(`¡Se han importado ${toImport.length} títulos desde Steam con éxito!`);
+    alert(`¡Se importaron ${toImport.length} títulos desde Steam!\n\nQuedaron como "Pendiente" y sin nota: edítalos para marcar los que ya terminaste.`);
   });
 }
 
 // Cargar Demo & Limpiar
 document.getElementById("loadDemoBtn")?.addEventListener("click", async () => {
   if (isSpectatorMode) return;
+  // La demo solo se carga en un estante vacío, para no borrar nada por accidente.
+  if (StorageManager.getGames().length > 0) {
+    alert("La demo solo se puede cargar con el estante vacío.");
+    return;
+  }
   SoundFX.playTrophy();
   const currentYear = new Date().getFullYear();
   const demoGames = [
     {
-      id: Date.now() - 10000,
+      id: newGameId(),
       title: "Elden Ring",
       coverUrl: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80",
       status: "platinum",
@@ -1568,7 +1776,7 @@ document.getElementById("loadDemoBtn")?.addEventListener("click", async () => {
       notes: "De las experiencias más completas de exploración. Platinado tras recorrer cada rincón."
     },
     {
-      id: Date.now() - 20000,
+      id: newGameId(),
       title: "Cyberpunk 2077",
       coverUrl: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=400&q=80",
       status: "playing",
@@ -1576,7 +1784,7 @@ document.getElementById("loadDemoBtn")?.addEventListener("click", async () => {
       rating: 9.5,
       hours: 68,
       targetHours: 90,
-      completedYear: currentYear,
+      completedYear: null,
       favorite: true,
       tags: ["#RPG", "#SciFi", "#Shooter"],
       notes: "Night City tiene una de las ambientaciones más densas de la industria."
@@ -1584,20 +1792,15 @@ document.getElementById("loadDemoBtn")?.addEventListener("click", async () => {
   ];
 
   StorageManager.saveGames(demoGames);
-  if (window.DB) await DB.syncLocalToCloud(demoGames);
+  await cloudRun(() => DB.upsertGames(demoGames), "No se pudo subir la demo a la nube.");
   renderLibrary();
 });
 
 document.getElementById("clearAllBtn")?.addEventListener("click", async () => {
   if (isSpectatorMode) return;
-  if (confirm("¿Seguro que deseas vaciar tu estante?")) {
+  if (confirm("¿Seguro que deseas vaciar tu estante? Esto también lo borra de la nube y no se puede deshacer.\n\nConsejo: exporta una copia antes.")) {
     StorageManager.clearAll();
-    if (window.DB && window.supabaseClient) {
-      const user = await DB.getUser();
-      if (user) {
-        await supabaseClient.from('games').delete().eq('user_id', user.id);
-      }
-    }
+    await cloudRun(() => DB.replaceAllGames([]), "No se pudo vaciar el estante en la nube.");
     renderLibrary();
     resetForm();
   }
@@ -1627,13 +1830,175 @@ if (themeToggleBtn) {
   });
 }
 
-// Sesión & Arranque Blindado
+// ==========================================
+// SESIÓN, PRIVACIDAD Y ARRANQUE
+// ==========================================
 const appAuthBtn = document.getElementById("appAuthBtn");
 const appUserLabel = document.getElementById("appUserLabel");
 const appUserIcon = document.getElementById("appUserIcon");
+const accountControls = document.getElementById("accountControls");
+const profileVisibilityBtn = document.getElementById("profileVisibilityBtn");
+const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+
+// A quién pertenece la copia local del estante (null = invitado)
+const LOCAL_OWNER_KEY = "game_vault_owner";
+
+function getLocalOwner() {
+  try { return localStorage.getItem(LOCAL_OWNER_KEY); } catch (e) { return null; }
+}
+function setLocalOwner(userId) {
+  try {
+    if (userId) localStorage.setItem(LOCAL_OWNER_KEY, userId);
+    else localStorage.removeItem(LOCAL_OWNER_KEY);
+  } catch (e) { /* almacenamiento no disponible */ }
+}
+
+function updateVisibilityUI(isPublic) {
+  if (!profileVisibilityBtn) return;
+  profileVisibilityBtn.dataset.public = isPublic ? "1" : "0";
+  profileVisibilityBtn.innerHTML = isPublic
+    ? '<i class="fa-solid fa-globe"></i> Estante público'
+    : '<i class="fa-solid fa-lock"></i> Estante privado';
+  profileVisibilityBtn.title = isPublic
+    ? "Cualquiera con tu enlace puede ver tus juegos. Pulsa para hacerlo privado."
+    : "Solo tú ves tus juegos. Pulsa para hacerlo público.";
+}
+
+if (profileVisibilityBtn) {
+  profileVisibilityBtn.addEventListener("click", async () => {
+    const makePublic = profileVisibilityBtn.dataset.public !== "1";
+    const message = makePublic
+      ? "¿Hacer público tu estante?\n\nCualquiera con tu enlace verá tus juegos, notas y horas."
+      : "¿Hacer privado tu estante?\n\nLos enlaces que compartiste dejarán de funcionar.";
+    if (!confirm(message)) return;
+    try {
+      await DB.setProfilePublic(makePublic);
+      updateVisibilityUI(makePublic);
+      showToast(makePublic ? "Tu estante ahora es público." : "Tu estante ahora es privado.");
+    } catch (err) {
+      showToast("No se pudo cambiar la privacidad: " + err.message, true);
+    }
+  });
+}
+
+if (deleteAccountBtn) {
+  deleteAccountBtn.addEventListener("click", async () => {
+    const answer = prompt("Esto borra tu cuenta, tu estante, tus comentarios y likes PARA SIEMPRE.\n\nConsejo: exporta una copia antes.\n\nEscribe ELIMINAR para confirmar:");
+    if (answer === null) return;
+    if (answer.trim().toUpperCase() !== "ELIMINAR") {
+      alert("No se eliminó nada.");
+      return;
+    }
+    try {
+      await DB.deleteMyAccount();
+      StorageManager.clearAll();
+      setLocalOwner(null);
+      alert("Tu cuenta y todos tus datos fueron eliminados.");
+      window.location.href = "index.html";
+    } catch (err) {
+      showToast("No se pudo eliminar la cuenta: " + err.message, true);
+    }
+  });
+}
+
+/** Limpia la copia local: portadas base64 antiguas, estados o notas inválidos. */
+function migrateLocalData() {
+  const raw = StorageManager.getGames();
+  const cleaned = raw.map(normalizeGame).filter(Boolean);
+  if (JSON.stringify(cleaned) !== JSON.stringify(raw)) StorageManager.saveGames(cleaned);
+}
+
+/**
+ * Carga el estante de la nube.
+ * - Si la copia local ya era de este usuario, manda la nube (evita revivir juegos borrados en otro dispositivo).
+ * - Si la copia local era de invitado, sus juegos nuevos se suben a la cuenta en vez de perderse.
+ */
+async function loadCloudShelf(user) {
+  let cloudGames;
+  try {
+    cloudGames = await DB.getCloudGames();
+  } catch (err) {
+    showToast("No se pudo cargar tu estante de la nube. Mostrando la copia de este navegador.", true);
+    return;
+  }
+
+  const local = StorageManager.getGames();
+  const localOwner = getLocalOwner();
+  let merged = cloudGames;
+
+  if (!localOwner && local.length > 0) {
+    const cloudIds = new Set(cloudGames.map(g => g.id));
+    const cloudTitles = new Set(cloudGames.map(g => String(g.title).toLowerCase().trim()));
+    const guestOnly = local.filter(g => !cloudIds.has(g.id) && !cloudTitles.has(String(g.title).toLowerCase().trim()));
+
+    if (guestOnly.length > 0) {
+      const ok = await cloudRun(() => DB.upsertGames(guestOnly), "No se pudieron subir los juegos que añadiste como invitado.");
+      if (ok) {
+        merged = [...cloudGames, ...guestOnly];
+        showToast(`Se añadieron a tu cuenta ${guestOnly.length} juego(s) que tenías como invitado.`);
+      } else {
+        return; // conservamos la copia local para no perder nada
+      }
+    }
+  }
+
+  StorageManager.saveGames(merged);
+  setLocalOwner(user.id);
+  renderLibrary();
+}
+
+let handledUserId; // undefined = aún no procesado
+
+async function handleSession(user) {
+  const userId = user?.id || null;
+  if (userId === handledUserId) return; // evita procesar dos veces el mismo evento
+  handledUserId = userId;
+  cloudUserId = userId;
+
+  if (!user) {
+    if (appUserLabel) appUserLabel.innerText = "Invitado";
+    if (appUserIcon) appUserIcon.className = "fa-solid fa-user text-indigo-400";
+    if (accountControls) accountControls.classList.add("hidden");
+    if (appAuthBtn) {
+      appAuthBtn.href = "login.html";
+      appAuthBtn.onclick = null;
+    }
+    // Si la copia local era de una cuenta (sesión expirada), no se muestra como invitado
+    if (getLocalOwner()) {
+      StorageManager.clearAll();
+      setLocalOwner(null);
+      renderLibrary();
+    }
+    return;
+  }
+
+  const profile = await DB.getMyProfile();
+  const alias = profile?.username || user.email.split("@")[0];
+  if (appUserLabel) appUserLabel.innerText = alias;
+  if (appUserIcon) appUserIcon.className = "fa-solid fa-cloud text-emerald-400";
+  if (accountControls) accountControls.classList.remove("hidden");
+  updateVisibilityUI(Boolean(profile?.is_public));
+
+  if (appAuthBtn) {
+    appAuthBtn.href = "#";
+    appAuthBtn.onclick = async (e) => {
+      e.preventDefault();
+      if (confirm(`Sesión activa como ${user.email}.\n¿Deseas cerrar sesión?`)) {
+        StorageManager.clearAll();
+        setLocalOwner(null);
+        await DB.signOut();
+        window.location.reload();
+      }
+    };
+  }
+
+  await loadCloudShelf(user);
+}
 
 async function initDashboard() {
-  // 1. MODO ESPECTADOR READ-ONLY
+  migrateLocalData();
+
+  // 1. MODO ESPECTADOR (solo lectura)
   if (isSpectatorMode) {
     if (spectatorBanner) spectatorBanner.classList.remove("hidden");
     if (spectatorTargetUser) spectatorTargetUser.innerText = `@${publicProfileTarget}`;
@@ -1642,30 +2007,8 @@ async function initDashboard() {
     if (shareProfileBtn) shareProfileBtn.classList.add("hidden");
 
     try {
-      if (window.DB && typeof DB.getGamesByUsername === "function") {
-        const cloudGames = await DB.getGamesByUsername(publicProfileTarget);
-        
-        if (!cloudGames || cloudGames.length === 0) {
-          spectatorGames = [];
-        } else {
-          spectatorGames = cloudGames.map(cg => ({
-            id: cg.id,
-            title: cg.title,
-            coverUrl: cg.cover_url,
-            status: cg.status,
-            platforms: cg.platforms || ["PC"],
-            rating: parseFloat(cg.rating),
-            hours: cg.hours || 0,
-            targetHours: cg.target_hours || 0,
-            completedYear: cg.completed_year || new Date().getFullYear(),
-            favorite: Boolean(cg.favorite),
-            tags: cg.tags || [],
-            notes: cg.notes || ""
-          }));
-        }
-      } else {
-        spectatorGames = [];
-      }
+      const games = window.DB ? await DB.getGamesByUsername(publicProfileTarget) : null;
+      spectatorGames = (games || []).map(normalizeGame).filter(Boolean);
     } catch (e) {
       console.warn("Fallo cargando perfil público:", e);
       spectatorGames = [];
@@ -1675,71 +2018,16 @@ async function initDashboard() {
     return;
   }
 
-  // 2. MODO DUEÑO CON AISLAMIENTO DE USUARIO
+  // 2. MODO DUEÑO
   renderLibrary();
-
   if (!window.supabaseClient) return;
 
-  async function syncUserSession(user) {
-    if (user) {
-      const alias = user.user_metadata?.username || user.email.split('@')[0];
-      if (appUserLabel) appUserLabel.innerText = alias;
-      if (appUserIcon) appUserIcon.className = "fa-solid fa-cloud-check text-emerald-400";
-      
-      if (appAuthBtn) {
-        appAuthBtn.href = "javascript:void(0)";
-        appAuthBtn.onclick = async () => {
-          if (confirm(`Sesión activa como ${user.email}.\n¿Deseas cerrar sesión?`)) {
-            StorageManager.clearAll();
-            await DB.signOut();
-            window.location.reload();
-          }
-        };
-      }
-
-      try {
-        const cloudGames = await DB.getCloudGames();
-        const local = StorageManager.getGames();
-
-        if (cloudGames && cloudGames.length > 0) {
-          const mappedCloud = cloudGames.map(cg => ({
-            id: cg.id,
-            title: cg.title,
-            coverUrl: cg.cover_url,
-            status: cg.status,
-            platforms: cg.platforms || ["PC"],
-            rating: parseFloat(cg.rating),
-            hours: cg.hours || 0,
-            targetHours: cg.target_hours || 0,
-            completedYear: cg.completed_year || new Date().getFullYear(),
-            favorite: Boolean(cg.favorite),
-            tags: cg.tags || [],
-            notes: cg.notes || ""
-          }));
-
-          StorageManager.saveGames(mappedCloud);
-          renderLibrary();
-        } else if (local && local.length > 0) {
-          await DB.syncLocalToCloud(local);
-        }
-      } catch (e) {
-        console.warn("Error sincronizando catálogo propio:", e);
-      }
-    } else {
-      if (appUserLabel) appUserLabel.innerText = "Invitado";
-      if (appUserIcon) appUserIcon.className = "fa-solid fa-user text-indigo-400";
-      if (appAuthBtn) {
-        appAuthBtn.href = "login.html";
-        appAuthBtn.onclick = null;
-      }
-    }
-  }
-
   const { data: { session } } = await supabaseClient.auth.getSession();
-  syncUserSession(session?.user || null);
+  await handleSession(session?.user || null);
 
-  supabaseClient.auth.onAuthStateChange((_event, session) => {
-    syncUserSession(session?.user || null);
+  supabaseClient.auth.onAuthStateChange((_event, newSession) => {
+    // Se difiere para no llamar a Supabase dentro del propio callback
+    setTimeout(() => handleSession(newSession?.user || null), 0);
   });
 }
 

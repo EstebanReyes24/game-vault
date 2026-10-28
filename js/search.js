@@ -46,7 +46,7 @@ const SearchEngine = {
         items = Object.values(data.query.pages)
           .filter(p => p.thumbnail)
           .map(p => ({
-            title: p.title.replace(/\s*\((.*video game.*\vert{}.*game.*)\)/i, "").trim(),
+            title: p.title.replace(/\s*\([^)]*game[^)]*\)\s*$/i, "").trim(),
             image: p.thumbnail.source,
             desc: p.description || "Videojuego"
           }));

@@ -367,6 +367,7 @@
           <option value="platinum">🏆 Platinos (100%)</option>
           <option value="extras">⭐ Extras</option>
           <option value="onhold">⏸ En Pausa</option>
+          <option value="backlog">📥 Pendientes</option>
           <option value="favorite">👑 Favoritos</option>
           <option value="tier-masterpiece">🌟 Obras Maestras (9+)</option>
         </select>
@@ -448,6 +449,16 @@
         <span>•</span>
         <button id="clearAllBtn" type="button" class="hover:text-rose-400 transition cursor-pointer">Limpiar todo</button>
       </div>
+      <div id="accountControls" class="hidden w-full flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-white/5">
+        <button id="profileVisibilityBtn" type="button" data-public="0" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition cursor-pointer flex items-center gap-1.5">
+          <i class="fa-solid fa-lock"></i> Estante privado
+        </button>
+        <div class="flex items-center gap-4">
+          <a href="legal.html" class="hover:text-indigo-400 transition">Privacidad</a>
+          <span>•</span>
+          <button id="deleteAccountBtn" type="button" class="hover:text-rose-400 transition cursor-pointer">Eliminar mi cuenta</button>
+        </div>
+      </div>
     </footer>
 
   </div>
@@ -480,7 +491,7 @@
           <div>
             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Nombre del videojuego</label>
             <div class="relative flex gap-2">
-              <input type="text" id="gameSearch" placeholder="Elden Ring, God of War..." class="w-full bg-[#121623] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
+              <input type="text" id="gameSearch" maxlength="150" placeholder="Elden Ring, God of War..." class="w-full bg-[#121623] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition">
               <button id="searchBtn" type="button" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer">
                 <i id="searchIcon" class="fa-solid fa-magnifying-glass"></i> <span id="searchBtnText">Buscar</span>
               </button>
@@ -507,12 +518,13 @@
         <div class="space-y-4">
           <div>
             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Estado</label>
-            <div class="grid grid-cols-5 gap-1.5">
+            <div class="grid grid-cols-3 gap-1.5">
               <button type="button" data-val="playing" class="status-btn p-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 text-center font-bold text-[11px] transition cursor-pointer">🔥 Jugando</button>
               <button type="button" data-val="completed" class="status-btn p-2 rounded-xl border border-indigo-500 bg-indigo-500/20 text-white text-center font-bold text-[11px] transition cursor-pointer">✓ Pasado</button>
               <button type="button" data-val="extras" class="status-btn p-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 text-center font-bold text-[11px] transition cursor-pointer">⭐ Extras</button>
               <button type="button" data-val="platinum" class="status-btn p-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 text-center font-bold text-[11px] transition cursor-pointer">🏆 Platino</button>
               <button type="button" data-val="onhold" class="status-btn p-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 text-center font-bold text-[11px] transition cursor-pointer">⏸ Pausa</button>
+              <button type="button" data-val="backlog" class="status-btn p-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 text-center font-bold text-[11px] transition cursor-pointer">📥 Pendiente</button>
             </div>
           </div>
 
@@ -544,13 +556,16 @@
           <input type="number" id="gameTargetHours" placeholder="Ej: 80" class="w-full bg-[#121623] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
         </div>
         <div>
-          <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Año</label>
+          <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1" title="Solo se guarda si el juego está terminado">Año terminado</label>
           <input type="number" id="gameCompletedYear" placeholder="2026" class="w-full bg-[#121623] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
         </div>
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="text-[10px] font-bold text-slate-400 uppercase">Nota</label>
-            <span id="scoreDisplay" class="text-xs font-black text-amber-400 console-font">9.0</span>
+            <span class="flex items-center gap-2">
+              <button type="button" id="clearScoreBtn" class="text-[10px] text-slate-500 hover:text-rose-400 cursor-pointer" title="Dejar sin calificar">Quitar</button>
+              <span id="scoreDisplay" class="text-xs font-black text-amber-400 console-font">9.0</span>
+            </span>
           </div>
           <input type="range" id="scoreRange" min="1" max="10" step="0.5" value="9" class="w-full accent-indigo-500 cursor-pointer">
         </div>
@@ -558,8 +573,8 @@
 
       <!-- Tags & Opinión -->
       <div class="space-y-3 mt-4">
-        <input type="text" id="gameTags" placeholder="Tags: #Soulslike, #Indie, #GOTY..." class="w-full bg-[#121623] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
-        <textarea id="gameNotes" rows="2" placeholder="Opinión o recuerdos memorables..." class="w-full bg-[#121623] border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-indigo-500 resize-none"></textarea>
+        <input type="text" id="gameTags" maxlength="300" placeholder="Tags: #Soulslike, #Indie, #GOTY..." class="w-full bg-[#121623] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500">
+        <textarea id="gameNotes" rows="2" maxlength="2000" placeholder="Opinión o recuerdos memorables..." class="w-full bg-[#121623] border border-white/10 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-indigo-500 resize-none"></textarea>
       </div>
 
       <!-- Botón Guardar -->
@@ -644,7 +659,7 @@
         <div>
           <label class="block text-[11px] font-bold text-slate-400 uppercase mb-1">SteamID64 o Enlace de Perfil</label>
           <div class="flex gap-2">
-            <input type="text" id="steamIdInput" placeholder="76561198..." class="w-full bg-[#121623] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500">
+            <input type="text" id="steamIdInput" placeholder="76561198... o steamcommunity.com/id/tu_nombre" class="w-full bg-[#121623] border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-500">
             <button id="fetchSteamBtn" type="button" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition flex items-center gap-1.5 shrink-0 cursor-pointer">
               <i id="fetchSteamIcon" class="fa-solid fa-cloud-arrow-down"></i> <span id="fetchSteamText">Consultar</span>
             </button>

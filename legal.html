@@ -63,9 +63,35 @@
         <h2 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
           <i class="fa-solid fa-database text-emerald-400 text-sm"></i> Privacidad de tus Datos
         </h2>
-        <p class="text-xs text-slate-400 leading-relaxed">
-          Toda tu biblioteca, notas y calificaciones se almacenan exclusivamente de forma local en tu navegador (<code class="text-indigo-300 font-mono">localStorage</code>). Ningún dato personal es recopilado ni enviado a servidores externos sin tu consentimiento.
-        </p>
+        <div class="space-y-3 text-xs text-slate-400 leading-relaxed">
+          <p>
+            <strong class="text-slate-200">Sin cuenta (invitado):</strong> tu estante se guarda solo en este navegador (<code class="text-indigo-300 font-mono">localStorage</code>). No se envía a ningún servidor.
+          </p>
+          <p>
+            <strong class="text-slate-200">Con cuenta:</strong> guardamos tu correo, tu nombre de usuario y tu estante (juegos, estados, horas, notas, etiquetas y calificaciones) en nuestra base de datos, alojada en <a href="https://supabase.com" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:underline">Supabase</a>, para sincronizarlo entre tus dispositivos. La web se publica en Vercel.
+          </p>
+          <p>
+            <strong class="text-slate-200">Quién ve tu estante:</strong> por defecto es privado y solo lo ves tú. Si lo haces público (botón "Estante público" o al pulsar "Compartir"), cualquiera con tu enlace podrá ver tus juegos, horas, notas y calificaciones. Puedes volverlo privado cuando quieras.
+          </p>
+          <p>
+            <strong class="text-slate-200">Comentarios y likes:</strong> los comentarios que publicas en los artículos son públicos y muestran tu nombre de usuario.
+          </p>
+          <p>
+            <strong class="text-slate-200">Estadísticas de la comunidad:</strong> la portada muestra totales anónimos (horas, juegos, platinos y el título más registrado) calculados con todos los estantes. Nunca se muestra a quién pertenece cada dato.
+          </p>
+          <p>
+            <strong class="text-slate-200">Servicios externos:</strong> si usas la importación de Steam, tu SteamID se envía a la API de Steam solo para leer tu lista de juegos; no lo guardamos. El buscador de carátulas consulta RAWG y Wikipedia con el nombre del juego que escribes.
+          </p>
+          <p>
+            <strong class="text-slate-200">Tus derechos:</strong> puedes exportar tu estante en JSON en cualquier momento y eliminar tu cuenta desde tu estante ("Eliminar mi cuenta"). Al hacerlo se borran tu cuenta, tu estante, tus comentarios y tus likes.
+          </p>
+          <p>
+            No vendemos ni compartimos tus datos con terceros con fines publicitarios. Si tienes menos de 13 años, usa la web con permiso de tu madre, padre o tutor.
+          </p>
+          <p>
+            ¿Dudas sobre tus datos? Escríbenos a través del <a href="https://youtube.com/@paindexhq" target="_blank" rel="noopener noreferrer" class="text-indigo-400 hover:underline">canal de YouTube de Paindex</a>.
+          </p>
+        </div>
       </div>
     </div>
   </main>
