@@ -1922,6 +1922,7 @@ async function loadCloudShelf(user) {
     return;
   }
 
+  lastCloudLoad = Date.now();
   const local = StorageManager.getGames();
   const localOwner = getLocalOwner();
   let merged = cloudGames;
@@ -1946,6 +1947,15 @@ async function loadCloudShelf(user) {
   setLocalOwner(user.id);
   renderLibrary();
 }
+
+// Al volver a la pestaña se recarga el estante de la nube, por si se editó en otro dispositivo.
+let lastCloudLoad = 0;
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState !== "visible" || isSpectatorMode || !cloudUserId) return;
+  if (Date.now() - lastCloudLoad < 60000) return;
+  if (document.querySelector("#formSection:not(.hidden)")) return; // no interrumpir una edición
+  loadCloudShelf({ id: cloudUserId });
+});
 
 let handledUserId; // undefined = aún no procesado
 
