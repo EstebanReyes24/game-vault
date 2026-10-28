@@ -2,6 +2,18 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/u/:usuario", "destination": "/app.html" }
-  ]
+    {
+      "source": "/u/:usuario",
+      "destination": "/api/pagina?tipo=perfil&u=:usuario"
+    },
+    {
+      "source": "/a/:id",
+      "destination": "/api/pagina?tipo=articulo&id=:id"
+    }
+  ],
+  "functions": {
+    "api/pagina.js": {
+      "includeFiles": "{app,index}.html"
+    }
+  }
 }
