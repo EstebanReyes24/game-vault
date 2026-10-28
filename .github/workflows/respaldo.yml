@@ -48,6 +48,16 @@ jobs:
         run: |
           set -euo pipefail
           FECHA=$(date -u +%F)
+          # Tolera espacios, saltos de línea o comillas pegados sin querer al copiar
+          DB=$(printf '%s' "$DB" | tr -d '\r\n' | sed -E "s/^[[:space:]\"']+//; s/[[:space:]\"']+$//")
+          case "$DB" in
+            postgresql://*|postgres://*) ;;
+            *) echo "::error::SUPABASE_DB_URL no tiene el formato correcto: debe empezar exactamente por postgresql:// (sin espacios ni comillas). Edítalo en Settings → Secrets and variables → Actions."; exit 1 ;;
+          esac
+          case "$DB" in
+            *pooler.supabase.com*) ;;
+            *) echo "::warning::SUPABASE_DB_URL no parece la del Session pooler (debería contener pooler.supabase.com). GitHub no puede usar la conexión directa." ;;
+          esac
           # Los errores de pg_dump pueden incluir partes de la conexión: no se muestran en el registro público
           if ! /usr/lib/postgresql/17/bin/pg_dump "$DB" --no-owner --no-privileges --schema=public --schema=auth \
                -f respaldo.sql 2> pgdump-error.txt; then
