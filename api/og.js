@@ -19,7 +19,10 @@ async function fuente(familia, peso) {
 }
 
 // Pequeño ayudante para escribir el árbol sin JSX
-const h = (type, style, ...children) => ({ type, props: { style: { display: "flex", ...style }, children: children.flat().filter(c => c !== null && c !== undefined && c !== false) } });
+const h = (style, ...children) => {
+  const hijos = children.flat().filter(c => c !== null && c !== undefined && c !== false);
+  return { type: "div", props: { style: { display: "flex", ...style }, children: hijos.length === 1 ? hijos[0] : hijos } };
+};
 const img = (src, w, h2, style) => ({ type: "img", props: { src, width: w, height: h2, style } });
 
 // La P de Paindex con los ojos rojos
