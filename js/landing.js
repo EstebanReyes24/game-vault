@@ -268,25 +268,73 @@ async function loadCommunityMetrics() {
 // ==========================================
 // HALL OF FAME DINÁMICO (BLINDADO CON FALLBACK)
 // ==========================================
-// Portada: las tres primeras tapas del Hall of Fame, en abanico.
+// Portada: las tapas del Hall of Fame en abanico, rotando una cada pocos segundos.
+let portadaTimer = null;
 function pintarPortada(items) {
   const estante = document.getElementById("portadaEstante");
   const tapas = document.getElementById("portadaTapas");
   if (!estante || !tapas) return;
-  const validas = (items || []).filter(i => /^https:\/\//i.test(String(i.cover_url || ""))).slice(0, 3);
+  const validas = (items || []).filter(i => /^https:\/\//i.test(String(i.cover_url || ""))).slice(0, 8);
   if (validas.length < 3) return; // sin tapas suficientes queda la P sola
-  const [frente, izq, der] = validas;
-  const tapa = (item, pos) => `
-    <figure class="tapa tapa-${pos}">
-      <img src="${escapeHTML(String(item.cover_url))}" alt="" loading="eager" onerror="this.closest('.tapa').remove()">
-    </figure>`;
-  const nota = frente.rating ? parseFloat(frente.rating).toFixed(1) : "";
-  tapas.innerHTML = tapa(izq, "izq") + tapa(der, "der") + tapa(frente, "frente") + `
-    <div class="tapa-ficha">
-      <span>${escapeHTML(String(frente.title || ""))}</span>
-      ${nota ? `<b>${nota}</b>` : ""}
-    </div>`;
+
+  tapas.innerHTML = validas.map((item, i) => `
+    <button type="button" class="tapa" data-i="${i}" tabindex="-1" aria-label="Ver ${escapeHTML(String(item.title || ""))}">
+      <img src="${escapeHTML(String(item.cover_url))}" alt="" loading="${i < 3 ? "eager" : "lazy"}">
+    </button>`).join("") + `
+    <div class="tapa-ficha" aria-live="polite"><span></span><b></b></div>`;
   estante.classList.add("con-tapas");
+  estante.removeAttribute("aria-hidden");
+
+  const botones = [...tapas.querySelectorAll(".tapa")];
+  const ficha = tapas.querySelector(".tapa-ficha");
+  let orden = botones.map((_, i) => i); // orden[0] = la de enfrente
+  const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function colocar(primeraVez) {
+    const pos = {};
+    pos[orden[0]] = "frente";
+    pos[orden[1]] = "der";
+    pos[orden[orden.length - 1]] = "izq";
+    botones.forEach((b, i) => {
+      b.dataset.pos = pos[i] || "";
+      b.tabIndex = pos[i] === "der" || pos[i] === "izq" ? 0 : -1;
+    });
+    const item = validas[orden[0]];
+    const escribir = () => {
+      ficha.querySelector("span").textContent = item.title || "";
+      ficha.querySelector("b").textContent = item.rating ? parseFloat(item.rating).toFixed(1) : "";
+      ficha.classList.remove("cambiando");
+    };
+    if (primeraVez || quieto) { escribir(); return; }
+    ficha.classList.add("cambiando");
+    setTimeout(escribir, 350);
+  }
+
+  function avanzar(pasos = 1) {
+    for (let k = 0; k < pasos; k++) orden.push(orden.shift());
+    colocar(false);
+  }
+
+  // Entrada: todas empiezan escondidas y se abren en abanico.
+  requestAnimationFrame(() => requestAnimationFrame(() => colocar(true)));
+
+  // Clic en una de las de atrás: pasa al frente.
+  botones.forEach((b, i) => b.addEventListener("click", () => {
+    const pasos = orden.indexOf(i);
+    if (pasos <= 0) return;
+    avanzar(pasos);
+    reiniciar();
+  }));
+
+  function reiniciar() {
+    clearInterval(portadaTimer);
+    if (quieto) return;
+    portadaTimer = setInterval(() => {
+      if (document.hidden || estante.matches(":hover")) return; // pausa al pasar el ratón o con la pestaña oculta
+      avanzar(1);
+    }, 4500);
+  }
+  reiniciar();
 }
 
 async function loadHallOfFame() {
