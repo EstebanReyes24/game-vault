@@ -337,19 +337,64 @@ function pintarPortada(items) {
   reiniciar();
 }
 
+// Esenciales de la semana: los fijados a mano + los mejor puntuados del estante,
+// escogidos con la semana del año como semilla (todos ven lo mismo y cambia cada lunes).
+const ESTADOS_ESENCIALES = {
+  platinum: "Platinado", extras: "Campaña + extras", completed: "Pasado",
+  playing: "Jugando", onhold: "En pausa", backlog: "Pendiente"
+};
+
+function semanaDelAnio(fecha = new Date()) {
+  const d = new Date(Date.UTC(fecha.getFullYear(), fecha.getMonth(), fecha.getDate()));
+  const dia = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dia);
+  const inicio = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return d.getUTCFullYear() * 100 + Math.ceil(((d - inicio) / 86400000 + 1) / 7);
+}
+
+function barajarConSemilla(lista, semilla) {
+  const a = [...lista];
+  let x = semilla >>> 0;
+  const azar = () => { x = (x + 0x6D2B79F5) >>> 0; let t = Math.imul(x ^ (x >>> 15), 1 | x); t ^= t + Math.imul(t ^ (t >>> 7), 61 | t); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(azar() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
+function armarEsenciales(fijados, automaticos, total = 8) {
+  const clave = (t) => String(t || "").toLowerCase().trim();
+  const vistos = new Set(fijados.map(f => clave(f.title)));
+  const candidatos = automaticos
+    .filter(g => !vistos.has(clave(g.title)))
+    .map(g => ({
+      title: g.title,
+      cover_url: g.cover_url,
+      rating: g.rating,
+      tag: (Array.isArray(g.tags) && g.tags[0]) ? (String(g.tags[0]).startsWith("#") ? g.tags[0] : "#" + g.tags[0]) : (Array.isArray(g.platforms) && g.platforms[0] ? "#" + g.platforms[0] : "#Paindex"),
+      progress: [ESTADOS_ESENCIALES[g.status] || "Jugado", g.hours ? `${g.hours}h` : ""].filter(Boolean).join(" • "),
+      automatico: true
+    }));
+  const semana = semanaDelAnio();
+  const elegidos = barajarConSemilla(candidatos, semana).slice(0, Math.max(0, total - fijados.length));
+  // El orden también cambia cada semana para que la portada no abra siempre con el mismo
+  return barajarConSemilla([...fijados, ...elegidos], semana + 7);
+}
+
 async function loadHallOfFame() {
   if (!hofGrid) return;
 
+  let automaticos = [];
   try {
-    const data = await DB.getHallOfFame();
+    const [data, auto] = await Promise.all([DB.getHallOfFame(), DB.getEsencialesAuto()]);
     cachedHof = (Array.isArray(data) && data.length > 0) ? data : [];
+    automaticos = Array.isArray(auto) ? auto : [];
   } catch (err) {
     console.warn("Fallo al traer Hall of Fame de Supabase:", err);
     cachedHof = [];
   }
+  const esenciales = armarEsenciales(cachedHof, automaticos);
 
   // Sin datos no se inventan juegos: se muestra un aviso honesto.
-  if (cachedHof.length === 0) {
+  if (esenciales.length === 0) {
     hofGrid.innerHTML = `
       <div class="col-span-full py-10 text-center glass-panel rounded-2xl border border-white/10">
         <p class="text-xs font-bold text-slate-400">No se pudo cargar el Hall of Fame en este momento.</p>
@@ -358,9 +403,9 @@ async function loadHallOfFame() {
     return;
   }
 
-  pintarPortada(cachedHof);
+  pintarPortada(esenciales);
 
-  hofGrid.innerHTML = cachedHof.map(item => {
+  hofGrid.innerHTML = esenciales.map(item => {
     const title = escapeHTML(String(item.title || "Sin título"));
     const cover = escapeHTML(String(item.cover_url || ""));
     const tag = escapeHTML(String(item.tag || "#Juego"));
