@@ -35,7 +35,7 @@ function inyectar(html, meta) {
 
 export default async function handler(req, res) {
   const origen = `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
-  const { tipo, u, id } = req.query;
+  const { tipo, u, id, lista } = req.query;
   let archivo = "index.html";
   let meta = {
     titulo: "Paindex Vault · Tu estante de juegos",
@@ -59,6 +59,21 @@ export default async function handler(req, res) {
           url: `${origen}/u/${p.usuario}`,
           tipo: "profile"
         };
+        // Enlace a una lista: /u/nombre?lista=ID
+        if (/^\d{1,12}$/.test(String(lista || ""))) {
+          const [l] = await supa(`lists?select=id,title,description,list_items(game_title,cover_url,position)&id=eq.${lista}&limit=1`);
+          if (l) {
+            const items = (l.list_items || []).sort((a, b) => a.position - b.position);
+            const portada = items.find(i => /^https:\/\//.test(i.cover_url || ""));
+            meta = {
+              titulo: `${l.title} · lista de @${p.usuario}`,
+              descripcion: l.description || `${items.length} juegos: ${items.slice(0, 4).map(i => i.game_title).join(", ")}${items.length > 4 ? "…" : "."}`,
+              imagen: portada ? portada.cover_url : meta.imagen,
+              url: `${origen}/u/${p.usuario}?lista=${l.id}`,
+              tipo: "article"
+            };
+          }
+        }
       }
     } else if (tipo === "articulo" && /^\d{1,12}$/.test(String(id || ""))) {
       const [post] = await supa(`posts?select=id,title,category,content,cover_url&id=eq.${id}&limit=1`);

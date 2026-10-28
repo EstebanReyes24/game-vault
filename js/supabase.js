@@ -487,6 +487,67 @@ const DB = {
   },
 
   // ==========================================
+  // LISTAS (migración 007)
+  // ==========================================
+  async getListas(userId) {
+    if (!supabaseClient || !userId) return [];
+    const { data, error } = await supabaseClient
+      .from("lists")
+      .select("id, title, description, updated_at, list_items(position, game_title, cover_url, rating, note)")
+      .eq("user_id", userId)
+      .order("updated_at", { ascending: false });
+    if (error) { console.warn("Listas no disponibles (¿falta la migración 007?):", error.message); return []; }
+    return (data || []).map(l => ({ ...l, items: (l.list_items || []).sort((a, b) => a.position - b.position) }));
+  },
+
+  async getMisListas() {
+    const user = await currentUser();
+    return user ? this.getListas(user.id) : [];
+  },
+
+  async getListasDe(usuario) {
+    if (!supabaseClient) return [];
+    const { data: perfil } = await supabaseClient.from("profiles").select("id").eq("username", String(usuario).toLowerCase()).maybeSingle();
+    return perfil ? this.getListas(perfil.id) : [];
+  },
+
+  async guardarLista({ id, title, description, items }) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión para guardar listas.");
+    const datos = { title: String(title || "").trim(), description: String(description || "").trim() || null };
+    if (!datos.title) throw new Error("Ponle un nombre a la lista.");
+    let listaId = id;
+    if (listaId) {
+      const { error } = await supabaseClient.from("lists").update(datos).eq("id", listaId);
+      if (error) throw new Error(error.message);
+      const { error: e2 } = await supabaseClient.from("list_items").delete().eq("list_id", listaId);
+      if (e2) throw new Error(e2.message);
+    } else {
+      const { data, error } = await supabaseClient.from("lists").insert([{ ...datos, user_id: user.id }]).select("id").single();
+      if (error) throw new Error(error.message);
+      listaId = data.id;
+    }
+    const filas = (items || []).slice(0, 50).map((g, i) => ({
+      list_id: listaId,
+      position: i,
+      game_title: String(g.game_title).slice(0, 200),
+      cover_url: /^https:\/\/[^\s"'<>]+$/.test(g.cover_url || "") ? g.cover_url : null,
+      rating: Number(g.rating) > 0 ? Number(g.rating) : null,
+      note: g.note ? String(g.note).slice(0, 200) : null
+    }));
+    if (filas.length) {
+      const { error } = await supabaseClient.from("list_items").insert(filas);
+      if (error) throw new Error(error.message);
+    }
+    return listaId;
+  },
+
+  async borrarLista(id) {
+    const { error } = await supabaseClient.from("lists").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+  },
+
+  // ==========================================
   // MODERACIÓN (migración 005)
   // ==========================================
   async reportComment(commentId, reason) {

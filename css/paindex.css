@@ -589,3 +589,31 @@ body.light-mode .boton-linea:hover { border-color: #16121a; }
 .perfil-social b { color: var(--hueso); }
 .boton-siguiendo { background: transparent; color: var(--hueso); border: 1px solid rgba(236, 231, 238, 0.35); }
 .boton-siguiendo:hover { border-color: var(--senal); color: var(--senal); }
+
+/* ---------- listas ---------- */
+.listas-rejilla { display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr)); gap: 1rem; }
+.lista-tarjeta { display: grid; gap: 0.5rem; }
+.lista-abrir { display: grid; gap: 0.35rem; text-align: left; padding: 0; background: none; border: 0; color: inherit; cursor: pointer; }
+.lista-abrir:hover .lista-nombre { color: var(--senal); }
+.lista-mosaico { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--grafito); }
+.lista-mosaico img, .lista-mosaico span { width: 100%; height: 100%; object-fit: cover; display: block; background: var(--grafito); }
+.lista-nombre { font-weight: 700; color: var(--hueso); line-height: 1.25; }
+.lista-cuenta { font-size: 0.82rem; color: var(--niebla); }
+.lista-acciones { display: flex; gap: 0.4rem; }
+.lista-acciones .boton { padding: 0.35rem 0.7rem; font-size: 0.8rem; }
+.lista-subtitulo { margin: 1.25rem 0 0.5rem; font-size: 0.9rem; font-weight: 700; color: var(--hueso); }
+.lista-juegos { list-style: none; margin: 0; padding: 0; }
+.lista-juegos li { display: flex; align-items: center; gap: 0.75rem; padding: 0.55rem 0; border-bottom: 1px solid var(--border-light); }
+.lista-juegos img, .lista-sin-tapa { width: 2.4rem; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 5px; background: var(--grafito); flex-shrink: 0; }
+.lista-pos { width: 1.6rem; text-align: right; font-family: var(--display); font-weight: 900; font-size: 1.3rem; color: var(--niebla); flex-shrink: 0; }
+.lista-juego { flex: 1; min-width: 0; display: grid; }
+.lista-juego b { color: var(--hueso); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lista-juego small { color: var(--niebla); font-size: 0.82rem; }
+.lista-mover { display: flex; gap: 0.25rem; }
+.lista-mover button { width: 2rem; height: 2rem; border-radius: 6px; border: 1px solid var(--border-light); background: var(--grafito); color: var(--hueso); cursor: pointer; }
+.lista-mover button:disabled { opacity: 0.3; cursor: default; }
+.lista-buscar { width: 100%; padding: 0.6rem 0.75rem; border-radius: 6px; color: var(--hueso); }
+.lista-candidatos { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 0.3rem; }
+.lista-candidatos button { width: 100%; display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.65rem; border-radius: 6px; border: 1px solid transparent; background: var(--grafito); color: var(--hueso); text-align: left; cursor: pointer; font-size: 0.9rem; }
+.lista-candidatos button:hover { border-color: rgba(236, 231, 238, 0.3); }
+.lista-candidatos small { margin-left: auto; color: var(--niebla); }

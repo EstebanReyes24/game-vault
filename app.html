@@ -307,6 +307,10 @@
         <h2>Sus mejor puntuados</h2>
         <ol id="perfilTopLista"></ol>
       </div>
+      <div class="perfil-top" id="perfilListas" hidden>
+        <h2>Sus listas</h2>
+        <div class="listas-rejilla" id="perfilListasRejilla"></div>
+      </div>
     </section>
 
     <!-- BANNER HERO NOW PLAYING -->
@@ -439,6 +443,9 @@
         </button>
         <button id="openTop5Btn" type="button" class="px-3 py-2 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-crown"></i> TOP CARDS
+        </button>
+        <button id="openListsBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-list-ol"></i> LISTAS
         </button>
       </div>
 
@@ -805,10 +812,25 @@
   </div>
 
   <!-- SCRIPTS DEL PROYECTO -->
+
+  <!-- LISTAS -->
+  <div id="listsModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="listsTitle">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="listsTitle" class="seccion-titulo">Mis listas</h2>
+          <p id="listsSub">Agrupa juegos de tu estante y compártelos.</p>
+        </div>
+        <button type="button" id="closeListsBtn" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div id="listsBody"></div>
+    </div>
+  </div>
   <script src="js/storage.js"></script>
   <script src="js/search.js"></script>
   <script src="js/canvas-poster.js"></script>
   <script src="js/supabase.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/listas.js"></script>
 </body>
 </html>
