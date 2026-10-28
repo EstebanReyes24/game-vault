@@ -85,9 +85,13 @@
         </div>
 
         <!-- Barra de publicación (solo admin) -->
-        <div id="authorBar" class="hidden pt-6">
+        <div id="authorBar" class="hidden pt-6 flex flex-wrap gap-3">
           <button type="button" id="openNewPostBtn" class="boton boton-linea">
             <i class="fa-solid fa-pen-nib" aria-hidden="true"></i> Escribir artículo
+          </button>
+          <button type="button" id="openDraftsBtn" class="hidden boton boton-linea">
+            <i class="fa-solid fa-newspaper" aria-hidden="true"></i> Noticias por revisar
+            <span id="draftsCount" class="borrador-contador">0</span>
           </button>
         </div>
       </div>
@@ -373,7 +377,23 @@
     </div>
   </div>
 
+
+  <!-- Borradores de noticias (solo admin) -->
+  <div id="draftsModal" class="fixed inset-0 bg-black/80 flex items-start justify-center p-4 z-50 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="draftsTitle">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="draftsTitle" class="seccion-titulo">Noticias por revisar</h2>
+          <p>Escoge la imagen, retoca lo que quieras y publica. Lo que descartes no vuelve a salir.</p>
+        </div>
+        <button type="button" id="closeDraftsBtn" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div id="draftsList"></div>
+    </div>
+  </div>
   <script src="js/supabase.js"></script>
+  <script src="js/search.js"></script>
   <script src="js/landing.js"></script>
+  <script src="js/borradores.js"></script>
 </body>
 </html>

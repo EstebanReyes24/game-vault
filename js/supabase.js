@@ -289,6 +289,22 @@ const DB = {
     return data || [];
   },
 
+  // BORRADORES DE NOTICIAS (tabla news_drafts_done, solo admin)
+  async getReviewedDraftIds() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.from("news_drafts_done").select("draft_id");
+    if (error) throw error;
+    return (data || []).map(r => r.draft_id);
+  },
+
+  async markDraft(draftId, action, postId = null) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const { error } = await supabaseClient
+      .from("news_drafts_done")
+      .upsert([{ draft_id: draftId, action, post_id: postId }]);
+    if (error) throw error;
+  },
+
   async createPost(payload) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const user = await currentUser();

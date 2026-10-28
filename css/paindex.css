@@ -398,3 +398,30 @@ body.light-mode #openTop5Btn {
   font-weight: 700;
   letter-spacing: 0;
 }
+
+/* ---------- borradores de noticias (admin) ---------- */
+.borrador-contador {
+  min-width: 1.4rem; padding: 0 0.4rem; border-radius: 999px;
+  background: var(--senal); color: #fff; font-size: 0.75rem; line-height: 1.4rem; text-align: center;
+}
+.borradores-panel {
+  width: min(100%, 46rem); margin: 2rem 0; padding: 1.5rem;
+  background: var(--carbon); border: 1px solid var(--border-light); border-radius: 14px;
+}
+.borradores-cabecera { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; }
+.borradores-cabecera p { margin: 0.4rem 0 0; color: var(--niebla); font-size: 0.9rem; max-width: 34rem; }
+.borrador { padding: 1.25rem 0; border-top: 1px solid var(--border-light); display: grid; gap: 0.75rem; }
+.borrador-imagen { aspect-ratio: 16 / 7; border-radius: 10px; overflow: hidden; background: var(--grafito); display: grid; place-items: center; color: var(--niebla); font-size: 0.85rem; }
+.borrador-imagen img { width: 100%; height: 100%; object-fit: cover; }
+.borrador-miniaturas { display: flex; gap: 0.5rem; }
+.borrador-miniaturas button { width: 4.5rem; aspect-ratio: 16 / 10; padding: 0; border-radius: 6px; overflow: hidden; border: 2px solid transparent; background: var(--grafito); cursor: pointer; }
+.borrador-miniaturas button[aria-checked="true"] { border-color: var(--senal); }
+.borrador-miniaturas img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.borrador-campo { display: grid; gap: 0.3rem; font-size: 0.8rem; font-weight: 600; color: var(--niebla); }
+.borrador-campo input, .borrador-campo textarea { width: 100%; padding: 0.6rem 0.75rem; border-radius: 6px; color: var(--hueso); font: 400 0.95rem/1.55 var(--texto); }
+.borrador-meta { margin: 0; font-size: 0.8rem; color: var(--niebla); }
+.borrador-estado { margin: 0; font-size: 0.85rem; color: #ff94a5; }
+.borrador-estado:empty { display: none; }
+.borrador-acciones { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.borrador-acciones button:disabled { opacity: 0.5; cursor: wait; }
+.borrador-vacio { color: var(--niebla); padding: 1rem 0; margin: 0; }
