@@ -16,21 +16,21 @@
    ========================================================== */
 
 :root {
-  --noche: #07060a;
-  --carbon: #120f15;
-  --grafito: #1d1820;
-  --ceniza: #3a3240;
-  --niebla: #9b919f;
+  --noche: #14111a;
+  --carbon: #1e1a25;
+  --grafito: #29232f;
+  --ceniza: #40384a;
+  --niebla: #b6adbb;
   --hueso: #ece7ee;
   --senal: #ff2a48;
   --vino: #8c0f24;
 
   /* tokens que ya usaba styles.css */
   --bg-deep: var(--noche);
-  --nav-bg: rgba(18, 15, 21, 0.92);
+  --nav-bg: rgba(30, 26, 37, 0.94);
   --panel-bg: var(--carbon);
-  --input-bg: #0d0a10;
-  --border-light: rgba(236, 231, 238, 0.09);
+  --input-bg: #18141e;
+  --border-light: rgba(236, 231, 238, 0.13);
   --border-glow: rgba(255, 42, 72, 0.45);
   --text-primary: var(--hueso);
 
@@ -42,8 +42,10 @@
 body {
   font-family: var(--texto);
   background-color: var(--noche);
-  /* Un solo brillo rojo, abajo, como en la intro del canal */
-  background-image: radial-gradient(1100px 620px at 50% 115%, rgba(140, 15, 36, 0.34), transparent 70%);
+  /* Luz suave arriba y el brillo rojo del canal abajo */
+  background-image:
+    radial-gradient(1200px 520px at 70% -10%, rgba(236, 231, 238, 0.07), transparent 70%),
+    radial-gradient(1100px 620px at 50% 115%, rgba(160, 20, 44, 0.30), transparent 70%);
   background-size: 100% 100%;
   background-attachment: fixed;
   color: var(--hueso);
@@ -112,7 +114,7 @@ body {
 }
 
 .poster-sheen::after {
-  background: linear-gradient(180deg, transparent 45%, rgba(7, 6, 10, 0.94) 100%);
+  background: linear-gradient(180deg, transparent 45%, rgba(20, 17, 26, 0.94) 100%);
 }
 
 .filter-pill.active {
@@ -206,41 +208,104 @@ body {
 .boton-linea { color: var(--hueso); border: 1px solid rgba(236, 231, 238, 0.22); background: transparent; }
 .boton-linea:hover { border-color: var(--hueso); }
 
-/* El momento de la página: la P se enciende una vez al cargar */
-.portada-marca {
+/* El momento de la página: tres tapas en abanico y la P que se enciende */
+.portada-estante {
   position: relative;
   justify-self: center;
-  width: min(100%, 22rem);
-  aspect-ratio: 1;
+  width: min(100%, 26rem);
+  aspect-ratio: 1 / 1.02;
 }
-.portada-marca::before {
+.portada-estante::before {
   content: "";
   position: absolute;
-  inset: 12% 8% 18%;
-  background: radial-gradient(closest-side, rgba(255, 42, 72, 0.32), transparent);
-  filter: blur(18px);
+  inset: 8% 4% 4%;
+  background: radial-gradient(closest-side, rgba(255, 42, 72, 0.30), transparent);
+  filter: blur(24px);
   opacity: 0;
-  animation: brillo 2.4s 0.9s ease-out forwards;
+  animation: brillo 2.4s 0.6s ease-out forwards;
 }
-.portada-marca svg { position: relative; width: 100%; height: 100%; display: block; }
-.portada-marca .p { stroke: var(--hueso); stroke-dasharray: 260; stroke-dashoffset: 260; animation: trazo 0.9s 0.1s cubic-bezier(.6,0,.2,1) forwards; }
-.portada-marca .ojo { fill: var(--senal); opacity: 0.08; animation: encender 0.5s 1s steps(1, end) forwards, latido 0.18s 1.05s 2 alternate; filter: drop-shadow(0 0 3px rgba(255, 42, 72, 0.9)); }
+.tapas { position: absolute; inset: 0; }
+.tapa {
+  position: absolute;
+  margin: 0;
+  width: 52%;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--grafito);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(236, 231, 238, 0.14);
+  opacity: 0;
+  animation: abrir 0.8s cubic-bezier(.2,.8,.2,1) forwards;
+}
+.tapa img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tapa-izq    { left: 2%;  top: 12%; --giro: -9deg; --desde: 40%;  animation-delay: 0.15s; filter: brightness(.72); }
+.tapa-der    { right: 2%; top: 12%; --giro: 9deg;  --desde: -40%; animation-delay: 0.25s; filter: brightness(.72); }
+.tapa-frente { left: 24%; top: 2%;  --giro: 0deg;  --desde: 0%;   animation-delay: 0.05s; z-index: 2; width: 54%;
+  box-shadow: 0 30px 60px -16px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(236, 231, 238, 0.22); }
+.tapa-ficha {
+  position: absolute;
+  z-index: 3;
+  left: 24%;
+  width: 54%;
+  top: calc(2% + 54% * 4 / 3 * 1.02 - 1px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0 0 10px 10px;
+  background: var(--hueso);
+  color: #14111a;
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0;
+  animation: aparecer 0.4s 0.75s ease-out forwards;
+}
+.tapa-ficha span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tapa-ficha b { font-family: var(--display); font-weight: 900; font-size: 1.25rem; line-height: 1; color: #c4102e; }
 
+.sello {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 4;
+}
+.sello svg { width: 62%; height: auto; overflow: visible; }
+.portada-estante.con-tapas .sello {
+  inset: auto auto 4% 0;
+  width: 5.5rem;
+  height: 5.5rem;
+  border-radius: 18px;
+  background: var(--noche);
+  box-shadow: 0 0 0 1px rgba(236, 231, 238, 0.16), 0 18px 40px -12px rgba(0, 0, 0, 0.8);
+}
+.portada-estante.con-tapas .sello svg { width: 62%; }
+.sello .p { stroke: var(--hueso); stroke-dasharray: 160; stroke-dashoffset: 160; animation: trazo 0.9s 0.2s cubic-bezier(.6,0,.2,1) forwards; }
+.sello .ojo { fill: var(--senal); opacity: 0.08; animation: encender 0.5s 1.05s steps(1, end) forwards, latido 0.18s 1.1s 2 alternate; filter: drop-shadow(0 0 3px rgba(255, 42, 72, 0.9)); }
+
+@keyframes abrir {
+  from { opacity: 0; transform: translateX(var(--desde)) translateY(12px) rotate(0deg); }
+  to   { opacity: 1; transform: translateX(0) rotate(var(--giro)); }
+}
+@keyframes aparecer { to { opacity: 1; } }
 @keyframes trazo { to { stroke-dashoffset: 0; } }
 @keyframes encender { to { opacity: 1; } }
 @keyframes latido { from { opacity: 0.25; } to { opacity: 1; } }
 @keyframes brillo { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0.55; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .portada-marca .p { stroke-dashoffset: 0; animation: none; }
-  .portada-marca .ojo { opacity: 1; animation: none; }
-  .portada-marca::before { opacity: 0.55; animation: none; }
+  .sello .p { stroke-dashoffset: 0; animation: none; }
+  .sello .ojo { opacity: 1; animation: none; }
+  .portada-estante::before { opacity: 0.55; animation: none; }
+  .tapa { opacity: 1; animation: none; transform: rotate(var(--giro)); }
+  .tapa-ficha { opacity: 1; animation: none; }
 }
 
 @media (max-width: 760px) {
   .portada { grid-template-columns: 1fr; gap: 0.5rem; padding-top: 0.5rem; }
-  .portada-marca { order: -1; justify-self: start; width: 6.5rem; }
-  .portada-marca::before { inset: 0; }
+  .portada-estante { width: min(100%, 20rem); margin-top: 1.5rem; }
+  .portada-estante:not(.con-tapas) { width: 8rem; order: -1; justify-self: start; margin: 0; }
 }
 
 /* Cifras de la comunidad: número grande, etiqueta normal */

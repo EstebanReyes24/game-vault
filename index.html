@@ -8,7 +8,7 @@
   <!-- SEO & Metadatos Primarios -->
   <meta name="description" content="Registra los juegos que juegas, ponles nota y comparte tu estante. Con las reseñas y reflexiones del canal Paindex.">
   <meta name="author" content="Paindex">
-  <meta name="theme-color" content="#07060a">
+  <meta name="theme-color" content="#14111a">
   <meta name="mobile-web-app-capable" content="yes">
 
   <!-- Open Graph / Redes Sociales (Discord, WhatsApp, Facebook) -->
@@ -92,12 +92,15 @@
         </div>
       </div>
 
-      <div class="portada-marca" aria-hidden="true">
-        <svg viewBox="0 0 64 64">
-          <path class="p" d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke-width="5"/>
-          <path class="ojo" d="M21 23.5l10 3.6v3.6l-10-3.6z"/>
-          <path class="ojo" d="M46 23.5l-10 3.6v3.6l10-3.6z"/>
-        </svg>
+      <div class="portada-estante" id="portadaEstante" aria-hidden="true">
+        <div class="tapas" id="portadaTapas"></div>
+        <div class="sello">
+          <svg viewBox="0 0 64 64">
+            <path class="p" d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke-width="5.5"/>
+            <path class="ojo" d="M21 23.5l10 3.6v3.6l-10-3.6z"/>
+            <path class="ojo" d="M46 23.5l-10 3.6v3.6l10-3.6z"/>
+          </svg>
+        </div>
       </div>
     </section>
 
@@ -259,7 +262,7 @@
 
       <div class="relative h-48 sm:h-56 w-full shrink-0 bg-slate-950">
         <img id="readPostCover" class="w-full h-full object-cover" alt="Portada de la crónica seleccionada">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#07060a] via-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#14111a] via-transparent"></div>
         <div class="absolute bottom-4 left-6 right-6 flex items-end justify-between">
           <div>
             <span id="readPostCategory" class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border border-white/20 backdrop-blur-md text-white"></span>

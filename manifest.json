@@ -3,8 +3,8 @@
   "short_name": "Paindex Vault",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#07060a",
-  "theme_color": "#07060a",
+  "background_color": "#14111a",
+  "theme_color": "#14111a",
   "icons": [
     {
       "src": "/icons/icon-192.png",
