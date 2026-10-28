@@ -13,10 +13,12 @@
   const esc = (s) => (typeof escapeHTML === "function" ? escapeHTML(String(s ?? "")) : String(s ?? ""));
   let filas = [];
 
+  let resenas = [];
   async function cargar() {
     try { filas = await DB.getModeracion(); }
     catch (e) { console.warn("Moderación: falta la migración 005.", e); filas = []; }
-    const pendientes = filas.filter(f => Number(f.reportes) > 0).length;
+    resenas = DB.getModeracionResenas ? await DB.getModeracionResenas() : [];
+    const pendientes = filas.filter(f => Number(f.reportes) > 0).length + resenas.filter(r => Number(r.reportes) > 0).length;
     badge.textContent = pendientes;
     badge.hidden = pendientes === 0;
     btn.classList.remove("hidden");
@@ -46,16 +48,66 @@
       </article>`;
   }
 
+  function filaResena(r) {
+    const motivos = (r.motivos || []).filter(Boolean);
+    return `
+      <article class="mod-fila" data-resena="${r.review_id}">
+        <p class="mod-meta"><b>@${esc(r.autor)}</b>${r.autor_bloqueado ? ' <span class="mod-etiqueta">bloqueado</span>' : ""} · reseña de <b>${esc(r.game_title)}</b></p>
+        <blockquote>${esc(String(r.body).slice(0, 600))}${String(r.body).length > 600 ? "…" : ""}</blockquote>
+        <p class="mod-meta">${r.hidden ? '<span class="mod-etiqueta">oculta</span> ' : ""}${Number(r.reportes)} reporte(s)${motivos.length ? `: ${motivos.map(esc).join(" · ")}` : ""}</p>
+        <p class="borrador-estado" role="status"></p>
+        <div class="borrador-acciones">
+          <button type="button" class="boton boton-linea" data-accion="r-visible">${r.hidden ? "Mostrar" : "Ocultar"}</button>
+          <button type="button" class="boton boton-linea" data-accion="r-descartar" ${Number(r.reportes) ? "" : "hidden"}>Descartar reportes</button>
+          <button type="button" class="boton boton-linea" data-accion="r-borrar">Borrar</button>
+          <button type="button" class="boton ${r.autor_bloqueado ? "boton-linea" : "boton-senal"}" data-accion="r-bloqueo">${r.autor_bloqueado ? "Desbloquear autor" : "Bloquear autor"}</button>
+        </div>
+      </article>`;
+  }
+
   function pintar() {
-    list.innerHTML = filas.length
-      ? filas.map(fila).join("")
-      : `<p class="borrador-vacio">No hay nada que revisar. Cuando alguien reporte un comentario aparecerá aquí.</p>`;
+    const vacio = !filas.length && !resenas.length;
+    list.innerHTML = vacio
+      ? `<p class="borrador-vacio">No hay nada que revisar. Cuando alguien reporte un comentario o una reseña aparecerá aquí.</p>`
+      : (filas.length ? `<h3 class="lista-subtitulo">Comentarios</h3>${filas.map(fila).join("")}` : "")
+        + (resenas.length ? `<h3 class="lista-subtitulo">Reseñas</h3>${resenas.map(filaResena).join("")}` : "");
+  }
+
+  async function accionResena(b, el) {
+    const r = resenas.find(x => String(x.review_id) === el.dataset.resena);
+    if (!r) return;
+    const estado = el.querySelector(".borrador-estado");
+    const accion = b.dataset.accion;
+    try {
+      if (accion === "r-visible") {
+        await DB.marcarResena(r.review_id, { hidden: !r.hidden });
+        if (r.hidden) await DB.descartarReportesResena(r.review_id);
+      } else if (accion === "r-descartar") {
+        await DB.descartarReportesResena(r.review_id);
+      } else if (accion === "r-borrar") {
+        if (!confirm("¿Borrar esta reseña para siempre?")) return;
+        await DB.borrarResena(r.review_id);
+      } else if (accion === "r-bloqueo") {
+        if (r.autor_bloqueado) await DB.unbanUser(r.autor_id);
+        else {
+          const motivo = prompt(`¿Bloquear a @${r.autor}? No podrá comentar ni publicar reseñas.\nMotivo (opcional):`, "");
+          if (motivo === null) return;
+          await DB.banUser(r.autor_id, motivo.trim());
+          await DB.marcarResena(r.review_id, { hidden: true });
+        }
+      }
+      await cargar();
+      pintar();
+    } catch (err) {
+      estado.textContent = err.message || "No se pudo completar la acción.";
+    }
   }
 
   list.addEventListener("click", async (e) => {
     const b = e.target.closest("button[data-accion]");
     if (!b) return;
     const el = b.closest(".mod-fila");
+    if (el.dataset.resena) { accionResena(b, el); return; }
     const f = filas.find(x => String(x.comment_id) === el.dataset.id);
     if (!f) return;
     const estado = el.querySelector(".borrador-estado");

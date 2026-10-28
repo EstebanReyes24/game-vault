@@ -548,6 +548,89 @@ const DB = {
   },
 
   // ==========================================
+  // RESEÑAS (migración 008)
+  // ==========================================
+  async getResenasDe(usuario) {
+    if (!supabaseClient) return [];
+    const { data: perfil } = await supabaseClient.from("profiles").select("id").eq("username", String(usuario).toLowerCase()).maybeSingle();
+    if (!perfil) return [];
+    const { data, error } = await supabaseClient.from("reviews")
+      .select("id, user_id, game_title, cover_url, rating, body, spoilers, featured, hidden, created_at, updated_at")
+      .eq("user_id", perfil.id).order("created_at", { ascending: false });
+    if (error) { console.warn("Reseñas no disponibles (¿falta la migración 008?):", error.message); return []; }
+    return data || [];
+  },
+
+  async getMiResena(gameTitle) {
+    const user = await currentUser();
+    if (!user || !supabaseClient) return null;
+    const { data } = await supabaseClient.from("reviews").select("*").eq("user_id", user.id).eq("game_title", gameTitle).maybeSingle();
+    return data || null;
+  },
+
+  async guardarResena({ id, game_title, cover_url, rating, body, spoilers }) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión para escribir reseñas.");
+    const texto = String(body || "").trim();
+    if (texto.length < 50) throw new Error("La reseña necesita al menos 50 caracteres.");
+    if (texto.length > 5000) throw new Error("La reseña no puede pasar de 5000 caracteres.");
+    const fila = {
+      game_title: String(game_title).trim(),
+      cover_url: /^https:\/\/[^\s"'<>]+$/.test(cover_url || "") ? cover_url : null,
+      rating: Number(rating) > 0 ? Number(rating) : null,
+      body: texto,
+      spoilers: Boolean(spoilers)
+    };
+    const { data, error } = id
+      ? await supabaseClient.from("reviews").update(fila).eq("id", id).select("id").single()
+      : await supabaseClient.from("reviews").insert([{ ...fila, user_id: user.id }]).select("id").single();
+    if (error) {
+      if (/row-level security/i.test(error.message)) throw new Error("Tu cuenta no puede publicar por ahora.");
+      throw new Error(error.message);
+    }
+    return data.id;
+  },
+
+  async borrarResena(id) {
+    const { error } = await supabaseClient.from("reviews").delete().eq("id", id);
+    if (error) throw new Error(error.message);
+  },
+
+  async getResenasDestacadas(limite = 3) {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("resenas_destacadas", { limite });
+    if (error) return [];
+    return data || [];
+  },
+
+  async reportarResena(reviewId, reason) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión para reportar.");
+    const { error } = await supabaseClient.from("review_reports").insert([{ review_id: reviewId, reporter_id: user.id, reason: reason || null }]);
+    if (error) {
+      if (error.code === "23505") throw new Error("Ya reportaste esta reseña.");
+      throw new Error(error.message);
+    }
+  },
+
+  async getModeracionResenas() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("moderacion_resenas");
+    if (error) return [];
+    return data || [];
+  },
+
+  async marcarResena(id, cambios) {
+    const { error } = await supabaseClient.from("reviews").update(cambios).eq("id", id);
+    if (error) throw new Error(error.message);
+  },
+
+  async descartarReportesResena(id) {
+    const { error } = await supabaseClient.from("review_reports").delete().eq("review_id", id);
+    if (error) throw new Error(error.message);
+  },
+
+  // ==========================================
   // MODERACIÓN (migración 005)
   // ==========================================
   async reportComment(commentId, reason) {

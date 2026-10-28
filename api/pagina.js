@@ -35,7 +35,7 @@ function inyectar(html, meta) {
 
 export default async function handler(req, res) {
   const origen = `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
-  const { tipo, u, id, lista } = req.query;
+  const { tipo, u, id, lista, resena } = req.query;
   let archivo = "index.html";
   let meta = {
     titulo: "Paindex Vault · Tu estante de juegos",
@@ -59,6 +59,20 @@ export default async function handler(req, res) {
           url: `${origen}/u/${p.usuario}`,
           tipo: "profile"
         };
+        // Enlace a una reseña: /u/nombre?resena=ID
+        if (/^\d{1,12}$/.test(String(resena || ""))) {
+          const [r] = await supa(`reviews?select=id,game_title,cover_url,rating,body,spoilers&id=eq.${resena}&limit=1`);
+          if (r) {
+            const texto = r.spoilers ? "Contiene spoilers. Ábrela para leerla." : String(r.body).replace(/\s+/g, " ").trim();
+            meta = {
+              titulo: `Reseña de ${r.game_title} por @${p.usuario}${r.rating ? ` · ${Number(r.rating).toFixed(1)}` : ""}`,
+              descripcion: texto.length > 180 ? texto.slice(0, 177).replace(/\s\S*$/, "") + "…" : texto,
+              imagen: /^https:\/\//.test(r.cover_url || "") ? r.cover_url : meta.imagen,
+              url: `${origen}/u/${p.usuario}?resena=${r.id}`,
+              tipo: "article"
+            };
+          }
+        }
         // Enlace a una lista: /u/nombre?lista=ID
         if (/^\d{1,12}$/.test(String(lista || ""))) {
           const [l] = await supa(`lists?select=id,title,description,list_items(game_title,cover_url,position)&id=eq.${lista}&limit=1`);
