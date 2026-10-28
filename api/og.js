@@ -9,16 +9,18 @@ export const config = { runtime: "edge" };
 
 const NOCHE = "#14111a", CARBON = "#1e1a25", HUESO = "#ece7ee", NIEBLA = "#b6adbb", SENAL = "#ff2a48";
 
+// Google Fonts devuelve TTF (lo que necesita @vercel/og) a navegadores antiguos
+const UA_TTF = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1";
 async function fuente(familia, peso) {
-  const css = await fetch(`https://fonts.googleapis.com/css2?family=${familia}:wght@${peso}`).then(r => r.text());
-  const url = css.match(/src: url\((.+?)\) format\('(?:opentype|truetype)'\)/)?.[1];
+  const css = await fetch(`https://fonts.googleapis.com/css2?family=${familia}:wght@${peso}`, { headers: { "User-Agent": UA_TTF } }).then(r => r.text());
+  const url = css.match(/src:\s*url\(([^)]+)\)/)?.[1];
   if (!url) throw new Error("fuente no disponible: " + familia);
   return fetch(url).then(r => r.arrayBuffer());
 }
 
 // Pequeño ayudante para escribir el árbol sin JSX
 const h = (type, style, ...children) => ({ type, props: { style: { display: "flex", ...style }, children: children.flat().filter(c => c !== null && c !== undefined && c !== false) } });
-const img = (src, style) => ({ type: "img", props: { src, style } });
+const img = (src, w, h2, style) => ({ type: "img", props: { src, width: w, height: h2, style } });
 
 // La P de Paindex con los ojos rojos
 const marca = (tam) => ({
@@ -38,10 +40,15 @@ export default async function handler(req) {
   let p = null;
   try { p = await perfilPublico(u); } catch (e) { p = null; }
 
-  const [display, texto] = await Promise.all([
-    fuente("Big+Shoulders+Display", 900),
-    fuente("Archivo", 600)
-  ]);
+  const debug = new URL(req.url).searchParams.has("debug");
+  let fuentes = [];
+  try {
+    const [display, texto] = await Promise.all([fuente("Big+Shoulders+Display", 900), fuente("Archivo", 600)]);
+    fuentes = [{ name: "Display", data: display, weight: 900 }, { name: "Texto", data: texto, weight: 600 }];
+  } catch (e) {
+    if (debug) return new Response("fuentes: " + e.message, { status: 500 });
+  }
+  if (debug) return new Response(JSON.stringify({ perfil: p, fuentes: fuentes.map(f => [f.name, f.data.byteLength]) }), { headers: { "content-type": "application/json" } });
 
   const cifras = p ? [
     [p.juegos.toLocaleString("es"), "juegos"],
@@ -71,7 +78,7 @@ export default async function handler(req) {
             position: "absolute", width: 250, height: 333, borderRadius: 14, overflow: "hidden",
             transform: `translateX(${dx}px) rotate(${giro}deg) scale(${esc})`,
             boxShadow: "0 30px 60px rgba(0,0,0,0.6)", border: `2px solid rgba(236,231,238,${pos ? 0.12 : 0.25})`
-          }, img(t.portada, { width: 250, height: 333, objectFit: "cover", opacity: pos ? 0.8 : 1 }));
+          }, img(t.portada, 250, 333, { width: 250, height: 333, objectFit: "cover", opacity: pos ? 0.8 : 1 }));
         }),
         h({ position: "absolute", bottom: 30, right: 95, background: HUESO, color: "#c4102e", borderRadius: 10, padding: "6px 14px", fontFamily: "Display", fontSize: 44 }, p.top[0].nota.toFixed(1))
       )
@@ -83,7 +90,7 @@ export default async function handler(req) {
       izquierda, tapas),
     {
       width: 1200, height: 630,
-      fonts: [{ name: "Display", data: display, weight: 900 }, { name: "Texto", data: texto, weight: 600 }],
+      fonts: fuentes.length ? fuentes : undefined,
       headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" }
     }
   );
