@@ -639,6 +639,13 @@ const DB = {
   // ==========================================
   // MODERACIÓN (migración 005)
   // ==========================================
+  async getErrores() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("errores_recientes");
+    if (error) return [];
+    return data || [];
+  },
+
   async reportComment(commentId, reason) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const user = await currentUser();

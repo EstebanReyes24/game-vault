@@ -2,36 +2,28 @@
  * Motor de búsqueda 100% videojuegos utilizando la API de RAWG.
  */
 const SearchEngine = {
-  apiKey: "c542e67aec3a4340908f9de9e86038af",
-
+  // La clave de RAWG está en el servidor (/api/rawg), no en el navegador.
   async search(term, callback) {
     if (!term || term.trim().length < 2) {
       callback([]);
       return;
     }
 
-    const cleanTerm = encodeURIComponent(term.trim());
-    const url = `https://api.rawg.io/api/games?key=${this.apiKey}&search=${cleanTerm}&page_size=6&search_precise=true`;
-
     try {
-      const response = await fetch(url);
+      const response = await fetch(`/api/rawg?search=${encodeURIComponent(term.trim())}&n=6&precise=1`);
       if (!response.ok) throw new Error("Fallo en RAWG");
-      
       const data = await response.json();
-      
-      if (data && data.results && data.results.length > 0) {
-        const games = data.results
-          .filter(game => game.background_image)
-          .map(game => ({
-            title: game.name,
-            image: game.background_image,
-            desc: game.released ? `Lanzamiento: ${game.released.slice(0, 4)}` : "Videojuego"
-          }));
-
+      const games = (data.results || [])
+        .filter(game => game.background_image)
+        .map(game => ({
+          title: game.name,
+          image: game.background_image,
+          desc: game.released ? `Lanzamiento: ${game.released.slice(0, 4)}` : "Videojuego"
+        }));
+      if (games.length > 0) {
         callback(games);
         return;
       }
-      
       this.searchFallback(term, callback);
     } catch (err) {
       console.warn("Fallo en API primaria, usando fallback:", err);
