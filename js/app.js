@@ -1009,7 +1009,9 @@ function renderLibrary() {
   gamesGrid.innerHTML = "";
 
   // Estante totalmente vacío: bienvenida en vez de un "no hay resultados"
-  if (!isSpectatorMode && StorageManager.getGames().length === 0) {
+  const estanteVacio = !isSpectatorMode && StorageManager.getGames().length === 0;
+  document.body.classList.toggle("estante-vacio", estanteVacio);
+  if (estanteVacio) {
     gamesGrid.className = "block";
     gamesGrid.innerHTML = bienvenidaHTML();
     return;

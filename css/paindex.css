@@ -471,3 +471,6 @@ body.light-mode #openTop5Btn {
 body.light-mode .bienvenida { background: #fff; }
 body.light-mode .bienvenida h2, body.light-mode .bienvenida-opcion:not(.principal) { color: #16121a; }
 body.light-mode .bienvenida-opcion:not(.principal) { background: #f7f4f8; }
+
+/* Con el estante vacío se esconde lo que solo tiene sentido con juegos */
+body.estante-vacio .solo-con-juegos { display: none !important; }
