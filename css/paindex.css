@@ -212,7 +212,7 @@ body {
 .portada-estante {
   position: relative;
   justify-self: center;
-  width: min(100%, 26rem);
+  width: min(100%, 28rem);
   aspect-ratio: 1 / 1.02;
 }
 .portada-estante::before {
@@ -238,8 +238,8 @@ body {
   animation: abrir 0.8s cubic-bezier(.2,.8,.2,1) forwards;
 }
 .tapa img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.tapa-izq    { left: 2%;  top: 12%; --giro: -9deg; --desde: 40%;  animation-delay: 0.15s; filter: brightness(.72); }
-.tapa-der    { right: 2%; top: 12%; --giro: 9deg;  --desde: -40%; animation-delay: 0.25s; filter: brightness(.72); }
+.tapa-izq    { left: 2%;  top: 12%; --giro: -9deg; --desde: 40%;  animation-delay: 0.15s; filter: brightness(.85) saturate(.9); }
+.tapa-der    { right: 2%; top: 12%; --giro: 9deg;  --desde: -40%; animation-delay: 0.25s; filter: brightness(.85) saturate(.9); }
 .tapa-frente { left: 24%; top: 2%;  --giro: 0deg;  --desde: 0%;   animation-delay: 0.05s; z-index: 2; width: 54%;
   box-shadow: 0 30px 60px -16px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(236, 231, 238, 0.22); }
 .tapa-ficha {
