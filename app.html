@@ -590,10 +590,11 @@
             <label class="text-[10px] font-bold text-slate-400 uppercase">Nota</label>
             <span class="flex items-center gap-2">
               <button type="button" id="clearScoreBtn" class="text-[10px] text-slate-500 hover:text-rose-400 cursor-pointer" title="Dejar sin calificar">Quitar</button>
-              <span id="scoreDisplay" class="text-xs font-black text-amber-400 console-font">9.0</span>
+              <span id="scoreDisplay" class="text-xs font-black text-amber-400 console-font">Sin nota</span>
             </span>
           </div>
-          <input type="range" id="scoreRange" min="1" max="10" step="0.5" value="9" class="w-full accent-indigo-500 cursor-pointer">
+          <input type="range" id="scoreRange" min="1" max="10" step="0.5" value="5.5" aria-label="Nota del 1 al 10" class="w-full accent-indigo-500 cursor-pointer sin-nota">
+          <p class="nota-ayuda" id="scoreHelp">Mueve la barra para calificarlo. Si lo acabas de empezar, puedes dejarlo sin nota.</p>
         </div>
       </div>
 

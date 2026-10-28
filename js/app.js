@@ -424,18 +424,25 @@ function updateFavoriteUI() {
 }
 
 // La nota puede quedar "sin calificar" (null), por ejemplo en juegos importados.
-let isRated = true;
+let isRated = false;
 const clearScoreBtn = document.getElementById("clearScoreBtn");
 
 function setScoreUI(rating) {
   isRated = rating !== null && rating !== undefined;
-  if (scoreRange && isRated) scoreRange.value = rating;
-  if (scoreDisplay) scoreDisplay.innerText = isRated ? Number(rating).toFixed(1) : "—";
+  if (scoreRange) {
+    // Sin nota, la barra queda atenuada en el centro: al moverla se califica
+    scoreRange.value = isRated ? rating : 5.5;
+    scoreRange.classList.toggle("sin-nota", !isRated);
+    scoreRange.setAttribute("aria-valuetext", isRated ? `${Number(rating).toFixed(1)} de 10` : "Sin nota");
+  }
+  if (scoreDisplay) scoreDisplay.innerText = isRated ? Number(rating).toFixed(1) : "Sin nota";
   if (clearScoreBtn) clearScoreBtn.classList.toggle("hidden", !isRated);
 }
 
 if (scoreRange) {
   scoreRange.addEventListener("input", (e) => setScoreUI(parseFloat(e.target.value)));
+  // Tocar la barra sin moverla (justo en 5.5) también califica
+  scoreRange.addEventListener("pointerup", (e) => { if (!isRated) setScoreUI(parseFloat(e.target.value)); });
 }
 if (clearScoreBtn) {
   clearScoreBtn.addEventListener("click", () => setScoreUI(null));
@@ -561,7 +568,7 @@ function resetForm() {
   setPlatformBadges(["PC"]);
   isFavorite = false;
   updateFavoriteUI();
-  setScoreUI(9);
+  setScoreUI(null); // un juego nuevo empieza sin nota
   gameHours.value = "";
   gameTargetHours.value = "";
   if (gameCompletedYear) gameCompletedYear.value = new Date().getFullYear();
