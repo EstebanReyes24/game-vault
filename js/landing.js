@@ -651,17 +651,26 @@ async function loadPostComments(postId) {
     }) : "";
 
     const deleteBtn = isOwnerOrAdmin ? `
-      <button class="text-[10px] text-rose-400 hover:text-rose-300 delete-comment-btn cursor-pointer ml-auto" data-id="${c.id}">
+      <button class="text-[10px] text-rose-400 hover:text-rose-300 delete-comment-btn cursor-pointer ml-auto" data-id="${c.id}" aria-label="Borrar comentario">
         <i class="fa-solid fa-trash"></i>
       </button>
     ` : '';
+    // Reportar: cualquiera con sesión, menos el autor
+    const reportBtn = user && user.id !== c.user_id ? `
+      <button class="text-[10px] text-slate-500 hover:text-slate-200 report-comment-btn cursor-pointer" data-id="${c.id}" title="Reportar comentario" aria-label="Reportar comentario">
+        <i class="fa-solid fa-flag"></i>
+      </button>
+    ` : '';
+    const ocultoAviso = c.hidden ? `<span class="text-[10px] font-bold text-amber-300">${isAdmin ? "Oculto" : "Oculto: en revisión"}</span>` : '';
 
     return `
       <div class="glass-panel p-2.5 rounded-xl border border-white/10 text-xs space-y-1">
         <div class="flex items-center justify-between text-[11px]">
           <span class="font-bold text-indigo-300">@${escapeHTML(String(c.username || 'usuario'))}</span>
           <div class="flex items-center gap-2">
+            ${ocultoAviso}
             <span class="text-[10px] text-slate-500">${dateFormatted}</span>
+            ${reportBtn}
             ${deleteBtn}
           </div>
         </div>
@@ -669,6 +678,21 @@ async function loadPostComments(postId) {
       </div>
     `;
   }).join("");
+
+  document.querySelectorAll(".report-comment-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const motivo = prompt("¿Por qué reportas este comentario? (insulto, spam, spoiler, otro)\nLo revisará Paindex.", "");
+      if (motivo === null) return;
+      try {
+        await DB.reportComment(Number(btn.dataset.id), motivo.trim().slice(0, 200));
+        btn.innerHTML = '<i class="fa-solid fa-check"></i>';
+        btn.disabled = true;
+        btn.title = "Reportado. Gracias.";
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  });
 
   document.querySelectorAll(".delete-comment-btn").forEach(btn => {
     btn.addEventListener("click", async () => {
