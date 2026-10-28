@@ -48,9 +48,21 @@ jobs:
         run: |
           set -euo pipefail
           FECHA=$(date -u +%F)
-          /usr/lib/postgresql/17/bin/pg_dump "$DB" --no-owner --no-privileges --schema=public --schema=auth \
-            | gzip -9 \
-            | gpg --batch --yes --symmetric --cipher-algo AES256 --passphrase "$PASS" -o "respaldo-$FECHA.sql.gz.gpg"
+          # Los errores de pg_dump pueden incluir partes de la conexión: no se muestran en el registro público
+          if ! /usr/lib/postgresql/17/bin/pg_dump "$DB" --no-owner --no-privileges --schema=public --schema=auth \
+               -f respaldo.sql 2> pgdump-error.txt; then
+            if grep -qi "could not translate host name" pgdump-error.txt; then
+              echo "::error::No se pudo leer la dirección de la base de datos. Si tu contraseña tiene símbolos (@ # / : ? &), cámbiala por una solo de letras y números y actualiza SUPABASE_DB_URL."
+            elif grep -qi "password authentication failed" pgdump-error.txt; then
+              echo "::error::Supabase rechazó la contraseña de SUPABASE_DB_URL."
+            else
+              echo "::error::pg_dump falló. Revisa que SUPABASE_DB_URL sea la del Session pooler."
+            fi
+            exit 1
+          fi
+          gzip -9 respaldo.sql
+          gpg --batch --yes --symmetric --cipher-algo AES256 --passphrase "$PASS" -o "respaldo-$FECHA.sql.gz.gpg" respaldo.sql.gz
+          rm -f respaldo.sql.gz
           ls -lh respaldo-*.gpg
           echo "ARCHIVO=respaldo-$FECHA.sql.gz.gpg" >> "$GITHUB_ENV"
 
