@@ -43,15 +43,13 @@ export default async function handler(req) {
   let p = null;
   try { p = await perfilPublico(u); } catch (e) { p = null; }
 
-  const debug = new URL(req.url).searchParams.has("debug");
   let fuentes = [];
   try {
     const [display, texto] = await Promise.all([fuente("Big+Shoulders+Display", 900), fuente("Archivo", 600)]);
     fuentes = [{ name: "Display", data: display, weight: 900 }, { name: "Texto", data: texto, weight: 600 }];
   } catch (e) {
-    if (debug) return new Response("fuentes: " + e.message, { status: 500 });
+    console.error("og fuentes:", e.message); // sin fuentes propias usa la tipografía por defecto
   }
-  if (debug) return new Response(JSON.stringify({ perfil: p, fuentes: fuentes.map(f => [f.name, f.data.byteLength]) }), { headers: { "content-type": "application/json" } });
 
   const cifras = p ? [
     [p.juegos.toLocaleString("es"), "juegos"],
@@ -73,31 +71,24 @@ export default async function handler(req) {
   );
 
   const tapas = p && p.top.length
-    ? h({ position: "relative", width: 440, height: "100%", alignItems: "center", justifyContent: "center" },
+    ? h({ position: "relative", width: 470, height: "100%", alignItems: "center", justifyContent: "center" },
         ...p.top.slice(0, 3).reverse().map((t, i, arr) => {
           const pos = arr.length - 1 - i; // 0 = la de enfrente
-          const giro = [0, 8, -8][pos], dx = [0, 120, -120][pos], esc = [1, 0.86, 0.86][pos];
+          const giro = [0, 9, -9][pos], dx = [0, 140, -140][pos], esc = [1, 0.88, 0.88][pos];
           return h({
-            position: "absolute", width: 250, height: 333, borderRadius: 14, overflow: "hidden",
+            position: "absolute", width: 300, height: 400, borderRadius: 16, overflow: "hidden",
             transform: `translateX(${dx}px) rotate(${giro}deg) scale(${esc})`,
             boxShadow: "0 30px 60px rgba(0,0,0,0.6)", border: `2px solid rgba(236,231,238,${pos ? 0.12 : 0.25})`
-          }, img(t.portada, 250, 333, { width: 250, height: 333, objectFit: "cover", opacity: pos ? 0.8 : 1 }));
+          }, img(t.portada, 300, 400, { width: 300, height: 400, objectFit: "cover", opacity: pos ? 0.8 : 1 }));
         }),
-        h({ position: "absolute", bottom: 30, right: 95, background: HUESO, color: "#c4102e", borderRadius: 10, padding: "6px 14px", fontFamily: "Display", fontSize: 44 }, p.top[0].nota.toFixed(1))
+        h({ position: "absolute", bottom: 14, right: 70, background: HUESO, color: "#c4102e", borderRadius: 10, padding: "6px 14px", fontFamily: "Display", fontSize: 44 }, p.top[0].nota.toFixed(1))
       )
     : null;
 
-  const nv = new URL(req.url).searchParams.get("nivel");
-  if (nv === "0") return new ImageResponse({ type: "div", props: { style: { display: "flex", width: "100%", height: "100%", background: NOCHE, color: HUESO, fontSize: 80 }, children: "hola" } }, { width: 1200, height: 630 });
-  if (nv === "-1") return new ImageResponse({ type: "div", props: { style: { display: "flex", width: "100%", height: "100%", background: NOCHE, color: HUESO, fontSize: 80, fontFamily: "Display" }, children: "hola" } }, { width: 1200, height: 630, fonts: fuentes.slice(0, 1) });
-  if (nv === "-2") return new ImageResponse({ type: "div", props: { style: { display: "flex", width: "100%", height: "100%", background: NOCHE, color: HUESO, fontSize: 80, fontFamily: "Texto" }, children: "hola" } }, { width: 1200, height: 630, fonts: fuentes.slice(1) });
-  // ?nivel=1..4 permite aislar qué parte falla al renderizar (diagnóstico)
-  const nivel = Number(new URL(req.url).searchParams.get("nivel") || 4);
-  const fondo = nivel >= 4 ? { backgroundImage: `radial-gradient(circle at 85% 100%, rgba(160,20,44,0.55), transparent 55%)` } : {};
-  const izq = nivel >= 2 ? izquierda : h({ color: HUESO, fontSize: 60 }, "prueba");
+  const fondo = { backgroundImage: `radial-gradient(circle at 85% 100%, rgba(160,20,44,0.55), transparent 55%)` };
   return new ImageResponse(
     h({ width: "100%", height: "100%", padding: 64, justifyContent: "space-between", background: NOCHE, ...fondo },
-      izq, nivel >= 3 ? tapas : null),
+      izquierda, tapas),
     {
       width: 1200, height: 630,
       fonts: fuentes.length ? fuentes : undefined,
