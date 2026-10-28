@@ -40,6 +40,9 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="stylesheet" href="css/paindex.css">
   <link rel="stylesheet" href="css/tw.css">
+  <!-- Analíticas de Vercel: visitas anónimas, sin cookies -->
+  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="p-3 sm:p-6 lg:p-8 flex flex-col items-center min-h-screen">
 
@@ -92,6 +95,10 @@
           <button type="button" id="openDraftsBtn" class="hidden boton boton-linea">
             <i class="fa-solid fa-newspaper" aria-hidden="true"></i> Noticias por revisar
             <span id="draftsCount" class="borrador-contador">0</span>
+          </button>
+          <button type="button" id="openModBtn" class="hidden boton boton-linea">
+            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Moderación
+            <span id="modCount" class="borrador-contador" hidden>0</span>
           </button>
         </div>
       </div>
@@ -394,9 +401,24 @@
       <div id="draftsList"></div>
     </div>
   </div>
+
+  <!-- Moderación de comentarios (solo admin) -->
+  <div id="modModal" class="fixed inset-0 bg-black/80 flex items-start justify-center p-4 z-50 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="modTitle">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="modTitle" class="seccion-titulo">Moderación</h2>
+          <p>Comentarios reportados u ocultos. Con 3 reportes un comentario se oculta solo hasta que lo revises.</p>
+        </div>
+        <button type="button" id="closeModBtn" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div id="modList"></div>
+    </div>
+  </div>
   <script src="js/supabase.js"></script>
   <script src="js/search.js"></script>
   <script src="js/landing.js"></script>
   <script src="js/borradores.js"></script>
+  <script src="js/moderacion.js"></script>
 </body>
 </html>

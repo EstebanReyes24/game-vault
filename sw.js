@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v8';
+const CACHE_NAME = 'paindex-vault-v9';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -42,7 +42,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (!event.request.url.startsWith(self.location.origin)) return;
   // Nunca cachear la API (datos personales, p. ej. la biblioteca de Steam) ni peticiones que no sean GET
-  if (event.request.method !== 'GET' || /^\/(api|borradores)\//.test(new URL(event.request.url).pathname)) return;
+  if (event.request.method !== 'GET' || /^\/(api|borradores|_vercel)\//.test(new URL(event.request.url).pathname)) return;
 
   // Páginas, CSS y JS: primero la red, para que cada publicación se vea al instante.
   // La caché queda solo como respaldo sin conexión.

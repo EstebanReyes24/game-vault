@@ -450,8 +450,54 @@ const DB = {
       }])
       .select();
 
-    if (error) throw error;
+    if (error) {
+      if (/row-level security/i.test(error.message || "")) throw new Error("Tu cuenta no puede comentar por ahora. Si crees que es un error, escríbenos por el canal.");
+      throw error;
+    }
     return data?.[0] || null;
+  },
+
+  // ==========================================
+  // MODERACIÓN (migración 005)
+  // ==========================================
+  async reportComment(commentId, reason) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión para reportar.");
+    const { error } = await supabaseClient
+      .from("comment_reports")
+      .insert([{ comment_id: commentId, reporter_id: user.id, reason: reason || null }]);
+    if (error) {
+      if (error.code === "23505") throw new Error("Ya reportaste este comentario.");
+      throw new Error(error.message);
+    }
+  },
+
+  async getModeracion() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("moderacion_pendiente");
+    if (error) throw error;
+    return data || [];
+  },
+
+  async setCommentHidden(commentId, hidden) {
+    const { error } = await supabaseClient.from("post_comments").update({ hidden }).eq("id", commentId);
+    if (error) throw error;
+  },
+
+  async dismissReports(commentId) {
+    const { error } = await supabaseClient.from("comment_reports").delete().eq("comment_id", commentId);
+    if (error) throw error;
+  },
+
+  async banUser(userId, reason) {
+    const { error } = await supabaseClient.from("banned_users").upsert([{ user_id: userId, reason: reason || null }]);
+    if (error) throw error;
+  },
+
+  async unbanUser(userId) {
+    const { error } = await supabaseClient.from("banned_users").delete().eq("user_id", userId);
+    if (error) throw error;
   },
 
   async deleteComment(commentId) {

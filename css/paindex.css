@@ -553,3 +553,12 @@ body.light-mode .boton-linea:hover { border-color: #16121a; }
 
 /* Vista previa de las imágenes para compartir */
 .tarjeta-vista { display: block; max-width: 100%; max-height: 62vh; width: auto; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(236, 231, 238, 0.12); }
+
+/* ---------- moderación ---------- */
+.mod-fila { padding: 1.1rem 0; border-top: 1px solid var(--border-light); display: grid; gap: 0.6rem; }
+.mod-meta { margin: 0; font-size: 0.85rem; color: var(--niebla); }
+.mod-meta b { color: var(--hueso); }
+.mod-meta a { color: var(--hueso); text-decoration: underline; text-underline-offset: 3px; }
+.mod-fila blockquote { margin: 0; padding: 0.7rem 0.9rem; border-left: 3px solid var(--senal); background: var(--grafito); border-radius: 0 8px 8px 0; color: var(--hueso); white-space: pre-line; overflow-wrap: anywhere; }
+.mod-etiqueta { display: inline-block; padding: 0 0.45rem; border-radius: 999px; background: rgba(226, 182, 92, 0.16); color: #ecd29a; font-size: 0.75rem; font-weight: 700; }
+.borrador-acciones .boton { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
