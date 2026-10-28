@@ -187,7 +187,7 @@ window.addEventListener("keydown", (e) => {
   }
   if (e.key === "Escape") {
     closeSearchPalette();
-    if (readPostModal) readPostModal.classList.add("hidden");
+    if (readPostModal && !readPostModal.classList.contains("hidden")) cerrarArticulo();
     if (postModal) postModal.classList.add("hidden");
     if (hofModal) hofModal.classList.add("hidden");
   }
@@ -593,6 +593,10 @@ async function openReadModal(post) {
     year: "numeric"
   }) : "";
 
+  // Cada artículo tiene su propio enlace (/a/id) con vista previa al compartirlo
+  if (window.location.pathname !== `/a/${post.id}`) history.replaceState(null, "", `/a/${post.id}`);
+  document.title = `${post.title} · Paindex Vault`;
+
   await updateModalLikes(post.id);
   readPostModal.classList.remove("hidden");
   await loadPostComments(post.id);
@@ -699,19 +703,11 @@ if (commentForm) {
   });
 }
 
-if (closeReadPostBtn) {
-  closeReadPostBtn.addEventListener("click", () => {
-    readPostModal.classList.add("hidden");
-    activeViewingPostId = null;
-  });
-}
+if (closeReadPostBtn) closeReadPostBtn.addEventListener("click", () => cerrarArticulo());
 
 if (readPostModal) {
   readPostModal.addEventListener("click", (e) => {
-    if (e.target === readPostModal) {
-      readPostModal.classList.add("hidden");
-      activeViewingPostId = null;
-    }
+    if (e.target === readPostModal) cerrarArticulo();
   });
 }
 
@@ -823,7 +819,38 @@ async function loadPublicFeed() {
   if (postCounter) postCounter.innerText = "Consultando entradas...";
   cachedPosts = await DB.getPublicPosts();
   renderArticles();
+  abrirArticuloDeLaUrl();
 }
+
+// Si se entra por /a/123, abre ese artículo directamente
+let articuloUrlAbierto = false;
+function abrirArticuloDeLaUrl() {
+  if (articuloUrlAbierto) return;
+  const m = window.location.pathname.match(/^\/a\/(\d+)\/?$/);
+  if (!m) return;
+  articuloUrlAbierto = true;
+  const post = cachedPosts.find(p => String(p.id) === m[1]);
+  if (post) openReadModal(post);
+  else history.replaceState(null, "", "/");
+}
+
+function cerrarArticulo() {
+  readPostModal.classList.add("hidden");
+  activeViewingPostId = null;
+  if (window.location.pathname.startsWith("/a/")) history.replaceState(null, "", "/");
+  document.title = "Paindex Vault · Tu estante de juegos";
+}
+
+const copyPostLinkBtn = document.getElementById("copyPostLinkBtn");
+if (copyPostLinkBtn) copyPostLinkBtn.addEventListener("click", async () => {
+  if (!activeViewingPostId) return;
+  const url = `${window.location.origin}/a/${activeViewingPostId}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    copyPostLinkBtn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Copiado';
+    setTimeout(() => { copyPostLinkBtn.innerHTML = '<i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace'; }, 1800);
+  } catch (e) { prompt("Copia el enlace:", url); }
+});
 
 window.openPostByIndex = function(index) {
   if (cachedPosts[index]) openReadModal(cachedPosts[index]);
