@@ -458,6 +458,35 @@ const DB = {
   },
 
   // ==========================================
+  // SOCIAL: seguir y actividad (migración 006)
+  // ==========================================
+  async getActividad(soloSeguidos = false, limite = 20) {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("actividad_reciente", { solo_seguidos: soloSeguidos, limite });
+    if (error) { console.warn("Actividad no disponible (¿falta la migración 006?):", error.message); return []; }
+    return data || [];
+  },
+
+  async getResumenSocial(usuario) {
+    if (!supabaseClient) return null;
+    const { data, error } = await supabaseClient.rpc("resumen_social", { usuario });
+    if (error) return null;
+    return (data && data[0]) || null;
+  },
+
+  async seguir(usuario, activar) {
+    if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión para seguir jugadores.");
+    const { data: perfil } = await supabaseClient.from("profiles").select("id").eq("username", String(usuario).toLowerCase()).maybeSingle();
+    if (!perfil) throw new Error("Ese estante no existe o es privado.");
+    const { error } = activar
+      ? await supabaseClient.from("follows").insert([{ follower_id: user.id, followed_id: perfil.id }])
+      : await supabaseClient.from("follows").delete().eq("follower_id", user.id).eq("followed_id", perfil.id);
+    if (error && error.code !== "23505") throw new Error(error.message);
+  },
+
+  // ==========================================
   // MODERACIÓN (migración 005)
   // ==========================================
   async reportComment(commentId, reason) {

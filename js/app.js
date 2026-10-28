@@ -2095,7 +2095,8 @@ function pintarPerfil(games) {
   if (window.DB) DB.getMyProfile().then(p => {
     const cta = document.getElementById("perfilCtaBtn");
     if (p && cta) cta.textContent = p.username === nombre.toLowerCase() ? "Editar mi estante" : "Ir a mi estante";
-  }).catch(() => {});
+    pintarSocial(nombre, p);
+  }).catch(() => pintarSocial(nombre, null));
 
   if (!games.length) return;
   const horas = games.reduce((t, g) => t + (Number(g.hours) || 0), 0);
@@ -2119,4 +2120,41 @@ function pintarPerfil(games) {
       </li>`).join("");
     document.getElementById("perfilTop").hidden = false;
   }
+}
+
+
+/** Seguidores, siguiendo y botón Seguir en el perfil público (migración 006). */
+async function pintarSocial(nombre, miPerfil) {
+  const resumen = await DB.getResumenSocial(nombre);
+  const texto = document.getElementById("perfilSocial");
+  const boton = document.getElementById("perfilSeguirBtn");
+  if (!resumen || !texto || !boton) return;
+
+  let { seguidores, siguiendo, lo_sigo } = resumen;
+  const pintar = () => {
+    texto.innerHTML = `<b>${Number(seguidores).toLocaleString("es")}</b> ${Number(seguidores) === 1 ? "seguidor" : "seguidores"} · <b>${Number(siguiendo).toLocaleString("es")}</b> siguiendo`;
+    texto.hidden = false;
+    boton.textContent = lo_sigo ? "Siguiendo" : "Seguir";
+    boton.className = lo_sigo ? "boton boton-siguiendo" : "boton boton-senal";
+    boton.setAttribute("aria-pressed", String(Boolean(lo_sigo)));
+  };
+  pintar();
+
+  const esMio = miPerfil && miPerfil.username === nombre.toLowerCase();
+  if (esMio) return;
+  boton.hidden = false;
+  boton.addEventListener("click", async () => {
+    if (!miPerfil) { window.location.href = "/login.html"; return; }
+    boton.disabled = true;
+    try {
+      await DB.seguir(nombre, !lo_sigo);
+      lo_sigo = !lo_sigo;
+      seguidores = Number(seguidores) + (lo_sigo ? 1 : -1);
+      pintar();
+    } catch (err) {
+      showToast(err.message, true);
+    } finally {
+      boton.disabled = false;
+    }
+  });
 }

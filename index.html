@@ -144,6 +144,21 @@
       <div id="hofGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
     </section>
 
+    <!-- Actividad de la comunidad -->
+    <section class="actividad" aria-labelledby="actividadTitulo">
+      <div class="actividad-cabecera">
+        <div>
+          <h2 id="actividadTitulo" class="seccion-titulo">Qué está jugando la gente</h2>
+          <p class="text-sm text-slate-400 mt-1">Lo último que terminaron, platinaron o calificaron en sus estantes públicos.</p>
+        </div>
+        <div class="actividad-pestanas hidden" id="actividadPestanas" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-seguidos="0">Todos</button>
+          <button type="button" role="tab" aria-selected="false" data-seguidos="1">A quienes sigo</button>
+        </div>
+      </div>
+      <ol class="actividad-lista" id="actividadLista"></ol>
+    </section>
+
     <!-- Feed de Publicaciones con Filtros por Píldoras -->
     <section class="space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
@@ -420,5 +435,6 @@
   <script src="js/landing.js"></script>
   <script src="js/borradores.js"></script>
   <script src="js/moderacion.js"></script>
+  <script src="js/actividad.js"></script>
 </body>
 </html>
