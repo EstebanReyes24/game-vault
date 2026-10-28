@@ -107,6 +107,24 @@ create trigger games_after_change
   after insert or update on public.games
   for each row execute function public.after_game_change();
 
+-- Arranque: para que la sección no salga vacía el primer día, se cargan
+-- los 3 juegos más recientes (jugando, pasados o platinados) de cada estante.
+-- Solo se ejecuta si la tabla de actividad está vacía.
+insert into public.activity (user_id, kind, game_title, cover_url, rating, created_at)
+select user_id,
+       case status when 'playing' then 'jugando' when 'platinum' then 'platino' else 'terminado' end,
+       title,
+       case when cover_url ~ '^https://' then cover_url end,
+       nullif(rating, 0),
+       created_at
+from (
+  select g.*, row_number() over (partition by g.user_id order by g.created_at desc) as n
+  from public.games g
+  where g.status in ('playing', 'completed', 'extras', 'platinum')
+) x
+where n <= 3
+  and not exists (select 1 from public.activity);
+
 -- 3. Lectura para la web
 create or replace function public.actividad_reciente(solo_seguidos boolean default false, limite int default 20)
 returns table (id bigint, username text, kind text, game_title text, cover_url text, rating numeric, created_at timestamptz)
