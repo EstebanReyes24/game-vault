@@ -1,10 +1,10 @@
 {
-  "name": "Game Vault • Paindex",
-  "short_name": "Game Vault",
+  "name": "Paindex Vault",
+  "short_name": "Paindex Vault",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#0d1326",
-  "theme_color": "#6366f1",
+  "background_color": "#14111a",
+  "theme_color": "#14111a",
   "icons": [
     {
       "src": "/icons/icon-192.png",
@@ -17,6 +17,13 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     }
-  ]
+  ],
+  "description": "Tu estante de juegos, con las reseñas del canal Paindex."
 }

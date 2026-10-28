@@ -1,4 +1,6 @@
-# 🎮 Game Vault | Portal Oficial de Paindex
+# Paindex Vault
+
+Estante de juegos y portal de la comunidad del canal [Paindex](https://youtube.com/@paindexhq).
 
 > Plataforma web interactiva para catalogar partidas, registrar estadísticas de juego y publicar crónicas, análisis y reflexiones de la comunidad gamer. Desarrollada con un diseño de interfaz estilo consola (*Glassmorphism* y modo oscuro cinemático), backend serverless sobre Supabase y soporte nativo como PWA.
 
@@ -32,7 +34,7 @@
 ## 🛠️ Tecnologías Utilizadas
 
 - **Frontend:** HTML5 semántico, Vanilla JavaScript (ES6+), Web Audio API (efectos de sonido sintéticos).
-- **Estilos & Diseño:** Tailwind CSS (CDN), Font Awesome 6, Google Fonts (*Outfit* y *Plus Jakarta Sans*), CSS moderno (animaciones clave, blur glassmorphism).
+- **Estilos & Diseño:** Tailwind CSS (CDN), Font Awesome 6, Google Fonts (*Big Shoulders Display* para títulos y *Archivo* para texto). La identidad visual vive en `css/paindex.css` (paleta y componentes) y `js/tw-config.js` (remapea las escalas de color de Tailwind a la paleta Paindex).
 - **Renderizado Gráfico:** HTML5 Canvas API para generación de pósters y tarjetas de juego.
 - **Backend & Almacenamiento:** [Supabase](https://supabase.com/) (PostgreSQL, Row Level Security, Auth y REST API en tiempo real).
 - **PWA:** Web App Manifest y Service Worker nativo para caché de recursos estáticos.
@@ -41,7 +43,7 @@
 
 ## 🗄️ Esquema de Base de Datos (Supabase SQL)
 
-El proyecto utiliza las siguientes tablas base. **Después de crearlas, aplica la migración [`supabase/migrations/001_fase0.sql`](supabase/migrations/001_fase0.sql)**, que añade la tabla `profiles` (usuarios únicos y estante público/privado), cambia la clave de `games` a `(user_id, id)`, reemplaza las políticas RLS de `games`, protege los comentarios y crea las funciones `community_stats`, `username_available` y `delete_my_account`.
+El proyecto utiliza las siguientes tablas base. **Después de crearlas, aplica la migración [`supabase/migrations/001_fase0.sql`](supabase/migrations/001_fase0.sql)**, que añade la tabla `profiles` (usuarios únicos y estante público/privado), cambia la clave de `games` a `(user_id, id)`, reemplaza las políticas RLS de `games`, protege los comentarios y crea las funciones `community_stats`, `username_available` y `delete_my_account`. Luego aplica [`002_borrado_en_cascada.sql`](supabase/migrations/002_borrado_en_cascada.sql), que asegura que borrar una cuenta borre también todos sus datos.
 
 ```sql
 -- 1. Tabla de Catálogo de Juegos

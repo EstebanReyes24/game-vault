@@ -3,30 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Vault | Acceso de Jugador</title>
+  <title>Entrar · Paindex Vault</title>
   
-  <meta name="theme-color" content="#07090e">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <meta name="theme-color" content="#14111a">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tw-config.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/paindex.css">
 </head>
 <body class="p-4 sm:p-8 flex flex-col items-center justify-between min-h-screen">
 
   <!-- Header -->
   <header class="w-full max-w-md flex justify-between items-center py-4">
-    <a href="index.html" class="flex items-center gap-2.5">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
-        <i class="fa-solid fa-gamepad text-base"></i>
-      </div>
-      <div>
-        <span class="text-lg font-black console-font text-white tracking-tight">GAME VAULT</span>
-        <span class="text-[9px] uppercase font-bold tracking-widest text-indigo-400 block -mt-1">Player Station</span>
-      </div>
+    <a href="index.html" class="marca" aria-label="Paindex Vault, inicio">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
+      <span class="marca-texto">PAINDEX<small>Vault</small></span>
     </a>
 
     <a href="index.html" class="text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-1.5">
@@ -136,7 +134,7 @@
 
   <!-- Footer -->
   <footer class="w-full max-w-md py-4 text-center text-xs text-slate-500">
-    <span>Game Vault • © 2026 Pain • Conexión Segura vía Supabase</span>
+    <span>© 2026 Paindex Vault</span>
   </footer>
 
   <!-- 1. CDN Oficial de Supabase -->

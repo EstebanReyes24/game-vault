@@ -1,4 +1,4 @@
-const CACHE_NAME = 'game-vault-v4';
+const CACHE_NAME = 'paindex-vault-v7';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -7,6 +7,9 @@ const ASSETS_TO_CACHE = [
   './login.html',
   './manifest.json',
   './css/styles.css',
+  './css/paindex.css',
+  './js/tw-config.js',
+  './favicon.svg',
   './js/supabase.js',
   './js/login.js',
   './js/app.js',
@@ -39,7 +42,23 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
   if (!event.request.url.startsWith(self.location.origin)) return;
   // Nunca cachear la API (datos personales, p. ej. la biblioteca de Steam) ni peticiones que no sean GET
-  if (event.request.method !== 'GET' || new URL(event.request.url).pathname.startsWith('/api/')) return;
+  if (event.request.method !== 'GET' || /^\/(api|borradores)\//.test(new URL(event.request.url).pathname)) return;
+
+  // Páginas, CSS y JS: primero la red, para que cada publicación se vea al instante.
+  // La caché queda solo como respaldo sin conexión.
+  const dest = event.request.destination;
+  if (event.request.mode === 'navigate' || dest === 'script' || dest === 'style') {
+    event.respondWith(
+      fetch(event.request).then((res) => {
+        if (res && res.status === 200) {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return res;
+      }).catch(() => caches.match(event.request))
+    );
+    return;
+  }
 
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {

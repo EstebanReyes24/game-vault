@@ -14,9 +14,9 @@ const CanvasPoster = {
     const ctx = canvas.getContext("2d");
 
     const grad = ctx.createLinearGradient(0, 0, 400, 550);
-    grad.addColorStop(0, "#1e1b4b");
-    grad.addColorStop(0.5, "#312e81");
-    grad.addColorStop(1, "#0f172a");
+    grad.addColorStop(0, "#1d1820");
+    grad.addColorStop(0.5, "#5c0b19");
+    grad.addColorStop(1, "#07060a");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 400, 550);
 
@@ -25,7 +25,7 @@ const CanvasPoster = {
     ctx.strokeRect(10, 10, 380, 530);
 
     ctx.fillStyle = "#ffffff";
-    ctx.font = "bold 26px 'Outfit', sans-serif";
+    ctx.font = "bold 26px 'Big Shoulders Display', sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
 
@@ -44,9 +44,9 @@ const CanvasPoster = {
     }
     ctx.fillText(line.trim(), 200, y);
 
-    ctx.fillStyle = "#818cf8";
-    ctx.font = "bold 12px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText("GAME VAULT COLLECTION", 200, 490);
+    ctx.fillStyle = "#ff5a72";
+    ctx.font = "bold 12px 'Archivo', sans-serif";
+    ctx.fillText("PAINDEX VAULT", 200, 490);
 
     return canvas.toDataURL("image/png");
   },
@@ -83,26 +83,26 @@ const CanvasPoster = {
     const ctx = canvas.getContext("2d");
 
     const bgGrad = ctx.createLinearGradient(0, 0, width, height);
-    bgGrad.addColorStop(0, "#080c1a");
-    bgGrad.addColorStop(0.5, "#0b1227");
-    bgGrad.addColorStop(1, "#060914");
+    bgGrad.addColorStop(0, "#07060a");
+    bgGrad.addColorStop(0.5, "#120f15");
+    bgGrad.addColorStop(1, "#07060a");
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, width, height);
 
     const radGrad = ctx.createRadialGradient(width / 2, 80, 50, width / 2, 80, 500);
-    radGrad.addColorStop(0, "rgba(99, 102, 241, 0.25)");
+    radGrad.addColorStop(0, "rgba(255, 42, 72, 0.22)");
     radGrad.addColorStop(1, "transparent");
     ctx.fillStyle = radGrad;
     ctx.fillRect(0, 0, width, height);
 
     ctx.fillStyle = "#ffffff";
-    ctx.font = "900 28px 'Outfit', sans-serif";
+    ctx.font = "900 28px 'Big Shoulders Display', sans-serif";
     ctx.textAlign = "left";
     ctx.fillText(`MY ALL-TIME TOP ${count} GAMES`, 50, 55);
 
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "600 12px 'Plus Jakarta Sans', sans-serif";
-    ctx.fillText("Game Vault • Personal Hall of Fame", 50, 75);
+    ctx.fillStyle = "#9b919f";
+    ctx.font = "600 12px 'Archivo', sans-serif";
+    ctx.fillText("Paindex Vault · Mi top", 50, 75);
 
     ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
     ctx.lineWidth = 1;
@@ -144,19 +144,19 @@ const CanvasPoster = {
       ctx.roundRect(x + cardWidth - 48, y + 8, 42, 20, 6);
       ctx.fill();
 
-      ctx.fillStyle = "#fbbf24";
-      ctx.font = "bold 10px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillStyle = "#e2b65c";
+      ctx.font = "bold 10px 'Archivo', sans-serif";
       ctx.textAlign = "center";
       ctx.fillText(`★ ${this.ratingText(g)}`, x + cardWidth - 27, y + 22);
 
       ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 13px 'Outfit', sans-serif";
+      ctx.font = "bold 13px 'Big Shoulders Display', sans-serif";
       ctx.textAlign = "left";
       const displayTitle = g.title.length > 18 ? g.title.slice(0, 16) + "..." : g.title;
       ctx.fillText(displayTitle, x, y + cardHeight + 18);
 
-      ctx.fillStyle = "#818cf8";
-      ctx.font = "bold 11px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillStyle = "#ff5a72";
+      ctx.font = "bold 11px 'Archivo', sans-serif";
       const platformText = (g.platforms && g.platforms[0]) ? g.platforms[0] : "PC";
       ctx.fillText(`#${i + 1} • ${platformText}`, x, y + cardHeight + 32);
     }
@@ -168,9 +168,9 @@ const CanvasPoster = {
     const ctx = canvas.getContext("2d");
 
     const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
-    bgGrad.addColorStop(0, "#080c1a");
-    bgGrad.addColorStop(0.5, "#0d142b");
-    bgGrad.addColorStop(1, "#05070f");
+    bgGrad.addColorStop(0, "#07060a");
+    bgGrad.addColorStop(0.5, "#16121a");
+    bgGrad.addColorStop(1, "#07060a");
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 1080, 1080);
 
@@ -209,16 +209,16 @@ const CanvasPoster = {
 
     const textX = 510;
 
-    ctx.fillStyle = "rgba(99, 102, 241, 0.25)";
+    ctx.fillStyle = "rgba(255, 42, 72, 0.22)";
     ctx.beginPath();
     ctx.roundRect(textX, 160, 160, 34, 10);
     ctx.fill();
-    ctx.strokeStyle = "rgba(129, 140, 248, 0.5)";
+    ctx.strokeStyle = "rgba(255, 42, 72, 0.55)";
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    ctx.fillStyle = "#c7d2fe";
-    ctx.font = "bold 13px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillStyle = "#ffc2cc";
+    ctx.font = "bold 13px 'Archivo', sans-serif";
     ctx.textAlign = "center";
     const statusTexts = {
       platinum: "🏆 100% PLATINO",
@@ -231,7 +231,7 @@ const CanvasPoster = {
     ctx.fillText(statusText, textX + 80, 182);
 
     ctx.fillStyle = "#ffffff";
-    ctx.font = "900 38px 'Outfit', sans-serif";
+    ctx.font = "900 38px 'Big Shoulders Display', sans-serif";
     ctx.textAlign = "left";
     
     const titleWords = game.title.split(" ");
@@ -249,28 +249,28 @@ const CanvasPoster = {
     }
     ctx.fillText(titleLine.trim(), textX, titleY);
 
-    ctx.fillStyle = "#fbbf24";
-    ctx.font = "900 44px 'Outfit', sans-serif";
+    ctx.fillStyle = "#e2b65c";
+    ctx.font = "900 44px 'Big Shoulders Display', sans-serif";
     ctx.fillText(`★ ${this.ratingText(game)}`, textX, titleY + 65);
-    ctx.fillStyle = "#64748b";
-    ctx.font = "bold 18px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillStyle = "#7a7080";
+    ctx.font = "bold 18px 'Archivo', sans-serif";
     ctx.fillText("/ 10", textX + 130, titleY + 65);
 
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "600 16px 'Plus Jakarta Sans', sans-serif";
+    ctx.fillStyle = "#9b919f";
+    ctx.font = "600 16px 'Archivo', sans-serif";
     const metaInfo = `${(game.platforms || []).join(", ")} • ${game.hours || 0} horas dedicadas`;
     ctx.fillText(metaInfo, textX, titleY + 110);
 
     if (game.notes) {
-      ctx.fillStyle = "rgba(15, 23, 42, 0.75)";
+      ctx.fillStyle = "rgba(18, 15, 21, 0.85)";
       ctx.beginPath();
       ctx.roundRect(80, 740, 920, 220, 20);
       ctx.fill();
       ctx.strokeStyle = "rgba(255, 255, 255, 0.08)";
       ctx.stroke();
 
-      ctx.fillStyle = "#cbd5e1";
-      ctx.font = "italic 20px 'Plus Jakarta Sans', sans-serif";
+      ctx.fillStyle = "#d9d2dc";
+      ctx.font = "italic 20px 'Archivo', sans-serif";
       
       const noteWords = `"${game.notes}"`.split(" ");
       let noteLine = "";
@@ -288,9 +288,9 @@ const CanvasPoster = {
       ctx.fillText(noteLine.trim(), 110, noteY);
     }
 
-    ctx.fillStyle = "#6366f1";
-    ctx.font = "900 16px 'Outfit', sans-serif";
+    ctx.fillStyle = "#ff2a48";
+    ctx.font = "900 16px 'Big Shoulders Display', sans-serif";
     ctx.textAlign = "right";
-    ctx.fillText("GAME VAULT • PLAYER STATION", 1000, 1010);
+    ctx.fillText("PAINDEX VAULT", 1000, 1010);
   }
 };

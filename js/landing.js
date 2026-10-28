@@ -268,6 +268,27 @@ async function loadCommunityMetrics() {
 // ==========================================
 // HALL OF FAME DINÁMICO (BLINDADO CON FALLBACK)
 // ==========================================
+// Portada: las tres primeras tapas del Hall of Fame, en abanico.
+function pintarPortada(items) {
+  const estante = document.getElementById("portadaEstante");
+  const tapas = document.getElementById("portadaTapas");
+  if (!estante || !tapas) return;
+  const validas = (items || []).filter(i => /^https:\/\//i.test(String(i.cover_url || ""))).slice(0, 3);
+  if (validas.length < 3) return; // sin tapas suficientes queda la P sola
+  const [frente, izq, der] = validas;
+  const tapa = (item, pos) => `
+    <figure class="tapa tapa-${pos}">
+      <img src="${escapeHTML(String(item.cover_url))}" alt="" loading="eager" onerror="this.closest('.tapa').remove()">
+    </figure>`;
+  const nota = frente.rating ? parseFloat(frente.rating).toFixed(1) : "";
+  tapas.innerHTML = tapa(izq, "izq") + tapa(der, "der") + tapa(frente, "frente") + `
+    <div class="tapa-ficha">
+      <span>${escapeHTML(String(frente.title || ""))}</span>
+      ${nota ? `<b>${nota}</b>` : ""}
+    </div>`;
+  estante.classList.add("con-tapas");
+}
+
 async function loadHallOfFame() {
   if (!hofGrid) return;
 
@@ -288,6 +309,8 @@ async function loadHallOfFame() {
     `;
     return;
   }
+
+  pintarPortada(cachedHof);
 
   hofGrid.innerHTML = cachedHof.map(item => {
     const title = escapeHTML(String(item.title || "Sin título"));
