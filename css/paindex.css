@@ -1,0 +1,322 @@
+/* ==========================================================
+   PAINDEX — identidad visual de la web
+   Se carga DESPUÉS de los estilos antiguos y los sobrescribe.
+
+   Paleta (sale del logo del canal):
+     noche   #07060a  fondo
+     carbón  #120f15  superficies
+     grafito #1d1820  superficies elevadas
+     ceniza  #3a3240  bordes
+     niebla  #9b919f  texto secundario
+     hueso   #ece7ee  texto
+     señal   #ff2a48  el rojo de los ojos: solo para lo importante
+     vino    #8c0f24  brillo de fondo y estados pasivos
+
+   Tipografía: Big Shoulders Display (títulos) + Archivo (texto).
+   ========================================================== */
+
+:root {
+  --noche: #07060a;
+  --carbon: #120f15;
+  --grafito: #1d1820;
+  --ceniza: #3a3240;
+  --niebla: #9b919f;
+  --hueso: #ece7ee;
+  --senal: #ff2a48;
+  --vino: #8c0f24;
+
+  /* tokens que ya usaba styles.css */
+  --bg-deep: var(--noche);
+  --nav-bg: rgba(18, 15, 21, 0.92);
+  --panel-bg: var(--carbon);
+  --input-bg: #0d0a10;
+  --border-light: rgba(236, 231, 238, 0.09);
+  --border-glow: rgba(255, 42, 72, 0.45);
+  --text-primary: var(--hueso);
+
+  --display: 'Big Shoulders Display', 'Archivo', sans-serif;
+  --texto: 'Archivo', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--texto);
+  background-color: var(--noche);
+  /* Un solo brillo rojo, abajo, como en la intro del canal */
+  background-image: radial-gradient(1100px 620px at 50% 115%, rgba(140, 15, 36, 0.34), transparent 70%);
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  color: var(--hueso);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--senal); color: #fff; }
+
+:focus-visible {
+  outline: 2px solid var(--senal);
+  outline-offset: 2px;
+}
+
+/* Títulos: condensada, apretada, sin el tracking ancho de antes */
+.console-font,
+.font-display {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- superficies ---------- */
+.glass-panel,
+.console-nav,
+.console-hero {
+  background: var(--carbon);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border: 1px solid var(--border-light);
+  box-shadow: none;
+}
+
+.console-input {
+  background: var(--input-bg) !important;
+  border: 1px solid var(--border-light) !important;
+  box-shadow: none;
+}
+.console-input:focus,
+.console-input:focus-within {
+  border-color: rgba(255, 42, 72, 0.6) !important;
+}
+
+.btn-primary-action {
+  background: var(--senal);
+  border: 1px solid var(--senal);
+  color: #fff;
+  box-shadow: none;
+}
+.btn-primary-action:hover {
+  transform: none;
+  background: #ff4560;
+  box-shadow: 0 0 0 4px rgba(255, 42, 72, 0.18);
+}
+
+/* Tarjetas: sin brillo neón, solo el borde se enciende */
+.game-console-card,
+.glow-card {
+  background: var(--carbon);
+  border: 1px solid var(--border-light);
+}
+.game-console-card:hover,
+.glow-card:hover {
+  transform: none !important;
+  border-color: rgba(255, 42, 72, 0.55) !important;
+  box-shadow: none !important;
+}
+
+.poster-sheen::after {
+  background: linear-gradient(180deg, transparent 45%, rgba(7, 6, 10, 0.94) 100%);
+}
+
+.filter-pill.active {
+  background: var(--hueso);
+  border-color: var(--hueso);
+  color: var(--noche);
+  box-shadow: none;
+}
+
+/* ---------- estados de juego ---------- */
+.badge-playing    { background: rgba(255, 42, 72, 0.16); border: 1px solid rgba(255, 42, 72, 0.6); color: #ff94a5; box-shadow: none; }
+.badge-platinum   { background: rgba(226, 182, 92, 0.14); border: 1px solid rgba(226, 182, 92, 0.6); color: #ecd29a; box-shadow: none; }
+.badge-completed  { background: rgba(236, 231, 238, 0.10); border: 1px solid rgba(236, 231, 238, 0.35); color: var(--hueso); box-shadow: none; }
+.badge-extras     { background: rgba(168, 50, 79, 0.18); border: 1px solid rgba(199, 85, 114, 0.6); color: #ebb5c3; box-shadow: none; }
+.badge-onhold     { background: rgba(155, 145, 159, 0.12); border: 1px solid rgba(155, 145, 159, 0.4); color: #bdb4c1; box-shadow: none; }
+
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--ceniza); }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover { background: var(--senal); }
+
+/* ---------- marca ---------- */
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--hueso);
+  text-decoration: none;
+}
+.marca svg { width: 2.25rem; height: 2.25rem; display: block; flex-shrink: 0; }
+.marca-texto {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 1.6rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+.marca-texto small {
+  font-family: var(--texto);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0;
+  color: var(--niebla);
+  margin-left: 0.35rem;
+}
+
+/* ---------- portada ---------- */
+.portada {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 2rem;
+  padding: 1.5rem 0 0.5rem;
+}
+.portada h1 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(3.4rem, 9vw, 7.25rem);
+  line-height: 0.86;
+  letter-spacing: -0.005em;
+  margin: 0;
+  color: var(--hueso);
+  text-wrap: balance;
+}
+.portada p.bajada {
+  max-width: 36rem;
+  margin: 1.4rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--niebla);
+}
+.portada .acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+.boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.35rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+  cursor: pointer;
+}
+.boton-senal { background: var(--senal); color: #fff; border: 1px solid var(--senal); }
+.boton-senal:hover { background: #ff4560; box-shadow: 0 0 0 4px rgba(255, 42, 72, 0.18); }
+.boton-linea { color: var(--hueso); border: 1px solid rgba(236, 231, 238, 0.22); background: transparent; }
+.boton-linea:hover { border-color: var(--hueso); }
+
+/* El momento de la página: la P se enciende una vez al cargar */
+.portada-marca {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 22rem);
+  aspect-ratio: 1;
+}
+.portada-marca::before {
+  content: "";
+  position: absolute;
+  inset: 12% 8% 18%;
+  background: radial-gradient(closest-side, rgba(255, 42, 72, 0.32), transparent);
+  filter: blur(18px);
+  opacity: 0;
+  animation: brillo 2.4s 0.9s ease-out forwards;
+}
+.portada-marca svg { position: relative; width: 100%; height: 100%; display: block; }
+.portada-marca .p { stroke: var(--hueso); stroke-dasharray: 260; stroke-dashoffset: 260; animation: trazo 0.9s 0.1s cubic-bezier(.6,0,.2,1) forwards; }
+.portada-marca .ojo { fill: var(--senal); opacity: 0.08; animation: encender 0.5s 1s steps(1, end) forwards, latido 0.18s 1.05s 2 alternate; filter: drop-shadow(0 0 3px rgba(255, 42, 72, 0.9)); }
+
+@keyframes trazo { to { stroke-dashoffset: 0; } }
+@keyframes encender { to { opacity: 1; } }
+@keyframes latido { from { opacity: 0.25; } to { opacity: 1; } }
+@keyframes brillo { 0% { opacity: 0; } 30% { opacity: 1; } 100% { opacity: 0.55; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .portada-marca .p { stroke-dashoffset: 0; animation: none; }
+  .portada-marca .ojo { opacity: 1; animation: none; }
+  .portada-marca::before { opacity: 0.55; animation: none; }
+}
+
+@media (max-width: 760px) {
+  .portada { grid-template-columns: 1fr; gap: 0.5rem; padding-top: 0.5rem; }
+  .portada-marca { order: -1; justify-self: start; width: 6.5rem; }
+  .portada-marca::before { inset: 0; }
+}
+
+/* Cifras de la comunidad: número grande, etiqueta normal */
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+}
+.cifras > div { padding: 1.1rem 1rem 1.2rem; border-left: 1px solid var(--border-light); min-width: 0; }
+.cifras > div:first-child { border-left: none; padding-left: 0; }
+.cifras b {
+  display: block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1;
+  color: var(--hueso);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cifras span { display: block; margin-top: 0.35rem; font-size: 0.85rem; color: var(--niebla); }
+.cifras .destacada b { font-size: clamp(1.25rem, 3vw, 1.6rem); padding-top: 0.5rem; }
+@media (max-width: 640px) {
+  .cifras { grid-template-columns: 1fr 1fr; }
+  .cifras > div:nth-child(3) { border-left: none; padding-left: 0; border-top: 1px solid var(--border-light); }
+  .cifras > div:nth-child(4) { border-top: 1px solid var(--border-light); }
+}
+
+/* Encabezados de sección */
+.seccion-titulo {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  line-height: 1;
+  color: var(--hueso);
+  margin: 0;
+}
+
+/* ==========================================================
+   MODO CLARO — papel cálido en vez de gris azulado
+   ========================================================== */
+body.light-mode {
+  --bg-deep: #f4f1f3;
+  --nav-bg: #ffffff;
+  --panel-bg: #ffffff;
+  --input-bg: #faf8f9;
+  --border-light: rgba(36, 30, 40, 0.12);
+  --text-primary: #16121a;
+  background-color: #f4f1f3 !important;
+  background-image: radial-gradient(1100px 620px at 50% 115%, rgba(255, 42, 72, 0.08), transparent 70%) !important;
+  color: #16121a !important;
+  color-scheme: light;
+}
+body.light-mode .glass-panel,
+body.light-mode .game-console-card {
+  background: #ffffff !important;
+  border-color: rgba(36, 30, 40, 0.12) !important;
+  box-shadow: none !important;
+}
+body.light-mode .game-console-card:hover { border-color: var(--senal) !important; }
+body.light-mode input:focus,
+body.light-mode select:focus,
+body.light-mode textarea:focus { border-color: var(--senal) !important; }
+body.light-mode #nowPlayingSection {
+  background: #ffffff !important;
+  border-color: rgba(36, 30, 40, 0.12) !important;
+  box-shadow: none !important;
+}
+body.light-mode .marca-texto { color: #16121a; }
+body.light-mode #openSteamSyncBtn,
+body.light-mode #openWrappedBtn,
+body.light-mode #openStatsBtn,
+body.light-mode #openTop5Btn {
+  background: #ffffff !important;
+  color: #3a3240 !important;
+  border: 1px solid rgba(36, 30, 40, 0.18) !important;
+}

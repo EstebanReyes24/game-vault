@@ -1,4 +1,4 @@
-const CACHE_NAME = 'game-vault-v4';
+const CACHE_NAME = 'paindex-vault-v5';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -7,6 +7,9 @@ const ASSETS_TO_CACHE = [
   './login.html',
   './manifest.json',
   './css/styles.css',
+  './css/paindex.css',
+  './js/tw-config.js',
+  './favicon.svg',
   './js/supabase.js',
   './js/login.js',
   './js/app.js',

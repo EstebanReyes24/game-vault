@@ -363,7 +363,7 @@ function setStatus(val) {
     if (btn.dataset.val === val) {
       btn.className = "status-btn p-2 rounded-xl border border-indigo-500 bg-indigo-500/20 text-white text-center font-bold text-xs shadow-lg transition cursor-pointer";
     } else {
-      btn.className = "status-btn p-2 rounded-xl border border-white/10 bg-[#121623] text-slate-400 text-center font-bold text-xs hover:border-slate-500 transition cursor-pointer";
+      btn.className = "status-btn p-2 rounded-xl border border-white/10 bg-[#16121a] text-slate-400 text-center font-bold text-xs hover:border-slate-500 transition cursor-pointer";
     }
   });
 }
@@ -382,7 +382,7 @@ platBtns.forEach(btn => {
     if (activePlatforms.includes(plat)) {
       if (activePlatforms.length > 1) {
         activePlatforms = activePlatforms.filter(p => p !== plat);
-        btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-[#121623] text-slate-300 hover:border-slate-500 transition flex items-center gap-1.5 cursor-pointer";
+        btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-[#16121a] text-slate-300 hover:border-slate-500 transition flex items-center gap-1.5 cursor-pointer";
       }
     } else {
       activePlatforms.push(plat);
@@ -397,7 +397,7 @@ function setPlatformBadges(plats) {
     if (activePlatforms.includes(btn.dataset.platform)) {
       btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-indigo-500 bg-indigo-500/20 text-white transition flex items-center gap-1.5 cursor-pointer";
     } else {
-      btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-[#121623] text-slate-300 hover:border-slate-500 transition flex items-center gap-1.5 cursor-pointer";
+      btn.className = "plat-btn px-2.5 py-1.5 rounded-lg text-xs font-semibold border border-white/10 bg-[#16121a] text-slate-300 hover:border-slate-500 transition flex items-center gap-1.5 cursor-pointer";
     }
   });
 }
@@ -416,7 +416,7 @@ function updateFavoriteUI() {
     favoriteToggleBtn.className = "px-2.5 py-1 rounded-lg border border-amber-500 bg-amber-500/20 text-amber-300 shadow-lg shadow-amber-500/20 transition flex items-center gap-1 text-[11px] font-bold cursor-pointer";
     favText.innerText = "Favorito";
   } else {
-    favoriteToggleBtn.className = "px-2.5 py-1 rounded-lg border border-white/10 bg-[#121623] text-slate-400 hover:text-amber-400 transition flex items-center gap-1 text-[11px] font-bold cursor-pointer";
+    favoriteToggleBtn.className = "px-2.5 py-1 rounded-lg border border-white/10 bg-[#16121a] text-slate-400 hover:text-amber-400 transition flex items-center gap-1 text-[11px] font-bold cursor-pointer";
     favText.innerText = "Favorito";
   }
 }

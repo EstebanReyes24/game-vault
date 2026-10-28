@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Paindex">
+  <!-- La P de Paindex: el ojo del logo del canal vive dentro del bucle -->
+  <path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="#ece7ee" stroke-width="6.5" stroke-linejoin="miter"/>
+  <path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/>
+  <path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/>
+</svg>

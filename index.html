@@ -3,178 +3,126 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Vault | Canal Oficial Paindex & Estante Gamer</title>
+  <title>Paindex Vault · Tu estante de juegos</title>
 
   <!-- SEO & Metadatos Primarios -->
-  <meta name="description" content="Portal oficial de Paindex. Crónicas de videojuegos, biblioteca personal, seguimiento de platinos y estadísticas comunitarias en tiempo real.">
+  <meta name="description" content="Registra los juegos que juegas, ponles nota y comparte tu estante. Con las reseñas y reflexiones del canal Paindex.">
   <meta name="author" content="Paindex">
-  <meta name="theme-color" content="#07090e">
+  <meta name="theme-color" content="#07060a">
   <meta name="mobile-web-app-capable" content="yes">
 
   <!-- Open Graph / Redes Sociales (Discord, WhatsApp, Facebook) -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://game-vault-beige.vercel.app/">
-  <meta property="og:title" content="Game Vault • By Paindex | Portal Gamer & Crónicas">
+  <meta property="og:title" content="Paindex Vault · Tu estante de juegos">
+  <meta property="og:image" content="https://game-vault-beige.vercel.app/img/og.png">
   <meta property="og:description" content="Explora crónicas reflexivas, debates y gestiona tu estante de videojuegos personal.">
 
   <!-- Twitter Cards -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Game Vault • By Paindex">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Paindex Vault">
   <meta name="twitter:description" content="Portal gamer de crónicas, análisis y estante personal.">
 
   <!-- PWA & Favicon -->
   <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
   <!-- Estilos y Tipografías -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="js/tw-config.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="css/paindex.css">
 </head>
 <body class="p-3 sm:p-6 lg:p-8 flex flex-col items-center min-h-screen">
 
   <div class="w-full max-w-6xl space-y-10">
     
-    <!-- Top Bar -->
-    <header class="w-full flex justify-between items-center py-2">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-rose-500 flex items-center justify-center text-white shadow-lg shadow-purple-600/30">
-          <i class="fa-solid fa-gamepad text-lg" aria-hidden="true"></i>
-        </div>
-        <div>
-          <span class="text-xl sm:text-2xl font-black console-font text-white tracking-tight">GAME VAULT</span>
-          <div class="flex items-center gap-1.5 -mt-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span class="text-[10px] uppercase font-black tracking-widest text-indigo-400">By Paindex</span>
-          </div>
-        </div>
-      </div>
+    <!-- Barra superior -->
+    <header class="w-full flex justify-between items-center gap-3 py-2">
+      <a href="index.html" class="marca" aria-label="Paindex Vault, inicio">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
+        <span class="marca-texto">PAINDEX<small>Vault</small></span>
+      </a>
 
-      <div class="flex items-center gap-2 sm:gap-3">
-        <!-- Buscador rápido en Portada -->
-        <button type="button" id="openSearchBtn" class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl console-input text-xs text-slate-400 hover:text-white border border-white/10 transition cursor-pointer">
-          <i class="fa-solid fa-magnifying-glass text-[11px] text-indigo-400" aria-hidden="true"></i>
-          <span>Buscar...</span>
-          <kbd class="px-1.5 py-0.5 rounded bg-black/40 border border-white/10 text-[10px] font-mono text-slate-400">Ctrl K</kbd>
+      <div class="flex items-center gap-2">
+        <button type="button" id="openSearchBtn" class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-md console-input text-sm text-slate-400 hover:text-white transition cursor-pointer">
+          <i class="fa-solid fa-magnifying-glass text-xs" aria-hidden="true"></i>
+          <span>Buscar</span>
+          <kbd class="px-1.5 rounded border border-white/10 text-[11px] text-slate-500">Ctrl K</kbd>
         </button>
 
-        <!-- Botón Instalar App (PWA) -->
-        <button id="pwaInstallBtn" class="hidden px-3 py-1.5 rounded-xl bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/40 text-purple-300 hover:text-white text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-download" aria-hidden="true"></i> <span class="hidden md:inline">Instalar App</span>
+        <button id="pwaInstallBtn" class="hidden px-3 py-2 rounded-md border border-white/15 text-slate-300 hover:text-white text-sm font-semibold transition items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-download text-xs" aria-hidden="true"></i> <span class="hidden md:inline">Instalar</span>
         </button>
 
-        <a href="https://youtube.com/@paindexhq" target="_blank" rel="noopener noreferrer" 
-           class="hidden sm:flex px-3.5 py-1.5 rounded-xl bg-rose-600/15 border border-rose-500/30 text-rose-300 hover:text-white hover:bg-rose-600/30 text-xs font-black console-font transition items-center gap-1.5">
-          <i class="fa-brands fa-youtube text-rose-500" aria-hidden="true"></i> Paindex
+        <a href="login.html" id="authBtn" class="px-3 py-2 rounded-md border border-white/15 text-sm font-semibold text-slate-200 hover:text-white transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-user text-xs text-indigo-400" id="authIcon" aria-hidden="true"></i>
+          <span id="authBtnText">Iniciar sesión</span>
         </a>
 
-        <a href="login.html" id="authBtn" class="px-3.5 py-1.5 rounded-xl console-input border border-white/10 text-xs font-bold text-slate-300 hover:text-white transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-user text-[11px] text-indigo-400" id="authIcon" aria-hidden="true"></i> 
-          <span id="authBtnText">Iniciar Sesión</span>
-        </a>
-
-        <a href="app.html" class="px-4 py-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white text-xs font-black console-font transition shadow-lg shadow-indigo-600/30 flex items-center gap-1.5">
-          <span>MI ESTANTE</span> <i class="fa-solid fa-arrow-right text-[10px]" aria-hidden="true"></i>
-        </a>
+        <a href="app.html" class="hidden sm:inline-flex boton boton-senal" style="padding:.55rem 1rem;font-size:.875rem">Mi estante</a>
       </div>
     </header>
 
-    <!-- Ticker Neón Animado (Marquee Fluido Sin Cortes) -->
-    <div class="w-full glass-panel rounded-2xl border border-white/10 overflow-hidden py-2.5 px-3 bg-indigo-950/20 relative select-none">
-      <div class="pointer-events-none absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[#07090e] to-transparent z-10"></div>
-      <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#07090e] to-transparent z-10"></div>
-      <div class="flex overflow-hidden">
-        <div class="animate-marquee flex items-center gap-8 text-xs font-bold whitespace-nowrap w-max">
-          <span class="flex items-center gap-2 text-indigo-300 shrink-0"><i class="fa-solid fa-sparkles text-amber-400" aria-hidden="true"></i> CRÓNICAS Y ANÁLISIS EN PAINDEX</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-slate-300 shrink-0"><i class="fa-solid fa-gamepad text-indigo-400" aria-hidden="true"></i> DEBATES & ANÁLISIS EN PROFUNDIDAD</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-emerald-300 shrink-0"><i class="fa-solid fa-cloud-arrow-up text-emerald-400" aria-hidden="true"></i> CATÁLOGOS SINCRONIZADOS EN LA NUBE</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-purple-300 shrink-0"><i class="fa-solid fa-trophy text-amber-400" aria-hidden="true"></i> SEGUIMIENTO DE PLATINOS & HORAS REALES</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-indigo-300 shrink-0"><i class="fa-solid fa-sparkles text-amber-400" aria-hidden="true"></i> CRÓNICAS Y ANÁLISIS EN PAINDEX</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-slate-300 shrink-0"><i class="fa-solid fa-gamepad text-indigo-400" aria-hidden="true"></i> DEBATES & ANÁLISIS EN PROFUNDIDAD</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-emerald-300 shrink-0"><i class="fa-solid fa-cloud-arrow-up text-emerald-400" aria-hidden="true"></i> CATÁLOGOS SINCRONIZADOS EN LA NUBE</span>
-          <span class="text-slate-600 font-black shrink-0">•</span>
-          <span class="flex items-center gap-2 text-purple-300 shrink-0"><i class="fa-solid fa-trophy text-amber-400" aria-hidden="true"></i> SEGUIMIENTO DE PLATINOS & HORAS REALES</span>
+<main class="space-y-12">
+    <section class="portada">
+      <div>
+        <h1>Tu historial gamer, en un solo estante.</h1>
+        <p class="bajada">Registra lo que juegas, ponle nota y compártelo con un enlace. Importa tu biblioteca de Steam y aquí mismo lees las reseñas y reflexiones del canal Paindex.</p>
+        <div class="acciones">
+          <a href="app.html" class="boton boton-senal">Crear mi estante</a>
+          <a href="https://youtube.com/@paindexhq" target="_blank" rel="noopener noreferrer" class="boton boton-linea">
+            <i class="fa-brands fa-youtube" aria-hidden="true"></i> Ver el canal
+          </a>
+        </div>
+
+        <!-- Barra de publicación (solo admin) -->
+        <div id="authorBar" class="hidden pt-6">
+          <button type="button" id="openNewPostBtn" class="boton boton-linea">
+            <i class="fa-solid fa-pen-nib" aria-hidden="true"></i> Escribir artículo
+          </button>
         </div>
       </div>
-    </div>
 
-<main class="space-y-10">
-    <!-- Hero de Presentación -->
-    <section class="text-center space-y-5 pt-2">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-black console-font bg-purple-500/15 border border-purple-500/30 text-purple-300">
-        <i class="fa-solid fa-circle-play text-rose-400" aria-hidden="true"></i> PORTAL OFICIAL DE PAINDEX
+      <div class="portada-marca" aria-hidden="true">
+        <svg viewBox="0 0 64 64">
+          <path class="p" d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke-width="5"/>
+          <path class="ojo" d="M21 23.5l10 3.6v3.6l-10-3.6z"/>
+          <path class="ojo" d="M46 23.5l-10 3.6v3.6l10-3.6z"/>
+        </svg>
       </div>
+    </section>
 
-      <div class="space-y-3 max-w-3xl mx-auto">
-        <h1 class="text-4xl sm:text-6xl font-black tracking-tight console-font bg-gradient-to-r from-white via-slate-100 to-indigo-300 bg-clip-text text-transparent leading-tight">
-          CRÓNICAS, ANÁLISIS & ESTANTE PERSONAL
-        </h1>
-        <p class="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
-          Reflexiones profundas sobre la industria, reseñas de autor y el registro de partidas que verdaderamente valieron cada hora.
-        </p>
-      </div>
-
-      <!-- Barra de Publicación (Solo visible para el admin) -->
-      <div id="authorBar" class="hidden pt-2">
-        <button type="button" id="openNewPostBtn" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-purple-600 hover:brightness-110 text-white text-xs font-black console-font transition shadow-xl shadow-purple-600/30 flex items-center gap-2 mx-auto cursor-pointer">
-          <i class="fa-solid fa-pen-nib" aria-hidden="true"></i> REDACTAR ARTÍCULO / RECOMENDACIÓN
-        </button>
-      </div>
+    <!-- Cifras de la comunidad -->
+    <section class="cifras" aria-label="La comunidad en cifras">
+      <div><b id="commStatHours">0h</b><span>horas registradas</span></div>
+      <div><b id="commStatGames">0</b><span>juegos en los estantes</span></div>
+      <div><b id="commStatPlatinums">0</b><span>platinos</span></div>
+      <div class="destacada"><b id="commStatTopGame">-</b><span>el más registrado</span></div>
     </section>
 </main>
-    <!-- Barra de Métricas Globales de la Comunidad -->
-    <section class="glass-panel rounded-3xl p-4 sm:p-5 border border-white/10 shadow-2xl">
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 divide-y md:divide-y-0 md:divide-x divide-white/10 text-center">
-        <div class="pt-2 md:pt-0">
-          <span class="text-[10px] uppercase font-black tracking-widest text-slate-400 block mb-1">Horas en Comunidad</span>
-          <span id="commStatHours" class="text-2xl sm:text-3xl font-black text-indigo-400 console-font">0h</span>
-          <span class="text-[10px] text-slate-500 block mt-0.5">Tiempo acumulado</span>
-        </div>
-        <div class="pt-2 md:pt-0">
-          <span class="text-[10px] uppercase font-black tracking-widest text-slate-400 block mb-1">Títulos Registrados</span>
-          <span id="commStatGames" class="text-2xl sm:text-3xl font-black text-white console-font">0</span>
-          <span class="text-[10px] text-slate-500 block mt-0.5">En todos los estantes</span>
-        </div>
-        <div class="pt-2 md:pt-0">
-          <span class="text-[10px] uppercase font-black tracking-widest text-slate-400 block mb-1">Total Platinos</span>
-          <span id="commStatPlatinums" class="text-2xl sm:text-3xl font-black text-amber-400 console-font">0</span>
-          <span class="text-[10px] text-slate-500 block mt-0.5">Juegos al 100%</span>
-        </div>
-        <div class="pt-2 md:pt-0">
-          <span class="text-[10px] uppercase font-black tracking-widest text-slate-400 block mb-1">Más Popular</span>
-          <span id="commStatTopGame" class="text-sm sm:text-base font-black text-purple-300 console-font block truncate px-2 mt-1">-</span>
-          <span class="text-[10px] text-slate-500 block mt-0.5">En tendencia</span>
-        </div>
-      </div>
-    </section>
 
     <!-- Hall of Fame del Creador (Dinámico y Editable) -->
     <section class="space-y-4">
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
         <div>
-          <h2 class="text-base sm:text-lg font-black text-white console-font flex items-center gap-2">
-            <i class="fa-solid fa-crown text-amber-400" aria-hidden="true"></i> Hall of Fame • Esenciales de Paindex
-          </h2>
-          <p class="text-xs text-slate-400">Obras maestras indispensables seleccionadas por el creador</p>
+          <h2 class="seccion-titulo">Esenciales de Paindex</h2>
+          <p class="text-sm text-slate-400 mt-1">Los juegos que recomiendo sin dudarlo.</p>
         </div>
         <div class="flex items-center gap-3">
           <button id="openHofModalBtn" class="hidden px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold hover:bg-amber-500/30 transition flex items-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Editar Destacados
           </button>
           <a href="app.html" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 transition">
-            Ver estante completo <i class="fa-solid fa-chevron-right text-[10px]" aria-hidden="true"></i>
+            Ver mi estante
           </a>
         </div>
       </div>
@@ -186,9 +134,7 @@
     <section class="space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div>
-          <h2 class="text-lg font-black text-white console-font flex items-center gap-2">
-            <i class="fa-solid fa-newspaper text-indigo-400" aria-hidden="true"></i> Crónicas & Artículos
-          </h2>
+          <h2 class="seccion-titulo">Reseñas y artículos</h2>
           <span class="text-[11px] text-slate-400" id="postCounter">Consultando entradas...</span>
         </div>
 
@@ -197,16 +143,16 @@
             Todos
           </button>
           <button data-cat="Recomendación" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            ⭐ Recomendaciones
+            Recomendaciones
           </button>
           <button data-cat="Reflexión" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            💡 Reflexiones
+            Reflexiones
           </button>
           <button data-cat="Análisis" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            🔍 Análisis
+            Análisis
           </button>
           <button data-cat="Noticia" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            📢 Noticias
+            Noticias
           </button>
         </div>
       </div>
@@ -217,8 +163,7 @@
     <!-- Footer Oficial Paindex -->
     <footer class="pt-10 pb-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
       <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-        <span>Game Vault • Creado por <strong>Paindex</strong></span>
+        <span>Paindex Vault, hecho por <strong class="text-slate-300">Paindex</strong></span>
       </div>
       <div class="flex items-center gap-4">
         <a href="https://youtube.com/@paindexhq" target="_blank" rel="noopener noreferrer" 
@@ -227,7 +172,7 @@
   <i class="fa-brands fa-youtube" aria-hidden="true"></i> Canal de YouTube
 </a>
 <span>•</span>
-<a href="legal.html" class="hover:text-indigo-400 transition">Términos & Copyright</a>
+<a href="legal.html" class="hover:text-indigo-400 transition">Términos y privacidad</a>
 <span>•</span>
 <a href="app.html" class="hover:text-indigo-400 transition" aria-label="Ir a mi estante personal de juegos">
   Entrar al Estante
@@ -271,10 +216,10 @@
           <div>
             <label for="postCategory" class="block text-[11px] font-bold text-slate-300 uppercase tracking-wider mb-1">Categoría</label>
             <select id="postCategory" class="w-full console-input rounded-xl px-3 py-2 text-xs text-slate-200 font-bold focus:outline-none cursor-pointer">
-              <option value="Recomendación">⭐ Recomendación</option>
-              <option value="Reflexión">💡 Reflexión</option>
-              <option value="Análisis">🔍 Análisis</option>
-              <option value="Noticia">📢 Noticia</option>
+              <option value="Recomendación">Recomendación</option>
+              <option value="Reflexión">Reflexión</option>
+              <option value="Análisis">Análisis</option>
+              <option value="Noticia">Noticia</option>
             </select>
           </div>
           <div>
@@ -314,7 +259,7 @@
 
       <div class="relative h-48 sm:h-56 w-full shrink-0 bg-slate-950">
         <img id="readPostCover" class="w-full h-full object-cover" alt="Portada de la crónica seleccionada">
-        <div class="absolute inset-0 bg-gradient-to-t from-[#07090e] via-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-[#07060a] via-transparent"></div>
         <div class="absolute bottom-4 left-6 right-6 flex items-end justify-between">
           <div>
             <span id="readPostCategory" class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border border-white/20 backdrop-blur-md text-white"></span>
