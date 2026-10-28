@@ -84,10 +84,13 @@ export default async function handler(req) {
       )
     : null;
 
+  // ?nivel=1..4 permite aislar qué parte falla al renderizar (diagnóstico)
+  const nivel = Number(new URL(req.url).searchParams.get("nivel") || 4);
+  const fondo = nivel >= 4 ? { backgroundImage: `radial-gradient(circle at 85% 100%, rgba(160,20,44,0.55), transparent 55%)` } : {};
+  const izq = nivel >= 2 ? izquierda : h({ color: HUESO, fontSize: 60 }, "prueba");
   return new ImageResponse(
-    h({ width: "100%", height: "100%", padding: 64, justifyContent: "space-between", background: NOCHE,
-        backgroundImage: `radial-gradient(circle at 85% 110%, rgba(160,20,44,0.55), transparent 55%), linear-gradient(${NOCHE}, ${CARBON})` },
-      izquierda, tapas),
+    h({ width: "100%", height: "100%", padding: 64, justifyContent: "space-between", background: NOCHE, ...fondo },
+      izq, nivel >= 3 ? tapas : null),
     {
       width: 1200, height: 630,
       fonts: fuentes.length ? fuentes : undefined,
