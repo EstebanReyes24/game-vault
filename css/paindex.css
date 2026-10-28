@@ -562,3 +562,30 @@ body.light-mode .boton-linea:hover { border-color: #16121a; }
 .mod-fila blockquote { margin: 0; padding: 0.7rem 0.9rem; border-left: 3px solid var(--senal); background: var(--grafito); border-radius: 0 8px 8px 0; color: var(--hueso); white-space: pre-line; overflow-wrap: anywhere; }
 .mod-etiqueta { display: inline-block; padding: 0 0.45rem; border-radius: 999px; background: rgba(226, 182, 92, 0.16); color: #ecd29a; font-size: 0.75rem; font-weight: 700; }
 .borrador-acciones .boton { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
+
+/* ---------- actividad de la comunidad ---------- */
+.actividad-cabecera { display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem; flex-wrap: wrap; padding-bottom: 0.9rem; border-bottom: 1px solid var(--border-light); }
+.actividad-pestanas { display: inline-flex; border: 1px solid var(--border-light); border-radius: 8px; padding: 3px; gap: 3px; }
+.actividad-pestanas button { padding: 0.4rem 0.8rem; border-radius: 6px; font-size: 0.85rem; font-weight: 600; color: var(--niebla); background: none; border: 0; cursor: pointer; }
+.actividad-pestanas button[aria-selected="true"] { background: var(--hueso); color: var(--noche); }
+.actividad-lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 2rem; }
+.actividad-item { border-bottom: 1px solid var(--border-light); min-width: 0; }
+.actividad-enlace { display: flex; align-items: center; gap: 0.9rem; padding: 0.8rem 0; color: inherit; text-decoration: none; }
+.actividad-enlace:hover .actividad-texto b:first-child { color: var(--senal); }
+.actividad-tapa { width: 2.6rem; aspect-ratio: 3 / 4; flex-shrink: 0; border-radius: 6px; overflow: hidden; background: var(--grafito); display: grid; place-items: center; }
+.actividad-tapa img { width: 100%; height: 100%; object-fit: cover; }
+.actividad-sin-portada { font-family: var(--display); font-weight: 900; font-size: 1.3rem; color: var(--niebla); }
+.actividad-texto { flex: 1; min-width: 0; display: grid; gap: 0.15rem; font-size: 0.92rem; color: var(--niebla); }
+.actividad-texto > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.actividad-texto b { color: var(--hueso); font-weight: 700; }
+.actividad-texto time { font-size: 0.78rem; }
+.actividad-nota { flex-shrink: 0; padding: 0.1rem 0.45rem; border-radius: 6px; background: var(--hueso); color: #c4102e; font-family: var(--display); font-weight: 900; font-size: 1.05rem; }
+.es-platino .actividad-texto > span::after { content: " 🏆"; }
+.actividad-vacia { grid-column: 1 / -1; padding: 1.2rem 0; color: var(--niebla); font-size: 0.92rem; }
+@media (max-width: 760px) { .actividad-lista { grid-template-columns: 1fr; } }
+
+/* ---------- seguir ---------- */
+.perfil-social { margin: 0.4rem 0 0; font-size: 0.9rem; color: var(--niebla); }
+.perfil-social b { color: var(--hueso); }
+.boton-siguiendo { background: transparent; color: var(--hueso); border: 1px solid rgba(236, 231, 238, 0.35); }
+.boton-siguiendo:hover { border-color: var(--senal); color: var(--senal); }
