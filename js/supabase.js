@@ -639,6 +639,36 @@ const DB = {
   // ==========================================
   // MODERACIÓN (migración 005)
   // ==========================================
+  // PARA MIS VIDEOS (migración 011, privado)
+  async getPlanesVideo() {
+    const user = await currentUser();
+    if (!user || !supabaseClient) return [];
+    const { data, error } = await supabaseClient.from("video_plans").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+    if (error) { console.warn("Planes de video no disponibles (¿falta la migración 011?):", error.message); return []; }
+    return data || [];
+  },
+
+  async guardarPlanVideo({ game_title, estado, url, notas }) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión.");
+    const fila = {
+      user_id: user.id,
+      game_title,
+      estado,
+      url: /^https:\/\/[^\s"'<>]+$/.test(url || "") ? url : null,
+      notas: notas ? String(notas).slice(0, 1000) : null,
+      updated_at: new Date().toISOString()
+    };
+    const { error } = await supabaseClient.from("video_plans").upsert([fila]);
+    if (error) throw new Error(error.message);
+  },
+
+  async borrarPlanVideo(game_title) {
+    const user = await currentUser();
+    const { error } = await supabaseClient.from("video_plans").delete().eq("user_id", user.id).eq("game_title", game_title);
+    if (error) throw new Error(error.message);
+  },
+
   async getErrores() {
     if (!supabaseClient) return [];
     const { data, error } = await supabaseClient.rpc("errores_recientes");

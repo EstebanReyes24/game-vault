@@ -659,3 +659,28 @@ body.light-mode .boton-linea:hover { border-color: #16121a; }
 .destacada-extracto { font-size: 0.88rem; line-height: 1.5; color: var(--hueso); display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
 .destacada-texto small { color: var(--niebla); font-size: 0.8rem; }
 @media (max-width: 860px) { .destacadas-lista { grid-template-columns: 1fr; } }
+
+/* ---------- importar Xbox ---------- */
+.xbox-lista { list-style: none; margin: 0.5rem 0 0; padding: 0; max-height: 50vh; overflow-y: auto; }
+.xbox-lista label { display: flex; align-items: center; gap: 0.75rem; padding: 0.45rem 0; border-bottom: 1px solid var(--border-light); cursor: pointer; }
+.xbox-lista img, .xbox-lista .lista-sin-tapa { width: 2.4rem; aspect-ratio: 1; object-fit: cover; border-radius: 5px; flex-shrink: 0; }
+.xbox-lista input { accent-color: var(--senal); width: 1rem; height: 1rem; }
+
+/* ---------- para mis videos ---------- */
+.videos-panel { width: min(100%, 64rem); }
+.videos-columnas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.85rem; }
+.videos-columna { background: var(--grafito); border-radius: 12px; padding: 0.75rem; display: grid; gap: 0.5rem; align-content: start; min-width: 0; }
+.videos-columna h3 { margin: 0 0 0.2rem; font-family: var(--display); font-weight: 800; font-size: 1.3rem; color: var(--hueso); display: flex; justify-content: space-between; }
+.videos-columna h3 span { color: var(--niebla); font-size: 1rem; }
+.videos-columna .borrador-vacio { padding: 0.3rem 0; }
+.video-tarjeta { background: var(--carbon); border: 1px solid var(--border-light); border-radius: 8px; padding: 0.55rem; display: grid; gap: 0.4rem; min-width: 0; }
+.video-tarjeta.editando { border-color: var(--senal); }
+.video-tarjeta.editando input, .video-tarjeta.editando select, .video-tarjeta.editando textarea { width: 100%; padding: 0.45rem 0.55rem; border-radius: 6px; color: var(--hueso); font: 400 0.85rem/1.4 var(--texto); }
+.video-tarjeta .borrador-acciones .boton { padding: 0.35rem 0.6rem; font-size: 0.78rem; }
+.video-abrir { display: flex; gap: 0.6rem; align-items: center; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; min-width: 0; }
+.video-abrir img, .video-abrir .lista-sin-tapa { width: 2.2rem; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+.video-abrir span { display: grid; min-width: 0; }
+.video-abrir b { color: var(--hueso); font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.video-abrir small { color: var(--niebla); font-size: 0.76rem; line-height: 1.35; }
+@media (max-width: 860px) { .videos-columnas { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .videos-columnas { grid-template-columns: 1fr; } }
