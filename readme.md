@@ -34,7 +34,7 @@ Estante de juegos y portal de la comunidad del canal [Paindex](https://youtube.c
 ## 🛠️ Tecnologías Utilizadas
 
 - **Frontend:** HTML5 semántico, Vanilla JavaScript (ES6+), Web Audio API (efectos de sonido sintéticos).
-- **Estilos & Diseño:** Tailwind CSS (CDN), Font Awesome 6, Google Fonts (*Big Shoulders Display* para títulos y *Archivo* para texto). La identidad visual vive en `css/paindex.css` (paleta y componentes) y `js/tw-config.js` (remapea las escalas de color de Tailwind a la paleta Paindex).
+- **Estilos & Diseño:** Tailwind CSS 3 compilado (Vercel ejecuta `npm run build` y genera `css/tw.css`; la configuración y la paleta están en `tailwind.config.js`), Font Awesome 6, Google Fonts (*Big Shoulders Display* para títulos y *Archivo* para texto). La identidad visual vive en `css/paindex.css` (paleta y componentes) y `tailwind.config.js` (remapea las escalas de color de Tailwind a la paleta Paindex). Para trabajar en local: `npm install` y `npx tailwindcss -i css/tw-input.css -o css/tw.css --watch`.
 - **Renderizado Gráfico:** HTML5 Canvas API para generación de pósters y tarjetas de juego.
 - **Backend & Almacenamiento:** [Supabase](https://supabase.com/) (PostgreSQL, Row Level Security, Auth y REST API en tiempo real).
 - **PWA:** Web App Manifest y Service Worker nativo para caché de recursos estáticos.

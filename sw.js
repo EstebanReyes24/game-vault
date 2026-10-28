@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v7';
+const CACHE_NAME = 'paindex-vault-v8';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -8,7 +8,7 @@ const ASSETS_TO_CACHE = [
   './manifest.json',
   './css/styles.css',
   './css/paindex.css',
-  './js/tw-config.js',
+  './css/tw.css',
   './favicon.svg',
   './js/supabase.js',
   './js/login.js',
