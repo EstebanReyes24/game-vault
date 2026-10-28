@@ -14,7 +14,6 @@
   const closeBtn = document.getElementById("closeDraftsBtn");
   if (!btn || !modal || !list || typeof DB === "undefined") return;
 
-  const RAWG_KEY = (typeof SearchEngine !== "undefined" && SearchEngine.apiKey) || "";
   const NOTA_IA = "Resumen preparado con ayuda de IA y revisado por Paindex.";
   let pendientes = [];
 
@@ -43,10 +42,9 @@
   }
 
   async function imagenesRawg(juego) {
-    if (!juego || !RAWG_KEY) return [];
+    if (!juego) return [];
     try {
-      const url = `https://api.rawg.io/api/games?key=${RAWG_KEY}&search=${encodeURIComponent(juego)}&page_size=4`;
-      const res = await fetch(url);
+      const res = await fetch(`/api/rawg?search=${encodeURIComponent(juego)}&n=4`);
       if (!res.ok) return [];
       const data = await res.json();
       return (data.results || []).map(g => g.background_image).filter(esHttps);

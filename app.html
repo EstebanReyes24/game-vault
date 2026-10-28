@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <script src="/js/errores.js"></script>
   <base href="/">
   <meta name="theme-color" content="#14111a">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -439,6 +440,9 @@
         <button id="openSteamSyncBtn" type="button" class="px-3 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-brands fa-steam"></i> STEAM SYNC
         </button>
+        <button id="openXboxBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-brands fa-xbox"></i> XBOX <span class="text-[9px] opacity-70">BETA</span>
+        </button>
         <button id="openWrappedBtn" type="button" class="px-3 py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-bolt"></i> WRAPPED
         </button>
@@ -450,6 +454,9 @@
         </button>
         <button id="openListsBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-list-ol"></i> LISTAS
+        </button>
+        <button id="openVideosBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-brands fa-youtube"></i> MIS VIDEOS
         </button>
       </div>
 
@@ -858,6 +865,57 @@
       </div>
     </div>
   </div>
+
+  <!-- IMPORTAR DESDE XBOX (beta) -->
+  <div id="xboxModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="xboxTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="xboxTitulo" class="seccion-titulo">Importar desde Xbox</h2>
+          <p>Beta. Microsoft no ofrece una forma directa, así que se usa OpenXBL, un servicio gratuito.</p>
+        </div>
+        <button type="button" id="xboxCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <details class="steam-ayuda" open>
+        <summary>Cómo conseguir tu clave (una sola vez)</summary>
+        <ol>
+          <li>Entra a <a href="https://xbl.io" target="_blank" rel="noopener noreferrer">xbl.io</a> e inicia sesión con tu cuenta de Xbox.</li>
+          <li>Ve a <b>Profile → API Keys</b> y crea una clave.</li>
+          <li>Cópiala y pégala aquí abajo.</li>
+        </ol>
+        <p>La clave solo se usa para leer tu historial de juegos en este momento. No la guardamos. Xbox no informa horas jugadas: se importan con el porcentaje de logros, y los que tienen el 100% entran como platinados.</p>
+      </details>
+      <div class="flex gap-2 mt-3">
+        <input type="password" id="xboxClave" class="console-input lista-buscar" autocomplete="off" placeholder="Tu clave de OpenXBL">
+        <button type="button" class="boton boton-senal" id="xboxConsultar">Consultar</button>
+      </div>
+      <p class="borrador-estado" role="status" id="xboxEstado"></p>
+      <div id="xboxResultado" hidden>
+        <div class="flex items-center justify-between mt-3 text-sm text-slate-300">
+          <span id="xboxCuenta"></span>
+          <button type="button" class="resena-mas" id="xboxTodos">Desmarcar todos</button>
+        </div>
+        <ul class="xbox-lista" id="xboxLista"></ul>
+        <div class="borrador-acciones" style="margin-top:1rem">
+          <button type="button" class="boton boton-senal" id="xboxImportar">Añadir a mi estante</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARA MIS VIDEOS (privado, solo admin) -->
+  <div id="videosModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel videos-panel" role="dialog" aria-modal="true" aria-labelledby="videosTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="videosTitulo" class="seccion-titulo">Para mis videos</h2>
+          <p>Tu banco de ideas para el canal. Esto es privado: nadie más lo ve, aunque tu estante sea público.</p>
+        </div>
+        <button type="button" id="videosCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div id="videosCuerpo"></div>
+    </div>
+  </div>
   <script src="js/storage.js"></script>
   <script src="js/search.js"></script>
   <script src="js/canvas-poster.js"></script>
@@ -865,5 +923,7 @@
   <script src="js/app.js"></script>
   <script src="js/listas.js"></script>
   <script src="js/resenas.js"></script>
+  <script src="js/xbox.js"></script>
+  <script src="js/videos.js"></script>
 </body>
 </html>

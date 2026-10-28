@@ -10,7 +10,7 @@ const SUPABASE_URL = "https://epouactrnuhdbzzvzxor.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_i2sc-SaHk8H6e3c-Dwf0IQ_hhdBlx_I";
 
 // Solo decide qué botones ve la interfaz. Quién puede escribir lo deciden las RLS.
-const ADMIN_EMAIL = "estebanreyes2402@gmail.com";
+let adminCache = null; // respuesta de es_admin() para no preguntar en cada pantalla
 const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
 
 const CLOUD_COMPLETED_STATUSES = ["completed", "extras", "platinum"];
@@ -127,7 +127,13 @@ const DB = {
     const user = await currentUser();
     if (!user) return false;
     // Solo app_metadata: user_metadata la puede editar cualquier usuario.
-    return user.app_metadata?.role === "admin" || user.email === ADMIN_EMAIL;
+    if (user.app_metadata?.role === "admin") return true;
+    // Si el rol se asignó después de iniciar sesión, el token aún no lo trae: se pregunta a la base
+    if (adminCache === null) {
+      const { data } = await supabaseClient.rpc("es_admin");
+      adminCache = data === true;
+    }
+    return adminCache;
   },
 
   async deleteMyAccount() {
@@ -633,6 +639,43 @@ const DB = {
   // ==========================================
   // MODERACIÓN (migración 005)
   // ==========================================
+  // PARA MIS VIDEOS (migración 011, privado)
+  async getPlanesVideo() {
+    const user = await currentUser();
+    if (!user || !supabaseClient) return [];
+    const { data, error } = await supabaseClient.from("video_plans").select("*").eq("user_id", user.id).order("updated_at", { ascending: false });
+    if (error) { console.warn("Planes de video no disponibles (¿falta la migración 011?):", error.message); return []; }
+    return data || [];
+  },
+
+  async guardarPlanVideo({ game_title, estado, url, notas }) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión.");
+    const fila = {
+      user_id: user.id,
+      game_title,
+      estado,
+      url: /^https:\/\/[^\s"'<>]+$/.test(url || "") ? url : null,
+      notas: notas ? String(notas).slice(0, 1000) : null,
+      updated_at: new Date().toISOString()
+    };
+    const { error } = await supabaseClient.from("video_plans").upsert([fila]);
+    if (error) throw new Error(error.message);
+  },
+
+  async borrarPlanVideo(game_title) {
+    const user = await currentUser();
+    const { error } = await supabaseClient.from("video_plans").delete().eq("user_id", user.id).eq("game_title", game_title);
+    if (error) throw new Error(error.message);
+  },
+
+  async getErrores() {
+    if (!supabaseClient) return [];
+    const { data, error } = await supabaseClient.rpc("errores_recientes");
+    if (error) return [];
+    return data || [];
+  },
+
   async reportComment(commentId, reason) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const user = await currentUser();

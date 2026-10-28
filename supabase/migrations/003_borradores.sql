@@ -24,7 +24,7 @@ alter table public.news_drafts_done enable row level security;
 drop policy if exists "Solo admin gestiona borradores" on public.news_drafts_done;
 create policy "Solo admin gestiona borradores" on public.news_drafts_done
   for all
-  using ((auth.jwt() ->> 'email') = 'estebanreyes2402@gmail.com')
-  with check ((auth.jwt() ->> 'email') = 'estebanreyes2402@gmail.com');
+  using (coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin')
+  with check (coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin');
 
 commit;

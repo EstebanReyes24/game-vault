@@ -15,5 +15,11 @@
     "api/pagina.js": {
       "includeFiles": "{app,index}.html"
     }
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/latido",
+      "schedule": "23 13 * * 1,4"
+    }
+  ]
 }

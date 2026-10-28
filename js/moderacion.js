@@ -14,10 +14,22 @@
   let filas = [];
 
   let resenas = [];
+  let errores = [];
+  function filaError(e) {
+    const cuando = new Date(e.ultima).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+    const archivo = String(e.source || "").split("/").pop();
+    return `
+      <article class="mod-fila">
+        <blockquote>${esc(e.message)}</blockquote>
+        <p class="mod-meta"><b>${Number(e.veces)} ${Number(e.veces) === 1 ? "vez" : "veces"}</b> · última: ${esc(cuando)} · en ${esc(e.pagina || "?")}${archivo ? ` · ${esc(archivo)}${e.line ? `:${e.line}` : ""}` : ""}</p>
+        <p class="mod-meta">${esc(String(e.navegador || "").slice(0, 120))}</p>
+      </article>`;
+  }
   async function cargar() {
     try { filas = await DB.getModeracion(); }
     catch (e) { console.warn("Moderación: falta la migración 005.", e); filas = []; }
     resenas = DB.getModeracionResenas ? await DB.getModeracionResenas() : [];
+    errores = DB.getErrores ? await DB.getErrores() : [];
     const pendientes = filas.filter(f => Number(f.reportes) > 0).length + resenas.filter(r => Number(r.reportes) > 0).length;
     badge.textContent = pendientes;
     badge.hidden = pendientes === 0;
@@ -66,11 +78,12 @@
   }
 
   function pintar() {
-    const vacio = !filas.length && !resenas.length;
+    const vacio = !filas.length && !resenas.length && !errores.length;
     list.innerHTML = vacio
       ? `<p class="borrador-vacio">No hay nada que revisar. Cuando alguien reporte un comentario o una reseña aparecerá aquí.</p>`
       : (filas.length ? `<h3 class="lista-subtitulo">Comentarios</h3>${filas.map(fila).join("")}` : "")
-        + (resenas.length ? `<h3 class="lista-subtitulo">Reseñas</h3>${resenas.map(filaResena).join("")}` : "");
+        + (resenas.length ? `<h3 class="lista-subtitulo">Reseñas</h3>${resenas.map(filaResena).join("")}` : "")
+        + (errores.length ? `<h3 class="lista-subtitulo">Errores de la web (7 días)</h3>${errores.map(filaError).join("")}` : "");
   }
 
   async function accionResena(b, el) {

@@ -18,8 +18,7 @@ returns boolean
 language sql
 stable
 as $$
-  select coalesce(auth.jwt() ->> 'email', '') = 'estebanreyes2402@gmail.com'
-      or coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin';
+  select coalesce(auth.jwt() -> 'app_metadata' ->> 'role', '') = 'admin';
 $$;
 
 -- 1. Comentarios ocultos

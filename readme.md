@@ -37,13 +37,15 @@ Estante de juegos y portal de la comunidad del canal [Paindex](https://youtube.c
 - **Estilos & Diseño:** Tailwind CSS 3 compilado (Vercel ejecuta `npm run build` y genera `css/tw.css`; la configuración y la paleta están en `tailwind.config.js`), Font Awesome 6, Google Fonts (*Big Shoulders Display* para títulos y *Archivo* para texto). La identidad visual vive en `css/paindex.css` (paleta y componentes) y `tailwind.config.js` (remapea las escalas de color de Tailwind a la paleta Paindex). Para trabajar en local: `npm install` y `npx tailwindcss -i css/tw-input.css -o css/tw.css --watch`.
 - **Renderizado Gráfico:** HTML5 Canvas API para generación de pósters y tarjetas de juego.
 - **Backend & Almacenamiento:** [Supabase](https://supabase.com/) (PostgreSQL, Row Level Security, Auth y REST API en tiempo real).
+- **Variables de entorno en Vercel:** `STEAM_API_KEY` (importar de Steam) y `RAWG_API_KEY` (portadas). Opcional: `CRON_SECRET` para el latido.
+- **Mantenimiento:** `/api/latido` (cron de Vercel, lunes y jueves) evita que Supabase pause el proyecto; `.github/workflows/respaldo.yml` hace un respaldo cifrado cada domingo.
 - **PWA:** Web App Manifest y Service Worker nativo para caché de recursos estáticos.
 
 ---
 
 ## 🗄️ Esquema de Base de Datos (Supabase SQL)
 
-El proyecto utiliza las siguientes tablas base. **Después de crearlas, aplica la migración [`supabase/migrations/001_fase0.sql`](supabase/migrations/001_fase0.sql)**, que añade la tabla `profiles` (usuarios únicos y estante público/privado), cambia la clave de `games` a `(user_id, id)`, reemplaza las políticas RLS de `games`, protege los comentarios y crea las funciones `community_stats`, `username_available` y `delete_my_account`. Luego aplica [`002_borrado_en_cascada.sql`](supabase/migrations/002_borrado_en_cascada.sql), que asegura que borrar una cuenta borre también todos sus datos. Después [`003_borradores.sql`](supabase/migrations/003_borradores.sql) (borradores de noticias) y [`004_esenciales_semana.sql`](supabase/migrations/004_esenciales_semana.sql) (Esenciales automáticos: cada lunes la portada combina los fijados en `hall_of_fame` con los juegos de Paindex de nota 9 o más) y [`005_moderacion.sql`](supabase/migrations/005_moderacion.sql) (reportes de comentarios, ocultación automática con 3 reportes y bloqueo de usuarios) y [`006_social.sql`](supabase/migrations/006_social.sql) (seguir jugadores y actividad automática de los estantes públicos) [`007_listas.sql`](supabase/migrations/007_listas.sql) (listas de juegos) y [`008_resenas.sql`](supabase/migrations/008_resenas.sql) (reseñas de usuarios, destacadas y reportes).
+El proyecto utiliza las siguientes tablas base. **Después de crearlas, aplica la migración [`supabase/migrations/001_fase0.sql`](supabase/migrations/001_fase0.sql)**, que añade la tabla `profiles` (usuarios únicos y estante público/privado), cambia la clave de `games` a `(user_id, id)`, reemplaza las políticas RLS de `games`, protege los comentarios y crea las funciones `community_stats`, `username_available` y `delete_my_account`. Luego aplica [`002_borrado_en_cascada.sql`](supabase/migrations/002_borrado_en_cascada.sql), que asegura que borrar una cuenta borre también todos sus datos. Después [`003_borradores.sql`](supabase/migrations/003_borradores.sql) (borradores de noticias) y [`004_esenciales_semana.sql`](supabase/migrations/004_esenciales_semana.sql) (Esenciales automáticos: cada lunes la portada combina los fijados en `hall_of_fame` con los juegos de Paindex de nota 9 o más) y [`005_moderacion.sql`](supabase/migrations/005_moderacion.sql) (reportes de comentarios, ocultación automática con 3 reportes y bloqueo de usuarios) y [`006_social.sql`](supabase/migrations/006_social.sql) (seguir jugadores y actividad automática de los estantes públicos) [`007_listas.sql`](supabase/migrations/007_listas.sql) (listas de juegos) [`008_resenas.sql`](supabase/migrations/008_resenas.sql) (reseñas de usuarios, destacadas y reportes) y [`009_admin_por_rol.sql`](supabase/migrations/009_admin_por_rol.sql) (el admin se identifica por el rol `admin` de su cuenta, no por su correo) [`010_errores.sql`](supabase/migrations/010_errores.sql) (registro de errores del navegador, visible en Moderación) y [`011_videos.sql`](supabase/migrations/011_videos.sql) ("Para mis videos", banco de ideas privado del admin).
 
 ```sql
 -- 1. Tabla de Catálogo de Juegos
@@ -84,7 +86,7 @@ create table if not exists public.posts (
 alter table public.posts enable row level security;
 create policy "Posts públicos" on public.posts for select using (true);
 create policy "Solo admin edita y crea posts" on public.posts
-  for all using ((auth.jwt() ->> 'email') = 'estebanreyes2402@gmail.com');
+  for all using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
 -- 3. Tabla de Comentarios
 create table if not exists public.post_comments (
@@ -100,7 +102,7 @@ alter table public.post_comments enable row level security;
 create policy "Comentarios públicos" on public.post_comments for select using (true);
 create policy "Usuarios comentan" on public.post_comments for insert with check (auth.uid() = user_id);
 create policy "Borrar comentarios" on public.post_comments for delete using (
-  auth.uid() = user_id or (auth.jwt() ->> 'email') = 'estebanreyes2402@gmail.com'
+  auth.uid() = user_id or (auth.jwt() -> 'app_metadata' ->> 'role') = 'admin'
 );
 
 -- 4. Tabla de Reacciones (Likes)
@@ -131,7 +133,7 @@ create table if not exists public.hall_of_fame (
 alter table public.hall_of_fame enable row level security;
 create policy "Hall of fame público" on public.hall_of_fame for select using (true);
 create policy "Solo admin edita hall of fame" on public.hall_of_fame
-  for update using ((auth.jwt() ->> 'email') = 'estebanreyes2402@gmail.com');
+  for update using ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 ```
 
 ---
