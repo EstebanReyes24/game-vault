@@ -84,6 +84,10 @@ export default async function handler(req) {
       )
     : null;
 
+  const nv = new URL(req.url).searchParams.get("nivel");
+  if (nv === "0") return new ImageResponse({ type: "div", props: { style: { display: "flex", width: "100%", height: "100%", background: NOCHE, color: HUESO, fontSize: 80 }, children: "hola" } }, { width: 1200, height: 630 });
+  if (nv === "-1") return new ImageResponse({ type: "div", props: { style: { display: "flex", width: "100%", height: "100%", background: NOCHE, color: HUESO, fontSize: 80, fontFamily: "Display" }, children: "hola" } }, { width: 1200, height: 630, fonts: fuentes.slice(0, 1) });
+  if (nv === "-2") return new ImageResponse({ type: "div", props: { style: { display: "flex", width: "100%", height: "100%", background: NOCHE, color: HUESO, fontSize: 80, fontFamily: "Texto" }, children: "hola" } }, { width: 1200, height: 630, fonts: fuentes.slice(1) });
   // ?nivel=1..4 permite aislar qué parte falla al renderizar (diagnóstico)
   const nivel = Number(new URL(req.url).searchParams.get("nivel") || 4);
   const fondo = nivel >= 4 ? { backgroundImage: `radial-gradient(circle at 85% 100%, rgba(160,20,44,0.55), transparent 55%)` } : {};
