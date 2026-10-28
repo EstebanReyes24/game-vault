@@ -425,3 +425,49 @@ body.light-mode #openTop5Btn {
 .borrador-acciones { display: flex; gap: 0.6rem; flex-wrap: wrap; }
 .borrador-acciones button:disabled { opacity: 0.5; cursor: wait; }
 .borrador-vacio { color: var(--niebla); padding: 1rem 0; margin: 0; }
+
+/* ---------- bienvenida del estante vacío ---------- */
+.bienvenida {
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  border: 1px solid var(--border-light);
+  border-radius: 18px;
+  background:
+    radial-gradient(600px 300px at 100% 0%, rgba(255, 42, 72, 0.12), transparent 70%),
+    var(--carbon);
+}
+.bienvenida h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(2.2rem, 6vw, 3.6rem);
+  line-height: 0.92;
+  margin: 0;
+  color: var(--hueso);
+}
+.bienvenida-bajada { max-width: 34rem; margin: 0.9rem 0 1.75rem; color: var(--niebla); line-height: 1.6; }
+.bienvenida-opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.85rem; max-width: 46rem; }
+.bienvenida-opcion {
+  display: flex; align-items: flex-start; gap: 0.9rem; text-align: left;
+  padding: 1.1rem 1.2rem; border-radius: 12px; cursor: pointer;
+  background: var(--grafito); border: 1px solid var(--border-light); color: var(--hueso);
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.bienvenida-opcion:hover { border-color: rgba(236, 231, 238, 0.4); }
+.bienvenida-opcion i { font-size: 1.5rem; margin-top: 0.1rem; width: 1.6rem; text-align: center; color: var(--niebla); }
+.bienvenida-opcion b { display: block; font-size: 1rem; }
+.bienvenida-opcion small { display: block; margin-top: 0.25rem; font-size: 0.85rem; color: var(--niebla); line-height: 1.45; }
+.bienvenida-opcion.principal { background: var(--senal); border-color: var(--senal); color: #fff; }
+.bienvenida-opcion.principal i, .bienvenida-opcion.principal small { color: rgba(255, 255, 255, 0.88); }
+.bienvenida-opcion.principal:hover { background: #ff4560; }
+.bienvenida-nota { margin: 1.4rem 0 0; max-width: 40rem; font-size: 0.9rem; color: var(--niebla); line-height: 1.55; }
+.bienvenida-nota a { color: var(--hueso); text-decoration: underline; text-underline-offset: 3px; }
+.bienvenida-demo { margin-top: 1.1rem; padding: 0; background: none; border: 0; color: var(--niebla); font-size: 0.85rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.bienvenida-demo:hover { color: var(--hueso); }
+
+.steam-ayuda { font-size: 0.85rem; color: var(--niebla); }
+.steam-ayuda summary { cursor: pointer; color: var(--hueso); font-weight: 600; }
+.steam-ayuda ol { margin: 0.6rem 0 0; padding-left: 1.2rem; display: grid; gap: 0.35rem; list-style: decimal; }
+.steam-ayuda b { color: var(--hueso); font-weight: 600; }
+.steam-ayuda p { margin: 0.6rem 0 0; }
+body.light-mode .bienvenida { background: #fff; }
+body.light-mode .bienvenida h2, body.light-mode .bienvenida-opcion:not(.principal) { color: #16121a; }
+body.light-mode .bienvenida-opcion:not(.principal) { background: #f7f4f8; }
