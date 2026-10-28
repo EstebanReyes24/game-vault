@@ -18,7 +18,9 @@ let currentPlayingIndex = 0;
 
 // Detección estricta de Modo Espectador (?u=gamertag)
 const urlParams = new URLSearchParams(window.location.search);
-const publicProfileTarget = urlParams.get("u");
+// Perfil público: /u/nombre (enlace bonito) o app.html?u=nombre (enlaces antiguos)
+const rutaPerfil = window.location.pathname.match(/^\/u\/([A-Za-z0-9_]{3,20})\/?$/);
+const publicProfileTarget = rutaPerfil ? rutaPerfil[1] : urlParams.get("u");
 const isSpectatorMode = Boolean(publicProfileTarget && publicProfileTarget.trim().length > 0);
 let spectatorGames = [];
 
@@ -331,7 +333,7 @@ if (shareProfileBtn) {
       }
     }
 
-    const shareUrl = `${window.location.origin}${window.location.pathname}?u=${encodeURIComponent(profile.username)}`;
+    const shareUrl = `${window.location.origin}/u/${encodeURIComponent(profile.username)}`;
     try {
       await navigator.clipboard.writeText(shareUrl);
       alert(`¡Enlace copiado al portapapeles!\n\n${shareUrl}\n\nCompártelo para que vean tu colección.`);
@@ -2043,6 +2045,7 @@ async function initDashboard() {
   if (isSpectatorMode) {
     if (spectatorBanner) spectatorBanner.classList.remove("hidden");
     if (spectatorTargetUser) spectatorTargetUser.innerText = `@${publicProfileTarget}`;
+    document.title = `@${publicProfileTarget} · Paindex Vault`;
     if (toggleFormBtn) toggleFormBtn.classList.add("hidden");
     if (ownerFooterControls) ownerFooterControls.classList.add("hidden");
     if (shareProfileBtn) shareProfileBtn.classList.add("hidden");
@@ -2055,6 +2058,7 @@ async function initDashboard() {
       spectatorGames = [];
     }
 
+    pintarPerfil(spectatorGames);
     renderLibrary();
     return;
   }
@@ -2084,4 +2088,48 @@ if (gamesGrid) {
     if (accion === "manual") document.getElementById("toggleFormBtn")?.click();
     if (accion === "demo") document.getElementById("loadDemoBtn")?.click();
   });
+}
+
+
+/** Cabecera del perfil público: cifras, sus mejor puntuados y botones. */
+function pintarPerfil(games) {
+  const nombre = String(publicProfileTarget || "").trim();
+  const avatar = document.getElementById("perfilAvatar");
+  if (avatar) avatar.textContent = nombre.charAt(0).toUpperCase() || "?";
+
+  const copiar = document.getElementById("perfilCopiarBtn");
+  if (copiar) copiar.addEventListener("click", async () => {
+    const url = `${window.location.origin}/u/${encodeURIComponent(nombre.toLowerCase())}`;
+    try { await navigator.clipboard.writeText(url); showToast("Enlace copiado."); }
+    catch (e) { prompt("Copia el enlace:", url); }
+  });
+
+  // Visitante con cuenta: el botón lleva a su propio estante
+  if (window.DB) DB.getMyProfile().then(p => {
+    const cta = document.getElementById("perfilCtaBtn");
+    if (p && cta) cta.textContent = p.username === nombre.toLowerCase() ? "Editar mi estante" : "Ir a mi estante";
+  }).catch(() => {});
+
+  if (!games.length) return;
+  const horas = games.reduce((t, g) => t + (Number(g.hours) || 0), 0);
+  const platinos = games.filter(g => g.status === "platinum").length;
+  const conNota = games.filter(g => Number(g.rating) > 0);
+  const media = conNota.length ? conNota.reduce((t, g) => t + Number(g.rating), 0) / conNota.length : null;
+  const fmt = (n) => Number(n).toLocaleString("es");
+  document.getElementById("pfJuegos").textContent = fmt(games.length);
+  document.getElementById("pfHoras").textContent = fmt(horas);
+  document.getElementById("pfPlatinos").textContent = fmt(platinos);
+  document.getElementById("pfNota").textContent = media === null ? "–" : media.toFixed(1);
+  document.getElementById("perfilCifras").hidden = false;
+
+  const top = [...conNota].sort((a, b) => Number(b.rating) - Number(a.rating) || (Number(b.hours) || 0) - (Number(a.hours) || 0)).slice(0, 5);
+  if (top.length >= 3) {
+    document.getElementById("perfilTopLista").innerHTML = top.map(g => `
+      <li>
+        ${coverImg(g, "perfil-top-tapa")}
+        <span>${escapeHTML(g.title)}</span>
+        <b>${Number(g.rating).toFixed(1)}</b>
+      </li>`).join("");
+    document.getElementById("perfilTop").hidden = false;
+  }
 }

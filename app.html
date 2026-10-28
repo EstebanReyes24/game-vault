@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <base href="/">
   <meta name="theme-color" content="#14111a">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -235,20 +236,6 @@
 </head>
 <body class="p-3 sm:p-6 lg:p-8">
 
-  <!-- BANNER MODO ESPECTADOR (READ-ONLY) -->
-  <div id="spectatorBanner" class="hidden max-w-7xl mx-auto mb-6 p-4 rounded-2xl bg-indigo-950/80 border border-indigo-500/40 backdrop-blur-md flex items-center justify-between shadow-2xl">
-    <div class="flex items-center gap-3">
-      <i class="fa-solid fa-eye text-indigo-400 text-lg"></i>
-      <div>
-        <p class="text-xs font-bold text-indigo-200">Estás en modo espectador (Lectura)</p>
-        <p class="text-[11px] text-slate-400">Viendo el catálogo público de <span id="spectatorTargetUser" class="font-black text-indigo-300">@usuario</span></p>
-      </div>
-    </div>
-    <a href="app.html" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black console-font transition shadow-lg">
-      <i class="fa-solid fa-house mr-1"></i> Mi Estante
-    </a>
-  </div>
-
   <div class="max-w-7xl mx-auto space-y-6">
 
     <!-- NAVBAR SUPERIOR CONSOLA -->
@@ -291,6 +278,31 @@
         </button>
       </div>
     </header>
+
+    <!-- PERFIL PÚBLICO (modo espectador, solo lectura) -->
+    <section id="spectatorBanner" class="perfil hidden" aria-labelledby="spectatorTargetUser">
+      <div class="perfil-cabecera">
+        <div class="perfil-avatar" id="perfilAvatar" aria-hidden="true">?</div>
+        <div class="perfil-nombre">
+          <h1 id="spectatorTargetUser">@usuario</h1>
+          <p>Estante público en Paindex Vault</p>
+        </div>
+        <div class="perfil-acciones">
+          <button type="button" id="perfilCopiarBtn" class="boton boton-linea"><i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace</button>
+          <a href="/app.html" id="perfilCtaBtn" class="boton boton-senal">Crea tu estante</a>
+        </div>
+      </div>
+      <dl class="perfil-cifras" id="perfilCifras" hidden>
+        <div><dt>juegos</dt><dd id="pfJuegos">0</dd></div>
+        <div><dt>horas</dt><dd id="pfHoras">0</dd></div>
+        <div><dt>platinos</dt><dd id="pfPlatinos">0</dd></div>
+        <div><dt>nota media</dt><dd id="pfNota">–</dd></div>
+      </dl>
+      <div class="perfil-top" id="perfilTop" hidden>
+        <h2>Sus mejor puntuados</h2>
+        <ol id="perfilTopLista"></ol>
+      </div>
+    </section>
 
     <!-- BANNER HERO NOW PLAYING -->
     <section id="nowPlayingSection" class="solo-con-juegos relative glass-panel rounded-3xl overflow-hidden p-6 sm:p-8 border border-white/10 shadow-2xl">
