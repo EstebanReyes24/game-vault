@@ -550,3 +550,6 @@ body.light-mode .perfil { background: #fff; }
 body.light-mode .perfil-nombre h1, body.light-mode .perfil-cifras dd, body.light-mode .perfil-top h2, body.light-mode .perfil-top li span { color: #16121a; }
 body.light-mode .boton-linea { color: #16121a; border-color: rgba(36, 30, 40, 0.25); }
 body.light-mode .boton-linea:hover { border-color: #16121a; }
+
+/* Vista previa de las imágenes para compartir */
+.tarjeta-vista { display: block; max-width: 100%; max-height: 62vh; width: auto; height: auto; border-radius: 14px; box-shadow: 0 0 0 1px rgba(236, 231, 238, 0.12); }

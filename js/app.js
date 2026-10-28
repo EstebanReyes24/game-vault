@@ -1289,10 +1289,7 @@ if (closeShareCardBtn) closeShareCardBtn.addEventListener("click", () => shareCa
 if (downloadShareCardBtn) {
   downloadShareCardBtn.addEventListener("click", () => {
     SoundFX.playClick();
-    const link = document.createElement("a");
-    link.download = `game_card_${activeModalGameId}.png`;
-    link.href = shareCardCanvas.toDataURL("image/png");
-    link.click();
+    compartirCanvas(shareCardCanvas, `paindex_juego_${activeModalGameId}`, "Desde mi estante en Paindex Vault");
   });
 }
 
@@ -1303,49 +1300,40 @@ const closeWrappedBtn = document.getElementById("closeWrappedBtn");
 const wrappedYearSelect = document.getElementById("wrappedYearSelect");
 const wrappedPeriodLabel = document.getElementById("wrappedPeriodLabel");
 
-function updateWrappedUI(selectedYear) {
+/** Datos del Wrapped para un año (o "all" para todo el historial). */
+function datosWrapped(selectedYear) {
   const lib = getCurrentDataset();
-  if (lib.length === 0) return;
-
   let games = [...lib];
   if (selectedYear !== "all") {
     const y = parseInt(selectedYear, 10);
     games = lib.filter(g => (g.completedYear || new Date(g.id).getFullYear()) === y);
-    if (wrappedPeriodLabel) wrappedPeriodLabel.innerText = `Tiempo Jugado en ${selectedYear}`;
-  } else {
-    if (wrappedPeriodLabel) wrappedPeriodLabel.innerText = "Tiempo Jugado Histórico";
   }
-
-  if (games.length === 0) {
-    document.getElementById("wrappedHours").innerText = "0 Horas";
-    document.getElementById("wrappedTopGame").innerText = "Sin registros";
-    document.getElementById("wrappedTopGameScore").innerText = "★ 0.0";
-    document.getElementById("wrappedMostPlayed").innerText = "Sin registros";
-    document.getElementById("wrappedMostPlayedHours").innerText = "0 hrs";
-    document.getElementById("wrappedTopTags").innerHTML = "";
-    return;
-  }
-
-  const totalHours = games.reduce((acc, g) => acc + (g.hours || 0), 0);
-  document.getElementById("wrappedHours").innerText = `${totalHours} Horas`;
-
-  const topRated = ratedGames(games).sort((a, b) => Number(b.rating) - Number(a.rating))[0];
-  document.getElementById("wrappedTopGame").innerText = topRated ? topRated.title : "Sin calificar";
-  document.getElementById("wrappedTopGameScore").innerText = topRated ? `★ ${fmtRating(topRated)} / 10` : "★ —";
-
-  const mostPlayed = [...games].sort((a, b) => (b.hours || 0) - (a.hours || 0))[0];
-  document.getElementById("wrappedMostPlayed").innerText = mostPlayed.title;
-  document.getElementById("wrappedMostPlayedHours").innerText = `${mostPlayed.hours || 0} hrs dedicadas`;
-
   const tagCounts = {};
-  games.forEach(g => {
-    (g.tags || []).forEach(t => {
-      tagCounts[t] = (tagCounts[t] || 0) + 1;
-    });
-  });
-  const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(i => i[0]);
-  document.getElementById("wrappedTopTags").innerHTML = renderTagChips(sortedTags);
+  games.forEach(g => (g.tags || []).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
+  return {
+    periodo: selectedYear,
+    horas: games.reduce((acc, g) => acc + (g.hours || 0), 0),
+    juegos: games.length,
+    pasados: games.filter(g => COMPLETED_STATUSES.includes(g.status)).length,
+    platinos: games.filter(g => g.status === "platinum").length,
+    mejor: ratedGames(games).sort((a, b) => Number(b.rating) - Number(a.rating))[0] || null,
+    masJugado: [...games].sort((a, b) => (b.hours || 0) - (a.hours || 0))[0] || null,
+    tags: Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 5).map(i => i[0])
+  };
 }
+
+async function updateWrappedUI(selectedYear) {
+  const canvas = document.getElementById("wrappedCanvas");
+  if (!canvas || getCurrentDataset().length === 0) return;
+  await CanvasPoster.drawWrapped(canvas, datosWrapped(selectedYear));
+}
+
+const shareWrappedBtn = document.getElementById("shareWrappedBtn");
+if (shareWrappedBtn) shareWrappedBtn.addEventListener("click", () => {
+  SoundFX.playClick();
+  const periodo = wrappedYearSelect ? wrappedYearSelect.value : "all";
+  compartirCanvas(document.getElementById("wrappedCanvas"), `paindex_wrapped_${periodo}`, "Mi Wrapped en Paindex Vault");
+});
 
 function populateWrappedYears() {
   if (!wrappedYearSelect) return;
@@ -1431,10 +1419,7 @@ if (downloadTop5Btn) {
   downloadTop5Btn.addEventListener("click", () => {
     SoundFX.playClick();
     const count = topCountSelect ? topCountSelect.value : "5";
-    const link = document.createElement("a");
-    link.download = `my_top_${count}_games.png`;
-    link.href = top5Canvas.toDataURL("image/png");
-    link.click();
+    compartirCanvas(top5Canvas, `paindex_top_${count}`, `Mi top ${count} en Paindex Vault`);
   });
 }
 
@@ -2017,6 +2002,7 @@ async function handleSession(user) {
 
   const profile = await DB.getMyProfile();
   const alias = profile?.username || user.email.split("@")[0];
+  CanvasPoster.usuario = profile?.username || null;
   if (appUserLabel) appUserLabel.innerText = alias;
   if (appUserIcon) appUserIcon.className = "fa-solid fa-cloud text-emerald-400";
   if (accountControls) accountControls.classList.remove("hidden");
@@ -2046,6 +2032,7 @@ async function initDashboard() {
     if (spectatorBanner) spectatorBanner.classList.remove("hidden");
     if (spectatorTargetUser) spectatorTargetUser.innerText = `@${publicProfileTarget}`;
     document.title = `@${publicProfileTarget} · Paindex Vault`;
+    CanvasPoster.usuario = String(publicProfileTarget).toLowerCase();
     if (toggleFormBtn) toggleFormBtn.classList.add("hidden");
     if (ownerFooterControls) ownerFooterControls.classList.add("hidden");
     if (shareProfileBtn) shareProfileBtn.classList.add("hidden");
