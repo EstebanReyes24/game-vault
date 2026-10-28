@@ -55,10 +55,21 @@ jobs:
               echo "::error::No se pudo leer la dirección de la base de datos. Si tu contraseña tiene símbolos (@ # / : ? &), cámbiala por una solo de letras y números y actualiza SUPABASE_DB_URL."
             elif grep -qi "password authentication failed" pgdump-error.txt; then
               echo "::error::Supabase rechazó la contraseña de SUPABASE_DB_URL."
+            elif grep -qi "permission denied" pgdump-error.txt; then
+              # Si el esquema de cuentas (auth) no se deja leer, se respalda al menos todo lo de la web
+              echo "::warning::Sin permiso para leer las cuentas (auth). Se respaldan solo los datos de la web (public)."
+              if ! /usr/lib/postgresql/17/bin/pg_dump "$DB" --no-owner --no-privileges --schema=public -f respaldo.sql 2> pgdump-error.txt; then
+                echo "::error::pg_dump falló también solo con public."
+                exit 1
+              fi
             else
-              echo "::error::pg_dump falló. Revisa que SUPABASE_DB_URL sea la del Session pooler."
+              echo "::error::pg_dump falló. Detalle (sin datos de conexión):"
             fi
-            exit 1
+            if [ -s pgdump-error.txt ] && ! [ -s respaldo.sql ]; then
+              # Se quitan usuario, servidor y cualquier cosa con forma de credencial antes de mostrarlo
+              sed -E 's#://[^ ]*#://[oculto]#g; s#[^ ]*:[^ ]*@[^ ]*#[oculto]#g; s#[^ ]*@[^ ]*#[oculto]#g; s#[A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+#[oculto]#g; s#postgres(\.[a-z0-9]+)?#[usuario]#g; s#[A-Za-z0-9.-]*supabase\.(co|com)#[servidor]#g; s#"[^"]*"#"[oculto]"#g' pgdump-error.txt | head -5
+              exit 1
+            fi
           fi
           gzip -9 respaldo.sql
           gpg --batch --yes --symmetric --cipher-algo AES256 --passphrase "$PASS" -o "respaldo-$FECHA.sql.gz.gpg" respaldo.sql.gz
