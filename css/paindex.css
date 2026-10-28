@@ -320,3 +320,16 @@ body.light-mode #openTop5Btn {
   color: #3a3240 !important;
   border: 1px solid rgba(36, 30, 40, 0.18) !important;
 }
+
+/* La condensada solo funciona grande: en textos pequeños vuelve Archivo */
+.console-font[class*="text-xs"],
+.console-font[class*="text-sm"],
+.console-font[class*="text-[9px]"],
+.console-font[class*="text-[10px]"],
+.console-font[class*="text-[11px]"],
+.console-font[class*="text-[12px]"],
+.console-font[class*="text-[13px]"] {
+  font-family: var(--texto);
+  font-weight: 700;
+  letter-spacing: 0;
+}
