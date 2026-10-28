@@ -1,0 +1,63 @@
+# Respaldo semanal de la base de datos de Supabase, cifrado.
+#
+# Necesita dos secretos en GitHub (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL     cadena de conexión de Supabase (Project Settings →
+#                       Database → Connection string → "Session pooler", con tu contraseña)
+#   BACKUP_PASSPHRASE   una contraseña larga que guardes tú; sin ella no se puede abrir el respaldo
+#
+# El archivo queda en la pestaña Actions → la ejecución → "Artifacts", 90 días.
+# Para abrirlo:  gpg --decrypt respaldo-AAAA-MM-DD.sql.gz.gpg | gunzip > respaldo.sql
+name: Respaldo semanal
+
+on:
+  schedule:
+    - cron: "41 7 * * 0"   # domingos, 03:41 en Bolivia/Rep. Dominicana
+  workflow_dispatch: {}      # botón "Run workflow" para hacerlo a mano
+
+jobs:
+  respaldo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Comprobar secretos
+        id: secretos
+        env:
+          DB: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          if [ -z "$DB" ] || [ -z "$PASS" ]; then
+            echo "::warning::Faltan los secretos SUPABASE_DB_URL o BACKUP_PASSPHRASE. No se hizo el respaldo."
+            echo "listo=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "listo=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Instalar pg_dump 17
+        if: steps.secretos.outputs.listo == 'si'
+        run: |
+          sudo install -d /usr/share/postgresql-common/pgdg
+          sudo curl -fsSL -o /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          echo "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] https://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" | sudo tee /etc/apt/sources.list.d/pgdg.list
+          sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client-17
+
+      - name: Volcar y cifrar
+        if: steps.secretos.outputs.listo == 'si'
+        env:
+          DB: ${{ secrets.SUPABASE_DB_URL }}
+          PASS: ${{ secrets.BACKUP_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          FECHA=$(date -u +%F)
+          /usr/lib/postgresql/17/bin/pg_dump "$DB" --no-owner --no-privileges --schema=public --schema=auth \
+            | gzip -9 \
+            | gpg --batch --yes --symmetric --cipher-algo AES256 --passphrase "$PASS" -o "respaldo-$FECHA.sql.gz.gpg"
+          ls -lh respaldo-*.gpg
+          echo "ARCHIVO=respaldo-$FECHA.sql.gz.gpg" >> "$GITHUB_ENV"
+
+      - name: Guardar el respaldo
+        if: steps.secretos.outputs.listo == 'si'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARCHIVO }}
+          path: ${{ env.ARCHIVO }}
+          retention-days: 90
