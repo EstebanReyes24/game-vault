@@ -20,8 +20,8 @@ export default async function handler(req, res) {
       const juegos = await titulosXbox(clave, false, perfil.xuid);
       // Mismo gamertag en los próximos 10 minutos: se sirve desde el CDN (ahorra cuota de OpenXBL)
       res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=1800");
-      if (!juegos.length) return res.status(200).json({ gamertag: perfil.gamertag, juegos: [], privado: true });
-      return res.status(200).json({ gamertag: perfil.gamertag, juegos });
+      if (!juegos.length) return res.status(200).json({ gamertag: perfil.gamertag, xuid: perfil.xuid, juegos: [], privado: true });
+      return res.status(200).json({ gamertag: perfil.gamertag, xuid: perfil.xuid, juegos });
     } catch (e) {
       res.setHeader("Cache-Control", "no-store");
       return res.status(e.status || 502).json({ error: e.status === 401 ? "No se pudo leer el historial: puede que sea privado." : e.message });
