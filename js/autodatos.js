@@ -164,6 +164,11 @@
     datosFicha.hidden = !filas.length;
   }
 
+  // El servidor de imágenes de Xbox (images-eds) ya no responde: esos logros llevan un trofeo
+  function iconoURL(u) {
+    try { return /^images-eds/.test(new URL(u).hostname) ? null : u; } catch (e) { return null; }
+  }
+
   function pintarLogros(items, origen, sincronizado, puedeActualizar) {
     const logrados = items.filter(i => i.logrado);
     const pct = items.length ? Math.round((logrados.length / items.length) * 100) : 0;
@@ -181,7 +186,7 @@
       <ul class="logros-lista">
         ${orden.slice(0, 300).map(i => `
           <li class="${i.logrado ? "si" : "no"}">
-            ${i.icono ? `<img src="${esc(i.icono)}" alt="" loading="lazy">` : `<span class="logro-sin-icono"></span>`}
+            ${iconoURL(i.icono) ? `<img src="${esc(iconoURL(i.icono))}" alt="" loading="lazy">` : `<span class="logro-sin-icono"><i class="fa-solid fa-trophy" aria-hidden="true"></i></span>`}
             <span class="logro-texto"><b>${esc(i.nombre)}</b><small>${esc(i.desc || "")}</small></span>
             <span class="logro-meta">${i.logrado && i.fecha ? fecha(i.fecha) : (i.logrado ? "Logrado" : "Pendiente")}${i.rareza !== null && i.rareza !== undefined ? `<small>${i.rareza}% lo tiene</small>` : ""}</span>
           </li>`).join("")}
@@ -259,6 +264,15 @@
       caja.hidden = false;
     }
   }
+
+  // Si un icono no carga, se cambia por un trofeo en vez de la imagen rota
+  if (caja) caja.addEventListener("error", (e) => {
+    if (e.target.tagName !== "IMG") return;
+    const sustituto = document.createElement("span");
+    sustituto.className = "logro-sin-icono";
+    sustituto.innerHTML = `<i class="fa-solid fa-trophy" aria-hidden="true"></i>`;
+    e.target.replaceWith(sustituto);
+  }, true);
 
   if (caja) caja.addEventListener("click", (e) => {
     if (!e.target.closest("[data-logros-recargar]")) return;
