@@ -164,6 +164,16 @@
     datosFicha.hidden = !filas.length;
   }
 
+  // Los iconos de Xbox no cargan directo en muchos navegadores: pasan por /api/icono
+  function iconoURL(u) {
+    try {
+      const url = new URL(u);
+      if (!/xboxlive\.com$/.test(url.hostname)) return u;
+      if (url.hostname.startsWith("images-eds") && !url.searchParams.has("w")) { url.searchParams.set("w", "96"); url.searchParams.set("h", "96"); url.searchParams.set("format", "png"); }
+      return `/api/icono?u=${encodeURIComponent(url.href)}`;
+    } catch (e) { return u; }
+  }
+
   function pintarLogros(items, origen, sincronizado, puedeActualizar) {
     const logrados = items.filter(i => i.logrado);
     const pct = items.length ? Math.round((logrados.length / items.length) * 100) : 0;
@@ -181,7 +191,7 @@
       <ul class="logros-lista">
         ${orden.slice(0, 300).map(i => `
           <li class="${i.logrado ? "si" : "no"}">
-            ${i.icono ? `<img src="${esc(i.icono)}" alt="" loading="lazy">` : `<span class="logro-sin-icono"></span>`}
+            ${i.icono ? `<img src="${esc(iconoURL(i.icono))}" alt="" loading="lazy">` : `<span class="logro-sin-icono"><i class="fa-solid fa-trophy" aria-hidden="true"></i></span>`}
             <span class="logro-texto"><b>${esc(i.nombre)}</b><small>${esc(i.desc || "")}</small></span>
             <span class="logro-meta">${i.logrado && i.fecha ? fecha(i.fecha) : (i.logrado ? "Logrado" : "Pendiente")}${i.rareza !== null && i.rareza !== undefined ? `<small>${i.rareza}% lo tiene</small>` : ""}</span>
           </li>`).join("")}
@@ -259,6 +269,15 @@
       caja.hidden = false;
     }
   }
+
+  // Si un icono no carga, se cambia por un trofeo en vez de la imagen rota
+  if (caja) caja.addEventListener("error", (e) => {
+    if (e.target.tagName !== "IMG") return;
+    const sustituto = document.createElement("span");
+    sustituto.className = "logro-sin-icono";
+    sustituto.innerHTML = `<i class="fa-solid fa-trophy" aria-hidden="true"></i>`;
+    e.target.replaceWith(sustituto);
+  }, true);
 
   if (caja) caja.addEventListener("click", (e) => {
     if (!e.target.closest("[data-logros-recargar]")) return;
