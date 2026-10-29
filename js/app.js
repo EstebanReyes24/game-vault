@@ -129,7 +129,15 @@ function normalizeGame(raw) {
     completedYear: COMPLETED_STATUSES.includes(status) ? (parseInt(raw.completedYear, 10) || null) : null,
     favorite: Boolean(raw.favorite),
     tags: Array.isArray(raw.tags) ? raw.tags.map(t => String(t).trim().slice(0, 40)).filter(Boolean).slice(0, 15) : [],
-    notes: String(raw.notes ?? "").slice(0, 2000)
+    notes: String(raw.notes ?? "").slice(0, 2000),
+    steamAppId: Number.isInteger(Number(raw.steamAppId)) && Number(raw.steamAppId) > 0 ? Number(raw.steamAppId) : null,
+    xboxTitleId: /^[0-9]{1,12}$/.test(String(raw.xboxTitleId || "")) ? String(raw.xboxTitleId) : null,
+    firstPlayed: raw.firstPlayed && Number.isFinite(Date.parse(raw.firstPlayed)) ? raw.firstPlayed : null,
+    lastPlayed: raw.lastPlayed && Number.isFinite(Date.parse(raw.lastPlayed)) ? raw.lastPlayed : null,
+    achUnlocked: Number.isFinite(Number(raw.achUnlocked)) && raw.achUnlocked !== null ? Number(raw.achUnlocked) : null,
+    achTotal: Number.isFinite(Number(raw.achTotal)) && raw.achTotal !== null ? Number(raw.achTotal) : null,
+    releaseYear: parseInt(raw.releaseYear, 10) || null,
+    developer: raw.developer ? String(raw.developer).slice(0, 120) : null
   };
 }
 
@@ -655,7 +663,8 @@ if (saveGameBtn) {
     let savedGame;
     if (editingGameId) {
       StorageManager.updateGame(editingGameId, gameData);
-      savedGame = { id: editingGameId, ...gameData };
+      // El juego completo (con sus vínculos a Steam/Xbox), no solo los campos del formulario
+      savedGame = StorageManager.getGames().find(g => g.id === editingGameId) || { id: editingGameId, ...gameData };
     } else {
       savedGame = { id: newGameId(), ...gameData };
       StorageManager.addGame(savedGame);
@@ -667,6 +676,8 @@ if (saveGameBtn) {
     renderLibrary();
     resetForm();
     toggleForm(false);
+    // Juego nuevo: etiquetas, año y desarrollador automáticos (si no se pusieron a mano)
+    if (!editingGameId && window.Autodatos) window.Autodatos.completar([savedGame]);
   });
 }
 
@@ -1665,6 +1676,7 @@ window.ejecutarConsultaSteam = async function() {
 
     const data = await res.json();
     const rawGames = data?.response?.games;
+    if (data?.steamid && window.Autodatos) window.Autodatos.guardarCuenta({ steam_id: data.steamid });
 
     if (!rawGames || rawGames.length === 0) {
       throw new Error("Steam no devolvió títulos. Verifica que tu perfil y la lista de juegos estén en PÚBLICO y desmarques 'Ocultar tiempo total de juego'.");
@@ -1678,6 +1690,7 @@ window.ejecutarConsultaSteam = async function() {
         appId: g.appid,
         title: sanitizeInput(g.name).slice(0, 150),
         hours: Math.round(g.playtime_forever / 60),
+        lastPlayed: g.rtime_last_played ? new Date(g.rtime_last_played * 1000).toISOString() : null,
         coverUrl: `https://cdn.cloudflare.steamstatic.com/steam/apps/${g.appid}/library_600x900.jpg`
       }));
 
@@ -1754,7 +1767,9 @@ if (confirmImportSteamBtn) {
           completedYear: null,
           favorite: false,
           tags: ["#Steam"],
-          notes: ""
+          notes: "",
+          steamAppId: g.appId,
+          lastPlayed: g.lastPlayed || null
         });
       }
     });
@@ -1771,6 +1786,7 @@ if (confirmImportSteamBtn) {
     renderLibrary();
     SoundFX.playTrophy();
     steamModal.classList.add("hidden");
+    if (window.Autodatos) window.Autodatos.completar(toImport);
     alert(`¡Se importaron ${toImport.length} títulos desde Steam!\n\nQuedaron como "Pendiente" y sin nota: edítalos para marcar los que ya terminaste.`);
   });
 }

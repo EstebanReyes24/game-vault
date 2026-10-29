@@ -29,9 +29,24 @@ function cloudRowToGame(row) {
     completedYear: row.completed_year || null,
     favorite: Boolean(row.favorite),
     tags: row.tags || [],
-    notes: row.notes || ""
+    notes: row.notes || "",
+    // Vínculos y datos automáticos (migración 012)
+    steamAppId: row.steam_appid || null,
+    xboxTitleId: row.xbox_title_id || null,
+    firstPlayed: row.first_played || null,
+    lastPlayed: row.last_played || null,
+    achUnlocked: row.ach_unlocked ?? null,
+    achTotal: row.ach_total ?? null,
+    releaseYear: row.release_year || null,
+    developer: row.developer || null
   };
 }
+
+// Columnas de la migración 012: si aún no existen en la base, se envían sin ellas
+const COLUMNAS_012 = ["steam_appid", "xbox_title_id", "first_played", "last_played", "ach_unlocked", "ach_total", "release_year", "developer"];
+let sinColumnas012 = false;
+const fechaISO = (f) => { const t = Date.parse(f); return Number.isFinite(t) ? new Date(t).toISOString() : null; };
+const enteroONulo = (n) => (Number.isFinite(Number(n)) && n !== null && n !== "" ? Math.max(0, parseInt(n, 10)) : null);
 
 function gameToCloudRow(game, userId) {
   const cover = typeof game.coverUrl === "string" && game.coverUrl.startsWith("https://") ? game.coverUrl : null;
@@ -48,7 +63,15 @@ function gameToCloudRow(game, userId) {
     completed_year: CLOUD_COMPLETED_STATUSES.includes(game.status) ? (game.completedYear || null) : null,
     favorite: Boolean(game.favorite),
     tags: game.tags || [],
-    notes: String(game.notes || "").slice(0, 2000)
+    notes: String(game.notes || "").slice(0, 2000),
+    steam_appid: enteroONulo(game.steamAppId),
+    xbox_title_id: /^[0-9]{1,12}$/.test(String(game.xboxTitleId || "")) ? String(game.xboxTitleId) : null,
+    first_played: fechaISO(game.firstPlayed),
+    last_played: fechaISO(game.lastPlayed),
+    ach_unlocked: enteroONulo(game.achUnlocked),
+    ach_total: enteroONulo(game.achTotal),
+    release_year: enteroONulo(game.releaseYear),
+    developer: game.developer ? String(game.developer).slice(0, 120) : null
   };
 }
 
@@ -217,11 +240,18 @@ const DB = {
   async upsertGames(games) {
     const user = await currentUser();
     if (!user || !games || games.length === 0) return;
-    const rows = games.map(g => gameToCloudRow(g, user.id));
+    const limpiar = (r) => { if (sinColumnas012) COLUMNAS_012.forEach(c => delete r[c]); return r; };
+    const rows = games.map(g => limpiar(gameToCloudRow(g, user.id)));
     for (let i = 0; i < rows.length; i += 200) {
-      const { error } = await supabaseClient
+      let { error } = await supabaseClient
         .from("games")
         .upsert(rows.slice(i, i + 200), { onConflict: "user_id,id" });
+      if (error && !sinColumnas012 && COLUMNAS_012.some(c => String(error.message).includes(c))) {
+        console.warn("Falta la migración 012: se guardan los juegos sin los datos de Steam/Xbox.");
+        sinColumnas012 = true;
+        rows.forEach(limpiar);
+        ({ error } = await supabaseClient.from("games").upsert(rows.slice(i, i + 200), { onConflict: "user_id,id" }));
+      }
       if (error) throw error;
     }
   },
@@ -634,6 +664,48 @@ const DB = {
   async descartarReportesResena(id) {
     const { error } = await supabaseClient.from("review_reports").delete().eq("review_id", id);
     if (error) throw new Error(error.message);
+  },
+
+  // ==========================================
+  // CUENTAS VINCULADAS Y LOGROS (migración 012)
+  // ==========================================
+  async getCuentas() {
+    const user = await currentUser();
+    if (!user || !supabaseClient) return null;
+    const { data, error } = await supabaseClient.from("platform_links").select("*").eq("user_id", user.id).maybeSingle();
+    if (error) return null;
+    return data || null;
+  },
+
+  async guardarCuentas(cambios) {
+    const user = await currentUser();
+    if (!user || !supabaseClient) return;
+    const fila = { user_id: user.id, updated_at: new Date().toISOString() };
+    for (const [k, v] of Object.entries(cambios || {})) if (v) fila[k] = String(v);
+    const { error } = await supabaseClient.from("platform_links").upsert([fila]);
+    if (error) console.warn("No se guardó la cuenta vinculada (¿falta la migración 012?):", error.message);
+  },
+
+  async getLogros(gameId, userId) {
+    if (!supabaseClient) return null;
+    const uid = userId || (await currentUser())?.id;
+    if (!uid) return null;
+    const { data, error } = await supabaseClient.from("game_achievements").select("source, items, synced_at").eq("user_id", uid).eq("game_id", gameId).maybeSingle();
+    if (error) return null;
+    return data || null;
+  },
+
+  async guardarLogros(gameId, source, items) {
+    const user = await currentUser();
+    if (!user || !supabaseClient) return;
+    const { error } = await supabaseClient.from("game_achievements").upsert([{ user_id: user.id, game_id: gameId, source, items, synced_at: new Date().toISOString() }]);
+    if (error) console.warn("No se guardaron los logros:", error.message);
+  },
+
+  async getUserIdPorNombre(usuario) {
+    if (!supabaseClient) return null;
+    const { data } = await supabaseClient.from("profiles").select("id").eq("username", String(usuario).toLowerCase()).maybeSingle();
+    return data?.id || null;
   },
 
   // ==========================================

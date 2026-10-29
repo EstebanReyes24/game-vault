@@ -14,6 +14,7 @@ export async function titulosXbox(clave, esApp, xuid) {
   return titulos
     .filter(t => !t.type || t.type === "Game")
     .map(t => ({
+      titleId: /^[0-9]{1,12}$/.test(String(t.titleId || "")) ? String(t.titleId) : null,
       titulo: t.name,
       portada: String(t.displayImage || "").replace(/^http:/, "https:"),
       progreso: Number(t.achievement?.progressPercentage) || 0, // totalAchievements a veces llega en 0

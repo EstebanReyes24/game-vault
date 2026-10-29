@@ -63,6 +63,7 @@
         return;
       }
       mostrar(data.juegos, data.gamertag);
+      if (window.Autodatos) window.Autodatos.guardarCuenta({ xbox_gamertag: data.gamertag, xbox_xuid: data.xuid });
     } catch (err) {
       estado.textContent = err.message;
     } finally {
@@ -124,12 +125,17 @@
       completedYear: null,
       favorite: false,
       tags: ["#Xbox"],
-      notes: ""
+      notes: "",
+      xboxTitleId: j.titleId || null,
+      lastPlayed: j.ultimaVez || null,
+      achUnlocked: j.logros || 0,
+      achTotal: j.logrosTotal || null
     }));
     StorageManager.saveGames([...StorageManager.getGames(), ...nuevos]);
     await cloudRun(() => DB.upsertGames(nuevos), "No se pudieron subir los juegos importados a la nube.");
     renderLibrary();
     cerrar();
+    if (window.Autodatos) window.Autodatos.completar(nuevos);
     document.getElementById("xboxClave").value = "";
     showToast(`Se añadieron ${nuevos.length} juegos de Xbox. Ponles estado y nota cuando quieras.`);
   });
