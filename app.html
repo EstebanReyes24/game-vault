@@ -441,7 +441,7 @@
           <i class="fa-brands fa-steam"></i> STEAM SYNC
         </button>
         <button id="openXboxBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-brands fa-xbox"></i> XBOX <span class="text-[9px] opacity-70">BETA</span>
+          <i class="fa-brands fa-xbox"></i> XBOX
         </button>
         <button id="openWrappedBtn" type="button" class="px-3 py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-bolt"></i> WRAPPED
@@ -866,29 +866,32 @@
     </div>
   </div>
 
-  <!-- IMPORTAR DESDE XBOX (beta) -->
+  <!-- IMPORTAR DESDE XBOX -->
   <div id="xboxModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
     <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="xboxTitulo">
       <div class="borradores-cabecera">
         <div>
           <h2 id="xboxTitulo" class="seccion-titulo">Importar desde Xbox</h2>
-          <p>Beta. Microsoft no ofrece una forma directa, así que se usa OpenXBL, un servicio gratuito.</p>
+          <p>Trae tu historial de juegos de Xbox a tu estante.</p>
         </div>
         <button type="button" id="xboxCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
       </div>
-      <details class="steam-ayuda" open>
-        <summary>Cómo conseguir tu clave (una sola vez)</summary>
+      <a href="/api/xbox-login" class="boton boton-senal xbox-entrar" id="xboxEntrar">
+        <i class="fa-brands fa-xbox" aria-hidden="true"></i> Iniciar sesión con Xbox
+      </a>
+      <p class="resena-nota-ayuda">Te llevará a la página de Microsoft para entrar con tu cuenta de Xbox y volverás aquí con tu lista de juegos. Solo leemos tu historial de juegos una vez: no guardamos tu acceso ni tu contraseña.</p>
+      <details class="steam-ayuda">
+        <summary>¿No funciona? Usa tu clave de OpenXBL</summary>
         <ol>
           <li>Entra a <a href="https://xbl.io" target="_blank" rel="noopener noreferrer">xbl.io</a> e inicia sesión con tu cuenta de Xbox.</li>
-          <li>Ve a <b>Profile → API Keys</b> y crea una clave.</li>
-          <li>Cópiala y pégala aquí abajo.</li>
+          <li>Ve a <b>Profile → API Keys</b>, crea una clave, cópiala y pégala aquí.</li>
         </ol>
-        <p>La clave solo se usa para leer tu historial de juegos en este momento. No la guardamos. Xbox no informa horas jugadas: se importan con el porcentaje de logros, y los que tienen el 100% entran como platinados.</p>
+        <div class="flex gap-2 mt-3">
+          <input type="password" id="xboxClave" class="console-input lista-buscar" autocomplete="off" placeholder="Tu clave de OpenXBL">
+          <button type="button" class="boton boton-linea" id="xboxConsultar">Consultar</button>
+        </div>
       </details>
-      <div class="flex gap-2 mt-3">
-        <input type="password" id="xboxClave" class="console-input lista-buscar" autocomplete="off" placeholder="Tu clave de OpenXBL">
-        <button type="button" class="boton boton-senal" id="xboxConsultar">Consultar</button>
-      </div>
+      <p class="resena-nota-ayuda">Xbox no informa horas jugadas: los juegos entran con su porcentaje de logros, y los que tienen el 100% entran como platinados.</p>
       <p class="borrador-estado" role="status" id="xboxEstado"></p>
       <div id="xboxResultado" hidden>
         <div class="flex items-center justify-between mt-3 text-sm text-slate-300">
