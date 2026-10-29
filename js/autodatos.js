@@ -164,14 +164,9 @@
     datosFicha.hidden = !filas.length;
   }
 
-  // Los iconos de Xbox no cargan directo en muchos navegadores: pasan por /api/icono
+  // El servidor de imágenes de Xbox (images-eds) ya no responde: esos logros llevan un trofeo
   function iconoURL(u) {
-    try {
-      const url = new URL(u);
-      if (!/xboxlive\.com$/.test(url.hostname)) return u;
-      if (url.hostname.startsWith("images-eds") && !url.searchParams.has("w")) { url.searchParams.set("w", "96"); url.searchParams.set("h", "96"); url.searchParams.set("format", "png"); }
-      return `/api/icono?u=${encodeURIComponent(url.href)}`;
-    } catch (e) { return u; }
+    try { return /^images-eds/.test(new URL(u).hostname) ? null : u; } catch (e) { return null; }
   }
 
   function pintarLogros(items, origen, sincronizado, puedeActualizar) {
@@ -191,7 +186,7 @@
       <ul class="logros-lista">
         ${orden.slice(0, 300).map(i => `
           <li class="${i.logrado ? "si" : "no"}">
-            ${i.icono ? `<img src="${esc(iconoURL(i.icono))}" alt="" loading="lazy">` : `<span class="logro-sin-icono"><i class="fa-solid fa-trophy" aria-hidden="true"></i></span>`}
+            ${iconoURL(i.icono) ? `<img src="${esc(iconoURL(i.icono))}" alt="" loading="lazy">` : `<span class="logro-sin-icono"><i class="fa-solid fa-trophy" aria-hidden="true"></i></span>`}
             <span class="logro-texto"><b>${esc(i.nombre)}</b><small>${esc(i.desc || "")}</small></span>
             <span class="logro-meta">${i.logrado && i.fecha ? fecha(i.fecha) : (i.logrado ? "Logrado" : "Pendiente")}${i.rareza !== null && i.rareza !== undefined ? `<small>${i.rareza}% lo tiene</small>` : ""}</span>
           </li>`).join("")}
