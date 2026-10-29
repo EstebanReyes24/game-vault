@@ -876,10 +876,16 @@
         </div>
         <button type="button" id="xboxCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
       </div>
-      <a href="/api/xbox-login" class="boton boton-senal xbox-entrar" id="xboxEntrar">
-        <i class="fa-brands fa-xbox" aria-hidden="true"></i> Iniciar sesión con Xbox
-      </a>
-      <p class="resena-nota-ayuda">Te llevará a la página de Microsoft para entrar con tu cuenta de Xbox y volverás aquí con tu lista de juegos. Solo leemos tu historial de juegos una vez: no guardamos tu acceso ni tu contraseña.</p>
+      <label class="borrador-campo">Tu gamertag de Xbox
+        <div class="flex gap-2">
+          <input type="text" id="xboxGamertag" class="console-input lista-buscar" maxlength="20" autocomplete="off" placeholder="Ej.: Paindex">
+          <button type="button" class="boton boton-senal" id="xboxBuscar">Buscar juegos</button>
+        </div>
+      </label>
+      <details class="steam-ayuda" style="margin-top:.75rem">
+        <summary>Si no aparecen tus juegos</summary>
+        <p>Tu historial de juegos tiene que ser público. En tu Xbox o en la app de Xbox: <b>Configuración → Cuenta → Privacidad y seguridad en línea → Privacidad de Xbox → Ver detalles y personalizar → Perfil del juego</b>, y pon <b>"Otros pueden ver tu historial de juegos"</b> en <b>Todos</b>. Puede tardar unos minutos en aplicarse.</p>
+      </details>
       <details class="steam-ayuda">
         <summary>¿No funciona? Usa tu clave de OpenXBL</summary>
         <ol>
