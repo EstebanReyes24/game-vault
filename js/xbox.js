@@ -23,20 +23,27 @@
 
   function mostrar(todos, gamertag) {
     const ya = new Set(StorageManager.getGames().map(g => String(g.title).toLowerCase().trim()));
-    juegos = (todos || []).filter(j => !ya.has(String(j.titulo).toLowerCase().trim()));
+    juegos = (todos || [])
+      .filter(j => !ya.has(String(j.titulo).toLowerCase().trim()))
+      // Los jugados más recientemente arriba
+      .sort((a, b) => (Date.parse(b.ultimaVez) || 0) - (Date.parse(a.ultimaVez) || 0));
     if (!juegos.length) {
       estado.textContent = (todos || []).length ? "Todos tus juegos de Xbox ya están en tu estante." : "Xbox no devolvió juegos para esta cuenta.";
       document.getElementById("xboxResultado").hidden = true;
       return;
     }
     estado.textContent = "";
-    document.getElementById("xboxCuenta").textContent = `${gamertag ? gamertag + " · " : ""}${juegos.length} juegos nuevos para importar`;
+    // Solo se marcan los que tienen algún logro: los demás suelen ser juegos que apenas se abrieron
+    const conLogros = (x) => x.logros > 0 || x.progreso > 0;
+    const marcados = juegos.filter(conLogros).length;
+    document.getElementById("xboxCuenta").textContent = `${gamertag ? gamertag + " · " : ""}${juegos.length} juegos nuevos · ${marcados} marcados (los que tienen logros)`;
     lista.innerHTML = juegos.map((j, i) => `
       <li><label>
-        <input type="checkbox" data-i="${i}" checked>
+        <input type="checkbox" data-i="${i}" ${conLogros(j) ? "checked" : ""}>
         ${/^https:\/\//.test(j.portada || "") ? `<img src="${esc(j.portada)}" alt="" loading="lazy">` : `<span class="lista-sin-tapa"></span>`}
         <span class="lista-juego"><b>${esc(j.titulo)}</b><small>${j.logrosTotal ? `${j.logros}/${j.logrosTotal} logros · ${Math.round(j.progreso)}%` : (j.logros ? `${j.logros} logros · ${Math.round(j.progreso)}%` : "sin logros")}</small></span>
       </label></li>`).join("");
+    document.getElementById("xboxTodos").textContent = marcados === juegos.length ? "Desmarcar todos" : "Marcar todos";
     document.getElementById("xboxResultado").hidden = false;
   }
 
