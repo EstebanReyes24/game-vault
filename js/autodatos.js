@@ -195,20 +195,108 @@
     caja.hidden = false;
   }
 
+  // ---------- estado automático ----------
+  // Solo sube de nivel (nunca baja lo que tú pusiste): Pendiente → Jugando/En pausa → Historia → Platino
+  const NIVEL = { backlog: 0, onhold: 1, playing: 1, completed: 2, extras: 3, platinum: 4 };
+  const DIAS_JUGANDO = 30;
+  const FINAL = /\b(complet|termin|acab|finaliz|super|venc)[a-záéíóú]*\s+(el\s+juego|la\s+(campaña|historia|aventura)|el\s+modo\s+historia|la\s+trama)|\b(finish|complete|beat)(ed)?\s+the\s+(game|campaign|story)|\b(ver|roll)\s+(los\s+|the\s+)?(créditos|credits)/i;
+
+  function subir(g, cambio, estado) {
+    const actual = cambio.status || g.status || "backlog";
+    if ((NIVEL[estado] ?? 0) > (NIVEL[actual] ?? 0)) cambio.status = estado;
+    // de Pendiente o En pausa a Jugando si lo jugaste hace poco
+    if (estado === "playing" && ["backlog", "onhold"].includes(actual)) cambio.status = "playing";
+  }
+
+  // Con lo que ya se sabe del juego, sin pedir nada
+  function estadoBasico(g, cambio = {}) {
+    const desbloqueados = cambio.achUnlocked ?? g.achUnlocked ?? 0;
+    const total = cambio.achTotal ?? g.achTotal ?? 0;
+    const ultima = cambio.lastPlayed || g.lastPlayed;
+    const horas = cambio.hours ?? g.hours ?? 0;
+    if (total && desbloqueados >= total) subir(g, cambio, "platinum");
+    const empezado = desbloqueados > 0 || horas >= 1;
+    if (!empezado) return cambio;
+    const reciente = ultima && Date.now() - Date.parse(ultima) < DIAS_JUGANDO * 86400000;
+    subir(g, cambio, reciente ? "playing" : "onhold");
+    return cambio;
+  }
+
+  // Con la lista de logros: fechas, 100% y si tiene el logro de terminar la historia
   function fechasDesdeLogros(g, items) {
-    const fechas = items.filter(i => i.logrado && i.fecha).map(i => i.fecha).sort();
-    const cambio = { achUnlocked: items.filter(i => i.logrado).length, achTotal: items.length };
+    const logrados = items.filter(i => i.logrado);
+    const fechas = logrados.filter(i => i.fecha).map(i => i.fecha).sort();
+    const cambio = { achUnlocked: logrados.length, achTotal: items.length };
     if (fechas.length) {
       if (!g.firstPlayed || fechas[0] < g.firstPlayed) cambio.firstPlayed = fechas[0];
       const ultima = fechas[fechas.length - 1];
       if (!g.lastPlayed || ultima > g.lastPlayed) cambio.lastPlayed = ultima;
-      // 100% de logros: platinado, y el año de terminado sale del último logro
-      if (items.length && cambio.achUnlocked === items.length) {
-        if (!["platinum"].includes(g.status)) cambio.status = "platinum";
-        if (!g.completedYear) cambio.completedYear = new Date(ultima).getFullYear();
-      }
+    }
+    estadoBasico(g, cambio);
+    const final = logrados.find(i => FINAL.test(`${i.nombre} ${i.desc || ""}`));
+    if (final) subir(g, cambio, "completed");
+    if (items.length && logrados.length === items.length) subir(g, cambio, "platinum");
+    if (NIVEL[cambio.status || g.status] >= 2 && !g.completedYear) {
+      const cuando = (cambio.status || g.status) === "platinum" ? fechas[fechas.length - 1] : final?.fecha;
+      if (cuando) cambio.completedYear = new Date(cuando).getFullYear();
     }
     return cambio;
+  }
+
+  // Revisa en segundo plano los logros de los juegos vinculados para ponerles estado y fechas.
+  // Xbox (OpenXBL gratis) permite pocas consultas por hora: como mucho 40 juegos de Xbox por pasada.
+  const analizados = (() => {
+    try { return JSON.parse(localStorage.getItem("gv_analizados") || "{}"); } catch (e) { return {}; }
+  })();
+  let analizando = false;
+  async function analizar(juegos, avisar) {
+    if (analizando || !cloudUserId) return;
+    const c = cuentas || await cargarCuentas();
+    if (!c) return;
+    const semana = 7 * 86400000;
+    const base = {};
+    (juegos || []).forEach(g => { const cb = estadoBasico(g); if (Object.keys(cb).length) base[g.id] = cb; });
+    aplicar(base);
+    const actuales = StorageManager.getGames();
+    const ids = new Set((juegos || []).map(g => g.id));
+    const pendientes = actuales
+      .filter(g => ids.has(g.id) && !(Date.now() - (analizados[g.id] || 0) < semana))
+      .filter(g => (g.steamAppId && c.steam_id && (g.hours || 0) > 0) || (g.xboxTitleId && c.xbox_xuid && (g.achUnlocked || 0) > 0))
+      .sort((a, b) => String(b.lastPlayed || "").localeCompare(String(a.lastPlayed || "")));
+    let xbox = 0;
+    const lote = pendientes.filter(g => g.steamAppId && c.steam_id ? true : (++xbox <= 40));
+    if (!lote.length) return;
+    analizando = true;
+    let cambios = {}, hechos = 0, cambiados = 0;
+    try {
+      for (const g of lote) {
+        hechos++;
+        if (avisar && (hechos % 10 === 0 || hechos === lote.length)) showToast(`Revisando logros… ${hechos}/${lote.length}`);
+        const fuente = g.steamAppId && c.steam_id ? "steam" : "xbox";
+        const url = fuente === "steam"
+          ? `/api/logros?fuente=steam&steamid=${c.steam_id}&appid=${g.steamAppId}`
+          : `/api/logros?fuente=xbox&xuid=${c.xbox_xuid}&titleId=${g.xboxTitleId}`;
+        try {
+          const r = await fetch(url);
+          if (r.status === 429) { showToast("Xbox pide una pausa: el resto de juegos se revisa en la próxima actualización.", true); break; }
+          if (r.status === 403) { analizados[g.id] = Date.now(); if (fuente === "steam") break; continue; }
+          const data = await r.json();
+          analizados[g.id] = Date.now();
+          const items = data.items || [];
+          if (!r.ok || !items.length) continue;
+          DB.guardarLogros(g.id, fuente, items);
+          const cambio = fechasDesdeLogros(g, items);
+          if (Object.keys(cambio).some(k => g[k] !== cambio[k])) { cambios[g.id] = cambio; cambiados++; }
+        } catch (e) { /* se reintenta en la próxima pasada */ }
+        if (Object.keys(cambios).length >= 15) { aplicar(cambios); cambios = {}; }
+        await pausa(fuente === "xbox" ? 600 : 250);
+      }
+      aplicar(cambios);
+    } finally {
+      analizando = false;
+      try { localStorage.setItem("gv_analizados", JSON.stringify(analizados)); } catch (e) { /* sin almacenamiento */ }
+    }
+    if (avisar || cambiados) showToast(`Logros revisados: ${cambiados} juegos con estado o fechas nuevas.`);
   }
 
   async function traerLogros(g, forzar) {
@@ -237,6 +325,7 @@
       if (!items.length) { caja.innerHTML = `<p class="logros-origen">Este juego no tiene logros.</p>`; return true; }
       pintarLogros(items, fuente, new Date().toISOString(), true);
       DB.guardarLogros(g.id, fuente, items);
+      analizados[g.id] = Date.now();
       const cambio = fechasDesdeLogros(g, items);
       const actualizado = aplicar({ [g.id]: cambio })[0];
       if (actualizado) pintarDatos(actualizado);
@@ -305,10 +394,14 @@
     btnSync.addEventListener("click", async () => {
       btnSync.disabled = true;
       showToast("Actualizando desde Steam y Xbox…");
-      try { await sincronizar(); } finally { btnSync.disabled = false; }
+      try { await sincronizar(); await analizar(StorageManager.getGames(), true); } finally { btnSync.disabled = false; }
     });
   }
 
-  window.Autodatos = { completar: (j) => completar(j, false), guardarCuenta, sincronizar };
+  window.Autodatos = {
+    // tras añadir o importar: datos de RAWG y, si están vinculados, estado y fechas desde sus logros
+    completar: async (j) => { await completar(j, false); await analizar(j, (j || []).length > 3); },
+    guardarCuenta, sincronizar, analizar
+  };
   if (!isSpectatorMode) setTimeout(cargarCuentas, 1500); // tras cargar la sesión
 })();
