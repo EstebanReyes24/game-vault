@@ -1,4 +1,47 @@
 {
-  "actualizado": null,
-  "borradores": []
+  "actualizado": "2026-10-29T10:50:00Z",
+  "borradores": [
+    {
+      "id": "2026-10-29-indie-world-octubre-witchbrook-slime-rancher-2",
+      "fecha": "2026-10-29",
+      "titulo": "Indie World de octubre: Witchbrook, Slime Rancher 2 y R.E.P.O. llegan a Switch",
+      "juego": "Witchbrook",
+      "etiqueta": "#IndieWorld",
+      "imagen": "",
+      "contenido": "Nintendo celebró ayer, 28 de octubre, un Indie World de unos 15 minutos con 23 juegos independientes para Switch y Switch 2. Fue una presentación cargada de fechas concretas, algo que no siempre pasa en estos eventos.\n\nEntre lo más llamativo está Witchbrook, el simulador de vida en una escuela de magia, que sale el 28 de enero en Switch y Switch 2. Slime Rancher 2 aterriza en Switch 2 en enero de 2027, y el terror cooperativo de R.E.P.O. también va para Switch 2 en 2027. City of None, un plataformas retro de un cocreador de Celeste, llegará a ambas consolas ese mismo año. Y si quieres algo para ya, Sword of the Sea sale hoy 29 de octubre en Switch 2, mientras que Bao Bao's Cozy Cleaning Services se lanzó durante la propia presentación.\n\nTambién hubo demos gratuitas disponibles desde ya, como las de Winds of Viridia, Haunted Paws y Raccoin: Chaos Max Edition, y un RPG de combate por líneas temporales, Threads of Time, previsto para el verano de 2027.\n\nLa escena indie sigue siendo uno de los puntos fuertes del catálogo de Switch 2. ¿Cuál de estos se va directo a tu lista?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/heres-all-23-games-shown-during-nintendos-latest-indie-world-presentation/"
+        },
+        {
+          "nombre": "GamerFocus",
+          "url": "https://www.gamerfocus.co/juegos/nintendo-indie-world-juegos-traileres-anuncios-octubre-de-2026/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-29-pokemon-unite-cierre-marzo-2027",
+      "fecha": "2026-10-29",
+      "titulo": "Pokémon UNITE cerrará sus servidores el 23 de marzo de 2027",
+      "juego": "Pokémon UNITE",
+      "etiqueta": "#PokemonUNITE",
+      "imagen": "",
+      "contenido": "The Pokémon Company y TiMi Studio Group anunciaron el fin del servicio de Pokémon UNITE, su MOBA gratuito. El juego dejará de funcionar el 23 de marzo de 2027 tanto en Nintendo Switch como en iOS y Android, después de más de cinco años en línea.\n\nEl cierre ya empezó por etapas: desde el 27 de octubre no se pueden comprar gemas Aeos ni contratar o renovar el UNITE Club, aunque quienes ya tienen la membresía conservan sus beneficios hasta que venza. El 12 de noviembre llega una actualización con un evento especial final, en el que se podrán conseguir objetos como licencias UNITE y Holowear. Además, el 5 de diciembre arrancan las clasificatorias del torneo Aeos Crown 2027 Tokyo.\n\nUn detalle importante: esa misma actualización añade una función de biblioteca que permite consultar algunos registros y contenidos después del cierre, pero solo si se descarga antes del 23 de marzo. Pasada esa fecha, ya no se podrá obtener.\n\nUNITE fue la gran apuesta de Pokémon en el terreno competitivo, con presencia en el Campeonato Mundial. ¿Le diste tiempo o se te pasó?",
+      "fuentes": [
+        {
+          "nombre": "Gematsu",
+          "url": "https://gematsu.com/2026/10/pokemon-unite-to-end-service-on-march-23-2027"
+        },
+        {
+          "nombre": "Game Informer",
+          "url": "https://gameinformer.com/2026/10/27/free-to-play-moba-pokemon-unite-is-shutting-down-in-march"
+        },
+        {
+          "nombre": "Pokémon UNITE (oficial)",
+          "url": "https://unite.pokemon.com/en-us/news/unite-end-of-service/"
+        }
+      ]
+    }
+  ]
 }
