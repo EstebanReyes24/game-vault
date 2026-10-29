@@ -684,3 +684,4 @@ body.light-mode .boton-linea:hover { border-color: #16121a; }
 .video-abrir small { color: var(--niebla); font-size: 0.76rem; line-height: 1.35; }
 @media (max-width: 860px) { .videos-columnas { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 520px) { .videos-columnas { grid-template-columns: 1fr; } }
+.xbox-entrar { margin-top: 0.25rem; justify-content: center; width: 100%; }

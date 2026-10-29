@@ -1,5 +1,6 @@
 /**
- * Importar desde Xbox (beta) con la clave personal de OpenXBL de cada usuario.
+ * Importar desde Xbox por gamertag (clave de OpenXBL de la web) o, como respaldo, con la clave personal
+ * de OpenXBL del usuario. El inicio de sesión con Xbox (/api/xbox-login) queda listo para cuando se configure.
  * Los juegos entran como "Pendiente" sin nota, o "Platinado" si tienen el 100% de logros.
  */
 (function () {
@@ -14,11 +15,55 @@
   btn.addEventListener("click", () => {
     if (isSpectatorMode) { showToast("Entra a tu propio estante para importar.", true); return; }
     modal.classList.remove("hidden");
-    document.getElementById("xboxClave").focus();
+    document.getElementById("xboxGamertag").focus();
   });
   const cerrar = () => modal.classList.add("hidden");
   document.getElementById("xboxCerrar").addEventListener("click", cerrar);
   modal.addEventListener("click", (e) => { if (e.target === modal) cerrar(); });
+
+  function mostrar(todos, gamertag) {
+    const ya = new Set(StorageManager.getGames().map(g => String(g.title).toLowerCase().trim()));
+    juegos = (todos || []).filter(j => !ya.has(String(j.titulo).toLowerCase().trim()));
+    if (!juegos.length) {
+      estado.textContent = (todos || []).length ? "Todos tus juegos de Xbox ya están en tu estante." : "Xbox no devolvió juegos para esta cuenta.";
+      document.getElementById("xboxResultado").hidden = true;
+      return;
+    }
+    estado.textContent = "";
+    document.getElementById("xboxCuenta").textContent = `${gamertag ? gamertag + " · " : ""}${juegos.length} juegos nuevos para importar`;
+    lista.innerHTML = juegos.map((j, i) => `
+      <li><label>
+        <input type="checkbox" data-i="${i}" checked>
+        ${/^https:\/\//.test(j.portada || "") ? `<img src="${esc(j.portada)}" alt="" loading="lazy">` : `<span class="lista-sin-tapa"></span>`}
+        <span class="lista-juego"><b>${esc(j.titulo)}</b><small>${j.logrosTotal ? `${j.logros}/${j.logrosTotal} logros · ${Math.round(j.progreso)}%` : (j.logros ? `${j.logros} logros · ${Math.round(j.progreso)}%` : "sin logros")}</small></span>
+      </label></li>`).join("");
+    document.getElementById("xboxResultado").hidden = false;
+  }
+
+  async function buscarGamertag() {
+    const b = document.getElementById("xboxBuscar");
+    const gt = document.getElementById("xboxGamertag").value.trim();
+    if (!gt) { estado.textContent = "Escribe tu gamertag."; return; }
+    estado.textContent = "Buscando tus juegos de Xbox…";
+    b.disabled = true;
+    try {
+      const r = await fetch(`/api/xbox?gt=${encodeURIComponent(gt)}`);
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
+      if (data.privado) {
+        estado.textContent = `Encontramos a ${data.gamertag}, pero su historial de juegos no es público. Abre "Si no aparecen tus juegos" para ver cómo cambiarlo.`;
+        document.getElementById("xboxResultado").hidden = true;
+        return;
+      }
+      mostrar(data.juegos, data.gamertag);
+    } catch (err) {
+      estado.textContent = err.message;
+    } finally {
+      b.disabled = false;
+    }
+  }
+  document.getElementById("xboxBuscar").addEventListener("click", buscarGamertag);
+  document.getElementById("xboxGamertag").addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); buscarGamertag(); } });
 
   document.getElementById("xboxConsultar").addEventListener("click", async (e) => {
     const b = e.currentTarget;
@@ -29,27 +74,26 @@
       const r = await fetch("/api/xbox", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ clave }) });
       const data = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
-      const ya = new Set(StorageManager.getGames().map(g => String(g.title).toLowerCase().trim()));
-      juegos = (data.juegos || []).filter(j => !ya.has(String(j.titulo).toLowerCase().trim()));
-      if (!juegos.length) {
-        estado.textContent = (data.juegos || []).length ? "Todos tus juegos de Xbox ya están en tu estante." : "OpenXBL no devolvió juegos para esta cuenta.";
-        return;
-      }
-      estado.textContent = "";
-      document.getElementById("xboxCuenta").textContent = `${juegos.length} juegos nuevos para importar`;
-      lista.innerHTML = juegos.map((j, i) => `
-        <li><label>
-          <input type="checkbox" data-i="${i}" checked>
-          ${j.portada ? `<img src="${esc(j.portada)}" alt="" loading="lazy">` : `<span class="lista-sin-tapa"></span>`}
-          <span class="lista-juego"><b>${esc(j.titulo)}</b><small>${j.logrosTotal ? `${j.logros}/${j.logrosTotal} logros · ${Math.round(j.progreso)}%` : "sin logros"}</small></span>
-        </label></li>`).join("");
-      document.getElementById("xboxResultado").hidden = false;
+      mostrar(data.juegos, "");
     } catch (err) {
       estado.textContent = err.message;
     } finally {
       b.disabled = false;
     }
   });
+
+  // Vuelta de "Iniciar sesión con Xbox": los juegos llegan por sessionStorage
+  const params = new URLSearchParams(location.search);
+  if (params.has("xbox") && !isSpectatorMode) {
+    let datos = null;
+    try { datos = JSON.parse(sessionStorage.getItem("xboxImport") || "null"); sessionStorage.removeItem("xboxImport"); } catch (e) { datos = null; }
+    history.replaceState(null, "", location.pathname);
+    modal.classList.remove("hidden");
+    if (params.get("xbox") === "error") estado.textContent = "La conexión con Xbox todavía no está configurada en el servidor.";
+    else if (!datos) estado.textContent = "No llegaron datos de Xbox. Vuelve a intentarlo.";
+    else if (datos.error) estado.textContent = datos.error;
+    else mostrar(datos.juegos, datos.gamertag);
+  }
 
   document.getElementById("xboxTodos").addEventListener("click", (e) => {
     const cajas = [...lista.querySelectorAll("input[type=checkbox]")];
@@ -65,7 +109,7 @@
       id: newGameId(),
       title: j.titulo,
       coverUrl: /^https:\/\//.test(j.portada || "") ? j.portada : "",
-      status: j.progreso >= 100 && j.logrosTotal > 0 ? "platinum" : "backlog",
+      status: j.progreso >= 100 ? "platinum" : "backlog",
       platforms: ["Xbox"],
       rating: null,
       hours: 0,

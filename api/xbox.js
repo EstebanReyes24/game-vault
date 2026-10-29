@@ -1,48 +1,44 @@
 /**
- * Importar desde Xbox (beta) a través de OpenXBL (https://xbl.io).
- * Cada persona usa SU propia clave de OpenXBL: la manda en el cuerpo de la
- * petición, esta función la usa una sola vez para leer su historial de juegos
- * y no la guarda en ningún sitio.
- *   POST /api/xbox   { "clave": "..." }
+ * Importar desde Xbox.
+ *   GET  /api/xbox?gt=MiGamertag   → con la clave de Paindex Vault (OPENXBL_API_KEY).
+ *        Requiere que el historial de juegos del usuario sea público en Xbox.
+ *   POST /api/xbox { "clave": "..." } → con la clave personal de OpenXBL del usuario (respaldo).
  */
-const BASE = "https://xbl.io/api/v2";
+import { titulosXbox, buscarGamertag } from "./_xbox.js";
 
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
+
+  if (req.method === "GET") {
+    const clave = process.env.OPENXBL_API_KEY;
+    if (!clave) return res.status(503).json({ error: "La importación de Xbox todavía no está configurada en el servidor." });
+    const gt = String(req.query.gt || "").trim();
+    if (!/^[A-Za-z0-9 #]{1,20}$/.test(gt)) return res.status(400).json({ error: "Escribe tu gamertag de Xbox tal como aparece en tu perfil." });
+    try {
+      const perfil = await buscarGamertag(clave, gt);
+      if (!perfil || !perfil.xuid) return res.status(404).json({ error: "No encontramos ese gamertag en Xbox." });
+      const juegos = await titulosXbox(clave, false, perfil.xuid);
+      // Mismo gamertag en los próximos 10 minutos: se sirve desde el CDN (ahorra cuota de OpenXBL)
+      res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=1800");
+      if (!juegos.length) return res.status(200).json({ gamertag: perfil.gamertag, juegos: [], privado: true });
+      return res.status(200).json({ gamertag: perfil.gamertag, juegos });
+    } catch (e) {
+      res.setHeader("Cache-Control", "no-store");
+      return res.status(e.status || 502).json({ error: e.status === 401 ? "No se pudo leer el historial: puede que sea privado." : e.message });
+    }
+  }
+
   res.setHeader("Cache-Control", "private, no-store");
   if (req.method !== "POST") return res.status(405).json({ error: "Método no permitido" });
-
   let cuerpo = req.body;
   if (typeof cuerpo === "string") { try { cuerpo = JSON.parse(cuerpo); } catch (e) { cuerpo = {}; } }
   const clave = String(cuerpo?.clave || "").trim();
   if (!/^[A-Za-z0-9-]{20,80}$/.test(clave)) {
-    return res.status(400).json({ error: "Pega tu clave de OpenXBL (la encuentras en xbl.io → Profile → API Keys)." });
+    return res.status(400).json({ error: "Pega tu clave de OpenXBL (la encuentras en xbl.io → API Keys)." });
   }
-
   try {
-    const r = await fetch(`${BASE}/titles`, {
-      headers: { "X-Authorization": clave, Accept: "application/json", "Accept-Language": "es-ES" }
-    });
-    if (r.status === 401 || r.status === 403) return res.status(401).json({ error: "OpenXBL rechazó la clave. Revisa que la copiaste completa." });
-    if (r.status === 429) return res.status(429).json({ error: "OpenXBL tiene un límite de consultas por hora. Prueba más tarde." });
-    if (!r.ok) return res.status(502).json({ error: `OpenXBL respondió ${r.status}.` });
-    const data = await r.json();
-    // OpenXBL a veces envuelve la respuesta en "content"
-    const titulos = (data?.titles || data?.content?.titles || []);
-    const juegos = titulos
-      .filter(t => !t.type || t.type === "Game")
-      .map(t => ({
-        titulo: t.name,
-        portada: /^https:\/\//.test(t.displayImage || "") ? t.displayImage : (t.displayImage || "").replace(/^http:/, "https:"),
-        progreso: Number(t.achievement?.progressPercentage) || 0,
-        logros: Number(t.achievement?.currentAchievements) || 0,
-        logrosTotal: Number(t.achievement?.totalAchievements) || 0,
-        ultimaVez: t.titleHistory?.lastTimePlayed || null,
-        dispositivos: t.devices || []
-      }))
-      .filter(t => t.titulo);
-    return res.status(200).json({ juegos });
+    return res.status(200).json({ juegos: await titulosXbox(clave, false) });
   } catch (e) {
-    return res.status(502).json({ error: "No se pudo conectar con OpenXBL." });
+    return res.status(e.status || 502).json({ error: e.status === 401 ? "OpenXBL rechazó la clave. Revisa que la copiaste completa." : e.message });
   }
 }
