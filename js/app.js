@@ -927,21 +927,25 @@ function setupNowPlayingCarousel(playingGames) {
   }
 }
 
-/** Primer paso para un estante vacío: importar de Steam o añadir a mano. */
+/** Primer paso para un estante vacío: importar de Steam o Xbox, o añadir a mano. */
 function bienvenidaHTML() {
   const invitado = !cloudUserId;
   return `
     <section class="bienvenida">
       <h2>Arma tu estante en un minuto.</h2>
-      <p class="bienvenida-bajada">Trae tu biblioteca de Steam de una vez o empieza con el juego que tienes entre manos. Después le pones nota y estado a cada uno.</p>
+      <p class="bienvenida-bajada">Trae tu biblioteca de Steam o Xbox de una vez, o empieza con el juego que tienes entre manos. Etiquetas, fechas y logros se llenan solos; tú solo le pones nota y estado.</p>
       <div class="bienvenida-opciones">
         <button type="button" class="bienvenida-opcion principal" data-bienvenida="steam">
           <i class="fa-brands fa-steam" aria-hidden="true"></i>
-          <span><b>Importar desde Steam</b><small>Tus juegos con más de 30 minutos, con horas y portada.</small></span>
+          <span><b>Importar desde Steam</b><small>Tus juegos con más de 30 minutos, con horas, logros y portada.</small></span>
+        </button>
+        <button type="button" class="bienvenida-opcion" data-bienvenida="xbox">
+          <i class="fa-brands fa-xbox" aria-hidden="true"></i>
+          <span><b>Importar desde Xbox</b><small>Solo con tu gamertag: tus juegos con su progreso de logros.</small></span>
         </button>
         <button type="button" class="bienvenida-opcion" data-bienvenida="manual">
           <i class="fa-solid fa-plus" aria-hidden="true"></i>
-          <span><b>Añadir un juego</b><small>Lo buscas por nombre y la portada sale sola.</small></span>
+          <span><b>Añadir un juego</b><small>Lo buscas por nombre; portada y etiquetas salen solas.</small></span>
         </button>
       </div>
       ${invitado ? `<p class="bienvenida-nota">Estás como invitado: lo que añadas se guarda solo en este navegador. <a href="login.html">Crea una cuenta</a> para tenerlo en cualquier dispositivo y poder compartirlo.</p>` : ""}
@@ -2095,6 +2099,7 @@ if (gamesGrid) {
     if (!opcion) return;
     const accion = opcion.dataset.bienvenida;
     if (accion === "steam") document.getElementById("openSteamSyncBtn")?.click();
+    if (accion === "xbox") document.getElementById("openXboxBtn")?.click();
     if (accion === "manual") document.getElementById("toggleFormBtn")?.click();
     if (accion === "demo") document.getElementById("loadDemoBtn")?.click();
   });
