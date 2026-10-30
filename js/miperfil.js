@@ -1,5 +1,5 @@
 /**
- * "Mi perfil": se abre al tocar tu usuario arriba (o con app.html?perfil=1).
+ * "Mi perfil": se abre al tocar tu usuario arriba (o con /estante?perfil=1).
  * Foto, descripción, estante público/privado, enlace a tu perfil, cuentas vinculadas,
  * cerrar sesión y eliminar la cuenta, todo en un mismo sitio.
  */
@@ -37,7 +37,7 @@
 
   async function abrir() {
     perfil = await DB.getMyProfile();
-    if (!perfil) { location.href = "login.html"; return; }
+    if (!perfil) { location.href = "/login"; return; }
     const { data: { session } } = await supabaseClient.auth.getSession();
     correo = session?.user?.email || "";
     $("miPerfilUsuario").textContent = `@${perfil.username}`;

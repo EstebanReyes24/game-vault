@@ -244,7 +244,7 @@
     <!-- NAVBAR SUPERIOR CONSOLA -->
     <header class="glass-panel p-3.5 sm:p-4 rounded-3xl flex items-center justify-between gap-2 shadow-xl">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="marca" aria-label="Paindex Vault, inicio">
+        <a href="/" class="marca" aria-label="Paindex Vault, inicio">
           <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
           <span class="marca-texto hidden sm:inline">PAINDEX<small>Vault</small></span>
         </a>
@@ -262,7 +262,7 @@
           <span class="hidden sm:inline">Compartir</span>
         </button>
 
-        <a id="appAuthBtn" href="login.html" aria-label="Mi cuenta" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-bold border border-white/10 transition flex items-center gap-2 cursor-pointer">
+        <a id="appAuthBtn" href="/login" aria-label="Mi cuenta" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-bold border border-white/10 transition flex items-center gap-2 cursor-pointer">
           <i id="appUserIcon" class="fa-solid fa-user text-indigo-400 text-xs"></i>
           <span id="appUserLabel" class="hidden sm:inline max-w-[100px] truncate">Invitado</span>
         </a>
@@ -295,7 +295,7 @@
           <button type="button" id="perfilSeguirBtn" class="boton boton-senal" hidden>Seguir</button>
           <a href="/" id="perfilCompararBtn" class="boton boton-linea" hidden><i class="fa-solid fa-code-compare" aria-hidden="true"></i> Comparar conmigo</a>
           <button type="button" id="perfilCopiarBtn" class="boton boton-linea"><i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace</button>
-          <a href="/app.html" id="perfilCtaBtn" class="boton boton-senal">Crea tu estante</a>
+          <a href="/estante" id="perfilCtaBtn" class="boton boton-senal">Crea tu estante</a>
         </div>
       </div>
       <dl class="perfil-cifras" id="perfilCifras" hidden>
@@ -518,7 +518,7 @@
           <i class="fa-solid fa-lock"></i> Estante privado
         </button>
         <div class="flex items-center gap-4">
-          <a href="legal.html" class="hover:text-indigo-400 transition">Privacidad</a>
+          <a href="/legal" class="hover:text-indigo-400 transition">Privacidad</a>
           <span>•</span>
           <button id="deleteAccountBtn" type="button" class="hover:text-rose-400 transition cursor-pointer">Eliminar mi cuenta</button>
         </div>

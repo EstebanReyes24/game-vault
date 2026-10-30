@@ -17,7 +17,7 @@ function pagina(res, datos) {
 <p>Conectando con Xbox…</p>
 <script>
 try { sessionStorage.setItem("xboxImport", JSON.stringify(${json})); } catch (e) {}
-location.replace("/app.html?xbox=1");
+location.replace("/estante?xbox=1");
 </script></body>`);
 }
 

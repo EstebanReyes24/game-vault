@@ -3,6 +3,10 @@
   "outputDirectory": ".",
   "rewrites": [
     {
+      "source": "/estante",
+      "destination": "/app.html"
+    },
+    {
       "source": "/u/:a/vs/:b",
       "destination": "/api/pagina?tipo=comparar&a=:a&b=:b"
     },
@@ -67,6 +71,15 @@
           "value": "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://en.wikipedia.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: blob: https:; connect-src 'self' https://epouactrnuhdbzzvzxor.supabase.co wss://epouactrnuhdbzzvzxor.supabase.co; frame-src https://www.youtube-nocookie.com; media-src 'self' https:; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
         }
       ]
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/app",
+      "destination": "/estante",
+      "permanent": true
     }
   ]
 }

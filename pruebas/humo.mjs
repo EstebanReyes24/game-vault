@@ -10,11 +10,11 @@ const PAGINAS = [
   { ruta: "/", espera: ".portada" },
   { ruta: "/noticias", espera: "#archivo" },
   { ruta: "/articulos", espera: "#archivo" },
-  { ruta: "/app.html", espera: "#gamesGrid, .bienvenida" },
+  { ruta: "/estante", espera: "#gamesGrid, .bienvenida" },
   { ruta: "/comparar", espera: "#comparar" },
   { ruta: "/j/elden-ring", espera: "#juego" },
-  { ruta: "/legal.html", espera: "main, h1" },
-  { ruta: "/login.html", espera: "form" }
+  { ruta: "/legal", espera: "main, h1" },
+  { ruta: "/login", espera: "form" }
 ];
 const PANTALLAS = [
   { nombre: "celular", width: 390, height: 844, isMobile: true },

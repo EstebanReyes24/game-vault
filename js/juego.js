@@ -70,7 +70,7 @@
           <h1>${esc(d.titulo)}</h1>
           ${(d.etiquetas || []).length ? `<p class="juego-meta">${d.etiquetas.map(t => `#${esc(t)}`).join(" ")}</p>` : ""}
           <div class="juego-acciones">
-            <a class="boton boton-senal" href="app.html?anadir=${encodeURIComponent(d.titulo)}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Añadir a mi estante</a>
+            <a class="boton boton-senal" href="/estante?anadir=${encodeURIComponent(d.titulo)}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Añadir a mi estante</a>
             <button type="button" class="boton boton-linea" id="jCompartir"><i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace</button>
           </div>
         </div>

@@ -59,7 +59,7 @@
       const b = document.getElementById("psnBuscar");
       const id = document.getElementById("psnId").value.trim();
       if (!id) { estado.textContent = "Escribe tu ID en línea."; return; }
-      if (!cloudUserId) { estado.innerHTML = 'Para importar desde PlayStation necesitas una cuenta. <a href="login.html" class="underline">Inicia sesión o regístrate</a>: es gratis y así tu estante se guarda en la nube.'; return; }
+      if (!cloudUserId) { estado.innerHTML = 'Para importar desde PlayStation necesitas una cuenta. <a href="/login" class="underline">Inicia sesión o regístrate</a>: es gratis y así tu estante se guarda en la nube.'; return; }
       estado.textContent = "Buscando tus juegos de PlayStation…";
       b.disabled = true;
       try {
