@@ -59,10 +59,11 @@
       const b = document.getElementById("psnBuscar");
       const id = document.getElementById("psnId").value.trim();
       if (!id) { estado.textContent = "Escribe tu ID en línea."; return; }
+      if (!cloudUserId) { estado.innerHTML = 'Para importar desde PlayStation necesitas una cuenta. <a href="login.html" class="underline">Inicia sesión o regístrate</a>: es gratis y así tu estante se guarda en la nube.'; return; }
       estado.textContent = "Buscando tus juegos de PlayStation…";
       b.disabled = true;
       try {
-        const r = await fetch(`/api/psn?id=${encodeURIComponent(id)}`);
+        const r = await fetchConSesion(`/api/psn?id=${encodeURIComponent(id)}`);
         const data = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
         if (data.privado) {

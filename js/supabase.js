@@ -836,3 +836,12 @@ DB.getPublicFeed = DB.getPublicPosts;
 
 window.DB = DB;
 window.supabaseClient = supabaseClient;
+
+/** fetch a la API de la web con la sesión de Supabase (Xbox y PlayStation la exigen). */
+window.fetchConSesion = async function (url, opciones = {}) {
+  let token = null;
+  try { token = (await supabaseClient?.auth.getSession())?.data?.session?.access_token || null; } catch (e) { token = null; }
+  const headers = { ...(opciones.headers || {}) };
+  if (token) headers.Authorization = `Bearer ${token}`;
+  return fetch(url, { ...opciones, headers });
+};
