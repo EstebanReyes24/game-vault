@@ -1,6 +1,48 @@
 {
-  "actualizado": "2026-10-29T10:50:00Z",
+  "actualizado": "2026-10-30T10:46:36Z",
   "borradores": [
+    {
+      "id": "2026-10-30-the-duskbloods-retraso-2027",
+      "fecha": "2026-10-30",
+      "titulo": "The Duskbloods se retrasa a 2027: FromSoftware pide más tiempo para ajustar el balance",
+      "juego": "The Duskbloods",
+      "etiqueta": "#TheDuskbloods",
+      "imagen": "",
+      "contenido": "FromSoftware confirmó este 29 de octubre que The Duskbloods, su juego multijugador exclusivo de Nintendo Switch 2, ya no saldrá en 2026. El anuncio llegó a través de la cuenta oficial del juego en X y mueve el lanzamiento a 2027, todavía sin una fecha concreta.\n\nSegún el estudio, el proyecto está en su etapa final de desarrollo, pero quieren usar ese tiempo extra para pulir las reglas de juego y el balance. La decisión viene después de las pruebas de red, donde, de acuerdo con FromSoftware, los jugadores mostraron mucho interés en el combate, la profundidad estratégica y la libertad para expresarse con su estilo. El equipo también pidió disculpas a quienes llevan esperando el juego desde que se presentó junto a la Switch 2.\n\nEl retraso no sorprende del todo: Nintendo y el estudio llevaban meses sin dar una fecha, y la primera prueba de agosto tuvo bastantes problemas de conexión. Aun así, en un juego PvPvE donde todo depende de que las partidas se sientan justas, tiene sentido no salir a medias.\n\n¿Prefieren esperar unos meses más a cambio de un lanzamiento más sólido?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/fromsoftwares-switch-2-exclusive-the-duskbloods-has-been-delayed-to-2027/"
+        },
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/10/the-duskbloods-switch-2-release-has-been-delayed-to-2027"
+        },
+        {
+          "nombre": "Nintendo Wire",
+          "url": "https://nintendowire.com/news/2026/10/29/fromsoftware-delays-the-duskbloods-into-2027-to-allow-time-for-final-adjustments/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-konami-resultados-record-primer-semestre",
+      "fecha": "2026-10-30",
+      "titulo": "Konami firma un primer semestre récord y sube su previsión para todo el año",
+      "juego": "Silent Hill: Townfall",
+      "etiqueta": "#Konami",
+      "imagen": "",
+      "contenido": "Konami publicó el 29 de octubre sus resultados de abril a septiembre de 2026, y los números vuelven a ser de récord. La compañía ingresó unos 308.000 millones de yenes, un 37 % más que el año anterior, y su beneficio operativo subió un 73 %, hasta unos 111.300 millones.\n\nLa división de entretenimiento digital, que incluye los videojuegos y las cartas de Yu-Gi-Oh!, es la que tira del carro: facturó unos 243.500 millones de yenes (un 44 % más) con un margen operativo del 44 %. Konami destaca el buen momento de eFootball gracias a sus campañas de aniversario, y en el periodo lanzó Metal Gear Solid: Master Collection Vol. 2 y Silent Hill: Townfall.\n\nCon estos resultados, la empresa elevó su previsión para el año fiscal que termina en marzo de 2027: ahora espera ingresar 583.000 millones de yenes, frente a los 505.000 millones que había anunciado al principio. En su calendario siguen Castlevania: Belmont's Curse, Yu-Gi-Oh! Tag Force GX en febrero y proyectos nuevos como Rev. NOiR y Rhapsody in Scarlet.\n\nHace pocos años muchos daban por perdida a la Konami de los videojuegos; hoy es de las editoras japonesas con mejor racha.",
+      "fuentes": [
+        {
+          "nombre": "Konami (resultados oficiales)",
+          "url": "https://img.konami.com/ir/en/ir-data/meeting/2026/en1029_w265z8.pdf"
+        },
+        {
+          "nombre": "Simulation Daily",
+          "url": "https://simulationdaily.com/news/konami-financial-results-q2-fy2027/"
+        }
+      ]
+    },
     {
       "id": "2026-10-29-indie-world-octubre-witchbrook-slime-rancher-2",
       "fecha": "2026-10-29",
