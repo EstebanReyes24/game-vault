@@ -911,3 +911,29 @@ body.light-mode .noticia-principal h3, body.light-mode .noticias-titulares stron
 .avatar-mini img { width: 100%; height: 100%; object-fit: cover; }
 .comparar-foto { width: clamp(2.5rem, 6vw, 3.5rem); height: clamp(2.5rem, 6vw, 3.5rem); border-radius: 50%; object-fit: cover; display: block; margin-bottom: 0.4rem; border: 2px solid var(--border-light); }
 .comparar-quien.derecha .comparar-foto { margin-left: auto; }
+
+/* ---------- mi perfil ---------- */
+.mi-perfil { display: grid; gap: 1.1rem; }
+.mi-perfil-cabecera { display: flex; align-items: center; gap: 1.1rem; }
+.mi-perfil-foto { width: 5.5rem; height: 5.5rem; border-radius: 1.25rem; overflow: hidden; flex-shrink: 0; display: grid; place-items: center; background: var(--senal); color: #fff; font-size: 2rem; }
+.mi-perfil-foto img { width: 100%; height: 100%; object-fit: cover; }
+.mi-perfil-nombre { display: grid; gap: 0.2rem; min-width: 0; }
+.mi-perfil-nombre b { font-family: var(--display); font-weight: 900; font-size: 1.8rem; line-height: 1; color: var(--hueso); overflow: hidden; text-overflow: ellipsis; }
+.mi-perfil-nombre small { color: var(--niebla); font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; }
+.mi-perfil-botones { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin-top: 0.4rem; }
+.mi-perfil-subir { cursor: pointer; padding: 0.45rem 0.8rem; font-size: 0.85rem; }
+.mi-perfil-contador { float: right; color: var(--niebla); font-weight: 400; }
+.mi-perfil-seccion { display: grid; gap: 0.6rem; padding-top: 1rem; border-top: 1px solid var(--border-light); }
+.mi-perfil-seccion h3 { margin: 0; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--niebla); }
+.mi-perfil-fila { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.mi-perfil-cuentas { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
+.mi-perfil-cuentas li { display: flex; align-items: center; gap: 0.75rem; padding: 0.45rem 0; }
+.mi-perfil-cuentas i { width: 1.4rem; text-align: center; font-size: 1.15rem; color: var(--hueso); }
+.mi-perfil-cuentas span { flex: 1; min-width: 0; display: grid; }
+.mi-perfil-cuentas b { font-size: 0.9rem; color: var(--hueso); }
+.mi-perfil-cuentas small { font-size: 0.78rem; color: var(--niebla); overflow: hidden; text-overflow: ellipsis; }
+.mi-perfil-peligro { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; }
+.mi-perfil-peligro #deleteAccountBtn { color: var(--niebla); font-size: 0.85rem; }
+.mi-perfil-peligro #deleteAccountBtn:hover { color: var(--senal); }
+.perfil-bio { color: var(--hueso) !important; }
+.mi-perfil textarea { box-sizing: border-box; width: 100%; resize: vertical; }

@@ -960,6 +960,55 @@
     </div>
   </div>
 
+  <!-- MI PERFIL -->
+  <div id="perfilModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel mi-perfil" role="dialog" aria-modal="true" aria-labelledby="miPerfilTitulo">
+      <div class="borradores-cabecera">
+        <h2 id="miPerfilTitulo" class="seccion-titulo">Mi perfil</h2>
+        <button type="button" id="miPerfilCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+
+      <div class="mi-perfil-cabecera">
+        <div class="mi-perfil-foto" id="miPerfilFoto" aria-hidden="true"><i class="fa-solid fa-user"></i></div>
+        <div class="mi-perfil-nombre">
+          <b id="miPerfilUsuario">@usuario</b>
+          <small id="miPerfilCorreo"></small>
+          <div class="mi-perfil-botones">
+            <label class="boton boton-linea mi-perfil-subir">
+              <i class="fa-solid fa-camera" aria-hidden="true"></i> <span id="miPerfilFotoTexto">Poner foto</span>
+              <input type="file" id="miPerfilArchivo" accept="image/png,image/jpeg,image/webp" hidden>
+            </label>
+            <button type="button" class="resena-mas" id="miPerfilQuitarFoto" hidden>Quitar foto</button>
+          </div>
+        </div>
+      </div>
+
+      <label class="borrador-campo">Sobre ti <small class="mi-perfil-contador" id="miPerfilBioCuenta">0/160</small>
+        <textarea id="miPerfilBio" class="console-input lista-buscar" rows="2" maxlength="160" placeholder="Ej.: Cazador de platinos. Soulslike y RPG por encima de todo."></textarea>
+      </label>
+      <div class="borrador-acciones"><button type="button" class="boton boton-senal" id="miPerfilGuardarBio">Guardar</button></div>
+
+      <div class="mi-perfil-seccion">
+        <h3>Tu estante</h3>
+        <div class="mi-perfil-fila" id="miPerfilVisibilidad"></div>
+        <div class="mi-perfil-fila">
+          <a class="boton boton-linea" id="miPerfilVer" href="/"><i class="fa-solid fa-eye" aria-hidden="true"></i> Ver mi perfil público</a>
+          <button type="button" class="boton boton-linea" id="miPerfilCopiar"><i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace</button>
+        </div>
+      </div>
+
+      <div class="mi-perfil-seccion">
+        <h3>Cuentas vinculadas</h3>
+        <ul class="mi-perfil-cuentas" id="miPerfilCuentas"></ul>
+      </div>
+
+      <div class="mi-perfil-seccion mi-perfil-peligro">
+        <button type="button" class="boton boton-linea" id="miPerfilSalir"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Cerrar sesión</button>
+        <div id="miPerfilBorrar"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- ¿QUÉ JUEGO HAGO AHORA? -->
   <div id="queJuegoModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
     <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="queJuegoTitulo">
@@ -1076,5 +1125,6 @@
   <script src="js/avisos.js"></script>
   <script src="js/medallas.js"></script>
   <script src="js/avatar.js"></script>
+  <script src="js/miperfil.js"></script>
 </body>
 </html>

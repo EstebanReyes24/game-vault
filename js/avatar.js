@@ -1,6 +1,6 @@
 /**
  * Foto de perfil (migración 015).
- * - En tu estante: "Foto de perfil" recorta la imagen al centro, la deja en 256×256 WebP
+ * - Desde "Mi perfil": la foto se recorta la imagen al centro, la deja en 256×256 WebP
  *   (así pesa poco y se pierden los datos ocultos de la foto, como la ubicación) y la sube.
  * - En la cabecera sale tu foto; en un perfil público, la de esa persona.
  * - El admin puede quitar una foto inapropiada desde el perfil.
@@ -24,7 +24,6 @@
       el.classList.remove("con-foto");
     }
   }
-  window.Avatar = { ponerFoto };
 
   // Recorta al centro y reduce a 256×256 WebP
   async function preparar(archivo) {
@@ -62,58 +61,20 @@
     return p;
   }
 
-  // ---------- en mi estante: subir o quitar ----------
-  const controles = document.getElementById("accountControls");
-  if (controles && typeof isSpectatorMode !== "undefined" && !isSpectatorMode) {
-    const caja = document.createElement("div");
-    caja.className = "avatar-controles";
-    caja.innerHTML = `
-      <span class="avatar-mini" id="avatarMini" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
-      <label class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 border border-white/10 transition cursor-pointer flex items-center gap-1.5">
-        <i class="fa-solid fa-camera" aria-hidden="true"></i> <span id="avatarTexto">Poner foto de perfil</span>
-        <input type="file" id="avatarArchivo" accept="image/png,image/jpeg,image/webp" hidden>
-      </label>
-      <button type="button" id="avatarQuitar" class="hover:text-rose-400 transition cursor-pointer" hidden>Quitar foto</button>`;
-    controles.prepend(caja);
-    const mini = caja.querySelector("#avatarMini");
-    const quitar = caja.querySelector("#avatarQuitar");
-    const texto = caja.querySelector("#avatarTexto");
-    const mostrar = (url) => {
-      if (url) { mini.innerHTML = `<img src="${url}" alt="">`; } else { mini.innerHTML = '<i class="fa-solid fa-user"></i>'; }
-      quitar.hidden = !url;
-      texto.textContent = url ? "Cambiar foto" : "Poner foto de perfil";
-      fotoEnCabecera(url);
-    };
-    caja.querySelector("#avatarArchivo").addEventListener("change", async (e) => {
-      const archivo = e.target.files?.[0];
-      e.target.value = "";
-      if (!archivo) return;
-      texto.textContent = "Subiendo…";
-      try {
-        const url = await DB.subirAvatar(await preparar(archivo));
-        mostrar(url);
-        showToast("Foto de perfil actualizada.");
-      } catch (err) {
-        texto.textContent = "Poner foto de perfil";
-        showToast(err.message || "No se pudo subir la foto.", true);
-      }
-    });
-    quitar.addEventListener("click", async () => {
-      if (!confirm("¿Quitar tu foto de perfil?")) return;
-      try { await DB.quitarMiAvatar(); mostrar(null); showToast("Foto quitada."); }
-      catch (err) { showToast(err.message, true); }
-    });
-    cargarMia().then(p => mostrar(p?.avatar_url || null));
-    supabaseClient.auth.onAuthStateChange(() => setTimeout(() => cargarMia().then(p => mostrar(p?.avatar_url || null)), 0));
-  } else {
-    cargarMia();
-  }
+  // Subir y quitar se hace desde "Mi perfil" (js/miperfil.js)
+  window.Avatar = { ponerFoto, preparar, fotoEnCabecera, cargarMia };
+  cargarMia();
+  supabaseClient.auth.onAuthStateChange(() => setTimeout(cargarMia, 0));
 
   // ---------- perfil público: su foto (y el admin puede quitarla) ----------
   if (typeof isSpectatorMode !== "undefined" && isSpectatorMode && typeof publicProfileTarget !== "undefined") {
     const nombre = String(publicProfileTarget).toLowerCase();
-    DB.getAvatar(nombre).then(async url => {
+    DB.getPerfilPublico(nombre).then(async perfil => {
+      const url = perfil?.avatar_url || null;
       ponerFoto(document.getElementById("perfilAvatar"), url, nombre);
+      // Su descripción, en lugar del texto genérico
+      const sub = document.querySelector("#spectatorBanner .perfil-nombre > p:not(.perfil-social)");
+      if (sub && perfil?.bio) { sub.textContent = perfil.bio; sub.classList.add("perfil-bio"); }
       if (!url || !(await DB.isAdmin().catch(() => false))) return;
       const acciones = document.querySelector("#spectatorBanner .perfil-acciones");
       if (!acciones) return;
