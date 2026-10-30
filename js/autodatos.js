@@ -250,13 +250,14 @@
   })();
   let analizando = false;
   async function analizar(juegos, avisar) {
+    // Primero, al instante: estado según horas, logros y última vez jugado (también para invitados)
+    const base = {};
+    (juegos || []).forEach(g => { const cb = estadoBasico(g); if (Object.keys(cb).length) base[g.id] = cb; });
+    aplicar(base);
     if (analizando || !cloudUserId) return;
     const c = cuentas || await cargarCuentas();
     if (!c) return;
     const semana = 7 * 86400000;
-    const base = {};
-    (juegos || []).forEach(g => { const cb = estadoBasico(g); if (Object.keys(cb).length) base[g.id] = cb; });
-    aplicar(base);
     const actuales = StorageManager.getGames();
     const ids = new Set((juegos || []).map(g => g.id));
     const pendientes = actuales
@@ -279,7 +280,11 @@
         try {
           const r = await fetch(url);
           if (r.status === 429) { showToast("Xbox pide una pausa: el resto de juegos se revisa en la próxima actualización.", true); break; }
-          if (r.status === 403) { analizados[g.id] = Date.now(); if (fuente === "steam") break; continue; }
+          if (r.status === 403) {
+            analizados[g.id] = Date.now();
+            if (fuente === "steam") { showToast("Steam no deja ver tus logros: en Steam pon «Detalles del juego» como Público en la privacidad de tu perfil.", true); break; }
+            continue;
+          }
           const data = await r.json();
           analizados[g.id] = Date.now();
           const items = data.items || [];
@@ -400,7 +405,8 @@
 
   window.Autodatos = {
     // tras añadir o importar: datos de RAWG y, si están vinculados, estado y fechas desde sus logros
-    completar: async (j) => { await completar(j, false); await analizar(j, (j || []).length > 3); },
+    // las dos cosas a la vez: el estado sale al momento y los logros no esperan a RAWG
+    completar: (j) => Promise.all([completar(j, false), analizar(j, (j || []).length > 3)]),
     guardarCuenta, sincronizar, analizar
   };
   if (!isSpectatorMode) setTimeout(cargarCuentas, 1500); // tras cargar la sesión

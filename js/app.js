@@ -1752,8 +1752,8 @@ if (confirmImportSteamBtn) {
     const existingTitles = new Set(currentGames.map(g => String(g.title).toLowerCase().trim()));
     const toImport = [];
 
-    // Steam no dice si terminaste un juego ni qué nota le das: se importan
-    // como "Pendiente" y sin calificar, para que no distorsionen tus estadísticas.
+    // Entran sin nota; el estado (Jugando, En pausa, Historia, Platino) lo pone Autodatos
+    // con las horas, la última vez jugado y los logros de cada juego.
     checkboxes.forEach(cb => {
       const idx = parseInt(cb.dataset.index, 10);
       const g = window.fetchedSteamGames[idx];
@@ -1790,8 +1790,8 @@ if (confirmImportSteamBtn) {
     renderLibrary();
     SoundFX.playTrophy();
     steamModal.classList.add("hidden");
+    showToast(`Se importaron ${toImport.length} juegos de Steam. Ahora reviso sus logros para ponerles estado y fechas.`);
     if (window.Autodatos) window.Autodatos.completar(toImport);
-    alert(`¡Se importaron ${toImport.length} títulos desde Steam!\n\nQuedaron como "Pendiente" y sin nota: edítalos para marcar los que ya terminaste.`);
   });
 }
 

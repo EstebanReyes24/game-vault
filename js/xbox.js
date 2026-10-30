@@ -1,7 +1,7 @@
 /**
  * Importar desde Xbox por gamertag (clave de OpenXBL de la web) o, como respaldo, con la clave personal
  * de OpenXBL del usuario. El inicio de sesión con Xbox (/api/xbox-login) queda listo para cuando se configure.
- * Los juegos entran como "Pendiente" sin nota, o "Platinado" si tienen el 100% de logros.
+ * Los juegos entran sin nota; el estado lo pone Autodatos con sus logros y la última vez jugado.
  */
 (function () {
   const modal = document.getElementById("xboxModal");
