@@ -2197,7 +2197,8 @@ if (gamesGrid) {
 function pintarPerfil(games) {
   const nombre = String(publicProfileTarget || "").trim();
   const avatar = document.getElementById("perfilAvatar");
-  if (avatar) avatar.textContent = nombre.charAt(0).toUpperCase() || "?";
+  // Si la foto ya llegó (js/avatar.js), no se pisa con la letra
+  if (avatar && !avatar.classList.contains("con-foto")) avatar.textContent = nombre.charAt(0).toUpperCase() || "?";
 
   const copiar = document.getElementById("perfilCopiarBtn");
   if (copiar) copiar.addEventListener("click", async () => {

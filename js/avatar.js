@@ -17,7 +17,7 @@
       img.src = url;
       img.alt = texto || "";
       img.className = "avatar-img";
-      img.addEventListener("error", () => { el.textContent = (texto || "?").charAt(0).toUpperCase(); }, { once: true });
+      img.addEventListener("error", () => { el.classList.remove("con-foto"); el.textContent = (texto || "?").charAt(0).toUpperCase(); }, { once: true });
       el.appendChild(img);
       el.classList.add("con-foto");
     } else {
@@ -76,6 +76,9 @@
       const sub = document.querySelector("#spectatorBanner .perfil-nombre > p:not(.perfil-social)");
       if (sub && perfil?.bio) { sub.textContent = perfil.bio; sub.classList.add("perfil-bio"); }
       if (!url || !(await DB.isAdmin().catch(() => false))) return;
+      // En tu propio perfil se cambia desde "Mi perfil", no con el botón de moderación
+      const yo = await DB.getMyProfile().catch(() => null);
+      if (yo?.username === nombre) return;
       const acciones = document.querySelector("#spectatorBanner .perfil-acciones");
       if (!acciones) return;
       const b = document.createElement("button");
