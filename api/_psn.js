@@ -119,7 +119,9 @@ export async function juegosPSN(accountId) {
       npId: t.npCommunicationId,
       servicio: t.npServiceName === "trophy2" ? "trophy2" : "trophy",
       titulo: t.trophyTitleName,
-      portada: j?.imageUrl || t.trophyTitleIconUrl || "",
+      // El icono de trofeos de PS4 (psnobj) es pequeño y no carga en todos lados: sin imagen buena,
+      // se deja vacío y la portada sale de RAWG al completar datos
+      portada: j?.imageUrl || (/image\.api\.playstation\.com/.test(t.trophyTitleIconUrl || "") ? t.trophyTitleIconUrl : ""),
       plataforma: plataformaCorta(t.trophyTitlePlatform),
       progreso: Number(t.progress) || 0,
       logros: ganados,

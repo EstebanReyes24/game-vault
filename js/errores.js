@@ -25,6 +25,19 @@
     } catch (e) { /* nunca romper la página por registrar un error */ }
   }
 
+  // Portadas e iconos de PlayStation (psnobj) no cargan directo en muchos navegadores:
+  // si una falla, se vuelve a pedir a través de la web (/api/icono). Vale para toda la página.
+  window.addEventListener("error", (e) => {
+    const img = e.target;
+    if (!img || img.tagName !== "IMG" || img.dataset.reintento) return;
+    try {
+      const u = new URL(img.currentSrc || img.src);
+      if (u.hostname !== "psnobj.prod.dl.playstation.net") return;
+      img.dataset.reintento = "1";
+      img.src = `/api/icono?u=${encodeURIComponent(u.href)}`;
+    } catch (err) { /* nada */ }
+  }, true);
+
   window.addEventListener("error", (e) => {
     if (e.target && e.target !== window) return; // imágenes rotas, etc.
     enviar(e.message, e.filename, e.lineno);
