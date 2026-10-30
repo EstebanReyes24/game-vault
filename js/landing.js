@@ -121,14 +121,10 @@ async function checkUserSession() {
       if (authBtnText) authBtnText.innerText = alias;
       if (authIcon) authIcon.className = "fa-solid fa-cloud-check text-emerald-400";
       if (authBtn) {
-        authBtn.href = "#";
-        authBtn.onclick = async (e) => {
-          e.preventDefault();
-          if (confirm(`Sesión iniciada como ${user.email}.\n¿Deseas cerrar sesión?`)) {
-            await DB.signOut();
-            window.location.reload();
-          }
-        };
+        // Tu usuario lleva a "Mi perfil" (foto, descripción, privacidad, cerrar sesión…)
+        authBtn.href = "/app.html?perfil=1";
+        authBtn.title = "Mi perfil";
+        authBtn.onclick = null;
       }
 
       if (commentAuthNotice) {

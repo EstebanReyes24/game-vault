@@ -180,14 +180,14 @@ const DB = {
   async getMyProfile() {
     const user = await currentUser();
     if (!user) return null;
-    // avatar_url llega con la migración 015; sin ella se pide el perfil sin la foto
-    let { data, error } = await supabaseClient
-      .from("profiles")
-      .select("id, username, is_public, avatar_url")
-      .eq("id", user.id)
-      .maybeSingle();
-    if (error && /avatar_url/.test(error.message)) {
-      ({ data, error } = await supabaseClient.from("profiles").select("id, username, is_public").eq("id", user.id).maybeSingle());
+    // avatar_url (migración 015) y bio (016): si aún no existen, se piden sin ellas
+    let columnas = ["id", "username", "is_public", "avatar_url", "bio"];
+    let data = null, error = null;
+    for (let intento = 0; intento < 3; intento++) {
+      ({ data, error } = await supabaseClient.from("profiles").select(columnas.join(", ")).eq("id", user.id).maybeSingle());
+      const falta = error && columnas.find(c => ["avatar_url", "bio"].includes(c) && error.message.includes(c));
+      if (!falta) break;
+      columnas = columnas.filter(c => c !== falta);
     }
     if (error) {
       console.error("Error al obtener el perfil:", error.message);
@@ -222,6 +222,31 @@ const DB = {
     if (!user) return;
     await supabaseClient.storage.from("avatares").remove([`${user.id}/avatar.webp`]);
     const { error } = await supabaseClient.from("profiles").update({ avatar_url: null }).eq("id", user.id);
+    if (error) throw error;
+  },
+
+  async guardarBio(texto) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión.");
+    const bio = String(texto || "").replace(/\s+/g, " ").trim().slice(0, 160) || null;
+    const { error } = await supabaseClient.from("profiles").update({ bio }).eq("id", user.id);
+    if (error) throw new Error(/bio/.test(error.message) ? "Falta activar la descripción (migración 016)." : error.message);
+    return bio;
+  },
+
+  async getPerfilPublico(username) {
+    if (!supabaseClient || !username) return null;
+    let { data, error } = await supabaseClient.from("profiles").select("avatar_url, bio").eq("username", String(username).toLowerCase()).maybeSingle();
+    if (error) ({ data } = await supabaseClient.from("profiles").select("avatar_url").eq("username", String(username).toLowerCase()).maybeSingle());
+    return data || null;
+  },
+
+  /** Desvincula Steam, Xbox o PlayStation (pone a null sus campos en platform_links). */
+  async desvincularCuenta(campos) {
+    const user = await currentUser();
+    if (!user) return;
+    const cambios = Object.fromEntries(campos.map(c => [c, null]));
+    const { error } = await supabaseClient.from("platform_links").update(cambios).eq("user_id", user.id);
     if (error) throw error;
   },
 

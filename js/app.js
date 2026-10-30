@@ -2101,8 +2101,11 @@ async function handleSession(user) {
 
   if (appAuthBtn) {
     appAuthBtn.href = "#";
+    appAuthBtn.title = "Mi perfil";
     appAuthBtn.onclick = async (e) => {
       e.preventDefault();
+      // "Mi perfil" (js/miperfil.js) reúne foto, descripción, privacidad, cuentas y cerrar sesión
+      if (window.MiPerfil) { window.MiPerfil.abrir(); return; }
       if (confirm(`Sesión activa como ${user.email}.\n¿Deseas cerrar sesión?`)) {
         StorageManager.clearAll();
         setLocalOwner(null);
