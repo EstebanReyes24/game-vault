@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v48';
+const CACHE_NAME = 'paindex-vault-v49';
 // Lo mínimo para que la app abra sin internet (el resto se guarda al visitarlo)
 const ASSETS_TO_CACHE = [
   '/',
@@ -44,6 +44,10 @@ async function respaldo(request) {
   if (request.mode === 'navigate') {
     const sinParametros = await caches.match(request, { ignoreSearch: true });
     if (sinParametros) return sinParametros;
+    if (ruta === '/') {
+      const inicio = await caches.match('/');
+      if (inicio) return inicio;
+    }
     if (/^\/(estante|app)/.test(ruta)) {
       const estante = await caches.match('/estante');
       if (estante) return estante;
