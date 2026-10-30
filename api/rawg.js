@@ -3,6 +3,7 @@
  *   /api/rawg?search=elden%20ring&n=6&precise=1   → resultados para el buscador de portadas
  *   /api/rawg?search=elden%20ring&detalle=1       → el juego que mejor coincide, con etiquetas
  *                                                    en español, año de lanzamiento y desarrollador
+ *   /api/rawg?sinopsis=1&search=ghost%20of%20tsushima → sinopsis de Wikipedia (no usa RAWG)
  */
 const GENEROS = {
   action: "Acción", indie: "Indie", adventure: "Aventura", "role-playing-games-rpg": "RPG", strategy: "Estrategia",
@@ -29,11 +30,20 @@ const ETIQUETAS = {
 const limpio = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "");
 
 import { limitePorIp, DEMASIADO } from "./_supabase.js";
+import { sinopsis } from "./_sinopsis.js";
 
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido" });
   if (!limitePorIp(req, "rawg", 300, 60)) return res.status(429).json(DEMASIADO);
+  if (req.query.sinopsis === "1") {
+    const titulo = String(req.query.search || "").trim().slice(0, 100);
+    if (titulo.length < 2) return res.status(400).json({ error: "Búsqueda demasiado corta." });
+    const s = await sinopsis(titulo).catch(() => null);
+    // Cambia poco: el CDN la guarda una semana (y un día si no se encontró)
+    res.setHeader("Cache-Control", s ? "public, s-maxage=604800, stale-while-revalidate=2592000" : "public, s-maxage=86400");
+    return res.status(200).json(s ? { encontrado: true, ...s } : { encontrado: false });
+  }
   const clave = process.env.RAWG_API_KEY;
   if (!clave) return res.status(503).json({ error: "Falta RAWG_API_KEY en Vercel." });
 
