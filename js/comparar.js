@@ -110,6 +110,16 @@
         <h2 class="seccion-titulo">@${esc(b)} le recomienda a @${esc(a)}</h2>
         ${recos(r.paraA, b)}
       </section>`;
+    // Fotos de perfil junto a los nombres (si las tienen)
+    [[a, ".comparar-quien:not(.derecha)"], [b, ".comparar-quien.derecha"]].forEach(([u, sel]) => {
+      DB.getAvatar?.(u).then(url => {
+        const el = raiz.querySelector(sel);
+        if (!url || !el) return;
+        const img = document.createElement("img");
+        img.src = url; img.alt = ""; img.className = "comparar-foto";
+        el.prepend(img);
+      });
+    });
     document.getElementById("cmpCompartir").addEventListener("click", async (e) => {
       const url = `${location.origin}/u/${a}/vs/${b}`;
       try { await navigator.clipboard.writeText(url); e.currentTarget.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Copiado'; }
