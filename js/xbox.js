@@ -22,9 +22,13 @@
   modal.addEventListener("click", (e) => { if (e.target === modal) cerrar(); });
 
   function mostrar(todos, gamertag) {
-    const ya = new Set(StorageManager.getGames().map(g => String(g.title).toLowerCase().trim()));
+    // Los ya vinculados a Xbox no se muestran; los que tienes de Steam o a mano se unen a ese juego
+    const mios = StorageManager.getGames();
+    const vinculados = new Set(mios.filter(g => g.xboxTitleId).map(g => String(g.xboxTitleId)));
+    const sinId = new Set(mios.filter(g => !g.xboxTitleId && (g.platforms || []).includes("Xbox")).map(g => claveTitulo(g.title)));
     juegos = (todos || [])
-      .filter(j => !ya.has(String(j.titulo).toLowerCase().trim()))
+      .filter(j => !(j.titleId && vinculados.has(String(j.titleId))) && !sinId.has(claveTitulo(j.titulo)))
+      .map(j => ({ ...j, seUneCon: mios.find(g => !g.xboxTitleId && claveTitulo(g.title) === claveTitulo(j.titulo))?.title || null }))
       // Los jugados más recientemente arriba
       .sort((a, b) => (Date.parse(b.ultimaVez) || 0) - (Date.parse(a.ultimaVez) || 0));
     if (!juegos.length) {
@@ -41,7 +45,7 @@
       <li><label>
         <input type="checkbox" data-i="${i}" ${conLogros(j) ? "checked" : ""}>
         ${/^https:\/\//.test(j.portada || "") ? `<img src="${esc(j.portada)}" alt="" loading="lazy">` : `<span class="lista-sin-tapa"></span>`}
-        <span class="lista-juego"><b>${esc(j.titulo)}</b><small>${j.logrosTotal ? `${j.logros}/${j.logrosTotal} logros · ${Math.round(j.progreso)}%` : (j.logros ? `${j.logros} logros · ${Math.round(j.progreso)}%` : "sin logros")}</small></span>
+        <span class="lista-juego"><b>${esc(j.titulo)}</b><small>${j.logrosTotal ? `${j.logros}/${j.logrosTotal} logros · ${Math.round(j.progreso)}%` : (j.logros ? `${j.logros} logros · ${Math.round(j.progreso)}%` : "sin logros")}${j.seUneCon ? ` · se une con «${esc(j.seUneCon)}» que ya tienes` : ""}</small></span>
       </label></li>`).join("");
     document.getElementById("xboxTodos").textContent = marcados === juegos.length ? "Desmarcar todos" : "Marcar todos";
     document.getElementById("xboxResultado").hidden = false;
@@ -113,30 +117,43 @@
   document.getElementById("xboxImportar").addEventListener("click", async () => {
     const elegidos = [...lista.querySelectorAll("input[type=checkbox]:checked")].map(c => juegos[Number(c.dataset.i)]).filter(Boolean);
     if (!elegidos.length) { estado.textContent = "Marca al menos un juego."; return; }
-    const nuevos = elegidos.map(j => ({
-      id: newGameId(),
-      title: j.titulo,
-      coverUrl: /^https:\/\//.test(j.portada || "") ? j.portada : "",
-      status: j.progreso >= 100 ? "platinum" : "backlog",
-      platforms: ["Xbox"],
-      rating: null,
-      hours: 0,
-      targetHours: 0,
-      completedYear: null,
-      favorite: false,
-      tags: ["#Xbox"],
-      notes: "",
-      xboxTitleId: j.titleId || null,
-      lastPlayed: j.ultimaVez || null,
-      achUnlocked: j.logros || 0,
-      achTotal: j.logrosTotal || null
-    }));
-    StorageManager.saveGames([...StorageManager.getGames(), ...nuevos]);
-    await cloudRun(() => DB.upsertGames(nuevos), "No se pudieron subir los juegos importados a la nube.");
+    const actuales = StorageManager.getGames();
+    const nuevos = [];
+    const unidos = new Map();
+    elegidos.forEach(j => {
+      const datos = {
+        plataforma: "Xbox", etiqueta: "#Xbox", xboxTitleId: j.titleId || null, lastPlayed: j.ultimaVez || null,
+        achUnlocked: j.logros || 0, achTotal: j.logrosTotal || null, status: j.progreso >= 100 ? "platinum" : null,
+        coverUrl: /^https:\/\//.test(j.portada || "") ? j.portada : ""
+      };
+      const igual = actuales.find(g => !g.xboxTitleId && !unidos.has(g.id) && claveTitulo(g.title) === claveTitulo(j.titulo));
+      if (igual) { unidos.set(igual.id, fusionarPlataforma(igual, datos)); return; }
+      nuevos.push({
+        id: newGameId(),
+        title: j.titulo,
+        coverUrl: datos.coverUrl,
+        status: j.progreso >= 100 ? "platinum" : "backlog",
+        platforms: ["Xbox"],
+        rating: null,
+        hours: 0,
+        targetHours: 0,
+        completedYear: null,
+        favorite: false,
+        tags: ["#Xbox"],
+        notes: "",
+        xboxTitleId: datos.xboxTitleId,
+        lastPlayed: datos.lastPlayed,
+        achUnlocked: datos.achUnlocked,
+        achTotal: datos.achTotal
+      });
+    });
+    const fusionados = [...unidos.values()];
+    StorageManager.saveGames([...actuales.map(g => unidos.get(g.id) || g), ...nuevos]);
+    await cloudRun(() => DB.upsertGames([...fusionados, ...nuevos]), "No se pudieron subir los juegos importados a la nube.");
     renderLibrary();
     cerrar();
-    if (window.Autodatos) window.Autodatos.completar(nuevos);
+    if (window.Autodatos) window.Autodatos.completar([...nuevos, ...fusionados]);
     document.getElementById("xboxClave").value = "";
-    showToast(`Se añadieron ${nuevos.length} juegos de Xbox. Ponles estado y nota cuando quieras.`);
+    showToast(`Xbox: ${nuevos.length} juegos nuevos${fusionados.length ? ` y ${fusionados.length} unidos a los que ya tenías` : ""}. Ahora reviso sus logros para ponerles estado.`);
   });
 })();
