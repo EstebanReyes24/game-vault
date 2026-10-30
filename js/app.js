@@ -147,6 +147,37 @@ function newGameId() {
   return lastGeneratedId;
 }
 
+/**
+ * Clave para reconocer el mismo juego en Steam, Xbox y lo añadido a mano:
+ * "Gears of War: Ultimate Edition for Windows 10" y "Gears of War™ Ultimate Edition" dan la misma.
+ */
+function claveTitulo(titulo) {
+  return String(titulo || "")
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[™®©]/g, "")
+    .replace(/\s*[-–:(]?\s*\b(for\s+)?windows(\s+10)?(\s+edition)?\)?\s*$/, "")
+    .replace(/\s*[-–:(]?\s*\b(for\s+)?xbox\s+(one|series\s+x\s*[|/]?\s*s)(\s+edition)?\)?\s*$/, "")
+    .replace(/\s*\((pc|xbox)\)\s*$/, "")
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "") || String(titulo || "").toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
+/** Une los datos de una plataforma a un juego que ya tienes, sin duplicarlo ni pisar lo tuyo. */
+function fusionarPlataforma(g, datos) {
+  const r = { ...g };
+  r.platforms = [...new Set([...(g.platforms || []), datos.plataforma])];
+  if (datos.etiqueta && !(g.tags || []).includes(datos.etiqueta)) r.tags = [...(g.tags || []), datos.etiqueta].slice(0, 15);
+  if (datos.steamAppId) r.steamAppId = datos.steamAppId;
+  if (datos.xboxTitleId) r.xboxTitleId = datos.xboxTitleId;
+  if ((datos.hours || 0) > (g.hours || 0)) r.hours = datos.hours;
+  if (datos.lastPlayed && (!g.lastPlayed || datos.lastPlayed > g.lastPlayed)) r.lastPlayed = datos.lastPlayed;
+  if (!g.achUnlocked && datos.achUnlocked) { r.achUnlocked = datos.achUnlocked; r.achTotal = datos.achTotal || g.achTotal || null; }
+  if (!g.coverUrl && datos.coverUrl) r.coverUrl = datos.coverUrl;
+  if (datos.status === "platinum") r.status = "platinum";
+  return r;
+}
+
 // ==========================================
 // AVISOS (toast) y nube
 // ==========================================
@@ -1703,16 +1734,24 @@ window.ejecutarConsultaSteam = async function() {
       return;
     }
 
-    if (countEl) countEl.innerText = `${window.fetchedSteamGames.length} juegos listos para importar`;
+    // Si ya tienes el juego (de Xbox o a mano) se une a ese en vez de duplicarlo
+    const mios = StorageManager.getGames();
+    window.fetchedSteamGames.forEach(g => {
+      const igual = mios.find(m => m.steamAppId === g.appId) || mios.find(m => claveTitulo(m.title) === claveTitulo(g.title));
+      g.yaVinculado = Boolean(igual && igual.steamAppId === g.appId);
+      g.seUneCon = igual && !g.yaVinculado ? igual.title : null;
+    });
+    const nuevosSteam = window.fetchedSteamGames.filter(g => !g.yaVinculado).length;
+    if (countEl) countEl.innerText = `${nuevosSteam} juegos listos para importar`;
     if (listEl) {
       listEl.innerHTML = window.fetchedSteamGames.map((g, idx) => `
-        <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition">
+        <label class="flex items-center justify-between p-2 rounded-xl hover:bg-white/10 cursor-pointer transition ${g.yaVinculado ? "opacity-50" : ""}">
           <div class="flex items-center gap-3">
-            <input type="checkbox" data-index="${idx}" checked class="rounded border-white/20 accent-blue-500 h-4 w-4">
+            <input type="checkbox" data-index="${idx}" ${g.yaVinculado ? "" : "checked"} class="rounded border-white/20 accent-blue-500 h-4 w-4">
             ${coverImg(g, "w-8 h-11 object-cover rounded bg-slate-950 shrink-0")}
             <div>
               <p class="text-xs font-bold text-white line-clamp-1">${escapeHTML(g.title)}</p>
-              <p class="text-[10px] text-slate-400">${Number(g.hours) || 0} horas registradas en Steam</p>
+              <p class="text-[10px] text-slate-400">${Number(g.hours) || 0} horas registradas en Steam${g.yaVinculado ? " · ya en tu estante" : (g.seUneCon ? ` · se une con «${escapeHTML(g.seUneCon)}» que ya tienes` : "")}</p>
             </div>
           </div>
         </label>
@@ -1749,49 +1788,56 @@ if (confirmImportSteamBtn) {
     }
 
     const currentGames = StorageManager.getGames();
-    const existingTitles = new Set(currentGames.map(g => String(g.title).toLowerCase().trim()));
     const toImport = [];
+    const unidos = new Map(); // id del juego existente → juego con Steam añadido
 
     // Entran sin nota; el estado (Jugando, En pausa, Historia, Platino) lo pone Autodatos
     // con las horas, la última vez jugado y los logros de cada juego.
     checkboxes.forEach(cb => {
       const idx = parseInt(cb.dataset.index, 10);
       const g = window.fetchedSteamGames[idx];
-      if (g && !existingTitles.has(g.title.toLowerCase().trim())) {
-        existingTitles.add(g.title.toLowerCase().trim());
-        toImport.push({
-          id: newGameId(),
-          title: g.title,
-          coverUrl: g.coverUrl,
-          status: "backlog",
-          platforms: ["PC"],
-          rating: null,
-          hours: g.hours,
-          targetHours: 0,
-          completedYear: null,
-          favorite: false,
-          tags: ["#Steam"],
-          notes: "",
-          steamAppId: g.appId,
-          lastPlayed: g.lastPlayed || null
-        });
+      if (!g) return;
+      const lista = [...currentGames.map(m => unidos.get(m.id) || m), ...toImport];
+      const igual = lista.find(m => m.steamAppId === g.appId) || lista.find(m => claveTitulo(m.title) === claveTitulo(g.title));
+      if (igual) {
+        if (igual.steamAppId === g.appId && !unidos.has(igual.id)) return; // ya estaba vinculado
+        const fusion = fusionarPlataforma(igual, { plataforma: "PC", etiqueta: "#Steam", steamAppId: g.appId, hours: g.hours, lastPlayed: g.lastPlayed, coverUrl: g.coverUrl });
+        if (toImport.includes(igual)) toImport[toImport.indexOf(igual)] = fusion; else unidos.set(igual.id, fusion);
+        return;
       }
+      toImport.push({
+        id: newGameId(),
+        title: g.title,
+        coverUrl: g.coverUrl,
+        status: "backlog",
+        platforms: ["PC"],
+        rating: null,
+        hours: g.hours,
+        targetHours: 0,
+        completedYear: null,
+        favorite: false,
+        tags: ["#Steam"],
+        notes: "",
+        steamAppId: g.appId,
+        lastPlayed: g.lastPlayed || null
+      });
     });
 
-    if (toImport.length === 0) {
+    if (toImport.length === 0 && unidos.size === 0) {
       alert("Los títulos seleccionados ya estaban en tu estante.");
       steamModal.classList.add("hidden");
       return;
     }
 
-    StorageManager.saveGames([...currentGames, ...toImport]);
-    await cloudRun(() => DB.upsertGames(toImport), "No se pudieron subir los juegos importados a la nube.");
+    const fusionados = [...unidos.values()];
+    StorageManager.saveGames([...currentGames.map(m => unidos.get(m.id) || m), ...toImport]);
+    await cloudRun(() => DB.upsertGames([...fusionados, ...toImport]), "No se pudieron subir los juegos importados a la nube.");
 
     renderLibrary();
     SoundFX.playTrophy();
     steamModal.classList.add("hidden");
-    showToast(`Se importaron ${toImport.length} juegos de Steam. Ahora reviso sus logros para ponerles estado y fechas.`);
-    if (window.Autodatos) window.Autodatos.completar(toImport);
+    showToast(`Steam: ${toImport.length} juegos nuevos${fusionados.length ? ` y ${fusionados.length} unidos a los que ya tenías` : ""}. Ahora reviso sus logros para ponerles estado y fechas.`);
+    if (window.Autodatos) window.Autodatos.completar([...toImport, ...fusionados]);
   });
 }
 

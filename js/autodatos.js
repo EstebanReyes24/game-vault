@@ -9,7 +9,7 @@
 (function () {
   if (typeof DB === "undefined") return;
   const esc = (s) => escapeHTML(String(s ?? ""));
-  const clave = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "");
+  const clave = (t) => (typeof claveTitulo === "function" ? claveTitulo(t) : String(t || "").toLowerCase().replace(/[^a-z0-9]+/g, ""));
   const pausa = (ms) => new Promise(r => setTimeout(r, ms));
   const btnDatos = document.getElementById("autoDataBtn");
   const btnSync = document.getElementById("syncPlatformsBtn");
