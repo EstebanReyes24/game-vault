@@ -1,6 +1,121 @@
 {
-  "actualizado": "2026-10-30T10:46:36Z",
+  "actualizado": "2026-10-30T22:53:03Z",
   "borradores": [
+    {
+      "id": "2026-10-30-patrick-stewart-fallece-oblivion",
+      "fecha": "2026-10-30",
+      "titulo": "Muere Patrick Stewart, la voz del emperador Uriel Septim en Oblivion, a los 86 años",
+      "juego": "The Elder Scrolls IV: Oblivion",
+      "etiqueta": "#PatrickStewart",
+      "imagen": "",
+      "contenido": "Sir Patrick Stewart falleció el miércoles 28 de octubre en su casa, a los 86 años. Su portavoz confirmó la noticia y explicó que el actor atravesó un proceso breve con Alzheimer y demencia con cuerpos de Lewy. Aunque el mundo lo recuerda sobre todo como el capitán Picard de Star Trek y el profesor Xavier de X-Men, también dejó huella en los videojuegos.\n\nPara muchos jugadores, su voz fue la primera que escucharon en The Elder Scrolls IV: Oblivion (2006). Interpretó al emperador Uriel Septim VII, el personaje que nos entrega el Amuleto de los Reyes y pone en marcha toda la historia principal en apenas unos minutos. Oblivion Remastered, lanzado en 2025, conservó sus grabaciones originales, así que esa introducción sigue sonando igual. También fue Zobek en Castlevania: Lords of Shadow y su secuela.\n\nBethesda Game Studios le dedicó un mensaje en X, en el que lo despidió como \"un emperador, un capitán y una inspiración\". Pocas escenas de apertura han envejecido tan bien como la suya. ¿Cuál es tu recuerdo favorito de su trabajo?",
+      "fuentes": [
+        {
+          "nombre": "CBS News",
+          "url": "https://www.cbsnews.com/news/patrick-stewart-dies-age-86-star-trek-actor/"
+        },
+        {
+          "nombre": "NPR",
+          "url": "https://www.npr.org/2026/10/29/1230906945/patrick-stewart-dead"
+        },
+        {
+          "nombre": "Gaming Route",
+          "url": "https://gamingroute.com/patrick-stewart-oblivion-emperor-dies/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-death-stranding-isolations-teaser-disney",
+      "fecha": "2026-10-30",
+      "titulo": "Death Stranding Isolations, la serie animada de Kojima, muestra su teaser: llega a Disney+ en 2027",
+      "juego": "Death Stranding",
+      "etiqueta": "#DeathStranding",
+      "imagen": "",
+      "contenido": "Kojima Productions publicó el primer teaser de Death Stranding Isolations, una serie de animación 2D dibujada a mano que se estrenará en exclusiva en Disney+ en 2027. Todavía no hay fecha exacta ni número de episodios.\n\nLa dirige Takayuki Sano, la animación corre a cargo del estudio E&H production y Hideo Kojima figura como productor ejecutivo. El guion y la composición de la serie son de Tow Ubukata, y los diseños originales de personajes llevan la firma de Ilya Kuvshinov. La historia es independiente y ocurre en Norteamérica justo después de que Sam reconecta el continente con la Red Quiral, cuando esas nuevas conexiones empiezan a traer consecuencias inesperadas. Entre sus protagonistas hay una chica que se había aislado del mundo exterior y que termina arrastrada a una realidad que no reconoce.\n\nEs una buena señal para la franquicia que la adaptación apueste por una historia original en vez de recontar el juego. Con Death Stranding 2 ya en la calle, el universo de Kojima sigue creciendo fuera de las consolas.",
+      "fuentes": [
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/10/death-stranding-isolations-teaser-trailer-first-details"
+        },
+        {
+          "nombre": "Game Informer",
+          "url": "https://gameinformer.com/2026/10/30/death-stranding-isolations-animated-series-gets-new-teaser-trailer"
+        },
+        {
+          "nombre": "Kojima Productions (YouTube)",
+          "url": "https://www.youtube.com/watch?v=ruIT6Xez6tw"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-petit-planet-fecha-4-diciembre",
+      "fecha": "2026-10-30",
+      "titulo": "Petit Planet, el simulador de vida de HoYoverse, sale el 4 de diciembre en PC y móviles",
+      "juego": "Petit Planet",
+      "etiqueta": "#PetitPlanet",
+      "imagen": "",
+      "contenido": "HoYoverse, el estudio detrás de Genshin Impact y Honkai: Star Rail, confirmó que Petit Planet llegará el 4 de diciembre de 2026. La descarga anticipada se abrirá el 1 de diciembre, y el juego estará en PC (su launcher y la Epic Games Store), iOS y Android. Por ahora no se ha anunciado versión para consolas.\n\nEs el primer simulador de vida del estudio y va por una línea tranquila al estilo de Animal Crossing: tienes tu propio planeta, lo decoras, cultivas, pescas, cocinas y compartes el espacio con vecinos animales y con amigos en línea. Será gratuito con sistema gacha, aunque según las pruebas previas los banners darían ropa, muebles y otros objetos decorativos en lugar de personajes.\n\nHoYoverse hará una transmisión especial previa al lanzamiento el domingo 1 de noviembre a las 6:00 a. m. (hora del este de EE. UU.), donde mostrará más sistemas del juego. Ya está abierto el prerregistro con recompensas. ¿Le darías una oportunidad a un gacha que solo vende decoración?",
+      "fuentes": [
+        {
+          "nombre": "Petit Planet (web oficial)",
+          "url": "https://planet.hoyoverse.com/"
+        },
+        {
+          "nombre": "GosuGamers",
+          "url": "https://www.gosugamers.net/entertainment/news/79446-hoyoverse-s-cosy-gacha-game-petit-planet-gets-official-december-release-date"
+        },
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/10/petit-planet-launches-december-4"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-assassins-creed-valhalla-new-game-plus-hexe",
+      "fecha": "2026-10-30",
+      "titulo": "Assassin's Creed Valhalla tendrá New Game+ el 5 de noviembre; Ubisoft no prepara más remakes",
+      "juego": "Assassin's Creed Valhalla",
+      "etiqueta": "#AssassinsCreed",
+      "imagen": "",
+      "contenido": "Ubisoft compartió una actualización de otoño sobre la saga Assassin's Creed con varias novedades. La más inmediata: Valhalla recibirá el 5 de noviembre un parche gratuito con New Game+, que permite empezar de nuevo conservando nivel y objetos de progreso. También añade un modo de progresión opcional en el que equipo, runas y maestrías suman al poder total de Eivor, un nuevo recurso llamado mitrilo para mejorar el equipo divino, un sistema de almacén, logros nuevos y un atuendo de Maestro Asesino inspirado en Naoe de Shadows.\n\nSobre el futuro, la compañía aclaró que ahora mismo no tiene ningún otro remake de Assassin's Creed en desarrollo activo, aunque no descarta volver a juegos antiguos más adelante. Codename Hexe, la próxima entrega para un jugador ambientada en el Sacro Imperio Romano Germánico del siglo XVII, tendrá su siguiente gran actualización en 2027. Además, el proyecto multijugador Codename Invictus sigue en desarrollo tras una revisión, y la serie de Netflix está cerca de terminar su rodaje en Roma.\n\nEn 2027 la saga cumple 20 años y Ubisoft promete un año de celebraciones, así que toca esperar un poco más para ver Hexe en serio.",
+      "fuentes": [
+        {
+          "nombre": "Game Informer",
+          "url": "https://gameinformer.com/2026/10/29/assassins-creed-franchise-update-reveals-codename-hexe-news-coming-next-year-new-game"
+        },
+        {
+          "nombre": "Digital Trends",
+          "url": "https://www.digitaltrends.com/gaming/ubisoft-shares-major-assassins-creed-updates-including-disappointing-news-about-remakes/"
+        },
+        {
+          "nombre": "PlayStation Universe",
+          "url": "https://www.psu.com/news/assassins-creed-valhalla-new-game-plus-confirmed-for-november-5/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-30-pubg-serie-netflix-donald-glover",
+      "fecha": "2026-10-30",
+      "titulo": "Netflix prepara una serie de PUBG con Donald Glover como protagonista y director",
+      "juego": "PUBG: BATTLEGROUNDS",
+      "etiqueta": "#PUBG",
+      "imagen": "",
+      "contenido": "Netflix anunció que está desarrollando una serie de acción real basada en PUBG: Battlegrounds, el battle royale de Krafton. Donald Glover, conocido por Community y Atlanta, se encargará de escribirla, dirigirla, protagonizarla y producirla. Su hermano Stephen Glover, colaborador habitual, también participará como guionista y productor ejecutivo.\n\nEn la producción ejecutiva están además NEON TV, la productora Gilga y LV3H, el brazo de entretenimiento de Krafton, así que la compañía surcoreana estará involucrada directamente en el proyecto. Por ahora no hay fecha de estreno, detalles de la trama ni más nombres en el reparto: la serie apenas entra en desarrollo y todavía se están escribiendo los guiones.\n\nAntes de pasar a ser gratuito, PUBG superó los 75 millones de copias vendidas, y es uno de los juegos que popularizaron el género. Llevar a la pantalla un battle royale sin una historia definida es un reto, aunque Glover tiene fama de tomar ideas raras y convertirlas en algo propio. ¿Qué esperas de una serie de PUBG?",
+      "fuentes": [
+        {
+          "nombre": "Game Developer",
+          "url": "https://www.gamedeveloper.com/business/netflix-adapts-krafton-pubg-to-be-written-and-led-by-donald-glover"
+        },
+        {
+          "nombre": "What's on Netflix",
+          "url": "https://www.whats-on-netflix.com/news/netflix-developing-live-action-pubg-series-with-donald-glover-set-to-write-direct-and-star/"
+        },
+        {
+          "nombre": "Engadget",
+          "url": "https://www.engadget.com/2301458/netflix-is-making-a-live-action-pubg-show-written-and-directed-by-donald-glover/"
+        }
+      ]
+    },
     {
       "id": "2026-10-30-the-duskbloods-retraso-2027",
       "fecha": "2026-10-30",
