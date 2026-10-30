@@ -5,11 +5,14 @@
  *   POST /api/xbox { "clave": "..." } → con la clave personal de OpenXBL del usuario (respaldo).
  */
 import { titulosXbox, buscarGamertag } from "./_xbox.js";
+import { usuarioConSesion, SIN_SESION } from "./_supabase.js";
 
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
 
   if (req.method === "GET") {
+    // La búsqueda por gamertag gasta la cuota de Paindex: solo con sesión iniciada
+    if (!(await usuarioConSesion(req))) { res.setHeader("Cache-Control", "no-store"); return res.status(401).json(SIN_SESION); }
     const clave = process.env.OPENXBL_API_KEY;
     if (!clave) return res.status(503).json({ error: "La importación de Xbox todavía no está configurada en el servidor." });
     const gt = String(req.query.gt || "").trim();
@@ -18,8 +21,7 @@ export default async function handler(req, res) {
       const perfil = await buscarGamertag(clave, gt);
       if (!perfil || !perfil.xuid) return res.status(404).json({ error: "No encontramos ese gamertag en Xbox." });
       const juegos = await titulosXbox(clave, false, perfil.xuid);
-      // Mismo gamertag en los próximos 10 minutos: se sirve desde el CDN (ahorra cuota de OpenXBL)
-      res.setHeader("Cache-Control", "public, s-maxage=600, stale-while-revalidate=1800");
+      res.setHeader("Cache-Control", "private, max-age=300");
       if (!juegos.length) return res.status(200).json({ gamertag: perfil.gamertag, xuid: perfil.xuid, juegos: [], privado: true });
       return res.status(200).json({ gamertag: perfil.gamertag, xuid: perfil.xuid, juegos });
     } catch (e) {

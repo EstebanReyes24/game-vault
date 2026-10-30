@@ -55,10 +55,11 @@
     const b = document.getElementById("xboxBuscar");
     const gt = document.getElementById("xboxGamertag").value.trim();
     if (!gt) { estado.textContent = "Escribe tu gamertag."; return; }
+    if (!cloudUserId) { estado.innerHTML = 'Para importar desde Xbox necesitas una cuenta. <a href="login.html" class="underline">Inicia sesión o regístrate</a>: es gratis y así tu estante se guarda en la nube.'; return; }
     estado.textContent = "Buscando tus juegos de Xbox…";
     b.disabled = true;
     try {
-      const r = await fetch(`/api/xbox?gt=${encodeURIComponent(gt)}`);
+      const r = await fetchConSesion(`/api/xbox?gt=${encodeURIComponent(gt)}`);
       const data = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
       if (data.privado) {

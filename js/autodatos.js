@@ -134,7 +134,7 @@
 
     if (c.xbox_gamertag) {
       try {
-        const r = await fetch(`/api/xbox?gt=${encodeURIComponent(c.xbox_gamertag)}`);
+        const r = await fetchConSesion(`/api/xbox?gt=${encodeURIComponent(c.xbox_gamertag)}`);
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || "Xbox no respondió.");
         if (data.xuid && data.xuid !== c.xbox_xuid) DB.guardarCuentas({ xbox_xuid: data.xuid });
@@ -155,7 +155,7 @@
 
     if (c.psn_online_id) {
       try {
-        const r = await fetch(`/api/psn?id=${encodeURIComponent(c.psn_online_id)}`);
+        const r = await fetchConSesion(`/api/psn?id=${encodeURIComponent(c.psn_online_id)}`);
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || "PlayStation no respondió.");
         if (data.accountId && data.accountId !== c.psn_account_id) DB.guardarCuentas({ psn_account_id: data.accountId });
@@ -325,7 +325,7 @@
         if (avisar && (hechos % 10 === 0 || hechos === lote.length)) showToast(`Revisando logros… ${hechos}/${lote.length}`);
         const { fuente, url } = fuenteDe(g, c);
         try {
-          const r = await fetch(url);
+          const r = await fetchConSesion(url);
           if (r.status === 429) { showToast(`${NOMBRE_FUENTE[fuente]} pide una pausa: el resto de juegos se revisa en la próxima actualización.`, true); break; }
           if (r.status === 403) {
             analizados[g.id] = Date.now();
@@ -367,7 +367,7 @@
     caja.innerHTML = `<p class="logros-origen">Cargando logros…</p>`;
     caja.hidden = false;
     try {
-      const r = await fetch(url);
+      const r = await fetchConSesion(url);
       const data = await r.json();
       if (!r.ok) throw new Error(data.error || "No se pudieron cargar los logros.");
       const items = data.items || [];

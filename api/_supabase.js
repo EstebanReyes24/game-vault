@@ -34,3 +34,32 @@ export async function perfilPublico(usuario) {
       .map(g => ({ titulo: g.title, portada: g.cover_url, nota: Number(g.rating) }))
   };
 }
+
+// Sesiones ya comprobadas (mientras la función siga caliente), para no preguntar a Supabase en cada consulta
+const sesionesValidas = new Map();
+
+/**
+ * Devuelve el id del usuario si la petición trae una sesión válida de Paindex Vault
+ * (cabecera "Authorization: Bearer <token de Supabase>"), o null si no.
+ * Protege las importaciones que gastan cuota o usan la cuenta de Paindex (Xbox y PlayStation).
+ */
+export async function usuarioConSesion(req) {
+  const m = String(req.headers?.authorization || "").match(/^Bearer\s+([A-Za-z0-9._-]{20,4000})$/);
+  if (!m) return null;
+  const token = m[1];
+  const guardada = sesionesValidas.get(token);
+  if (guardada && guardada.hasta > Date.now()) return guardada.id;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${token}` } });
+    if (!r.ok) return null;
+    const u = await r.json();
+    if (!u?.id) return null;
+    if (sesionesValidas.size > 500) sesionesValidas.clear();
+    sesionesValidas.set(token, { id: u.id, hasta: Date.now() + 5 * 60 * 1000 });
+    return u.id;
+  } catch (e) {
+    return null;
+  }
+}
+
+export const SIN_SESION = { error: "Inicia sesión en Paindex Vault para importar desde Xbox o PlayStation." };

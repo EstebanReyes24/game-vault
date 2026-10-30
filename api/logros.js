@@ -8,6 +8,7 @@
  */
 import { OPENXBL } from "./_xbox.js";
 import { trofeosPSN } from "./_psn.js";
+import { usuarioConSesion, SIN_SESION } from "./_supabase.js";
 
 const STEAM = "https://api.steampowered.com";
 
@@ -82,6 +83,8 @@ export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido" });
   const { fuente, steamid, appid, xuid, titleId, accountId, np, servicio } = req.query;
+  const protegida = fuente === "xbox" || fuente === "psn";
+  if (protegida && !(await usuarioConSesion(req))) { res.setHeader("Cache-Control", "no-store"); return res.status(401).json(SIN_SESION); }
   try {
     let items;
     if (fuente === "steam") {
@@ -98,7 +101,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Fuente no válida." });
     }
     // Los logros cambian poco: el CDN guarda la respuesta 30 minutos
-    res.setHeader("Cache-Control", "public, s-maxage=1800, stale-while-revalidate=86400");
+    res.setHeader("Cache-Control", protegida ? "private, max-age=1800" : "public, s-maxage=1800, stale-while-revalidate=86400");
     return res.status(200).json({ items: items.slice(0, 1500) });
   } catch (e) {
     res.setHeader("Cache-Control", "no-store");
