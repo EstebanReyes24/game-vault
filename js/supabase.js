@@ -167,6 +167,8 @@ const DB = {
 
   async deleteMyAccount() {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
+    // La foto de perfil vive en Storage: se borra antes que la cuenta
+    try { const u = await currentUser(); if (u) await supabaseClient.storage.from("avatares").remove([`${u.id}/avatar.webp`]); } catch (e) { /* sin foto */ }
     const { error } = await supabaseClient.rpc("delete_my_account");
     if (error) throw error;
     await supabaseClient.auth.signOut();
@@ -178,16 +180,54 @@ const DB = {
   async getMyProfile() {
     const user = await currentUser();
     if (!user) return null;
-    const { data, error } = await supabaseClient
+    // avatar_url llega con la migración 015; sin ella se pide el perfil sin la foto
+    let { data, error } = await supabaseClient
       .from("profiles")
-      .select("id, username, is_public")
+      .select("id, username, is_public, avatar_url")
       .eq("id", user.id)
       .maybeSingle();
+    if (error && /avatar_url/.test(error.message)) {
+      ({ data, error } = await supabaseClient.from("profiles").select("id, username, is_public").eq("id", user.id).maybeSingle());
+    }
     if (error) {
       console.error("Error al obtener el perfil:", error.message);
       return null;
     }
     return data;
+  },
+
+  // ==========================================
+  // FOTO DE PERFIL (migración 015, bucket "avatares")
+  // ==========================================
+  async getAvatar(username) {
+    if (!supabaseClient || !username) return null;
+    const { data, error } = await supabaseClient.from("profiles").select("avatar_url").eq("username", String(username).toLowerCase()).maybeSingle();
+    return error ? null : (data?.avatar_url || null);
+  },
+
+  async subirAvatar(blob) {
+    const user = await currentUser();
+    if (!user) throw new Error("Inicia sesión para poner una foto.");
+    const ruta = `${user.id}/avatar.webp`;
+    const { error } = await supabaseClient.storage.from("avatares").upload(ruta, blob, { upsert: true, contentType: "image/webp", cacheControl: "3600" });
+    if (error) throw new Error(/bucket/i.test(error.message) ? "Falta activar las fotos de perfil (migración 015)." : error.message);
+    const url = `${supabaseClient.storage.from("avatares").getPublicUrl(ruta).data.publicUrl}?v=${Date.now()}`;
+    const { error: e2 } = await supabaseClient.from("profiles").update({ avatar_url: url }).eq("id", user.id);
+    if (e2) throw e2;
+    return url;
+  },
+
+  async quitarMiAvatar() {
+    const user = await currentUser();
+    if (!user) return;
+    await supabaseClient.storage.from("avatares").remove([`${user.id}/avatar.webp`]);
+    const { error } = await supabaseClient.from("profiles").update({ avatar_url: null }).eq("id", user.id);
+    if (error) throw error;
+  },
+
+  async quitarAvatarDe(username) {
+    const { error } = await supabaseClient.rpc("quitar_avatar", { p_usuario: String(username).toLowerCase() });
+    if (error) throw error;
   },
 
   async setProfilePublic(isPublic) {
