@@ -35,6 +35,7 @@
       r.tags = [...new Set([...(r.tags || []), ...(o.tags || [])])].slice(0, 15);
       r.steamAppId = r.steamAppId || o.steamAppId || null;
       r.xboxTitleId = r.xboxTitleId || o.xboxTitleId || null;
+      if (!r.psnNpId && o.psnNpId) { r.psnNpId = o.psnNpId; r.psnService = o.psnService || "trophy"; }
       r.hours = Math.max(Number(r.hours) || 0, Number(o.hours) || 0);
       r.targetHours = Math.max(Number(r.targetHours) || 0, Number(o.targetHours) || 0);
       if (o.lastPlayed && (!r.lastPlayed || o.lastPlayed > r.lastPlayed)) r.lastPlayed = o.lastPlayed;
@@ -59,7 +60,7 @@
     document.getElementById("dupesBtnTexto").textContent = `UNIR REPETIDOS (${extra})`;
   }
 
-  const origen = (g) => [g.steamAppId ? "Steam" : "", g.xboxTitleId ? "Xbox" : "", !g.steamAppId && !g.xboxTitleId ? "a mano" : ""].filter(Boolean).join(" + ");
+  const origen = (g) => [g.steamAppId ? "Steam" : "", g.xboxTitleId ? "Xbox" : "", g.psnNpId ? "PlayStation" : "", !g.steamAppId && !g.xboxTitleId && !g.psnNpId ? "a mano" : ""].filter(Boolean).join(" + ");
 
   function abrir() {
     grupos = buscarGrupos();

@@ -38,13 +38,17 @@ function cloudRowToGame(row) {
     achUnlocked: row.ach_unlocked ?? null,
     achTotal: row.ach_total ?? null,
     releaseYear: row.release_year || null,
-    developer: row.developer || null
+    developer: row.developer || null,
+    // PlayStation (migración 013)
+    psnNpId: row.psn_np_id || null,
+    psnService: row.psn_service || null
   };
 }
 
 // Columnas de la migración 012: si aún no existen en la base, se envían sin ellas
 const COLUMNAS_012 = ["steam_appid", "xbox_title_id", "first_played", "last_played", "ach_unlocked", "ach_total", "release_year", "developer"];
-let sinColumnas012 = false;
+const COLUMNAS_013 = ["psn_np_id", "psn_service"];
+const columnasFaltantes = new Set();
 const fechaISO = (f) => { const t = Date.parse(f); return Number.isFinite(t) ? new Date(t).toISOString() : null; };
 const enteroONulo = (n) => (Number.isFinite(Number(n)) && n !== null && n !== "" ? Math.max(0, parseInt(n, 10)) : null);
 
@@ -71,7 +75,9 @@ function gameToCloudRow(game, userId) {
     ach_unlocked: enteroONulo(game.achUnlocked),
     ach_total: enteroONulo(game.achTotal),
     release_year: enteroONulo(game.releaseYear),
-    developer: game.developer ? String(game.developer).slice(0, 120) : null
+    developer: game.developer ? String(game.developer).slice(0, 120) : null,
+    psn_np_id: /^NPWR[0-9]{5}_[0-9]{2}$/.test(String(game.psnNpId || "")) ? String(game.psnNpId) : null,
+    psn_service: ["trophy", "trophy2"].includes(game.psnService) ? game.psnService : null
   };
 }
 
@@ -240,15 +246,20 @@ const DB = {
   async upsertGames(games) {
     const user = await currentUser();
     if (!user || !games || games.length === 0) return;
-    const limpiar = (r) => { if (sinColumnas012) COLUMNAS_012.forEach(c => delete r[c]); return r; };
+    const limpiar = (r) => { columnasFaltantes.forEach(c => delete r[c]); return r; };
     const rows = games.map(g => limpiar(gameToCloudRow(g, user.id)));
     for (let i = 0; i < rows.length; i += 200) {
       let { error } = await supabaseClient
         .from("games")
         .upsert(rows.slice(i, i + 200), { onConflict: "user_id,id" });
-      if (error && !sinColumnas012 && COLUMNAS_012.some(c => String(error.message).includes(c))) {
-        console.warn("Falta la migración 012: se guardan los juegos sin los datos de Steam/Xbox.");
-        sinColumnas012 = true;
+      // Si falta una migración (012 o 013), se guarda sin esas columnas en vez de fallar
+      for (let intento = 0; error && intento < 2; intento++) {
+        const msg = String(error.message);
+        const grupo = COLUMNAS_012.some(c => msg.includes(c)) ? [...COLUMNAS_012, ...COLUMNAS_013]
+          : (COLUMNAS_013.some(c => msg.includes(c)) ? COLUMNAS_013 : null);
+        if (!grupo) break;
+        console.warn("Falta una migración: se guardan los juegos sin", grupo.join(", "));
+        grupo.forEach(c => columnasFaltantes.add(c));
         rows.forEach(limpiar);
         ({ error } = await supabaseClient.from("games").upsert(rows.slice(i, i + 200), { onConflict: "user_id,id" }));
       }

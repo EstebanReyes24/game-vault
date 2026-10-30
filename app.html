@@ -443,6 +443,12 @@
         <button id="openXboxBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-brands fa-xbox"></i> XBOX
         </button>
+        <button id="openPsnBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Importar desde PlayStation con tu ID de PSN">
+          <i class="fa-brands fa-playstation"></i> PLAYSTATION
+        </button>
+        <button id="openPegarBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Añade varios juegos pegando sus nombres (Switch, PlayStation o cualquier plataforma)">
+          <i class="fa-solid fa-list"></i> PEGAR LISTA
+        </button>
         <button id="syncPlatformsBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Actualiza horas, última vez jugado y logros de tus juegos vinculados">
           <i class="fa-solid fa-rotate"></i> ACTUALIZAR
         </button>
@@ -941,6 +947,70 @@
     </div>
   </div>
 
+  <!-- IMPORTAR DESDE PLAYSTATION -->
+  <div id="psnModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="psnTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="psnTitulo" class="seccion-titulo">Importar desde PlayStation</h2>
+          <p>Trae tus juegos de PS5, PS4, PS3 y Vita con sus trofeos.</p>
+        </div>
+        <button type="button" id="psnCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <label class="borrador-campo">Tu ID en línea de PlayStation
+        <div class="flex gap-2">
+          <input type="text" id="psnId" class="console-input lista-buscar" maxlength="16" autocomplete="off" placeholder="Ej.: Paindex">
+          <button type="button" class="boton boton-senal" id="psnBuscar">Buscar juegos</button>
+        </div>
+      </label>
+      <details class="steam-ayuda" style="margin-top:.75rem">
+        <summary>Si no aparecen tus juegos</summary>
+        <p>Tus trofeos tienen que ser visibles. En la PS5 o en la app de PlayStation: <b>Ajustes → Usuarios y cuentas → Privacidad → Ver y personalizar la configuración de privacidad</b>, y pon <b>«Trofeos»</b> y <b>«Juegos»</b> en <b>Cualquiera</b>. Con «Juegos» visible también llegan las horas de PS4 y PS5.</p>
+      </details>
+      <p class="resena-nota-ayuda">Los juegos con el trofeo de platino entran como platinados; el resto toma su estado de los trofeos y de la última vez que jugaste. Se marcan solo los que tienen algún trofeo.</p>
+      <p class="borrador-estado" role="status" id="psnEstado"></p>
+      <div id="psnResultado" hidden>
+        <div class="flex items-center justify-between mt-3 text-sm text-slate-300">
+          <span id="psnCuenta"></span>
+          <button type="button" class="resena-mas" id="psnTodos">Desmarcar todos</button>
+        </div>
+        <ul class="xbox-lista" id="psnLista"></ul>
+        <div class="borrador-acciones" style="margin-top:1rem">
+          <button type="button" class="boton boton-senal" id="psnImportar">Añadir a mi estante</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PEGAR UNA LISTA DE JUEGOS -->
+  <div id="pegarModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="pegarTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="pegarTitulo" class="seccion-titulo">Pegar una lista</h2>
+          <p>Un juego por línea. Sirve para Switch o para cualquier plataforma sin conexión.</p>
+        </div>
+        <button type="button" id="pegarCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <label class="borrador-campo">Plataforma
+        <select id="pegarPlataforma" class="console-input lista-buscar">
+          <option value="Nintendo">Nintendo Switch</option>
+          <option value="PlayStation">PlayStation</option>
+          <option value="Xbox">Xbox</option>
+          <option value="PC">PC</option>
+        </select>
+      </label>
+      <label class="borrador-campo" style="margin-top:.75rem">Tus juegos
+        <textarea id="pegarTexto" class="console-input lista-buscar" rows="9" placeholder="The Legend of Zelda: Tears of the Kingdom&#10;Super Mario Odyssey&#10;Hades"></textarea>
+      </label>
+      <p class="resena-nota-ayuda">Si un juego ya está en tu estante se une con el que tienes. La portada, las etiquetas y el año se completan solos.</p>
+      <p class="borrador-estado" role="status" id="pegarEstado"></p>
+      <div class="borrador-acciones" style="margin-top:1rem">
+        <button type="button" class="boton boton-senal" id="pegarAnadir">Añadir a mi estante</button>
+      </div>
+    </div>
+  </div>
+
   <!-- PARA MIS VIDEOS (privado, solo admin) -->
   <div id="videosModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
     <div class="borradores-panel videos-panel" role="dialog" aria-modal="true" aria-labelledby="videosTitulo">
@@ -963,6 +1033,7 @@
   <script src="js/resenas.js"></script>
   <script src="js/xbox.js"></script>
   <script src="js/videos.js"></script>
+  <script src="js/psn.js"></script>
   <script src="js/autodatos.js"></script>
   <script src="js/repetidos.js"></script>
 </body>

@@ -73,11 +73,22 @@
     return pendientes.length;
   }
 
-  // ---------- 2. sincronizar con Steam y Xbox ----------
+  // De dónde salen los logros de un juego (Steam, Xbox o PlayStation) según lo vinculado
+  function fuenteDe(g, c) {
+    if (!c) return null;
+    if (g.steamAppId && c.steam_id) return { fuente: "steam", url: `/api/logros?fuente=steam&steamid=${c.steam_id}&appid=${g.steamAppId}` };
+    if (g.xboxTitleId && c.xbox_xuid) return { fuente: "xbox", url: `/api/logros?fuente=xbox&xuid=${c.xbox_xuid}&titleId=${g.xboxTitleId}` };
+    if (g.psnNpId && c.psn_account_id) return { fuente: "psn", url: `/api/logros?fuente=psn&accountId=${c.psn_account_id}&np=${g.psnNpId}&servicio=${g.psnService || "trophy"}` };
+    return null;
+  }
+  const NOMBRE_FUENTE = { steam: "Steam", xbox: "Xbox", psn: "PlayStation" };
+  const hayCuenta = (c) => Boolean(c && (c.steam_id || c.xbox_gamertag || c.psn_online_id));
+
+  // ---------- 2. sincronizar con Steam, Xbox y PlayStation ----------
   let cuentas = null;
   async function cargarCuentas() {
     cuentas = cloudUserId ? await DB.getCuentas() : null;
-    if (btnSync) btnSync.classList.toggle("hidden", !(cuentas && (cuentas.steam_id || cuentas.xbox_gamertag)));
+    if (btnSync) btnSync.classList.toggle("hidden", !hayCuenta(cuentas));
     return cuentas;
   }
 
@@ -142,6 +153,31 @@
       } catch (e) { informe.push(`Xbox: ${e.message}`); }
     }
 
+    if (c.psn_online_id) {
+      try {
+        const r = await fetch(`/api/psn?id=${encodeURIComponent(c.psn_online_id)}`);
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || "PlayStation no respondió.");
+        if (data.accountId && data.accountId !== c.psn_account_id) DB.guardarCuentas({ psn_account_id: data.accountId });
+        const buscar = emparejar(juegos, g => g.psnNpId, x => x.titulo);
+        let n = 0;
+        (data.juegos || []).forEach(x => {
+          const g = buscar({ id: x.npId, titulo: x.titulo });
+          if (!g) return;
+          const cambio = x.npId ? { psnNpId: x.npId, psnService: x.servicio } : {};
+          if (x.ultimaVez && (!g.lastPlayed || x.ultimaVez > g.lastPlayed)) cambio.lastPlayed = x.ultimaVez;
+          if (x.horas > (g.hours || 0)) cambio.hours = x.horas;
+          if (!g.steamAppId && !g.xboxTitleId) {
+            if (x.logros > (g.achUnlocked || 0)) cambio.achUnlocked = x.logros;
+            if (x.logrosTotal && x.logrosTotal !== g.achTotal) cambio.achTotal = x.logrosTotal;
+          }
+          if (x.platino && g.status !== "platinum") cambio.status = "platinum";
+          if (Object.keys(cambio).some(k => g[k] !== cambio[k])) { cambios[g.id] = { ...(cambios[g.id] || {}), ...cambio }; n++; }
+        });
+        informe.push(`PlayStation: ${n} juegos actualizados`);
+      } catch (e) { informe.push(`PlayStation: ${e.message}`); }
+    }
+
     aplicar(cambios);
     showToast(informe.join(" · ") || "Nada que actualizar.");
   }
@@ -178,11 +214,11 @@
     ];
     caja.innerHTML = `
       <div class="logros-cabecera">
-        <h4>Logros <span>${logrados.length}/${items.length} · ${pct}%</span></h4>
+        <h4>${origen === "psn" ? "Trofeos" : "Logros"} <span>${logrados.length}/${items.length} · ${pct}%</span></h4>
         ${puedeActualizar ? `<button type="button" class="resena-mas" data-logros-recargar>Actualizar</button>` : ""}
       </div>
       <div class="logros-barra" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><span style="width:${pct}%"></span></div>
-      <p class="logros-origen">${origen === "steam" ? "Steam" : "Xbox"}${sincronizado ? ` · actualizado ${fecha(sincronizado)}` : ""}</p>
+      <p class="logros-origen">${NOMBRE_FUENTE[origen] || origen}${sincronizado ? ` · actualizado ${fecha(sincronizado)}` : ""}</p>
       <ul class="logros-lista">
         ${orden.slice(0, 300).map(i => `
           <li class="${i.logrado ? "si" : "no"}">
@@ -235,9 +271,11 @@
     estadoBasico(g, cambio);
     const final = logrados.find(i => FINAL.test(`${i.nombre} ${i.desc || ""}`));
     if (final) subir(g, cambio, "completed");
-    if (items.length && logrados.length === items.length) subir(g, cambio, "platinum");
+    // En PlayStation el trofeo de platino manda aunque falten trofeos de DLC
+    const platino = logrados.find(i => i.tipo === "platinum");
+    if (platino || (items.length && logrados.length === items.length)) subir(g, cambio, "platinum");
     if (NIVEL[cambio.status || g.status] >= 2 && !g.completedYear) {
-      const cuando = (cambio.status || g.status) === "platinum" ? fechas[fechas.length - 1] : final?.fecha;
+      const cuando = (cambio.status || g.status) === "platinum" ? (platino?.fecha || fechas[fechas.length - 1]) : final?.fecha;
       if (cuando) cambio.completedYear = new Date(cuando).getFullYear();
     }
     return cambio;
@@ -262,10 +300,16 @@
     const ids = new Set((juegos || []).map(g => g.id));
     const pendientes = actuales
       .filter(g => ids.has(g.id) && !(Date.now() - (analizados[g.id] || 0) < semana))
-      .filter(g => (g.steamAppId && c.steam_id && (g.hours || 0) > 0) || (g.xboxTitleId && c.xbox_xuid && (g.achUnlocked || 0) > 0))
+      .filter(g => {
+        const f = fuenteDe(g, c);
+        if (!f) return false;
+        return f.fuente === "steam" ? (g.hours || 0) > 0 : ((g.achUnlocked || 0) > 0 || (g.hours || 0) > 0);
+      })
       .sort((a, b) => String(b.lastPlayed || "").localeCompare(String(a.lastPlayed || "")));
-    let xbox = 0;
-    const lote = pendientes.filter(g => g.steamAppId && c.steam_id ? true : (++xbox <= 40));
+    // Topes por pasada: Xbox (OpenXBL gratis) 40, PlayStation 60; Steam sin tope
+    const tope = { xbox: 40, psn: 60 };
+    const usados = { xbox: 0, psn: 0 };
+    const lote = pendientes.filter(g => { const f = fuenteDe(g, c).fuente; return f === "steam" || ++usados[f] <= tope[f]; });
     if (!lote.length) return;
     analizando = true;
     let cambios = {}, hechos = 0, cambiados = 0;
@@ -273,13 +317,10 @@
       for (const g of lote) {
         hechos++;
         if (avisar && (hechos % 10 === 0 || hechos === lote.length)) showToast(`Revisando logros… ${hechos}/${lote.length}`);
-        const fuente = g.steamAppId && c.steam_id ? "steam" : "xbox";
-        const url = fuente === "steam"
-          ? `/api/logros?fuente=steam&steamid=${c.steam_id}&appid=${g.steamAppId}`
-          : `/api/logros?fuente=xbox&xuid=${c.xbox_xuid}&titleId=${g.xboxTitleId}`;
+        const { fuente, url } = fuenteDe(g, c);
         try {
           const r = await fetch(url);
-          if (r.status === 429) { showToast("Xbox pide una pausa: el resto de juegos se revisa en la próxima actualización.", true); break; }
+          if (r.status === 429) { showToast(`${NOMBRE_FUENTE[fuente]} pide una pausa: el resto de juegos se revisa en la próxima actualización.`, true); break; }
           if (r.status === 403) {
             analizados[g.id] = Date.now();
             if (fuente === "steam") { showToast("Steam no deja ver tus logros: en Steam pon «Detalles del juego» como Público en la privacidad de tu perfil.", true); break; }
@@ -294,7 +335,7 @@
           if (Object.keys(cambio).some(k => g[k] !== cambio[k])) { cambios[g.id] = cambio; cambiados++; }
         } catch (e) { /* se reintenta en la próxima pasada */ }
         if (Object.keys(cambios).length >= 15) { aplicar(cambios); cambios = {}; }
-        await pausa(fuente === "xbox" ? 600 : 250);
+        await pausa(fuente === "steam" ? 250 : 600);
       }
       aplicar(cambios);
     } finally {
@@ -307,8 +348,9 @@
   async function traerLogros(g, forzar) {
     if (!caja) return;
     const c = cuentas || await cargarCuentas();
-    const fuente = g.steamAppId && c?.steam_id ? "steam" : (g.xboxTitleId && c?.xbox_xuid ? "xbox" : null);
-    if (!fuente) return false;
+    const origen = fuenteDe(g, c);
+    if (!origen) return false;
+    const { fuente, url } = origen;
     if (!forzar) {
       const guardado = await DB.getLogros(g.id);
       if (guardado && guardado.items?.length && Date.now() - Date.parse(guardado.synced_at) < 24 * 3600 * 1000) {
@@ -318,9 +360,6 @@
     }
     caja.innerHTML = `<p class="logros-origen">Cargando logros…</p>`;
     caja.hidden = false;
-    const url = fuente === "steam"
-      ? `/api/logros?fuente=steam&steamid=${c.steam_id}&appid=${g.steamAppId}`
-      : `/api/logros?fuente=xbox&xuid=${c.xbox_xuid}&titleId=${g.xboxTitleId}`;
     try {
       const r = await fetch(url);
       const data = await r.json();
@@ -353,8 +392,8 @@
     }
     if (!cloudUserId) return;
     const hay = await traerLogros(g, false);
-    if (!hay && fichaActual === g.id && (cuentas?.steam_id || cuentas?.xbox_gamertag)) {
-      caja.innerHTML = `<p class="logros-origen">Este juego aún no está vinculado a Steam ni a Xbox. Pulsa <b>ACTUALIZAR</b> en tu estante para vincularlo.</p>`;
+    if (!hay && fichaActual === g.id && hayCuenta(cuentas)) {
+      caja.innerHTML = `<p class="logros-origen">Este juego aún no está vinculado a Steam, Xbox ni PlayStation. Pulsa <b>ACTUALIZAR</b> en tu estante para vincularlo.</p>`;
       caja.hidden = false;
     }
   }
