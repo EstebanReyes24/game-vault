@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="/js/errores.js"></script>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Juegos · Paindex Vault</title>
+  <meta name="description" content="Los juegos más registrados, mejor puntuados y más platinados por la comunidad de Paindex Vault.">
+  <meta name="theme-color" content="#14111a">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha384-t1nt8BQoYMLFN5p42tRAtuAAFQaCQODekUVeKKZrEnEyp4H2R0RHFz0KWpmj7i8g" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Big+Shoulders+Display:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.min.js" integrity="sha384-UagCvVPT5XXA0Hx+nJYUAGBFseHT9zBgpJMSebsAxl9lciTwbT+39j5VfRjdP5Tp" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/paindex.css">
+  <link rel="stylesheet" href="css/tw.css">
+  <script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="p-3 sm:p-6 lg:p-8 flex flex-col items-center min-h-screen">
+  <div class="w-full max-w-6xl space-y-10">
+    <header class="w-full flex justify-between items-center gap-3 py-2">
+      <a href="/" class="marca" aria-label="Paindex Vault, inicio">
+        <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
+        <span class="marca-texto">PAINDEX<small>Vault</small></span>
+      </a>
+      <a href="/estante" class="boton boton-senal">Mi estante</a>
+    </header>
+
+    <main id="juegos" class="juegos-indice" aria-live="polite">
+      <p class="juego-cargando">Cargando…</p>
+    </main>
+
+    <footer class="pt-10 pb-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <span>Paindex Vault, hecho por <strong class="text-slate-300">Paindex</strong> · datos de juegos de <a href="https://rawg.io" target="_blank" rel="noopener" class="underline">RAWG</a></span>
+      <a href="/legal" class="underline">Términos y privacidad</a>
+    </footer>
+  </div>
+
+  <script src="js/supabase.js"></script>
+  <script src="js/juegos.js"></script>
+</body>
+</html>

@@ -3,5 +3,6 @@ Allow: /
 Disallow: /api/
 Disallow: /estante
 Disallow: /login
+Allow: /api/og
 
 Sitemap: https://game-vault-beige.vercel.app/sitemap.xml

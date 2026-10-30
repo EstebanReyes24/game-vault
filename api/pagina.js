@@ -96,7 +96,7 @@ export default async function handler(req, res) {
         meta = {
           titulo: `@${pa.usuario} vs @${pb.usuario} · ¿qué tan compatibles son?`,
           descripcion: `${pa.juegos} juegos contra ${pb.juegos}. Juegos en común, dónde chocan sus notas y qué se recomiendan en Paindex Vault.`,
-          imagen: pa.top[0]?.portada || pb.top[0]?.portada || meta.imagen,
+          imagen: `${origen}/api/og?a=${encodeURIComponent(pa.usuario)}&b=${encodeURIComponent(pb.usuario)}`,
           url: `${origen}/u/${pa.usuario}/vs/${pb.usuario}`
         };
       }
