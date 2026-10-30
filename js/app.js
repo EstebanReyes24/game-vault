@@ -1264,6 +1264,8 @@ function openDetailModal(game) {
     img.src = coverSrc(game);
   });
   if (modalTitle) modalTitle.innerText = game.title;
+  const enlaceJuego = document.getElementById("modalGameLink");
+  if (enlaceJuego && window.urlJuego) enlaceJuego.href = window.urlJuego(game.title);
   if (modalRating) modalRating.innerText = fmtRating(game);
   if (modalReview) modalReview.innerText = game.notes || "Sin reseña escrita.";
 
@@ -2086,6 +2088,12 @@ async function handleSession(user) {
   const profile = await DB.getMyProfile();
   const alias = profile?.username || user.email.split("@")[0];
   CanvasPoster.usuario = profile?.username || null;
+  // En el perfil de otro: "Comparar conmigo"
+  const comparar = document.getElementById("perfilCompararBtn");
+  if (comparar && isSpectatorMode && profile?.username && profile.username !== String(publicProfileTarget).toLowerCase()) {
+    comparar.href = `/u/${encodeURIComponent(profile.username)}/vs/${encodeURIComponent(String(publicProfileTarget).toLowerCase())}`;
+    comparar.hidden = false;
+  }
   if (appUserLabel) appUserLabel.innerText = alias;
   if (appUserIcon) appUserIcon.className = "fa-solid fa-cloud text-emerald-400";
   if (accountControls) accountControls.classList.remove("hidden");
@@ -2242,4 +2250,23 @@ async function pintarSocial(nombre, miPerfil) {
       boton.disabled = false;
     }
   });
+}
+
+// Desde la página de un juego: app.html?anadir=Título abre el formulario con ese juego buscado
+(function () {
+  const t = new URLSearchParams(location.search).get("anadir");
+  if (!t || isSpectatorMode || !gameSearch) return;
+  history.replaceState(null, "", location.pathname);
+  setTimeout(() => {
+    toggleForm(true);
+    gameSearch.value = String(t).slice(0, 150);
+    gameSearch.dispatchEvent(new Event("input", { bubbles: true }));
+    gameSearch.focus();
+  }, 400);
+})();
+
+// En un perfil ajeno no tienen sentido los botones de importar ni de mantenimiento
+if (isSpectatorMode) {
+  ["openSteamSyncBtn", "openXboxBtn", "openPsnBtn", "openPegarBtn", "syncPlatformsBtn", "autoDataBtn", "dupesBtn", "queJuegoBtn"]
+    .forEach(id => document.getElementById(id)?.remove());
 }

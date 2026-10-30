@@ -121,8 +121,9 @@ async function checkUserSession() {
       if (authBtnText) authBtnText.innerText = alias;
       if (authIcon) authIcon.className = "fa-solid fa-cloud-check text-emerald-400";
       if (authBtn) {
-        authBtn.href = "javascript:void(0)";
-        authBtn.onclick = async () => {
+        authBtn.href = "#";
+        authBtn.onclick = async (e) => {
+          e.preventDefault();
           if (confirm(`Sesión iniciada como ${user.email}.\n¿Deseas cerrar sesión?`)) {
             await DB.signOut();
             window.location.reload();
@@ -415,7 +416,7 @@ async function loadHallOfFame() {
     return `
       <div class="glass-panel glow-card rounded-2xl overflow-hidden border border-white/10 p-3 flex flex-col justify-between group">
         <div class="relative aspect-[3/4] rounded-xl overflow-hidden bg-slate-950 mb-2.5">
-          <img src="${cover}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="${title}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80'">
+          <img src="${cover}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" alt="${title}" data-respaldo="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=400&q=80">
           <div class="absolute top-2 right-2 bg-black/80 px-2 py-0.5 rounded-md text-amber-400 font-black text-[11px] console-font border border-white/10">★ ${rating}</div>
           <div class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[9px] font-bold text-slate-300">${tag}</div>
         </div>
@@ -759,7 +760,7 @@ function haceCuanto(f) {
 }
 const indiceDe = (post) => cachedPosts.findIndex(p => p.id === post.id);
 const resumen = (t, n) => { const x = String(t || "").replace(/\s+/g, " ").trim(); return x.length > n ? x.slice(0, n).replace(/\s+\S*$/, "") + "…" : x; };
-const imgPost = (post, clases) => `<img src="${escapeHTML(String(post.cover_url || IMAGEN_RESPALDO))}" class="${clases}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${IMAGEN_RESPALDO}'">`;
+const imgPost = (post, clases) => `<img src="${escapeHTML(String(post.cover_url || IMAGEN_RESPALDO))}" class="${clases}" alt="" loading="lazy" data-respaldo="${IMAGEN_RESPALDO}">`;
 
 function colorCategoria(cat) {
   if (cat === "Recomendación") return "bg-amber-500/20 text-amber-300 border-amber-500/40";
@@ -787,7 +788,7 @@ function tarjetaPost(post) {
   const i = indiceDe(post);
   return `
     <article class="glass-panel glow-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between hover:border-purple-500/30 transition group shadow-xl">
-      <div class="relative h-48 w-full overflow-hidden bg-slate-950 cursor-pointer" onclick="openPostByIndex(${i})">
+      <div class="relative h-48 w-full overflow-hidden bg-slate-950 cursor-pointer" data-abrir-post="${i}">
         ${imgPost(post, "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500")}
         <div class="absolute inset-0 bg-gradient-to-t from-[#0d1326] via-transparent"></div>
         <div class="absolute top-3 left-3 flex items-center gap-1.5">
@@ -796,13 +797,13 @@ function tarjetaPost(post) {
         </div>
       </div>
       <div class="p-5 flex flex-col justify-between flex-1 gap-3 text-left">
-        <div class="space-y-1.5 cursor-pointer" onclick="openPostByIndex(${i})">
+        <div class="space-y-1.5 cursor-pointer" data-abrir-post="${i}">
           <span class="text-[10px] text-slate-500 font-semibold block">${fechaCorta(post.created_at)} • Por Paindex</span>
           <h3 class="text-base font-black text-white console-font leading-snug group-hover:text-purple-300 transition">${escapeHTML(String(post.title || ''))}</h3>
           <p class="text-xs text-slate-300 leading-relaxed line-clamp-3">${escapeHTML(String(post.content || ''))}</p>
         </div>
         <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-          <button onclick="openPostByIndex(${i})" class="text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer">
+          <button data-abrir-post="${i}" class="text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer">
             Leer y debatir <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </button>
           ${controlesAdmin(post)}
@@ -822,7 +823,7 @@ function pintarNoticiasPortada(noticias) {
   const nota = document.getElementById("noticiasNota");
   if (nota) nota.textContent = noticias.length > 5 ? `${noticias.length} noticias en el archivo` : "";
   bloque.innerHTML = `
-    <article class="noticia-principal" onclick="openPostByIndex(${indiceDe(principal)})">
+    <article class="noticia-principal" data-abrir-post="${indiceDe(principal)}">
       <div class="noticia-principal-img">${imgPost(principal, "")}</div>
       <div class="noticia-principal-texto">
         <span class="noticia-meta">${principal.game_tag ? `<b>${escapeHTML(String(principal.game_tag))}</b> · ` : ""}${haceCuanto(principal.created_at)}</span>
@@ -832,7 +833,7 @@ function pintarNoticiasPortada(noticias) {
     </article>
     <ol class="noticias-titulares">
       ${resto.slice(0, 4).map(n => `
-        <li><button type="button" onclick="openPostByIndex(${indiceDe(n)})">
+        <li><button type="button" data-abrir-post="${indiceDe(n)}">
           ${imgPost(n, "")}
           <span>
             <span class="noticia-meta">${n.game_tag ? `<b>${escapeHTML(String(n.game_tag))}</b> · ` : ""}${haceCuanto(n.created_at)}</span>
@@ -982,6 +983,13 @@ if (copyPostLinkBtn) copyPostLinkBtn.addEventListener("click", async () => {
     copyPostLinkBtn.innerHTML = '<i class="fa-solid fa-check" aria-hidden="true"></i> Copiado';
     setTimeout(() => { copyPostLinkBtn.innerHTML = '<i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace'; }, 1800);
   } catch (e) { prompt("Copia el enlace:", url); }
+});
+
+// Tarjetas y titulares: data-abrir-post="índice" abre el artículo (sin onclick en el HTML, por la CSP)
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-abrir-post]");
+  if (!el || e.target.closest(".edit-post-btn, .delete-post-btn")) return;
+  window.openPostByIndex(Number(el.dataset.abrirPost));
 });
 
 window.openPostByIndex = function(index) {

@@ -29,7 +29,12 @@
   // si una falla, se vuelve a pedir a través de la web (/api/icono). Vale para toda la página.
   window.addEventListener("error", (e) => {
     const img = e.target;
-    if (!img || img.tagName !== "IMG" || img.dataset.reintento) return;
+    if (!img || img.tagName !== "IMG") return;
+    // Imagen de respaldo declarada en el HTML (data-respaldo), en vez de onerror en línea
+    if (img.dataset.respaldo && img.src !== img.dataset.respaldo && !/\/api\/icono/.test(img.src) && !img.dataset.reintento) {
+      if (!/psnobj\.prod\.dl\.playstation\.net/.test(img.src)) { img.src = img.dataset.respaldo; return; }
+    }
+    if (img.dataset.reintento) { if (img.dataset.respaldo && img.src !== img.dataset.respaldo) img.src = img.dataset.respaldo; return; }
     try {
       const u = new URL(img.currentSrc || img.src);
       if (u.hostname !== "psnobj.prod.dl.playstation.net") return;

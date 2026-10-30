@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v29';
+const CACHE_NAME = 'paindex-vault-v32';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

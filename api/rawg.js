@@ -76,6 +76,7 @@ export default async function handler(req, res) {
       etiquetas: etiquetas.slice(0, 6),
       anio: juego.released ? Number(juego.released.slice(0, 4)) : null,
       desarrollador,
+      duracion: Number(juego.playtime) > 0 ? Number(juego.playtime) : null, // horas promedio según RAWG
       portada: juego.background_image || null
     });
   } catch (e) {

@@ -26,16 +26,17 @@
       : `<span class="actividad-sin-portada" aria-hidden="true">${esc(String(a.game_title || "?").charAt(0))}</span>`;
     const nota = a.rating ? `<b class="actividad-nota">${Number(a.rating).toFixed(1)}</b>` : "";
     const destino = a.kind === "resena" ? `/u/${esc(a.username)}#perfilResenas` : `/u/${esc(a.username)}`;
+    const juego = window.urlJuego ? window.urlJuego(a.game_title) : destino;
     return `
       <li class="actividad-item${a.kind === "platino" ? " es-platino" : ""}">
-        <a href="${destino}" class="actividad-enlace">
-          <span class="actividad-tapa">${portada}</span>
+        <div class="actividad-enlace">
+          <a href="${esc(juego)}" class="actividad-tapa" aria-label="${esc(a.game_title)}">${portada}</a>
           <span class="actividad-texto">
-            <span><b>@${esc(a.username)}</b> ${VERBOS[a.kind] || "jugó"} <b>${esc(a.game_title)}</b></span>
+            <span><a href="${destino}" class="actividad-quien">@${esc(a.username)}</a> ${VERBOS[a.kind] || "jugó"} <a href="${esc(juego)}" class="actividad-juego">${esc(a.game_title)}</a></span>
             <time datetime="${esc(a.created_at)}">${hace(a.created_at)}</time>
           </span>
           ${nota}
-        </a>
+        </div>
       </li>`;
   }
 
