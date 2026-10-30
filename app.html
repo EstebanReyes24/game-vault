@@ -446,6 +446,9 @@
         <button id="syncPlatformsBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Actualiza horas, última vez jugado y logros de tus juegos vinculados">
           <i class="fa-solid fa-rotate"></i> ACTUALIZAR
         </button>
+        <button id="dupesBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Une los juegos que tienes repetidos entre Steam, Xbox y a mano">
+          <i class="fa-solid fa-object-group"></i> <span id="dupesBtnTexto">UNIR REPETIDOS</span>
+        </button>
         <button id="autoDataBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Añade etiquetas, año y desarrollador a los juegos que no los tienen">
           <i class="fa-solid fa-wand-magic-sparkles"></i> COMPLETAR DATOS
         </button>
@@ -837,6 +840,23 @@
 
   <!-- SCRIPTS DEL PROYECTO -->
 
+  <!-- UNIR REPETIDOS -->
+  <div id="dupesModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="dupesTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="dupesTitulo" class="seccion-titulo">Juegos repetidos</h2>
+          <p id="dupesSub">Cada grupo se une en una sola tarjeta con todas sus plataformas.</p>
+        </div>
+        <button type="button" id="dupesCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <ul id="dupesLista" class="xbox-lista dupes-lista"></ul>
+      <div class="dupes-acciones">
+        <button type="button" class="boton boton-senal" id="dupesUnir">Unir los marcados</button>
+      </div>
+    </div>
+  </div>
+
   <!-- LISTAS -->
   <div id="listsModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
     <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="listsTitle">
@@ -944,5 +964,6 @@
   <script src="js/xbox.js"></script>
   <script src="js/videos.js"></script>
   <script src="js/autodatos.js"></script>
+  <script src="js/repetidos.js"></script>
 </body>
 </html>
