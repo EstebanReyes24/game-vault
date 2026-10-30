@@ -4,6 +4,8 @@
  * 2. Revisa que todo lo que usa la web responda (Steam, RAWG, Xbox, PlayStation y las noticias).
  *    Lo que falle queda anotado en Moderación → "Errores de la web" con el prefijo [Vigía].
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { supa, SUPABASE_URL, SUPABASE_ANON_KEY } from "./_supabase.js";
 import { OPENXBL } from "./_xbox.js";
 import { tokenPSN } from "./_psn.js";
@@ -34,8 +36,7 @@ async function revisar(origen) {
       await tokenPSN();
     },
     Noticias: async () => {
-      const r = await conTiempo(`${origen}/borradores/noticias.json`, { cache: "no-store" });
-      const d = await r.json();
+      const d = JSON.parse(readFileSync(join(process.cwd(), "borradores", "noticias.json"), "utf8"));
       const horas = (Date.now() - Date.parse(d.actualizado)) / 3600000;
       if (!Number.isFinite(horas) || horas > 30) throw new Error(`la tarea de noticias no deja borradores desde hace ${Number.isFinite(horas) ? Math.round(horas) + " h" : "mucho"}`);
     }
