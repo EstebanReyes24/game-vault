@@ -1,0 +1,31 @@
+# Cada vez que Vercel termina de publicar una vista previa (o producción), se abren las páginas
+# principales en celular y computadora y se comprueba que no haya errores ni nada desbordado.
+name: Prueba de humo
+
+on:
+  deployment_status:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "URL a probar"
+        required: true
+        default: "https://game-vault-beige.vercel.app"
+
+jobs:
+  humo:
+    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar Playwright
+        run: |
+          npm install --no-save playwright@1.48.2
+          npx playwright install --with-deps chromium
+      - name: Probar páginas
+        env:
+          BASE: ${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url || inputs.base }}
+        run: node pruebas/humo.mjs

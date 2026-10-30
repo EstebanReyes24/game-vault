@@ -235,7 +235,6 @@
   <link rel="stylesheet" href="css/paindex.css">
   <link rel="stylesheet" href="css/tw.css">
   <!-- Analíticas de Vercel: visitas anónimas, sin cookies -->
-  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="p-3 sm:p-6 lg:p-8">
@@ -294,6 +293,7 @@
         </div>
         <div class="perfil-acciones">
           <button type="button" id="perfilSeguirBtn" class="boton boton-senal" hidden>Seguir</button>
+          <a href="/" id="perfilCompararBtn" class="boton boton-linea" hidden><i class="fa-solid fa-code-compare" aria-hidden="true"></i> Comparar conmigo</a>
           <button type="button" id="perfilCopiarBtn" class="boton boton-linea"><i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace</button>
           <a href="/app.html" id="perfilCtaBtn" class="boton boton-senal">Crea tu estante</a>
         </div>
@@ -385,6 +385,15 @@
       </div>
     </div>
 
+    <!-- Medallas (se calculan con el estante que se está viendo) -->
+    <section class="medallas solo-con-juegos" id="medallas" aria-labelledby="medallasTitulo" hidden>
+      <div class="medallas-cabecera">
+        <h2 id="medallasTitulo" class="medallas-titulo">Medallas</h2>
+        <span id="medallasCuenta"></span>
+      </div>
+      <ul class="medallas-lista" id="medallasLista"></ul>
+    </section>
+
     <!-- FILTROS Y CONTROLES -->
     <div class="solo-con-juegos glass-panel p-4 rounded-3xl flex flex-wrap items-center justify-between gap-3 shadow-xl">
       <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto">
@@ -442,6 +451,9 @@
         </button>
         <button id="openXboxBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-brands fa-xbox"></i> XBOX
+        </button>
+        <button id="queJuegoBtn" type="button" class="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Te propone qué jugar de tus pendientes">
+          <i class="fa-solid fa-dice"></i> ¿QUÉ JUEGO?
         </button>
         <button id="openPsnBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Importar desde PlayStation con tu ID de PSN">
           <i class="fa-brands fa-playstation"></i> PLAYSTATION
@@ -659,6 +671,7 @@
           <img id="modalCoverThumb" src="" class="w-20 h-28 sm:w-24 sm:h-32 object-cover rounded-2xl border-2 border-white/15 shadow-2xl shrink-0 bg-slate-900">
           <div class="overflow-hidden pb-1">
             <h2 id="modalTitle" class="text-xl sm:text-2xl font-black text-white truncate console-font">Título</h2>
+            <a id="modalGameLink" href="/" class="ver-todo modal-juego-enlace">Página del juego <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
             <div id="modalBadges" class="flex flex-wrap items-center gap-2 mt-2"></div>
           </div>
         </div>
@@ -947,6 +960,30 @@
     </div>
   </div>
 
+  <!-- ¿QUÉ JUEGO HAGO AHORA? -->
+  <div id="queJuegoModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="queJuegoTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="queJuegoTitulo" class="seccion-titulo">¿Qué juego hago ahora?</h2>
+          <p>Elige cuánto quieres invertir y te propongo tres de tus pendientes y pausados.</p>
+        </div>
+        <button type="button" id="queJuegoCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div class="que-juego-opciones" role="radiogroup" aria-label="Duración">
+        <button type="button" data-dur="corto" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">Algo corto (menos de 12 h)</button>
+        <button type="button" data-dur="medio" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">Mediano (12 a 35 h)</button>
+        <button type="button" data-dur="largo" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">Largo (más de 35 h)</button>
+        <button type="button" data-dur="igual" class="filter-pill active px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">Me da igual</button>
+      </div>
+      <p class="borrador-estado" id="queJuegoEstado" role="status"></p>
+      <ul class="que-juego-lista" id="queJuegoLista"></ul>
+      <div class="borrador-acciones" style="margin-top:1rem">
+        <button type="button" class="boton boton-linea" id="queJuegoOtra">Otras opciones</button>
+      </div>
+    </div>
+  </div>
+
   <!-- IMPORTAR DESDE PLAYSTATION -->
   <div id="psnModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
     <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="psnTitulo">
@@ -1036,5 +1073,7 @@
   <script src="js/psn.js"></script>
   <script src="js/autodatos.js"></script>
   <script src="js/repetidos.js"></script>
+  <script src="js/avisos.js"></script>
+  <script src="js/medallas.js"></script>
 </body>
 </html>

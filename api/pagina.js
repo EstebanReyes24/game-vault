@@ -6,7 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { supa, perfilPublico } from "./_supabase.js";
+import { supa, perfilPublico, usuarioValido } from "./_supabase.js";
 
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const plantillas = {};
@@ -35,7 +35,7 @@ function inyectar(html, meta) {
 
 export default async function handler(req, res) {
   const origen = `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
-  const { tipo, u, id, lista, resena } = req.query;
+  const { tipo, u, id, lista, resena, j, a, b } = req.query;
   let archivo = "index.html";
   let meta = {
     titulo: "Paindex Vault · Tu estante de juegos",
@@ -88,6 +88,36 @@ export default async function handler(req, res) {
             };
           }
         }
+      }
+    } else if (tipo === "comparar" && usuarioValido(a) && usuarioValido(b)) {
+      archivo = "comparar.html";
+      const [pa, pb] = await Promise.all([perfilPublico(a), perfilPublico(b)]);
+      if (pa && pb) {
+        meta = {
+          titulo: `@${pa.usuario} vs @${pb.usuario} · ¿qué tan compatibles son?`,
+          descripcion: `${pa.juegos} juegos contra ${pb.juegos}. Juegos en común, dónde chocan sus notas y qué se recomiendan en Paindex Vault.`,
+          imagen: pa.top[0]?.portada || pb.top[0]?.portada || meta.imagen,
+          url: `${origen}/u/${pa.usuario}/vs/${pb.usuario}`
+        };
+      }
+    } else if (tipo === "juego" && /^[a-z0-9-]{1,120}$/.test(String(j || ""))) {
+      archivo = "juego.html";
+      const d = await supa(`rpc/juego_comunidad?p_clave=${encodeURIComponent(String(j).replace(/-/g, ""))}`).catch(() => null);
+      if (d && d.titulo) {
+        const partes = [];
+        if (d.jugadores) partes.push(`${d.jugadores} ${d.jugadores === 1 ? "jugador lo tiene" : "jugadores lo tienen"}`);
+        if (d.nota_media) partes.push(`nota media ${Number(d.nota_media).toFixed(1)}`);
+        if (d.platinos) partes.push(`${d.platinos} platinos`);
+        if ((d.resenas || []).length) partes.push(`${d.resenas.length} reseñas`);
+        meta = {
+          titulo: `${d.titulo} · Paindex Vault`,
+          descripcion: partes.length ? `${partes.join(" · ")}. Lo que opina la comunidad de Paindex.` : "Lo que opina la comunidad de Paindex.",
+          imagen: /^https:\/\//.test(d.portada || "") ? d.portada : meta.imagen,
+          url: `${origen}/j/${j}`,
+          tipo: "article"
+        };
+      } else {
+        meta = { ...meta, titulo: "Juego · Paindex Vault", url: `${origen}/j/${j}` };
       }
     } else if (tipo === "articulo" && /^\d{1,12}$/.test(String(id || ""))) {
       const [post] = await supa(`posts?select=id,title,category,content,cover_url&id=eq.${id}&limit=1`);

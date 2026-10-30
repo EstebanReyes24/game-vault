@@ -837,6 +837,17 @@ DB.getPublicFeed = DB.getPublicPosts;
 window.DB = DB;
 window.supabaseClient = supabaseClient;
 
+/**
+ * Dirección de la página de un juego: "Marvel's Spider-Man™ 2" → "marvels-spider-man-2".
+ * Sin guiones es la misma clave que usa la base (clave_juego, migración 014).
+ */
+window.slugJuego = function (titulo) {
+  const de = "áàäâãåéèëêíìïîóòöôõúùüûñç", a = "aaaaaaeeeeiiiiooooouuuunc";
+  return String(titulo || "").toLowerCase().split("").map(c => { const i = de.indexOf(c); return i >= 0 ? a[i] : c; }).join("")
+    .replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 120);
+};
+window.urlJuego = (titulo) => `/j/${window.slugJuego(titulo)}`;
+
 /** fetch a la API de la web con la sesión de Supabase (Xbox y PlayStation la exigen). */
 window.fetchConSesion = async function (url, opciones = {}) {
   let token = null;
