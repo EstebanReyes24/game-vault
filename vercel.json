@@ -38,6 +38,12 @@
   "functions": {
     "api/pagina.js": {
       "includeFiles": "{app,index,juego,comparar}.html"
+    },
+    "api/borradores.js": {
+      "includeFiles": "borradores/noticias.json"
+    },
+    "api/latido.js": {
+      "includeFiles": "borradores/noticias.json"
     }
   },
   "crons": [
@@ -80,6 +86,11 @@
       "source": "/app",
       "destination": "/estante",
       "permanent": true
+    },
+    {
+      "source": "/borradores/:ruta*",
+      "destination": "/",
+      "permanent": false
     }
   ]
 }

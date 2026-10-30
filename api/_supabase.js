@@ -99,3 +99,19 @@ export function limitePorIp(req, ruta, maximo, segundos) {
   if (visitas.size > 5000) visitas.clear();
   return true;
 }
+
+/** true si la sesión de la petición es del admin (es_admin() en Supabase con el token del usuario). */
+export async function esAdminConSesion(req) {
+  const m = String(req.headers?.authorization || "").match(/^Bearer\s+([A-Za-z0-9._-]{20,4000})$/);
+  if (!m) return false;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/es_admin`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${m[1]}`, "Content-Type": "application/json" },
+      body: "{}"
+    });
+    return r.ok && (await r.json()) === true;
+  } catch (e) {
+    return false;
+  }
+}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v37';
+const CACHE_NAME = 'paindex-vault-v38';
 const ASSETS_TO_CACHE = [
   '/',
   '/estante',

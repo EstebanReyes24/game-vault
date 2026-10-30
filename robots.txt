@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /estante
+Disallow: /login
 
 Sitemap: https://game-vault-beige.vercel.app/sitemap.xml

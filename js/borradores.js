@@ -2,7 +2,7 @@
  * Borradores de noticias (solo admin).
  *
  * Una tarea programada investiga las noticias del día y deja borradores en
- * /borradores/noticias.json. Aquí el admin los revisa, escoge la imagen
+ * borradores/noticias.json (servido solo al admin por /api/borradores). Aquí el admin los revisa, escoge la imagen
  * (arte oficial del juego vía RAWG), retoca si quiere y pulsa "Publicar".
  * Lo ya publicado o descartado se recuerda en la tabla news_drafts_done.
  */
@@ -23,7 +23,8 @@
   async function cargar() {
     let data;
     try {
-      const res = await fetch("borradores/noticias.json", { cache: "no-store" });
+      // Solo el admin los recibe: /api/borradores comprueba la sesión
+      const res = await fetchConSesion("/api/borradores", { cache: "no-store" });
       if (!res.ok) return;
       data = await res.json();
     } catch (e) { return; }
