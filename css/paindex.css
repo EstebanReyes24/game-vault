@@ -944,3 +944,35 @@ body.light-mode .noticia-principal h3, body.light-mode .noticias-titulares stron
 .aviso-correo span { flex: 1; line-height: 1.4; }
 .aviso-correo a { color: inherit; font-weight: 700; text-decoration: underline; white-space: nowrap; }
 .aviso-correo button { background: none; border: 0; color: inherit; font-size: 1.3rem; line-height: 1; cursor: pointer; }
+
+/* ---------- modo claro: los colores de Paindex se invierten para todo lo nuevo ---------- */
+body.light-mode {
+  --noche: #f6f3f7;
+  --carbon: #ffffff;
+  --grafito: #ece7ee;
+  --ceniza: #d9d2dc;
+  --niebla: #6b6271;
+  --hueso: #16121a;
+}
+/* Barra de herramientas: todos los botones legibles sobre fondo claro */
+body.light-mode #barraHerramientas button {
+  background: #ffffff !important;
+  color: #3a3240 !important;
+  border: 1px solid rgba(36, 30, 40, 0.18) !important;
+}
+body.light-mode #barraHerramientas button:hover { background: #f4f0f5 !important; }
+body.light-mode #barraHerramientas #queJuegoBtn { background: #ecfdf3 !important; color: #047857 !important; border-color: #9fdcbc !important; }
+body.light-mode #barraHerramientas #dupesBtn { background: #fff8e6 !important; color: #92400e !important; border-color: #f3d38a !important; }
+/* Chips que eran claros sobre oscuro: siguen claros */
+body.light-mode .tapa-ficha { background: #ffffff; box-shadow: 0 0 0 1px rgba(36, 30, 40, 0.12); }
+body.light-mode .perfil-top li b,
+body.light-mode .actividad-nota { background: #ffffff; box-shadow: 0 0 0 1px rgba(36, 30, 40, 0.12); }
+/* Medallas */
+body.light-mode .medalla { background: #ffffff; opacity: 1; }
+body.light-mode .medalla:not(.ganada) { background: #f4f1f5; }
+body.light-mode .medalla:not(.ganada) .medalla-texto b { color: #4a4250; }
+body.light-mode .medalla.ganada { background: linear-gradient(135deg, rgba(255, 42, 72, 0.10), #ffffff 70%); }
+body.light-mode .medalla-barra span { background: #8a8190; }
+body.light-mode .boton-linea { border-color: rgba(36, 30, 40, 0.22); }
+body.light-mode .avisos-boton { background: #ffffff; }
+body.light-mode .aviso-correo.es-error { background: #fff0f2; color: #16121a; }
