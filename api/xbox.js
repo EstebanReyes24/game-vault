@@ -5,7 +5,7 @@
  *   POST /api/xbox { "clave": "..." } → con la clave personal de OpenXBL del usuario (respaldo).
  */
 import { titulosXbox, buscarGamertag } from "./_xbox.js";
-import { usuarioConSesion, SIN_SESION } from "./_supabase.js";
+import { usuarioConSesion, SIN_SESION, permitirUso, DEMASIADO, limitePorIp } from "./_supabase.js";
 
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -13,6 +13,7 @@ export default async function handler(req, res) {
   if (req.method === "GET") {
     // La búsqueda por gamertag gasta la cuota de Paindex: solo con sesión iniciada
     if (!(await usuarioConSesion(req))) { res.setHeader("Cache-Control", "no-store"); return res.status(401).json(SIN_SESION); }
+    if (!(await permitirUso(req, "xbox", 30))) { res.setHeader("Cache-Control", "no-store"); return res.status(429).json(DEMASIADO); }
     const clave = process.env.OPENXBL_API_KEY;
     if (!clave) return res.status(503).json({ error: "La importación de Xbox todavía no está configurada en el servidor." });
     const gt = String(req.query.gt || "").trim();

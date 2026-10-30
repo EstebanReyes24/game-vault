@@ -45,7 +45,10 @@ async function steamGet(url) {
   }
 }
 
+import { limitePorIp, DEMASIADO } from "./_supabase.js";
+
 export default async function handler(req, res) {
+  if (!limitePorIp(req, "steam", 20, 60)) return res.status(429).json(DEMASIADO);
   res.setHeader('Content-Type', 'application/json');
   // Sin Access-Control-Allow-Origin: el endpoint solo lo usa esta misma web.
   // Así nadie puede usarlo desde otros sitios como proxy gratis de Steam.

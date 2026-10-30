@@ -63,3 +63,39 @@ export async function usuarioConSesion(req) {
 }
 
 export const SIN_SESION = { error: "Inicia sesión en Paindex Vault para importar desde Xbox o PlayStation." };
+
+/**
+ * Cuenta un uso de `ruta` para la cuenta de esta sesión (migración 017) y dice si sigue dentro
+ * del máximo por hora. Si la migración aún no está, deja pasar (no rompe la web).
+ */
+export async function permitirUso(req, ruta, maximo) {
+  const m = String(req.headers?.authorization || "").match(/^Bearer\s+([A-Za-z0-9._-]{20,4000})$/);
+  if (!m) return false;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/usar_api`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${m[1]}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ p_ruta: ruta, p_maximo: maximo })
+    });
+    if (r.status === 404) return true; // sin migración 017
+    if (!r.ok) return true;            // ante un fallo de Supabase no se bloquea a nadie
+    return (await r.json()) === true;
+  } catch (e) {
+    return true;
+  }
+}
+
+export const DEMASIADO = { error: "Has hecho muchas consultas en poco tiempo. Espera un rato y vuelve a intentarlo." };
+
+// Límite por dirección IP para las rutas abiertas (best effort: vale por cada instancia del servidor)
+const visitas = new Map();
+export function limitePorIp(req, ruta, maximo, segundos) {
+  const ip = String(req.headers?.["x-real-ip"] || req.headers?.["x-forwarded-for"] || "?").split(",")[0].trim();
+  const clave = `${ruta}|${ip}`;
+  const ahora = Date.now();
+  const v = visitas.get(clave);
+  if (!v || ahora - v.desde > segundos * 1000) { visitas.set(clave, { desde: ahora, n: 1 }); }
+  else if (++v.n > maximo) return false;
+  if (visitas.size > 5000) visitas.clear();
+  return true;
+}

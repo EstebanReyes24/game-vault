@@ -28,9 +28,12 @@ const ETIQUETAS = {
 };
 const limpio = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "");
 
+import { limitePorIp, DEMASIADO } from "./_supabase.js";
+
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido" });
+  if (!limitePorIp(req, "rawg", 300, 60)) return res.status(429).json(DEMASIADO);
   const clave = process.env.RAWG_API_KEY;
   if (!clave) return res.status(503).json({ error: "Falta RAWG_API_KEY en Vercel." });
 
