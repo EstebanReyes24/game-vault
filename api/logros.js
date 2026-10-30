@@ -8,7 +8,7 @@
  */
 import { OPENXBL } from "./_xbox.js";
 import { trofeosPSN } from "./_psn.js";
-import { usuarioConSesion, SIN_SESION } from "./_supabase.js";
+import { usuarioConSesion, SIN_SESION, permitirUso, DEMASIADO, limitePorIp } from "./_supabase.js";
 
 const STEAM = "https://api.steampowered.com";
 
@@ -85,6 +85,8 @@ export default async function handler(req, res) {
   const { fuente, steamid, appid, xuid, titleId, accountId, np, servicio } = req.query;
   const protegida = fuente === "xbox" || fuente === "psn";
   if (protegida && !(await usuarioConSesion(req))) { res.setHeader("Cache-Control", "no-store"); return res.status(401).json(SIN_SESION); }
+  if (protegida && !(await permitirUso(req, `logros-${fuente}`, 300))) { res.setHeader("Cache-Control", "no-store"); return res.status(429).json(DEMASIADO); }
+  if (!protegida && !limitePorIp(req, "logros", 300, 60)) return res.status(429).json(DEMASIADO);
   try {
     let items;
     if (fuente === "steam") {
