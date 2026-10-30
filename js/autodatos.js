@@ -153,6 +153,9 @@
       } catch (e) { informe.push(`Xbox: ${e.message}`); }
     }
 
+    if (!c.psn_online_id && juegos.some(g => g.psnNpId || (g.platforms || []).includes("PlayStation"))) {
+      informe.push("PlayStation: busca tu ID una vez en el botón PLAYSTATION para vincular tu cuenta");
+    }
     if (c.psn_online_id) {
       try {
         const r = await fetchConSesion(`/api/psn?id=${encodeURIComponent(c.psn_online_id)}`);
