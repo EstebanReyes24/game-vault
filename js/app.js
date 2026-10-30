@@ -2264,3 +2264,9 @@ async function pintarSocial(nombre, miPerfil) {
     gameSearch.focus();
   }, 400);
 })();
+
+// En un perfil ajeno no tienen sentido los botones de importar ni de mantenimiento
+if (isSpectatorMode) {
+  ["openSteamSyncBtn", "openXboxBtn", "openPsnBtn", "openPegarBtn", "syncPlatformsBtn", "autoDataBtn", "dupesBtn", "queJuegoBtn"]
+    .forEach(id => document.getElementById(id)?.remove());
+}
