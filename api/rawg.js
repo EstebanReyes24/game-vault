@@ -37,7 +37,7 @@ export default async function handler(req, res) {
   const busqueda = String(req.query.search || "").trim().slice(0, 100);
   if (busqueda.length < 2) return res.status(400).json({ error: "Búsqueda demasiado corta." });
   const detalle = req.query.detalle === "1";
-  const n = detalle ? 5 : Math.min(Math.max(parseInt(req.query.n, 10) || 6, 1), 8);
+  const n = detalle ? 12 : Math.min(Math.max(parseInt(req.query.n, 10) || 6, 1), 8);
   const preciso = req.query.precise === "1" ? "&search_precise=true" : "";
 
   try {
@@ -53,8 +53,12 @@ export default async function handler(req, res) {
     }
 
     const objetivo = limpio(busqueda);
-    const juego = resultados.find(g => limpio(g.name) === objetivo)
-      || resultados.find(g => limpio(g.name).startsWith(objetivo) || objetivo.startsWith(limpio(g.name)))
+    // RAWG mezcla juegos reales con fichas creadas por usuarios: entre los que coinciden se elige
+    // el más popular (más gente lo tiene añadido) y se descartan las fichas casi vacías
+    const porPopularidad = (a, b) => (b.added || 0) - (a.added || 0);
+    const fiables = resultados.filter(g => (g.added || 0) >= 5 || g.released);
+    const juego = fiables.filter(g => limpio(g.name) === objetivo).sort(porPopularidad)[0]
+      || fiables.filter(g => limpio(g.name).startsWith(objetivo) || objetivo.startsWith(limpio(g.name))).sort(porPopularidad)[0]
       || null;
     if (!juego) return res.status(200).json({ encontrado: false });
 
