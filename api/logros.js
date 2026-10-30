@@ -2,10 +2,12 @@
  * Logros de un juego con su fecha de desbloqueo.
  *   GET /api/logros?fuente=steam&steamid=7656…&appid=1145360
  *   GET /api/logros?fuente=xbox&xuid=2533…&titleId=1144039928
+ *   GET /api/logros?fuente=psn&accountId=…&np=NPWR12345_00&servicio=trophy|trophy2
  * Respuesta: { items: [{ id, nombre, desc, icono, logrado, fecha, rareza }] }
  * Requiere que el perfil (o los detalles de juego) sean públicos.
  */
 import { OPENXBL } from "./_xbox.js";
+import { trofeosPSN } from "./_psn.js";
 
 const STEAM = "https://api.steampowered.com";
 
@@ -79,7 +81,7 @@ async function logrosXbox(xuid, titleId) {
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
   if (req.method !== "GET") return res.status(405).json({ error: "Método no permitido" });
-  const { fuente, steamid, appid, xuid, titleId } = req.query;
+  const { fuente, steamid, appid, xuid, titleId, accountId, np, servicio } = req.query;
   try {
     let items;
     if (fuente === "steam") {
@@ -88,6 +90,10 @@ export default async function handler(req, res) {
     } else if (fuente === "xbox") {
       if (!/^[0-9]{1,20}$/.test(String(xuid)) || !/^[0-9]{1,12}$/.test(String(titleId))) return res.status(400).json({ error: "Faltan datos de Xbox." });
       items = await logrosXbox(xuid, titleId);
+    } else if (fuente === "psn") {
+      if (!/^[0-9]{1,25}$/.test(String(accountId)) || !/^NPWR[0-9]{5}_[0-9]{2}$/.test(String(np))) return res.status(400).json({ error: "Faltan datos de PlayStation." });
+      try { items = await trofeosPSN(accountId, np, servicio); }
+      catch (e) { if (e.status === 404) items = []; else throw e; } // nunca lo abrió: sin trofeos que mostrar
     } else {
       return res.status(400).json({ error: "Fuente no válida." });
     }

@@ -137,7 +137,9 @@ function normalizeGame(raw) {
     achUnlocked: Number.isFinite(Number(raw.achUnlocked)) && raw.achUnlocked !== null ? Number(raw.achUnlocked) : null,
     achTotal: Number.isFinite(Number(raw.achTotal)) && raw.achTotal !== null ? Number(raw.achTotal) : null,
     releaseYear: parseInt(raw.releaseYear, 10) || null,
-    developer: raw.developer ? String(raw.developer).slice(0, 120) : null
+    developer: raw.developer ? String(raw.developer).slice(0, 120) : null,
+    psnNpId: /^NPWR[0-9]{5}_[0-9]{2}$/.test(String(raw.psnNpId || "")) ? String(raw.psnNpId) : null,
+    psnService: ["trophy", "trophy2"].includes(raw.psnService) ? raw.psnService : null
   };
 }
 
@@ -170,6 +172,7 @@ function fusionarPlataforma(g, datos) {
   if (datos.etiqueta && !(g.tags || []).includes(datos.etiqueta)) r.tags = [...(g.tags || []), datos.etiqueta].slice(0, 15);
   if (datos.steamAppId) r.steamAppId = datos.steamAppId;
   if (datos.xboxTitleId) r.xboxTitleId = datos.xboxTitleId;
+  if (datos.psnNpId) { r.psnNpId = datos.psnNpId; r.psnService = datos.psnService || "trophy"; }
   if ((datos.hours || 0) > (g.hours || 0)) r.hours = datos.hours;
   if (datos.lastPlayed && (!g.lastPlayed || datos.lastPlayed > g.lastPlayed)) r.lastPlayed = datos.lastPlayed;
   if (!g.achUnlocked && datos.achUnlocked) { r.achUnlocked = datos.achUnlocked; r.achTotal = datos.achTotal || g.achTotal || null; }
@@ -967,7 +970,7 @@ function bienvenidaHTML() {
   return `
     <section class="bienvenida">
       <h2>Arma tu estante en un minuto.</h2>
-      <p class="bienvenida-bajada">Trae tu biblioteca de Steam o Xbox de una vez, o empieza con el juego que tienes entre manos. Etiquetas, fechas y logros se llenan solos; tú solo le pones nota y estado.</p>
+      <p class="bienvenida-bajada">Trae tu biblioteca de Steam, Xbox o PlayStation de una vez, o empieza con el juego que tienes entre manos. Etiquetas, fechas y logros se llenan solos; tú solo le pones nota y estado.</p>
       <div class="bienvenida-opciones">
         <button type="button" class="bienvenida-opcion principal" data-bienvenida="steam">
           <i class="fa-brands fa-steam" aria-hidden="true"></i>
@@ -976,6 +979,10 @@ function bienvenidaHTML() {
         <button type="button" class="bienvenida-opcion" data-bienvenida="xbox">
           <i class="fa-brands fa-xbox" aria-hidden="true"></i>
           <span><b>Importar desde Xbox</b><small>Solo con tu gamertag: tus juegos con su progreso de logros.</small></span>
+        </button>
+        <button type="button" class="bienvenida-opcion" data-bienvenida="psn">
+          <i class="fa-brands fa-playstation" aria-hidden="true"></i>
+          <span><b>Importar desde PlayStation</b><small>Con tu ID de PSN: juegos, trofeos, platinos y horas.</small></span>
         </button>
         <button type="button" class="bienvenida-opcion" data-bienvenida="manual">
           <i class="fa-solid fa-plus" aria-hidden="true"></i>
@@ -2149,6 +2156,7 @@ if (gamesGrid) {
     const accion = opcion.dataset.bienvenida;
     if (accion === "steam") document.getElementById("openSteamSyncBtn")?.click();
     if (accion === "xbox") document.getElementById("openXboxBtn")?.click();
+    if (accion === "psn") document.getElementById("openPsnBtn")?.click();
     if (accion === "manual") document.getElementById("toggleFormBtn")?.click();
     if (accion === "demo") document.getElementById("loadDemoBtn")?.click();
   });

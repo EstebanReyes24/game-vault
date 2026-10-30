@@ -457,7 +457,7 @@ body.light-mode #openTop5Btn {
   color: var(--hueso);
 }
 .bienvenida-bajada { max-width: 40rem; margin: 0.9rem 0 1.75rem; color: var(--niebla); line-height: 1.6; }
-.bienvenida-opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.85rem; max-width: 60rem; }
+.bienvenida-opciones { display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: 0.85rem; max-width: 46rem; }
 .bienvenida-opcion {
   display: flex; align-items: flex-start; gap: 0.9rem; text-align: left;
   padding: 1.1rem 1.2rem; border-radius: 12px; cursor: pointer;
