@@ -3,6 +3,14 @@
   "outputDirectory": ".",
   "rewrites": [
     {
+      "source": "/noticias",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/articulos",
+      "destination": "/index.html"
+    },
+    {
       "source": "/u/:usuario",
       "destination": "/api/pagina?tipo=perfil&u=:usuario"
     },

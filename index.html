@@ -76,7 +76,7 @@
       </div>
     </header>
 
-<main class="space-y-12">
+<main class="space-y-12 solo-portada">
     <section class="portada">
       <div>
         <h1>Tu historial gamer, en un solo estante.</h1>
@@ -126,7 +126,7 @@
 </main>
 
     <!-- Hall of Fame del Creador (Dinámico y Editable) -->
-    <section class="space-y-4">
+    <section class="space-y-4 solo-portada">
       <div class="flex items-center justify-between border-b border-white/10 pb-3">
         <div>
           <h2 class="seccion-titulo">Esenciales de Paindex</h2>
@@ -146,7 +146,7 @@
     </section>
 
     <!-- Actividad de la comunidad -->
-    <section class="actividad" aria-labelledby="actividadTitulo">
+    <section class="actividad solo-portada" aria-labelledby="actividadTitulo">
       <div class="actividad-cabecera">
         <div>
           <h2 id="actividadTitulo" class="seccion-titulo">Qué está jugando la gente</h2>
@@ -161,40 +161,63 @@
     </section>
 
     <!-- Reseñas de la comunidad destacadas por Paindex -->
-    <section class="destacadas" id="resenasDestacadas" aria-labelledby="destacadasTitulo" hidden>
+    <section class="destacadas solo-portada" id="resenasDestacadas" aria-labelledby="destacadasTitulo" hidden>
       <h2 id="destacadasTitulo" class="seccion-titulo">Reseñas de la comunidad</h2>
       <p class="text-sm text-slate-400 mt-1">Escogidas por Paindex de los perfiles de la comunidad.</p>
       <div class="destacadas-lista" id="resenasDestacadasLista"></div>
     </section>
 
-    <!-- Feed de Publicaciones con Filtros por Píldoras -->
-    <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-4">
+    <!-- Últimas noticias: una principal y cuatro titulares; el resto en /noticias -->
+    <section class="noticias-portada solo-portada" id="noticiasPortada" aria-labelledby="noticiasTitulo" hidden>
+      <div class="seccion-cabecera">
+        <div>
+          <h2 id="noticiasTitulo" class="seccion-titulo">Últimas noticias</h2>
+          <span class="seccion-nota" id="noticiasNota"></span>
+        </div>
+        <a href="/noticias" class="ver-todo">Todas las noticias <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+      </div>
+      <div class="noticias-bloque" id="noticiasBloque"></div>
+    </section>
+
+    <!-- Reseñas y artículos de Paindex (sin noticias); el resto en /articulos -->
+    <section class="space-y-6 solo-portada" id="articulosPortada">
+      <div class="seccion-cabecera">
         <div>
           <h2 class="seccion-titulo">Reseñas y artículos</h2>
-          <span class="text-[11px] text-slate-400" id="postCounter">Consultando entradas...</span>
+          <span class="seccion-nota" id="postCounter">Consultando entradas...</span>
         </div>
-
-        <div class="flex flex-wrap gap-1.5" id="categoryFilters">
-          <button data-cat="all" class="filter-pill active px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 transition cursor-pointer">
-            Todos
-          </button>
-          <button data-cat="Recomendación" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            Recomendaciones
-          </button>
-          <button data-cat="Reflexión" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            Reflexiones
-          </button>
-          <button data-cat="Análisis" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            Análisis
-          </button>
-          <button data-cat="Noticia" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">
-            Noticias
-          </button>
+        <div class="seccion-acciones">
+          <div class="flex flex-wrap gap-1.5" id="categoryFilters">
+            <button data-cat="all" class="filter-pill active px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 transition cursor-pointer">Todos</button>
+            <button data-cat="Recomendación" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">Recomendaciones</button>
+            <button data-cat="Reflexión" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">Reflexiones</button>
+            <button data-cat="Análisis" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 hover:text-white transition cursor-pointer">Análisis</button>
+          </div>
+          <a href="/articulos" class="ver-todo" id="verTodosArticulos" hidden>Ver todos <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
         </div>
       </div>
 
       <div id="newsFeed" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
+    </section>
+
+    <!-- Archivo completo: /noticias y /articulos (misma página, otra vista) -->
+    <section class="archivo" id="archivo" hidden>
+      <a href="/" class="archivo-volver"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Portada</a>
+      <div class="archivo-cabecera">
+        <h1 class="seccion-titulo" id="archivoTitulo">Noticias</h1>
+        <p id="archivoSub"></p>
+      </div>
+      <div class="archivo-herramientas">
+        <label class="archivo-buscar">
+          <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+          <input type="search" id="archivoBuscar" placeholder="Buscar por título, juego o #etiqueta" autocomplete="off">
+        </label>
+        <div class="archivo-filtros" id="archivoFiltros"></div>
+      </div>
+      <div id="archivoLista" class="archivo-lista"></div>
+      <div class="archivo-pie">
+        <button type="button" class="boton boton-linea" id="archivoMas" hidden>Cargar más</button>
+      </div>
     </section>
 
     <!-- Footer Oficial Paindex -->
