@@ -953,3 +953,62 @@ window.fetchConSesion = async function (url, opciones = {}) {
   if (document.body) poner(); else document.addEventListener("DOMContentLoaded", poner);
   setTimeout(() => aviso.remove(), 15000);
 })();
+
+// ---------- Métricas (migración 020) ----------
+// Solo cuentas con sesión: un "estuvo activo hoy" y qué funciones abrió (una vez por día y función).
+// Nada de visitantes anónimos ni datos personales: solo días y nombres de funciones.
+(function () {
+  if (!window.supabaseClient) return;
+  const hoy = () => new Date().toISOString().slice(0, 10);
+  const leer = (k) => { try { return localStorage.getItem(k); } catch (e) { return null; } };
+  const poner = (k, v) => { try { localStorage.setItem(k, v); } catch (e) { /* sin almacenamiento */ } };
+
+  // De dónde llegó la primera vez (se guarda en el navegador y se manda al crear la cuenta)
+  if (!leer("gv_origen")) {
+    const q = new URLSearchParams(location.search);
+    let origen = q.get("utm_source") || q.get("ref") || "";
+    if (!origen) {
+      let host = "";
+      try { host = document.referrer ? new URL(document.referrer).hostname.replace(/^www\.|^m\./, "") : ""; } catch (e) { host = ""; }
+      const propio = !host || host === location.hostname || /supabase\.co$|accounts\.google\./.test(host);
+      const conocidos = [[/youtube\.com$|youtu\.be$/, "youtube"], [/^google\./, "google"], [/^(t\.co|x\.com|twitter\.com)$/, "x"],
+        [/instagram\.com$/, "instagram"], [/facebook\.com$|fb\.com$/, "facebook"], [/tiktok\.com$/, "tiktok"], [/discord/, "discord"],
+        [/reddit\.com$/, "reddit"], [/whatsapp/, "whatsapp"], [/bing\.com$|duckduckgo\.com$/, "buscador"]];
+      if (!propio) origen = (conocidos.find(([re]) => re.test(host)) || [null, host])[1];
+      else if (!document.referrer) origen = /^\/(u|j|a)\//.test(location.pathname) ? "enlace_" + { u: "perfil", j: "juego", a: "articulo" }[location.pathname[1]] : "directo";
+    }
+    if (origen) poner("gv_origen", String(origen).toLowerCase().replace(/[^a-z0-9._-]/g, "").slice(0, 40) || "directo");
+  }
+
+  async function registrar(funcion) {
+    const clave = `gv_uso_${funcion || "dia"}`;
+    if (leer(clave) === hoy()) return;
+    const { data } = await supabaseClient.auth.getSession();
+    if (!data?.session) return;
+    poner(clave, hoy());
+    supabaseClient.rpc("registrar_uso", { p_funcion: funcion || null }).then(() => {}, () => {});
+    if (!funcion && leer("gv_origen") && leer("gv_origen_enviado") !== "1") {
+      poner("gv_origen_enviado", "1");
+      supabaseClient.rpc("poner_origen", { p_origen: leer("gv_origen") }).then(() => {}, () => {});
+    }
+  }
+  window.marcarUso = registrar;
+
+  // Botones del estante → nombre de la función
+  const BOTONES = {
+    openSteamSyncBtn: "importar_steam", openXboxBtn: "importar_xbox", openPsnBtn: "importar_psn", openPegarBtn: "pegar_lista",
+    syncPlatformsBtn: "sincronizar", dupesBtn: "repetidos", autoDataBtn: "completar_datos", presumirBtn: "presumir",
+    deseosBtn: "deseos", queJuegoBtn: "que_juego", openWrappedBtn: "wrapped", openStatsBtn: "stats", openTop5Btn: "top_cards",
+    openListsBtn: "listas", openVideosBtn: "mis_videos", saveGameBtn: "registrar_juego", modalReviewBtn: "resena",
+    shareProfileBtn: "compartir_perfil", exportBtn: "exportar", jDeseo: "lo_quiero", appAuthBtn: "perfil"
+  };
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest?.("[id]");
+    if (b && BOTONES[b.id]) registrar(BOTONES[b.id]);
+  }, true);
+
+  const PAGINAS = [[/^\/j\//, "pagina_juego"], [/^\/comparar|\/vs\//, "comparar"], [/^\/juegos\/?$/, "ranking"]];
+  const deLaPagina = (PAGINAS.find(([re]) => re.test(location.pathname)) || [])[1];
+  setTimeout(() => { registrar(null); if (deLaPagina) registrar(deLaPagina); }, 2500);
+  supabaseClient.auth.onAuthStateChange((evento) => { if (evento === "SIGNED_IN") setTimeout(() => registrar(null), 1500); });
+})();

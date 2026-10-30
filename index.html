@@ -97,6 +97,9 @@
             <i class="fa-solid fa-newspaper" aria-hidden="true"></i> Noticias por revisar
             <span id="draftsCount" class="borrador-contador">0</span>
           </button>
+          <button type="button" id="openMetricasBtn" class="hidden boton boton-linea">
+            <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Métricas
+          </button>
           <button type="button" id="openModBtn" class="hidden boton boton-linea">
             <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Moderación
             <span id="modCount" class="borrador-contador" hidden>0</span>
@@ -473,11 +476,25 @@
       <div id="modList"></div>
     </div>
   </div>
+  <!-- Métricas (solo admin) -->
+  <div id="metricasModal" class="fixed inset-0 bg-black/80 flex items-start justify-center p-4 z-50 hidden overflow-y-auto">
+    <div class="borradores-panel" role="dialog" aria-modal="true" aria-labelledby="metricasTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="metricasTitulo" class="seccion-titulo">Métricas</h2>
+          <p>Cómo va la comunidad. Solo lo ves tú.</p>
+        </div>
+        <button type="button" id="cerrarMetricasBtn" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div id="metricasCuerpo" class="metricas"></div>
+    </div>
+  </div>
   <script src="js/supabase.js"></script>
   <script src="js/search.js"></script>
   <script src="js/landing.js"></script>
   <script src="js/borradores.js"></script>
   <script src="js/moderacion.js"></script>
+  <script src="js/metricas.js"></script>
   <script src="js/actividad.js"></script>
   <script src="js/avisos.js"></script>
   <script src="js/avatar.js"></script>
