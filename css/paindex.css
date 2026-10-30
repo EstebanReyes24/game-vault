@@ -1100,3 +1100,23 @@ ol.metricas-lista { counter-reset: n; }
 .metricas-tabla td { padding: 0.45rem 0.6rem 0.45rem 0; border-top: 1px solid var(--border-light); white-space: nowrap; }
 .metricas-tabla small { color: var(--niebla); }
 .metricas-tabla a { color: inherit; text-decoration: underline; }
+
+/* ---------- App instalable (PWA) ---------- */
+.pwa-banner { position: fixed; left: 0.75rem; right: 0.75rem; bottom: calc(0.75rem + env(safe-area-inset-bottom)); z-index: 60; display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 0.8rem; border-radius: 1rem; background: var(--carbon, #1c1824); border: 1px solid var(--border-light, rgba(255,255,255,.12)); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); animation: pwa-sube 0.35s ease-out; }
+.pwa-banner img { border-radius: 0.6rem; flex: none; }
+.pwa-banner span { flex: 1; min-width: 0; color: var(--hueso); font-size: 0.85rem; line-height: 1.25; }
+.pwa-banner small { display: block; color: var(--niebla); font-size: 0.75rem; }
+.pwa-banner .boton { padding: 0.5rem 0.9rem; font-size: 0.85rem; flex: none; }
+.pwa-banner-x { flex: none; background: none; border: 0; color: var(--niebla); font-size: 1.4rem; line-height: 1; padding: 0.2rem 0.3rem; cursor: pointer; }
+@keyframes pwa-sube { from { transform: translateY(120%); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .pwa-banner { animation: none; } }
+.pwa-ios { position: fixed; inset: 0; z-index: 70; background: rgba(0, 0, 0, 0.7); display: flex; align-items: flex-end; justify-content: center; padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom)); }
+.pwa-ios[hidden] { display: none; }
+.pwa-ios-panel { width: min(100%, 26rem); padding: 1.3rem; border-radius: 1.2rem; background: var(--carbon, #1c1824); border: 1px solid var(--border-light, rgba(255,255,255,.12)); color: var(--hueso); }
+.pwa-ios-panel h2 { margin: 0 0 0.8rem; font-family: var(--display); font-size: 1.6rem; }
+.pwa-ios-panel ol { margin: 0 0 1.1rem; padding-left: 1.2rem; display: grid; gap: 0.55rem; color: var(--niebla); font-size: 0.92rem; line-height: 1.45; }
+.pwa-ios-panel b { color: var(--hueso); }
+.pwa-ios-panel svg { width: 1.05rem; height: 1.05rem; vertical-align: -0.15rem; color: #4da3ff; }
+.pwa-ios-panel .boton { width: 100%; justify-content: center; }
+/* Abierta como app: respetar la muesca y la barra de gestos del teléfono */
+.como-app body { padding-bottom: max(env(safe-area-inset-bottom), 0.75rem); }

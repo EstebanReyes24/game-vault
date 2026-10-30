@@ -5,7 +5,12 @@
   <script src="/js/errores.js"></script>
   <base href="/">
   <meta name="theme-color" content="#14111a">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Paindex">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mi estante · Paindex Vault</title>
@@ -1061,6 +1066,7 @@
       </div>
 
       <div class="mi-perfil-seccion mi-perfil-peligro">
+        <button type="button" class="boton boton-linea hidden" data-instalar-app hidden><i class="fa-solid fa-mobile-screen" aria-hidden="true"></i> Instalar la app</button>
         <button type="button" class="boton boton-linea" id="miPerfilSalir"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Cerrar sesión</button>
         <div id="miPerfilBorrar"></div>
       </div>
@@ -1186,5 +1192,6 @@
   <script src="js/miperfil.js"></script>
   <script src="js/presumir.js"></script>
   <script src="js/deseos.js"></script>
+  <script src="/js/pwa.js"></script>
 </body>
 </html>
