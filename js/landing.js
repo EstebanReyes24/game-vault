@@ -70,7 +70,6 @@ const openSearchBtn = document.getElementById("openSearchBtn");
 const searchModal = document.getElementById("searchModal");
 const liveSearchInput = document.getElementById("liveSearchInput");
 const liveSearchResults = document.getElementById("liveSearchResults");
-const pwaInstallBtn = document.getElementById("pwaInstallBtn");
 
 const filterPills = document.querySelectorAll(".filter-pill");
 let activeCategoryFilter = "all";
@@ -78,34 +77,8 @@ let cachedPosts = [];
 let cachedHof = [];
 let activeViewingPostId = null;
 let editingPostId = null;
-let deferredPrompt = null;
 
-// ==========================================
-// REGISTRO DE SERVICE WORKER & PWA
-// ==========================================
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(err => console.warn('SW error:', err));
-  });
-}
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (pwaInstallBtn) pwaInstallBtn.classList.remove('hidden');
-});
-
-if (pwaInstallBtn) {
-  pwaInstallBtn.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      pwaInstallBtn.classList.add('hidden');
-    }
-    deferredPrompt = null;
-  });
-}
+// La instalación como app y el service worker viven en js/pwa.js
 
 // ==========================================
 // SESIÓN DE USUARIO

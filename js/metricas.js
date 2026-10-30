@@ -16,10 +16,11 @@
     deseos: "Lista de deseos", que_juego: "¿Qué juego?", wrapped: "Wrapped", stats: "Stats", top_cards: "Top cards",
     listas: "Listas", mis_videos: "Mis videos", registrar_juego: "Registrar juego a mano", resena: "Escribir reseña",
     compartir_perfil: "Compartir perfil", exportar: "Exportar", pagina_juego: "Página de un juego", comparar: "Comparar estantes",
-    ranking: "Ranking de juegos", lo_quiero: "«Lo quiero»", perfil: "Mi perfil"
+    ranking: "Ranking de juegos", lo_quiero: "«Lo quiero»", perfil: "Mi perfil",
+    usa_app: "Abrió la app instalada", instalar_app: "Pulsó «Instalar app»", app_instalada: "Instaló la app"
   };
   const ORIGENES = { directo: "Directo / sin rastro", youtube: "YouTube", google: "Google", x: "X (Twitter)", "sin dato": "Sin dato (cuentas de antes)",
-    enlace_perfil: "Enlace a un perfil", enlace_juego: "Enlace a un juego", enlace_articulo: "Enlace a un artículo" };
+    enlace_perfil: "Enlace a un perfil", enlace_juego: "Enlace a un juego", enlace_articulo: "Enlace a un artículo", app: "App instalada", yt: "YouTube (?ref=yt)" };
 
   function barras(lista, clave, etiqueta) {
     const max = Math.max(1, ...lista.map(x => Number(x[clave]) || 0));

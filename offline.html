@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sin conexión · Paindex Vault</title>
+  <meta name="theme-color" content="#14111a">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/paindex.css">
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #14111a; color: #ece7ee; font-family: system-ui, sans-serif; padding: 1.5rem; text-align: center; }
+    .caja { max-width: 24rem; }
+    svg { width: 4rem; height: 4rem; color: #ece7ee; }
+    h1 { font-size: 1.6rem; margin: 1rem 0 0.5rem; }
+    p { color: #b6adbb; line-height: 1.5; margin: 0 0 1.2rem; }
+    .acciones { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <main class="caja">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
+    <h1>Sin conexión</h1>
+    <p>Esta página no está guardada en tu teléfono. Tu estante sí se puede abrir sin internet con lo último que viste.</p>
+    <div class="acciones">
+      <a class="boton boton-senal" href="/estante">Abrir mi estante</a>
+      <a class="boton boton-linea" href="" id="reintentar">Reintentar</a>
+    </div>
+  </main>
+  <script src="/js/offline.js"></script>
+</body>
+</html>

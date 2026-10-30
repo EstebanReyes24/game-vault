@@ -44,7 +44,8 @@ begin
   if p_funcion is not null and p_funcion = any (array[
       'importar_steam','importar_xbox','importar_psn','pegar_lista','sincronizar','repetidos','completar_datos',
       'presumir','deseos','que_juego','wrapped','stats','top_cards','listas','mis_videos','registrar_juego',
-      'resena','compartir_perfil','exportar','pagina_juego','comparar','ranking','lo_quiero','perfil'
+      'resena','compartir_perfil','exportar','pagina_juego','comparar','ranking','lo_quiero','perfil',
+      'usa_app','instalar_app','app_instalada'
     ]) then
     insert into uso_funciones (dia, user_id, funcion) values (hoy, auth.uid(), p_funcion) on conflict do nothing;
   end if;
