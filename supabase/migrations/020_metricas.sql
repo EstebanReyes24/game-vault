@@ -45,7 +45,7 @@ begin
       'importar_steam','importar_xbox','importar_psn','pegar_lista','sincronizar','repetidos','completar_datos',
       'presumir','deseos','que_juego','wrapped','stats','top_cards','listas','mis_videos','registrar_juego',
       'resena','compartir_perfil','exportar','pagina_juego','comparar','ranking','lo_quiero','perfil',
-      'usa_app','instalar_app','app_instalada'
+      'usa_app','instalar_app','app_instalada','discord'
     ]) then
     insert into uso_funciones (dia, user_id, funcion) values (hoy, auth.uid(), p_funcion) on conflict do nothing;
   end if;

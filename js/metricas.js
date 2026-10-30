@@ -17,7 +17,7 @@
     listas: "Listas", mis_videos: "Mis videos", registrar_juego: "Registrar juego a mano", resena: "Escribir reseña",
     compartir_perfil: "Compartir perfil", exportar: "Exportar", pagina_juego: "Página de un juego", comparar: "Comparar estantes",
     ranking: "Ranking de juegos", lo_quiero: "«Lo quiero»", perfil: "Mi perfil",
-    usa_app: "Abrió la app instalada", instalar_app: "Pulsó «Instalar app»", app_instalada: "Instaló la app"
+    usa_app: "Abrió la app instalada", instalar_app: "Pulsó «Instalar app»", app_instalada: "Instaló la app", discord: "Fue al Discord"
   };
   const ORIGENES = { directo: "Directo / sin rastro", youtube: "YouTube", google: "Google", x: "X (Twitter)", "sin dato": "Sin dato (cuentas de antes)",
     enlace_perfil: "Enlace a un perfil", enlace_juego: "Enlace a un juego", enlace_articulo: "Enlace a un artículo", app: "App instalada", yt: "YouTube (?ref=yt)" };

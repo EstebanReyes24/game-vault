@@ -1120,3 +1120,8 @@ ol.metricas-lista { counter-reset: n; }
 .pwa-ios-panel .boton { width: 100%; justify-content: center; }
 /* Abierta como app: respetar la muesca y la barra de gestos del teléfono */
 .como-app body { padding-bottom: max(env(safe-area-inset-bottom), 0.75rem); }
+
+/* Discord */
+.boton-discord:hover { border-color: #5865f2; color: #fff; background: rgba(88, 101, 242, 0.18); }
+.boton-discord .fa-discord { color: #8b95ff; }
+.canal-enlaces { display: flex; gap: 1rem; flex-wrap: wrap; }
