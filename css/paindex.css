@@ -792,6 +792,12 @@ body.light-mode .noticia-principal h3, body.light-mode .noticias-titulares stron
 .juego-portada img, .juego-portada .lista-sin-tapa { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 0.9rem; box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.9); display: block; }
 .juego-titulo h1 { margin: 0.2rem 0 0.4rem; font-family: var(--display); font-weight: 900; font-size: clamp(2.2rem, 6vw, 4rem); line-height: 0.95; color: var(--hueso); }
 .juego-meta { margin: 0; font-size: 0.85rem; color: var(--niebla); }
+.juego-sinopsis { margin-top: 0.9rem; max-width: 62ch; }
+.juego-sinopsis-texto { margin: 0; font-size: 0.95rem; line-height: 1.55; color: var(--hueso); opacity: 0.88; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.juego-sinopsis-texto.abierto { display: block; -webkit-line-clamp: unset; }
+.juego-sinopsis-pie { margin: 0.35rem 0 0; display: flex; gap: 0.8rem; align-items: center; font-size: 0.75rem; color: var(--niebla); }
+.juego-sinopsis-pie a { color: inherit; text-decoration: underline; }
+.juego-sinopsis-mas { background: none; border: 0; padding: 0; color: var(--senal, #ff2a48); font: inherit; font-weight: 700; cursor: pointer; }
 .juego-acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem; }
 .juego-cifras { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .juego-video { position: relative; aspect-ratio: 16 / 9; border-radius: 1rem; overflow: hidden; border: 1px solid var(--border-light); background: #000; }

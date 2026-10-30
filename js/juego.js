@@ -69,6 +69,7 @@
           <p class="juego-meta">${[d.anio, d.desarrollador].filter(Boolean).map(esc).join(" · ")}</p>
           <h1>${esc(d.titulo)}</h1>
           ${(d.etiquetas || []).length ? `<p class="juego-meta">${d.etiquetas.map(t => `#${esc(t)}`).join(" ")}</p>` : ""}
+          <div class="juego-sinopsis" id="jSinopsis" hidden></div>
           <div class="juego-acciones">
             <a class="boton boton-senal" href="/estante?anadir=${encodeURIComponent(d.titulo)}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Añadir a mi estante</a>
             <button type="button" class="boton boton-linea" id="jDeseo"><i class="fa-solid fa-heart" aria-hidden="true"></i> Lo quiero</button>
@@ -107,6 +108,8 @@
         <p class="borrador-estado" id="jVideoEstado" role="status"></p>
       </section>` : ""}
     `;
+
+    cargarSinopsis(d.titulo);
 
     // "Lo quiero": a tu lista de deseos (migración 019), con su precio de PC si existe
     document.getElementById("jDeseo").addEventListener("click", async (e) => {
@@ -147,6 +150,32 @@
         if (!error) cargar();
       });
     }
+  }
+
+  // Sinopsis de Wikipedia (llega aparte para no retrasar la página)
+  async function cargarSinopsis(titulo) {
+    const caja = document.getElementById("jSinopsis");
+    if (!caja) return;
+    try {
+      const s = await fetch(`/api/rawg?sinopsis=1&search=${encodeURIComponent(titulo)}`).then(r => r.json());
+      if (!s.encontrado || !/^https:\/\/(es|en)\.wikipedia\.org\//.test(s.url || "")) return;
+      caja.innerHTML = `
+        <p class="juego-sinopsis-texto" id="jSinopsisTexto">${esc(s.texto)}</p>
+        <p class="juego-sinopsis-pie">
+          <button type="button" class="juego-sinopsis-mas" id="jSinopsisMas" hidden>Leer más</button>
+          <span>Fuente: <a href="${esc(s.url)}" target="_blank" rel="noopener">Wikipedia</a>${s.idioma === "en" ? " (en inglés)" : ""}</span>
+        </p>`;
+      caja.hidden = false;
+      const texto = document.getElementById("jSinopsisTexto");
+      const mas = document.getElementById("jSinopsisMas");
+      if (texto.scrollHeight > texto.clientHeight + 4) {
+        mas.hidden = false;
+        mas.addEventListener("click", () => {
+          const abierto = texto.classList.toggle("abierto");
+          mas.textContent = abierto ? "Leer menos" : "Leer más";
+        });
+      }
+    } catch (e) { /* sin sinopsis */ }
   }
 
   cargar();
