@@ -2138,6 +2138,7 @@ async function initDashboard() {
 
     pintarPerfil(spectatorGames);
     renderLibrary();
+    cabeceraEnPerfilAjeno();
     return;
   }
 
@@ -2152,6 +2153,24 @@ async function initDashboard() {
     // Se difiere para no llamar a Supabase dentro del propio callback
     setTimeout(() => handleSession(newSession?.user || null), 0);
   });
+}
+
+// En el perfil de otro no se carga tu estante, pero la cabecera sí debe mostrar tu sesión
+async function cabeceraEnPerfilAjeno() {
+  if (!window.supabaseClient) return;
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  const user = session?.user;
+  if (!user) return;
+  const profile = await DB.getMyProfile().catch(() => null);
+  const alias = profile?.username || user.email.split("@")[0];
+  if (appUserLabel) appUserLabel.innerText = alias;
+  if (appUserIcon) appUserIcon.className = "fa-solid fa-cloud text-emerald-400";
+  if (appAuthBtn) { appAuthBtn.href = "/app.html"; appAuthBtn.title = "Ir a mi estante"; appAuthBtn.onclick = null; }
+  const comparar = document.getElementById("perfilCompararBtn");
+  if (comparar && profile?.username && profile.username !== String(publicProfileTarget).toLowerCase()) {
+    comparar.href = `/u/${encodeURIComponent(profile.username)}/vs/${encodeURIComponent(String(publicProfileTarget).toLowerCase())}`;
+    comparar.hidden = false;
+  }
 }
 
 initDashboard();
