@@ -918,7 +918,10 @@ function setupNowPlayingCarousel(playingGames) {
 
       if (npTitle) npTitle.innerText = game.title;
       const countLabel = playingGames.length > 1 ? ` • (${index + 1}/${playingGames.length})` : "";
-      if (npMeta) npMeta.innerText = `${(game.platforms || []).join(", ")} • ${game.hours || 0} hrs dedicadas${countLabel}`;
+      // Xbox no da horas: en ese caso se muestra el progreso de logros en vez de "0 hrs"
+      const avance = game.hours ? `${game.hours} h jugadas`
+        : (game.achUnlocked ? `${game.achUnlocked}${game.achTotal ? `/${game.achTotal}` : ""} logros` : "recién empezado");
+      if (npMeta) npMeta.innerText = `${(game.platforms || []).join(", ")} • ${avance}${countLabel}`;
 
       if (isSpectatorMode) {
         if (npActionBtn) npActionBtn.classList.add("hidden");

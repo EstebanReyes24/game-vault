@@ -243,7 +243,7 @@
   <div class="max-w-7xl mx-auto space-y-6">
 
     <!-- NAVBAR SUPERIOR CONSOLA -->
-    <header class="glass-panel p-3.5 sm:p-4 rounded-3xl flex items-center justify-between shadow-xl">
+    <header class="glass-panel p-3.5 sm:p-4 rounded-3xl flex items-center justify-between gap-2 shadow-xl">
       <div class="flex items-center gap-3">
         <a href="index.html" class="marca" aria-label="Paindex Vault, inicio">
           <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
@@ -252,7 +252,7 @@
         <h1 class="sr-only">Mi estante</h1>
       </div>
 
-      <div class="flex items-center gap-2 sm:gap-3">
+      <div class="flex items-center gap-1.5 sm:gap-3 min-w-0">
         <button id="openCommandBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold border border-white/10 transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-magnifying-glass text-xs"></i>
           <span class="hidden sm:inline">Buscar (Ctrl+K)</span>
@@ -263,12 +263,12 @@
           <span class="hidden sm:inline">Compartir</span>
         </button>
 
-        <a id="appAuthBtn" href="login.html" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-bold border border-white/10 transition flex items-center gap-2 cursor-pointer">
+        <a id="appAuthBtn" href="login.html" aria-label="Mi cuenta" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-bold border border-white/10 transition flex items-center gap-2 cursor-pointer">
           <i id="appUserIcon" class="fa-solid fa-user text-indigo-400 text-xs"></i>
-          <span id="appUserLabel" class="max-w-[100px] truncate">Invitado</span>
+          <span id="appUserLabel" class="hidden sm:inline max-w-[100px] truncate">Invitado</span>
         </a>
 
-        <button id="soundToggleBtn" type="button" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition cursor-pointer" title="Efectos de sonido">
+        <button id="soundToggleBtn" type="button" class="hidden sm:flex w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition cursor-pointer" title="Efectos de sonido">
           <i id="soundIcon" class="fa-solid fa-volume-high text-indigo-400 text-xs"></i>
         </button>
 
@@ -276,9 +276,9 @@
           <i id="themeIcon" class="fa-solid fa-sun text-amber-400 text-xs"></i>
         </button>
 
-        <button id="toggleFormBtn" type="button" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black console-font transition shadow-lg shadow-indigo-600/30 flex items-center gap-1.5 cursor-pointer">
+        <button id="toggleFormBtn" type="button" aria-label="Registrar juego" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black console-font transition shadow-lg shadow-indigo-600/30 flex items-center gap-1.5 cursor-pointer">
           <i id="toggleFormIcon" class="fa-solid fa-plus-circle text-sm"></i>
-          <span id="toggleFormText">Registrar</span>
+          <span id="toggleFormText" class="hidden sm:inline">Registrar</span>
         </button>
       </div>
     </header>
