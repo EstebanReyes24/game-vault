@@ -114,7 +114,7 @@ const DB = {
       password: password,
       options: {
         data: { ...extraMetadata, username: username.trim().toLowerCase() },
-        emailRedirectTo: `${window.location.origin}/app.html`
+        emailRedirectTo: `${window.location.origin}/estante?verificado=1`
       }
     });
     if (error) throw error;
@@ -124,7 +124,7 @@ const DB = {
   async sendPasswordReset(email) {
     if (!supabaseClient) throw new Error("Cliente de base de datos no disponible");
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email.trim(), {
-      redirectTo: `${window.location.origin}/login.html?reset=1`
+      redirectTo: `${window.location.origin}/login?reset=1`
     });
     if (error) throw error;
   },
@@ -921,3 +921,28 @@ window.fetchConSesion = async function (url, opciones = {}) {
   if (token) headers.Authorization = `Bearer ${token}`;
   return fetch(url, { ...opciones, headers });
 };
+
+// Vuelta de un enlace del correo (verificar cuenta, cambiar contraseña) con error:
+// Supabase lo manda en la dirección (#error=…). Se explica en lenguaje normal y se limpia la dirección.
+(function () {
+  const datos = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const verificado = new URLSearchParams(location.search).get("verificado") === "1";
+  if (!datos.get("error") && !verificado) return;
+  const codigo = datos.get("error_code") || "";
+  const texto = datos.get("error")
+    ? (codigo === "otp_expired"
+      ? "Ese enlace ya se usó o venció. Si ya habías confirmado tu correo, tu cuenta está activa: inicia sesión normalmente."
+      : "No se pudo completar el enlace del correo. Prueba a iniciar sesión; si no entra, pide un correo nuevo.")
+    : "¡Correo confirmado! Tu cuenta ya está activa.";
+  history.replaceState(null, "", location.pathname);
+  const aviso = document.createElement("div");
+  aviso.className = "aviso-correo" + (datos.get("error") ? " es-error" : "");
+  aviso.setAttribute("role", "status");
+  aviso.innerHTML = `<span></span><a href="/login">Iniciar sesión</a><button type="button" aria-label="Cerrar">×</button>`;
+  aviso.querySelector("span").textContent = texto;
+  if (!datos.get("error")) aviso.querySelector("a").remove();
+  aviso.querySelector("button").addEventListener("click", () => aviso.remove());
+  const poner = () => document.body.prepend(aviso);
+  if (document.body) poner(); else document.addEventListener("DOMContentLoaded", poner);
+  setTimeout(() => aviso.remove(), 15000);
+})();
