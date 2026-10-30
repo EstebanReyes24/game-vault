@@ -83,8 +83,91 @@ async function imagenComparar(a, b, fuentes) {
   );
 }
 
+// ---------- Para presumir: "Mi 3×3" (1080×1350) e historia (1080×1920) ----------
+async function datosPresumir(usuario) {
+  if (!usuarioValido(usuario)) return null;
+  const [p] = await supa(`profiles?select=id,username&username=eq.${String(usuario).toLowerCase()}&is_public=eq.true&limit=1`);
+  if (!p) return null;
+  const juegos = await supa(`games?select=title,cover_url,rating,favorite,hours,status&user_id=eq.${p.id}`);
+  const conTapa = juegos.filter(g => /^https:\/\//.test(g.cover_url || "") && !/psnobj\.prod/.test(g.cover_url));
+  // Favoritos primero, luego mejor nota, luego más horas
+  const orden = [...conTapa].sort((a, b) => (b.favorite ? 1 : 0) - (a.favorite ? 1 : 0) || (Number(b.rating) || 0) - (Number(a.rating) || 0) || (Number(b.hours) || 0) - (Number(a.hours) || 0));
+  const notas = juegos.filter(g => Number(g.rating) > 0);
+  return {
+    usuario: p.username,
+    top: orden.slice(0, 9),
+    juegos: juegos.length,
+    horas: juegos.reduce((t, g) => t + (Number(g.hours) || 0), 0),
+    platinos: juegos.filter(g => g.status === "platinum").length,
+    terminados: juegos.filter(g => ["completed", "extras", "platinum"].includes(g.status)).length,
+    media: notas.length ? notas.reduce((t, g) => t + Number(g.rating), 0) / notas.length : null
+  };
+}
+
+const pie = (usuario, tam) => h({ alignItems: "center", justifyContent: "space-between", width: "100%" },
+  h({ alignItems: "center", gap: 14 }, marca(tam), h({ fontFamily: "Display", fontSize: tam * 0.6, color: HUESO }, "PAINDEX VAULT")),
+  h({ fontFamily: "Texto", fontSize: tam * 0.42, color: NIEBLA }, `game-vault-beige.vercel.app/u/${usuario}`));
+
+function imagen3x3(d, fuentes) {
+  const celdas = Array.from({ length: 9 }, (_, i) => d.top[i] || null);
+  return new ImageResponse(
+    h({ width: "100%", height: "100%", padding: 48, flexDirection: "column", justifyContent: "space-between", background: NOCHE },
+      h({ flexDirection: "column" },
+        h({ fontFamily: "Texto", fontSize: 28, color: SENAL, letterSpacing: 4 }, "MI 3×3"),
+        h({ fontFamily: "Display", fontSize: d.usuario.length > 12 ? 64 : 80, color: HUESO, lineHeight: 1 }, `@${d.usuario}`)),
+      h({ flexWrap: "wrap", gap: 12, width: 984 },
+        ...celdas.map(g => g
+          ? h({ position: "relative", width: 320, height: 330, borderRadius: 14, overflow: "hidden", background: CARBON },
+              img(g.cover_url, 320, 330, { width: 320, height: 330, objectFit: "cover" }),
+              g.rating ? h({ position: "absolute", top: 10, right: 10, background: HUESO, color: "#c4102e", borderRadius: 8, padding: "2px 10px", fontFamily: "Display", fontSize: 30 }, Number(g.rating).toFixed(1)) : null)
+          : h({ width: 320, height: 330, borderRadius: 14, background: CARBON }))),
+      pie(d.usuario, 44)),
+    { width: 1080, height: 1350, fonts: fuentes.length ? fuentes : undefined, headers: { "Cache-Control": "public, s-maxage=600, stale-while-revalidate=3600" } }
+  );
+}
+
+function imagenHistoria(d, fuentes) {
+  const cifras = [
+    [d.juegos.toLocaleString("es"), "juegos"],
+    [d.horas.toLocaleString("es"), "horas"],
+    [String(d.terminados), "terminados"],
+    [String(d.platinos), "platinos"]
+  ];
+  return new ImageResponse(
+    h({ width: "100%", height: "100%", padding: 72, flexDirection: "column", justifyContent: "space-between", background: NOCHE, backgroundImage: "radial-gradient(circle at 50% 100%, rgba(160,20,44,0.6), transparent 60%)" },
+      h({ alignItems: "center", gap: 18 }, marca(70), h({ fontFamily: "Display", fontSize: 46, color: HUESO }, "PAINDEX VAULT")),
+      h({ flexDirection: "column", gap: 10 },
+        h({ fontFamily: "Texto", fontSize: 34, color: SENAL, letterSpacing: 3 }, "MI ESTANTE"),
+        h({ fontFamily: "Display", fontSize: d.usuario.length > 12 ? 104 : 132, color: HUESO, lineHeight: 0.95 }, `@${d.usuario}`),
+        d.media !== null ? h({ fontFamily: "Texto", fontSize: 34, color: NIEBLA }, `nota media ${d.media.toFixed(1)}`) : null),
+      h({ flexWrap: "wrap", gap: 28, width: 936 },
+        ...cifras.map(([n, t]) => h({ flexDirection: "column", width: 454, padding: 28, borderRadius: 24, background: CARBON },
+          h({ fontFamily: "Display", fontSize: 110, color: HUESO, lineHeight: 1 }, n),
+          h({ fontFamily: "Texto", fontSize: 32, color: NIEBLA, marginTop: 6 }, t)))),
+      d.top.length ? h({ flexDirection: "column", gap: 18 },
+        h({ fontFamily: "Texto", fontSize: 32, color: NIEBLA }, "Mis favoritos"),
+        h({ gap: 24 }, ...d.top.slice(0, 3).map(g => h({ width: 296, height: 395, borderRadius: 18, overflow: "hidden" },
+          img(g.cover_url, 296, 395, { width: 296, height: 395, objectFit: "cover" }))))) : h({}),
+      h({ flexDirection: "column", alignItems: "center", gap: 10, width: "100%" },
+        h({ fontFamily: "Texto", fontSize: 34, color: HUESO }, "¿Qué tan compatibles somos?"),
+        h({ fontFamily: "Display", fontSize: 46, color: SENAL }, `game-vault-beige.vercel.app/u/${d.usuario}`))),
+    { width: 1080, height: 1920, fonts: fuentes.length ? fuentes : undefined, headers: { "Cache-Control": "public, s-maxage=600, stale-while-revalidate=3600" } }
+  );
+}
+
 export default async function handler(req) {
   const params = new URL(req.url).searchParams;
+  const tipo = params.get("tipo");
+  if ((tipo === "3x3" || tipo === "historia") && params.get("u")) {
+    let fuentes = [];
+    try {
+      const [display, texto] = await Promise.all([fuente("Big+Shoulders+Display", 900), fuente("Archivo", 600)]);
+      fuentes = [{ name: "Display", data: display, weight: 900 }, { name: "Texto", data: texto, weight: 600 }];
+    } catch (e) { /* tipografía por defecto */ }
+    const d = await datosPresumir(params.get("u")).catch(() => null);
+    if (!d) return new Response(JSON.stringify({ error: "Ese estante no existe o es privado." }), { status: 404, headers: { "Content-Type": "application/json" } });
+    return tipo === "3x3" ? imagen3x3(d, fuentes) : imagenHistoria(d, fuentes);
+  }
   if (params.get("a") && params.get("b")) {
     let fuentes = [];
     try {

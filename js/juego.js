@@ -71,6 +71,7 @@
           ${(d.etiquetas || []).length ? `<p class="juego-meta">${d.etiquetas.map(t => `#${esc(t)}`).join(" ")}</p>` : ""}
           <div class="juego-acciones">
             <a class="boton boton-senal" href="/estante?anadir=${encodeURIComponent(d.titulo)}"><i class="fa-solid fa-plus" aria-hidden="true"></i> Añadir a mi estante</a>
+            <button type="button" class="boton boton-linea" id="jDeseo"><i class="fa-solid fa-heart" aria-hidden="true"></i> Lo quiero</button>
             <button type="button" class="boton boton-linea" id="jCompartir"><i class="fa-solid fa-link" aria-hidden="true"></i> Copiar enlace</button>
           </div>
         </div>
@@ -106,6 +107,23 @@
         <p class="borrador-estado" id="jVideoEstado" role="status"></p>
       </section>` : ""}
     `;
+
+    // "Lo quiero": a tu lista de deseos (migración 019), con su precio de PC si existe
+    document.getElementById("jDeseo").addEventListener("click", async (e) => {
+      const b = e.currentTarget;
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) { location.href = "/login"; return; }
+      b.disabled = true;
+      let cs = null;
+      try { cs = (await fetch(`https://www.cheapshark.com/api/1.0/games?title=${encodeURIComponent(d.titulo)}&limit=3`).then(x => x.json()))[0] || null; } catch (err) { cs = null; }
+      const { error } = await supabaseClient.from("wishlist").insert([{
+        user_id: session.user.id, titulo: String(d.titulo).slice(0, 150), portada: portada || null,
+        cheapshark_id: cs?.gameID || null, steam_appid: Number(cs?.steamAppID) || null
+      }]);
+      b.innerHTML = error
+        ? (/duplicate|unique/.test(error.message) ? '<i class="fa-solid fa-heart" aria-hidden="true"></i> Ya lo quieres' : "No se pudo guardar")
+        : '<i class="fa-solid fa-check" aria-hidden="true"></i> En tu lista de deseos';
+    });
 
     document.getElementById("jCompartir").addEventListener("click", async (e) => {
       const url = `${location.origin}/j/${slug}`;

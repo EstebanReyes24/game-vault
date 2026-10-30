@@ -452,6 +452,12 @@
         <button id="openXboxBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-brands fa-xbox"></i> XBOX
         </button>
+        <button id="deseosBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Juegos que quieres: te avisamos cuando bajan de precio o salen">
+          <i class="fa-solid fa-heart"></i> DESEOS
+        </button>
+        <button id="presumirBtn" type="button" class="px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Crea imágenes de tu estante para Instagram, TikTok o WhatsApp">
+          <i class="fa-solid fa-share-from-square"></i> PRESUMIR
+        </button>
         <button id="queJuegoBtn" type="button" class="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Te propone qué jugar de tus pendientes">
           <i class="fa-solid fa-dice"></i> ¿QUÉ JUEGO?
         </button>
@@ -960,6 +966,48 @@
     </div>
   </div>
 
+  <!-- LISTA DE DESEOS -->
+  <div id="deseosModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel deseos" role="dialog" aria-modal="true" aria-labelledby="deseosTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="deseosTitulo" class="seccion-titulo">Lista de deseos <small id="deseosCuenta" class="deseos-cuenta"></small></h2>
+          <p>Lo que quieres jugar. Te avisamos en la campana cuando baja de precio o el día que sale.</p>
+        </div>
+        <button type="button" id="deseosCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <label class="archivo-buscar"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <input type="search" id="deseosBuscar" placeholder="Añadir un juego: escribe su nombre" autocomplete="off"></label>
+      <ul class="deseos-resultados" id="deseosResultados"></ul>
+      <p class="borrador-estado" id="deseosEstado" role="status"></p>
+      <ul class="deseos-lista" id="deseosLista"></ul>
+    </div>
+  </div>
+
+  <!-- PRESUMIR: Mi 3×3 e historia -->
+  <div id="presumirModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
+    <div class="borradores-panel presumir" role="dialog" aria-modal="true" aria-labelledby="presumirTitulo">
+      <div class="borradores-cabecera">
+        <div>
+          <h2 id="presumirTitulo" class="seccion-titulo">Presume tu estante</h2>
+          <p>Imágenes listas para Instagram, TikTok, WhatsApp o X. Salen tus favoritos primero y luego tus mejor puntuados.</p>
+        </div>
+        <button type="button" id="presumirCerrar" class="boton boton-linea" aria-label="Cerrar">Cerrar</button>
+      </div>
+      <div class="presumir-pestanas" role="tablist">
+        <button type="button" role="tab" data-formato="3x3" class="filter-pill active px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">Mi 3×3 (publicación)</button>
+        <button type="button" role="tab" data-formato="historia" class="filter-pill px-3 py-1.5 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">Historia (vertical)</button>
+      </div>
+      <p class="borrador-estado" id="presumirEstado" role="status"></p>
+      <div class="presumir-vista" id="presumirVista"><img id="presumirImagen" alt="Vista previa de la imagen para compartir"></div>
+      <div class="borrador-acciones presumir-acciones">
+        <button type="button" class="boton boton-senal" id="presumirCompartir"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i> Compartir</button>
+        <button type="button" class="boton boton-linea" id="presumirDescargar"><i class="fa-solid fa-download" aria-hidden="true"></i> Descargar</button>
+      </div>
+      <p class="resena-nota-ayuda">Consejo: marca con la estrella tus juegos favoritos para elegir cuáles salen.</p>
+    </div>
+  </div>
+
   <!-- MI PERFIL -->
   <div id="perfilModal" class="fixed inset-0 z-50 flex items-start justify-center p-4 bg-black/80 hidden overflow-y-auto">
     <div class="borradores-panel mi-perfil" role="dialog" aria-modal="true" aria-labelledby="miPerfilTitulo">
@@ -981,6 +1029,16 @@
             <button type="button" class="resena-mas" id="miPerfilQuitarFoto" hidden>Quitar foto</button>
           </div>
         </div>
+      </div>
+
+      <div class="mi-perfil-nombre-cambio" id="miPerfilNombreBloque" hidden>
+        <label class="borrador-campo">Elige tu nombre de usuario <small class="mi-perfil-contador">solo se puede una vez</small>
+          <div class="flex gap-2">
+            <input type="text" id="miPerfilNombreNuevo" class="console-input lista-buscar" maxlength="20" autocomplete="off" placeholder="tu_nombre">
+            <button type="button" class="boton boton-senal" id="miPerfilNombreGuardar">Usar</button>
+          </div>
+        </label>
+        <p class="resena-nota-ayuda">Tu nombre actual salió de tu correo. Después de cambiarlo quedará fijo, y tu perfil pasará a ser /u/el-nuevo-nombre.</p>
       </div>
 
       <label class="borrador-campo">Sobre ti <small class="mi-perfil-contador" id="miPerfilBioCuenta">0/160</small>
@@ -1126,5 +1184,7 @@
   <script src="js/medallas.js"></script>
   <script src="js/avatar.js"></script>
   <script src="js/miperfil.js"></script>
+  <script src="js/presumir.js"></script>
+  <script src="js/deseos.js"></script>
 </body>
 </html>

@@ -2290,6 +2290,6 @@ async function pintarSocial(nombre, miPerfil) {
 
 // En un perfil ajeno no tienen sentido los botones de importar ni de mantenimiento
 if (isSpectatorMode) {
-  ["openSteamSyncBtn", "openXboxBtn", "openPsnBtn", "openPegarBtn", "syncPlatformsBtn", "autoDataBtn", "dupesBtn", "queJuegoBtn"]
+  ["openSteamSyncBtn", "openXboxBtn", "openPsnBtn", "openPegarBtn", "syncPlatformsBtn", "autoDataBtn", "dupesBtn", "queJuegoBtn", "presumirBtn", "deseosBtn"]
     .forEach(id => document.getElementById(id)?.remove());
 }

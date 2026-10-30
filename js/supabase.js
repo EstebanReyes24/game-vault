@@ -181,11 +181,11 @@ const DB = {
     const user = await currentUser();
     if (!user) return null;
     // avatar_url (migración 015) y bio (016): si aún no existen, se piden sin ellas
-    let columnas = ["id", "username", "is_public", "avatar_url", "bio"];
+    let columnas = ["id", "username", "is_public", "avatar_url", "bio", "nombre_elegido"];
     let data = null, error = null;
-    for (let intento = 0; intento < 3; intento++) {
+    for (let intento = 0; intento < 4; intento++) {
       ({ data, error } = await supabaseClient.from("profiles").select(columnas.join(", ")).eq("id", user.id).maybeSingle());
-      const falta = error && columnas.find(c => ["avatar_url", "bio"].includes(c) && error.message.includes(c));
+      const falta = error && columnas.find(c => ["avatar_url", "bio", "nombre_elegido"].includes(c) && error.message.includes(c));
       if (!falta) break;
       columnas = columnas.filter(c => c !== falta);
     }
@@ -223,6 +223,13 @@ const DB = {
     await supabaseClient.storage.from("avatares").remove([`${user.id}/avatar.webp`]);
     const { error } = await supabaseClient.from("profiles").update({ avatar_url: null }).eq("id", user.id);
     if (error) throw error;
+  },
+
+  /** Cambia el nombre de usuario (solo una vez, migración 019). */
+  async elegirNombre(nuevo) {
+    const { data, error } = await supabaseClient.rpc("elegir_nombre", { p_nuevo: String(nuevo || "").trim().toLowerCase() });
+    if (error) throw new Error(error.message.replace(/^.*?:\s*/, "") || "No se pudo cambiar el nombre.");
+    return data;
   },
 
   async guardarBio(texto) {

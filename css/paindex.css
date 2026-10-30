@@ -1019,3 +1019,43 @@ body.light-mode .aviso-correo.es-error { background: #fff0f2; color: #16121a; }
   .canal-bloque { grid-template-columns: 1fr; }
   .canal-lista img { width: 7rem; }
 }
+
+/* ---------- entrar con Google ---------- */
+.google-bloque { display: grid; gap: 0.9rem; }
+.google-boton { display: flex; align-items: center; justify-content: center; gap: 0.65rem; width: 100%; padding: 0.75rem 1rem; border-radius: 0.8rem; background: #ffffff; color: #1f1f1f; font-weight: 700; font-size: 0.9rem; border: 1px solid #dadce0; cursor: pointer; transition: background 0.15s ease; }
+.google-boton:hover { background: #f4f4f4; }
+.google-boton:disabled { opacity: 0.6; cursor: wait; }
+.google-o { display: flex; align-items: center; gap: 0.75rem; margin: 0; color: var(--niebla); font-size: 0.75rem; }
+.google-o::before, .google-o::after { content: ""; flex: 1; height: 1px; background: var(--border-light); }
+
+/* ---------- presumir ---------- */
+.presumir-pestanas { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.presumir-vista { display: grid; place-items: center; margin-top: 0.75rem; border-radius: 1rem; background: var(--grafito); overflow: hidden; min-height: 12rem; }
+.presumir-vista img { display: block; width: 100%; height: auto; }
+.presumir-vista.es-3x3 img { max-width: 26rem; }
+.presumir-vista.es-historia img { max-width: 17rem; }
+.presumir-acciones { margin-top: 1rem; }
+body.light-mode #barraHerramientas #presumirBtn { background: #fff0f2 !important; color: #be123c !important; border-color: #fbb6c3 !important; }
+
+/* ---------- lista de deseos ---------- */
+.deseos { display: grid; gap: 0.75rem; }
+.deseos-cuenta { font-family: var(--texto); font-size: 0.9rem; font-weight: 500; color: var(--niebla); margin-left: 0.4rem; }
+.deseos-resultados, .deseos-lista { list-style: none; margin: 0; padding: 0; }
+.deseos-resultados button { all: unset; box-sizing: border-box; width: 100%; display: flex; gap: 0.75rem; align-items: center; padding: 0.45rem 0.5rem; border-radius: 0.6rem; cursor: pointer; }
+.deseos-resultados button:hover, .deseos-resultados button:focus-visible { background: var(--grafito); }
+.deseos-resultados img, .deseos-resultados .lista-sin-tapa { width: 4rem; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0.4rem; flex-shrink: 0; }
+.deseos-resultados b { display: block; color: var(--hueso); font-size: 0.9rem; }
+.deseos-resultados small { color: var(--niebla); font-size: 0.75rem; }
+.deseos-lista li { display: flex; gap: 0.85rem; align-items: center; padding: 0.75rem 0; border-bottom: 1px solid var(--border-light); }
+.deseos-lista img, .deseos-lista .lista-sin-tapa { width: 5.5rem; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0.5rem; flex-shrink: 0; }
+.deseo-texto { flex: 1; min-width: 0; display: grid; gap: 0.2rem; }
+.deseo-texto a { color: var(--hueso); text-decoration: none; }
+.deseo-texto a:hover b { color: var(--senal); }
+.deseo-texto small { color: var(--niebla); font-size: 0.8rem; }
+.deseo-rebaja { font-style: normal; font-weight: 800; color: #12a150; }
+.deseo-objetivo { display: flex; align-items: center; gap: 0.35rem; font-size: 0.74rem; color: var(--niebla); }
+.deseo-objetivo input { width: 4.5rem; padding: 0.2rem 0.4rem; border-radius: 0.4rem; border: 1px solid var(--border-light); background: var(--input-bg); color: var(--hueso); font-size: 0.8rem; }
+.deseo-acciones { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0; }
+.deseo-acciones .boton { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
+.deseos-vacio { color: var(--niebla); font-size: 0.9rem; padding: 1rem 0; }
+@media (max-width: 560px) { .deseos-lista li { flex-wrap: wrap; } .deseo-acciones { flex-direction: row; width: 100%; justify-content: flex-end; } }

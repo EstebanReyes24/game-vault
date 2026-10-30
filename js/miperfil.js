@@ -44,6 +44,9 @@
     $("miPerfilCorreo").textContent = correo;
     $("miPerfilVer").href = `/u/${encodeURIComponent(perfil.username)}`;
     $("miPerfilBio").value = perfil.bio || "";
+    // Quien entró con Google puede elegir su nombre una vez (si existe la columna, migración 019)
+    $("miPerfilNombreBloque").hidden = perfil.nombre_elegido !== false;
+    $("miPerfilNombreNuevo").value = "";
     $("miPerfilBioCuenta").textContent = `${($("miPerfilBio").value || "").length}/160`;
     pintarFoto(perfil.avatar_url || null);
     modal.classList.remove("hidden");
@@ -89,6 +92,26 @@
     catch (err) { showToast(err.message, true); }
   });
 
+  $("miPerfilNombreNuevo").addEventListener("input", (e) => {
+    const limpio = e.target.value.toLowerCase().replace(/[^a-z0-9_]/g, "");
+    if (limpio !== e.target.value) e.target.value = limpio;
+  });
+  $("miPerfilNombreGuardar").addEventListener("click", async () => {
+    const nuevo = $("miPerfilNombreNuevo").value.trim();
+    if (!/^[a-z0-9_]{3,20}$/.test(nuevo)) { showToast("De 3 a 20 caracteres: letras minúsculas, números y _.", true); return; }
+    if (!confirm(`¿Usar «${nuevo}» como tu nombre? No se podrá cambiar después.`)) return;
+    try {
+      const nombre = await DB.elegirNombre(nuevo);
+      perfil.username = nombre; perfil.nombre_elegido = true;
+      $("miPerfilUsuario").textContent = `@${nombre}`;
+      $("miPerfilVer").href = `/u/${encodeURIComponent(nombre)}`;
+      $("miPerfilNombreBloque").hidden = true;
+      const etiqueta = document.getElementById("appUserLabel");
+      if (etiqueta) etiqueta.textContent = nombre;
+      showToast(`¡Listo! Ahora eres @${nombre}.`);
+    } catch (err) { showToast(err.message, true); }
+  });
+
   $("miPerfilBio").addEventListener("input", (e) => { $("miPerfilBioCuenta").textContent = `${e.target.value.length}/160`; });
   $("miPerfilGuardarBio").addEventListener("click", async () => {
     try { const bio = await DB.guardarBio($("miPerfilBio").value); if (perfil) perfil.bio = bio; showToast(bio ? "Descripción guardada." : "Descripción borrada."); }
@@ -123,4 +146,17 @@
     setTimeout(abrir, 600);
   }
   window.MiPerfil = { abrir };
+
+  // Primera vez con Google: se abre "Mi perfil" para que elija su nombre (una sola vez por navegador)
+  setTimeout(async () => {
+    try {
+      if (localStorage.getItem("gv_nombre_sugerido")) return;
+      const p = await DB.getMyProfile();
+      if (p && p.nombre_elegido === false) {
+        localStorage.setItem("gv_nombre_sugerido", "1");
+        await abrir();
+        showToast("¡Bienvenido! Elige tu nombre de usuario aquí.");
+      }
+    } catch (e) { /* sin almacenamiento o sin sesión */ }
+  }, 1800);
 })();
