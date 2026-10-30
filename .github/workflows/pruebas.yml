@@ -3,7 +3,8 @@
 name: Prueba de humo
 
 on:
-  deployment_status:
+  # Vercel avisa con un "status" en el commit cuando termina de publicar
+  status:
   workflow_dispatch:
     inputs:
       base:
@@ -13,7 +14,7 @@ on:
 
 jobs:
   humo:
-    if: github.event_name == 'workflow_dispatch' || github.event.deployment_status.state == 'success'
+    if: github.event_name == 'workflow_dispatch' || (github.event.state == 'success' && contains(github.event.context, 'Vercel'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -25,7 +26,21 @@ jobs:
         run: |
           npm install --no-save playwright@1.48.2
           npx playwright install --with-deps chromium
+      - name: Elegir la dirección a probar
+        id: base
+        env:
+          RAMA: ${{ github.event.branches[0].name }}
+          MANUAL: ${{ inputs.base }}
+        run: |
+          if [ -n "$MANUAL" ]; then echo "url=$MANUAL" >> "$GITHUB_OUTPUT"
+          elif [ "$RAMA" = "main" ] || [ -z "$RAMA" ]; then echo "url=https://game-vault-beige.vercel.app" >> "$GITHUB_OUTPUT"
+          else
+            SLUG=$(echo "$RAMA" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+            echo "url=https://paindex-vault-git-${SLUG}-paindex1.vercel.app" >> "$GITHUB_OUTPUT"
+          fi
       - name: Probar páginas
         env:
-          BASE: ${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url || inputs.base }}
-        run: node pruebas/humo.mjs
+          BASE: ${{ steps.base.outputs.url }}
+        run: |
+          echo "Probando $BASE"
+          node pruebas/humo.mjs
