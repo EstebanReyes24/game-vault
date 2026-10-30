@@ -890,7 +890,8 @@ function pintarArchivo() {
     // separadas por mes para que el archivo se lea como una línea de tiempo
     let mes = "";
     cont.innerHTML = lista.slice(0, archivoVisibles).map(p => {
-      const m = p.created_at ? new Date(p.created_at).toLocaleDateString("es-ES", { month: "long", year: "numeric" }) : "";
+      const m0 = p.created_at ? new Date(p.created_at).toLocaleDateString("es-ES", { month: "long", year: "numeric" }) : "";
+      const m = m0.charAt(0).toUpperCase() + m0.slice(1);
       const cabecera = m && m !== mes ? `<h2 class="archivo-mes">${escapeHTML(m)}</h2>` : "";
       mes = m || mes;
       return cabecera + tarjetaPost(p);

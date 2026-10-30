@@ -772,7 +772,7 @@ body.modo-archivo .solo-portada { display: none !important; }
 .archivo-buscar input { all: unset; flex: 1; min-width: 0; font-size: 0.9rem; color: var(--hueso); }
 .archivo-filtros { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .archivo-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); gap: 1.25rem; }
-.archivo-mes { grid-column: 1 / -1; margin: 0.75rem 0 -0.25rem; font-family: var(--display); font-weight: 800; font-size: 1.35rem; text-transform: capitalize; color: var(--niebla); }
+.archivo-mes { grid-column: 1 / -1; margin: 0.75rem 0 -0.25rem; font-family: var(--display); font-weight: 800; font-size: 1.35rem; color: var(--niebla); }
 .archivo-mes:first-child { margin-top: 0; }
 .archivo-vacio { grid-column: 1 / -1; padding: 3rem 0; text-align: center; color: var(--niebla); }
 .archivo-pie { display: flex; justify-content: center; }
