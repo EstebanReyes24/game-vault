@@ -4,7 +4,7 @@
  * a la web. La clave del usuario no se guarda en ningún sitio.
  * Necesita OPENXBL_APP_KEY (clave privada de la app) en Vercel.
  */
-import { OPENXBL, titulosXbox } from "./_xbox.js";
+import { OPENXBL, titulosXbox } from "../api/_xbox.js";
 
 function pagina(res, datos) {
   // JSON seguro dentro de <script>: sin "<" que pueda cerrar la etiqueta

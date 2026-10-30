@@ -56,6 +56,7 @@
       </a>
 
       <div class="flex items-center gap-2">
+        <a href="/juegos" class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-md border border-white/15 text-sm font-semibold text-slate-200 hover:text-white transition"><i class="fa-solid fa-layer-group text-xs" aria-hidden="true"></i> Juegos</a>
         <button type="button" id="openSearchBtn" class="hidden sm:flex items-center gap-2 px-3 py-2 rounded-md console-input text-sm text-slate-400 hover:text-white transition cursor-pointer">
           <i class="fa-solid fa-magnifying-glass text-xs" aria-hidden="true"></i>
           <span>Buscar</span>
@@ -123,6 +124,18 @@
       <div class="destacada"><b id="commStatTopGame">-</b><span>el más registrado</span></div>
     </section>
 </main>
+
+    <!-- Lo último del canal de YouTube (feed público, /api/canal) -->
+    <section class="canal solo-portada" id="canalPortada" aria-labelledby="canalTitulo" hidden>
+      <div class="seccion-cabecera">
+        <div>
+          <h2 id="canalTitulo" class="seccion-titulo">Lo último del canal</h2>
+          <span class="seccion-nota">Análisis y reflexiones en video, en Paindex.</span>
+        </div>
+        <a href="https://www.youtube.com/@PaindexHQ?sub_confirmation=1" target="_blank" rel="noopener" class="ver-todo">Suscribirme <i class="fa-brands fa-youtube" aria-hidden="true"></i></a>
+      </div>
+      <div class="canal-bloque" id="canalVideos"></div>
+    </section>
 
     <!-- Hall of Fame del Creador (Dinámico y Editable) -->
     <section class="space-y-4 solo-portada">
@@ -468,5 +481,6 @@
   <script src="js/actividad.js"></script>
   <script src="js/avisos.js"></script>
   <script src="js/avatar.js"></script>
+  <script src="js/canal.js"></script>
 </body>
 </html>

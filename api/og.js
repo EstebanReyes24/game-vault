@@ -3,7 +3,7 @@
  * Se genera al vuelo con @vercel/og y se cachea en el CDN de Vercel.
  */
 import { ImageResponse } from "@vercel/og";
-import { perfilPublico } from "./_supabase.js";
+import { perfilPublico, supa, usuarioValido } from "./_supabase.js";
 
 export const config = { runtime: "edge" };
 
@@ -38,8 +38,63 @@ const marca = (tam) => ({
   }
 });
 
+// ---------- Comparar estantes: /api/og?a=uno&b=otro ----------
+const claveOg = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "");
+async function juegosDe(usuario) {
+  if (!usuarioValido(usuario)) return null;
+  const [p] = await supa(`profiles?select=id,username&username=eq.${String(usuario).toLowerCase()}&is_public=eq.true&limit=1`);
+  if (!p) return null;
+  const juegos = await supa(`games?select=title,rating,status,cover_url&user_id=eq.${p.id}`);
+  return { usuario: p.username, juegos };
+}
+function compatibilidad(A, B) {
+  const mb = new Map(B.map(g => [claveOg(g.title), g]));
+  const comunes = A.filter(g => mb.has(claveOg(g.title))).map(g => [g, mb.get(claveOg(g.title))]);
+  const conNota = comunes.filter(([x, y]) => Number(x.rating) > 0 && Number(y.rating) > 0);
+  const dif = conNota.length ? conNota.reduce((t, [x, y]) => t + Math.abs(x.rating - y.rating), 0) / conNota.length : null;
+  const acuerdo = dif === null ? 0.5 : Math.max(0, 1 - dif / 6);
+  const solape = Math.min(1, comunes.length / Math.max(1, Math.min(A.length, B.length)));
+  const peso = Math.min(1, conNota.length / 5);
+  const c = Math.round(100 * (0.5 * Math.sqrt(solape) + 0.5 * (acuerdo * peso + 0.5 * (1 - peso))));
+  return { compat: comunes.length ? c : Math.min(c, 10), comunes };
+}
+
+async function imagenComparar(a, b, fuentes) {
+  const [A, B] = await Promise.all([juegosDe(a), juegosDe(b)]);
+  if (!A || !B) return null;
+  const { compat, comunes } = compatibilidad(A.juegos, B.juegos);
+  const portadas = comunes.map(([x, y]) => x.cover_url || y.cover_url).filter(u => /^https:\/\//.test(u || "")).slice(0, 4);
+  const nombre = (u) => h({ fontFamily: "Display", fontSize: u.length > 11 ? 60 : 76, color: HUESO, lineHeight: 1 }, `@${u}`);
+  return new ImageResponse(
+    h({ width: "100%", height: "100%", padding: 64, flexDirection: "column", justifyContent: "space-between", background: NOCHE, backgroundImage: "radial-gradient(circle at 50% 110%, rgba(160,20,44,0.6), transparent 60%)" },
+      h({ alignItems: "center", gap: 16 }, marca(52), h({ fontFamily: "Display", fontSize: 36, color: HUESO }, "PAINDEX VAULT · COMPARAR ESTANTES")),
+      h({ alignItems: "center", justifyContent: "space-between" },
+        h({ flexDirection: "column", width: 380 }, nombre(A.usuario), h({ fontFamily: "Texto", fontSize: 26, color: NIEBLA, marginTop: 8 }, `${A.juegos.length} juegos`)),
+        h({ width: 260, height: 260, borderRadius: 130, alignItems: "center", justifyContent: "center", flexDirection: "column", border: `14px solid ${SENAL}`, background: CARBON },
+          h({ fontFamily: "Display", fontSize: 96, color: HUESO, lineHeight: 1 }, `${compat}%`),
+          h({ fontFamily: "Texto", fontSize: 22, color: NIEBLA }, "compatibles")),
+        h({ flexDirection: "column", width: 380, alignItems: "flex-end" }, nombre(B.usuario), h({ fontFamily: "Texto", fontSize: 26, color: NIEBLA, marginTop: 8 }, `${B.juegos.length} juegos`))
+      ),
+      h({ alignItems: "center", gap: 14 },
+        ...portadas.map(u => img(u, 72, 96, { width: 72, height: 96, objectFit: "cover", borderRadius: 8 })),
+        h({ fontFamily: "Texto", fontSize: 28, color: HUESO, marginLeft: portadas.length ? 10 : 0 }, `${comunes.length} ${comunes.length === 1 ? "juego" : "juegos"} en común`))
+    ),
+    { width: 1200, height: 630, fonts: fuentes.length ? fuentes : undefined, headers: { "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400" } }
+  );
+}
+
 export default async function handler(req) {
-  const u = new URL(req.url).searchParams.get("u");
+  const params = new URL(req.url).searchParams;
+  if (params.get("a") && params.get("b")) {
+    let fuentes = [];
+    try {
+      const [display, texto] = await Promise.all([fuente("Big+Shoulders+Display", 900), fuente("Archivo", 600)]);
+      fuentes = [{ name: "Display", data: display, weight: 900 }, { name: "Texto", data: texto, weight: 600 }];
+    } catch (e) { /* tipografía por defecto */ }
+    const imagen = await imagenComparar(params.get("a"), params.get("b"), fuentes).catch(() => null);
+    if (imagen) return imagen;
+  }
+  const u = params.get("u");
   let p = null;
   try { p = await perfilPublico(u); } catch (e) { p = null; }
 
