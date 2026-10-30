@@ -36,7 +36,7 @@ function inyectar(html, meta) {
 // ---------- Sitemap dinámico (/sitemap.xml → ?tipo=sitemap): páginas fijas + cada /j/<juego> ----------
 const FIJAS = [["/", "daily", "1.0"], ["/juegos", "daily", "0.9"], ["/noticias", "daily", "0.8"], ["/articulos", "weekly", "0.8"], ["/comparar", "monthly", "0.4"], ["/legal", "yearly", "0.2"]];
 const slug = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 120);
-const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const escXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
 async function sitemap(req, res) {
   const origen = `https://${req.headers["x-forwarded-host"] || req.headers.host}`;
@@ -51,7 +51,7 @@ async function sitemap(req, res) {
   } catch (e) { /* sin juegos: solo las fijas */ }
   const urls = [
     ...FIJAS.map(([ruta, cambio, prioridad]) => `<url><loc>${origen}${ruta}</loc><changefreq>${cambio}</changefreq><priority>${prioridad}</priority></url>`),
-    ...juegos.filter(j => slug(j.titulo)).map(j => `<url><loc>${esc(`${origen}/j/${slug(j.titulo)}`)}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`)
+    ...juegos.filter(j => slug(j.titulo)).map(j => `<url><loc>${escXml(`${origen}/j/${slug(j.titulo)}`)}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`)
   ];
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader("Cache-Control", "public, s-maxage=21600, stale-while-revalidate=86400");

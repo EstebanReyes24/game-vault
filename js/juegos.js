@@ -45,6 +45,7 @@
   }
 
   async function cargar() {
+    raiz.querySelectorAll("[data-orden]").forEach(b => b.classList.toggle("active", b.dataset.orden === orden));
     const { data, error } = await supabaseClient.rpc("juegos_ranking", { p_orden: orden, p_limite: 120 });
     lista = error ? [] : (data || []);
     if (error) document.getElementById("juegosLista").innerHTML = `<li class="archivo-vacio">No se pudo cargar la lista. Prueba en un rato.</li>`;
