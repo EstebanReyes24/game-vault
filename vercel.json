@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/sitemap.xml",
-      "destination": "/api/sitemap"
+      "destination": "/api/pagina?tipo=sitemap"
     },
     {
       "source": "/estante",

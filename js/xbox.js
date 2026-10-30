@@ -1,6 +1,6 @@
 /**
  * Importar desde Xbox por gamertag (clave de OpenXBL de la web) o, como respaldo, con la clave personal
- * de OpenXBL del usuario. El inicio de sesión con Xbox (/api/xbox-login) queda listo para cuando se configure.
+ * de OpenXBL del usuario. El inicio de sesión con Xbox está guardado en reserva/ hasta que se configure.
  * Los juegos entran sin nota; el estado lo pone Autodatos con sus logros y la última vez jugado.
  */
 (function () {
