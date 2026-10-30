@@ -1,6 +1,6 @@
 # Borradores de noticias
 
-Una tarea programada de Claude investiga cada mañana las noticias de videojuegos
+Una tarea programada de Claude investiga dos veces al día (6:44 y 18:44, hora de La Paz) las noticias de videojuegos
 y escribe aquí los borradores en `noticias.json`. El admin los revisa en la
 portada con el botón **Noticias por revisar** (solo lo ve el admin) y pulsa
 **Publicar** o **Descartar**. Lo revisado se guarda en la tabla
