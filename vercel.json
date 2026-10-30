@@ -4,7 +4,7 @@
   "rewrites": [
     {
       "source": "/estante",
-      "destination": "/app.html"
+      "destination": "/app"
     },
     {
       "source": "/u/:a/vs/:b",
@@ -12,15 +12,15 @@
     },
     {
       "source": "/comparar",
-      "destination": "/comparar.html"
+      "destination": "/comparar"
     },
     {
       "source": "/noticias",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/articulos",
-      "destination": "/index.html"
+      "destination": "/"
     },
     {
       "source": "/u/:usuario",
