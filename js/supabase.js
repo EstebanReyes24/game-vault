@@ -1005,6 +1005,7 @@ window.fetchConSesion = async function (url, opciones = {}) {
   document.addEventListener("click", (e) => {
     const b = e.target.closest?.("[id]");
     if (b && BOTONES[b.id]) registrar(BOTONES[b.id]);
+    if (e.target.closest?.('a[href^="https://discord.gg/"]')) registrar("discord");
   }, true);
 
   const PAGINAS = [[/^\/j\//, "pagina_juego"], [/^\/comparar|\/vs\//, "comparar"], [/^\/juegos\/?$/, "ranking"]];
