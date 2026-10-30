@@ -1065,3 +1065,38 @@ body.light-mode #barraHerramientas #presumirBtn { background: #fff0f2 !important
 .deseo-acciones .boton { padding: 0.4rem 0.75rem; font-size: 0.8rem; }
 .deseos-vacio { color: var(--niebla); font-size: 0.9rem; padding: 1rem 0; }
 @media (max-width: 560px) { .deseos-lista li { flex-wrap: wrap; } .deseo-acciones { flex-direction: row; width: 100%; justify-content: flex-end; } }
+
+/* ---------- Métricas (admin) ---------- */
+.metricas { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.2rem; min-width: 0; }
+.metricas-cifras { margin: 0; }
+.metricas-bloque { padding: 1rem 1.1rem; border: 1px solid var(--border-light); border-radius: 1rem; background: rgba(255, 255, 255, 0.02); min-width: 0; }
+.metricas-bloque h3 { margin: 0 0 0.8rem; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--niebla); font-weight: 700; }
+.metricas-columnas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
+@media (max-width: 720px) { .metricas-columnas { grid-template-columns: minmax(0, 1fr); } .metricas-barras li { grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr) auto; } }
+.metricas-grafico { width: 100%; height: 150px; display: block; }
+.metricas-grafico .m-act { fill: color-mix(in srgb, var(--hueso) 45%, transparent); }
+.metricas-grafico .m-nue { fill: var(--senal); }
+.metricas-eje { display: flex; justify-content: space-between; gap: 0.5rem; margin: 0.4rem 0 0; font-size: 0.72rem; color: var(--niebla); flex-wrap: wrap; }
+.m-ley { display: inline-block; width: 0.6rem; height: 0.6rem; border-radius: 2px; vertical-align: middle; }
+.m-ley.m-act { background: color-mix(in srgb, var(--hueso) 45%, transparent); }
+.m-ley.m-nue { background: var(--senal); }
+.metricas-barras { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
+.metricas-barras li { display: grid; grid-template-columns: minmax(0, 10rem) minmax(0, 1fr) auto; align-items: center; gap: 0.7rem; font-size: 0.85rem; }
+.metricas-barras span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--hueso); }
+.metricas-barras i { display: block; height: 0.55rem; border-radius: 99px; background: linear-gradient(90deg, var(--senal) var(--w), rgba(255, 255, 255, 0.06) var(--w)); }
+.metricas-barras b { font-variant-numeric: tabular-nums; font-size: 0.8rem; color: var(--hueso); }
+.metricas-grande { margin: 0 0 0.6rem; color: var(--niebla); font-size: 0.9rem; }
+.metricas-grande b { display: block; font-family: var(--display); font-size: 2.2rem; line-height: 1; color: var(--hueso); }
+.metricas-nota { margin: 0.6rem 0 0; font-size: 0.78rem; color: var(--niebla); }
+.metricas-nota code { background: rgba(255, 255, 255, 0.08); padding: 0.05rem 0.3rem; border-radius: 4px; }
+.metricas-lista { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.45rem; font-size: 0.85rem; color: var(--hueso); }
+ol.metricas-lista { counter-reset: n; }
+.metricas-lista li { display: flex; justify-content: space-between; gap: 0.8rem; }
+.metricas-lista b { font-variant-numeric: tabular-nums; text-align: right; }
+.metricas-lista a { color: inherit; }
+.metricas-tabla { overflow-x: auto; }
+.metricas-tabla table { width: 100%; border-collapse: collapse; font-size: 0.82rem; color: var(--hueso); }
+.metricas-tabla th { text-align: left; font-weight: 600; color: var(--niebla); padding: 0.4rem 0.6rem 0.4rem 0; white-space: nowrap; }
+.metricas-tabla td { padding: 0.45rem 0.6rem 0.45rem 0; border-top: 1px solid var(--border-light); white-space: nowrap; }
+.metricas-tabla small { color: var(--niebla); }
+.metricas-tabla a { color: inherit; text-decoration: underline; }
