@@ -711,3 +711,12 @@ body.light-mode .boton-linea:hover { border-color: #16121a; }
 .logro-meta { flex-shrink: 0; text-align: right; font-size: 0.78rem; color: var(--hueso); display: grid; }
 .logros-lista li.no .logro-meta { color: var(--niebla); }
 .logro-meta small { color: var(--niebla); font-size: 0.7rem; }
+
+/* ---------- unir repetidos ---------- */
+.dupes-lista li { border-bottom: 1px solid var(--border-light); padding: 0.4rem 0; }
+.dupes-lista label { border-bottom: 0; align-items: flex-start; }
+.dupes-grupo { flex: 1; min-width: 0; display: grid; gap: 0.15rem; }
+.dupes-grupo b { color: var(--hueso); }
+.dupes-grupo small { color: var(--niebla); font-size: 0.8rem; }
+.dupes-grupo small.queda { color: var(--hueso); }
+.dupes-acciones { display: flex; justify-content: flex-end; margin-top: 1rem; }
