@@ -202,7 +202,13 @@
 
   // El servidor de imágenes de Xbox (images-eds) ya no responde: esos logros llevan un trofeo
   function iconoURL(u) {
-    try { return /^images-eds/.test(new URL(u).hostname) ? null : u; } catch (e) { return null; }
+    try {
+      const h = new URL(u).hostname;
+      if (/^images-eds/.test(h)) return null;
+      // Los iconos de trofeos de PlayStation pasan por la web (su servidor no carga en todos los navegadores)
+      if (h === "psnobj.prod.dl.playstation.net") return `/api/icono?u=${encodeURIComponent(u)}`;
+      return u;
+    } catch (e) { return null; }
   }
 
   function pintarLogros(items, origen, sincronizado, puedeActualizar) {
