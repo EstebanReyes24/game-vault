@@ -129,7 +129,7 @@ function friendlyError(err) {
 toggleAuthBtn.addEventListener("click", () => {
   if (mode === "login") setMode("register");
   else {
-    if (mode === "reset") history.replaceState(null, "", "login.html");
+    if (mode === "reset") history.replaceState(null, "", "/login");
     setMode("login");
   }
 });
@@ -159,7 +159,7 @@ authForm.addEventListener("submit", async (e) => {
       setBusy(true, "ENTRANDO...");
       await DB.signIn(email, password);
       showAlert("Sesión iniciada. Entrando a tu estante...", false);
-      setTimeout(() => { window.location.href = "app.html"; }, 500);
+      setTimeout(() => { window.location.href = "/estante"; }, 500);
       return;
     }
 
@@ -181,7 +181,7 @@ authForm.addEventListener("submit", async (e) => {
 
       if (data.session) {
         showAlert("¡Cuenta creada! Entrando a tu estante...", false);
-        setTimeout(() => { window.location.href = "app.html"; }, 800);
+        setTimeout(() => { window.location.href = "/estante"; }, 800);
       } else {
         // Supabase exige confirmar el correo antes de entrar
         authForm.reset();
@@ -204,7 +204,7 @@ authForm.addEventListener("submit", async (e) => {
       setBusy(true, "GUARDANDO...");
       await DB.updatePassword(password);
       showAlert("Contraseña actualizada. Entrando a tu estante...", false);
-      setTimeout(() => { window.location.href = "app.html"; }, 900);
+      setTimeout(() => { window.location.href = "/estante"; }, 900);
     }
   } catch (err) {
     console.error(err);
@@ -232,6 +232,6 @@ authForm.addEventListener("submit", async (e) => {
   setMode("login");
   try {
     const user = await DB.getUser();
-    if (user) window.location.href = "app.html";
+    if (user) window.location.href = "/estante";
   } catch (e) { /* sin sesión */ }
 })();

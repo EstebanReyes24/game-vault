@@ -1,7 +1,7 @@
 {
   "name": "Paindex Vault",
   "short_name": "Paindex Vault",
-  "start_url": "/index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#14111a",
   "theme_color": "#14111a",

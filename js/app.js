@@ -18,7 +18,7 @@ let currentPlayingIndex = 0;
 
 // Detección estricta de Modo Espectador (?u=gamertag)
 const urlParams = new URLSearchParams(window.location.search);
-// Perfil público: /u/nombre (enlace bonito) o app.html?u=nombre (enlaces antiguos)
+// Perfil público: /u/nombre (enlace bonito) o /estante?u=nombre (enlaces antiguos)
 const rutaPerfil = window.location.pathname.match(/^\/u\/([A-Za-z0-9_]{3,20})\/?$/);
 const publicProfileTarget = rutaPerfil ? rutaPerfil[1] : urlParams.get("u");
 const isSpectatorMode = Boolean(publicProfileTarget && publicProfileTarget.trim().length > 0);
@@ -989,7 +989,7 @@ function bienvenidaHTML() {
           <span><b>Añadir un juego</b><small>Lo buscas por nombre; portada y etiquetas salen solas.</small></span>
         </button>
       </div>
-      ${invitado ? `<p class="bienvenida-nota">Estás como invitado: lo que añadas se guarda solo en este navegador. <a href="login.html">Crea una cuenta</a> para tenerlo en cualquier dispositivo y poder compartirlo.</p>` : ""}
+      ${invitado ? `<p class="bienvenida-nota">Estás como invitado: lo que añadas se guarda solo en este navegador. <a href="/login">Crea una cuenta</a> para tenerlo en cualquier dispositivo y poder compartirlo.</p>` : ""}
       <button type="button" class="bienvenida-demo" data-bienvenida="demo">Ver cómo se ve con juegos de ejemplo</button>
     </section>`;
 }
@@ -1093,7 +1093,7 @@ function renderLibrary() {
         <i class="fa-solid fa-ghost text-5xl text-slate-600 mb-3 block"></i>
         <p class="text-sm font-bold text-slate-300 console-font">${emptyMsg}</p>
         ${isSpectatorMode ? `
-          <a href="app.html" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black console-font transition shadow-lg">
+          <a href="/estante" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-black console-font transition shadow-lg">
             <i class="fa-solid fa-house"></i> Volver a mi estante
           </a>
         ` : ''}
@@ -1997,7 +1997,7 @@ if (deleteAccountBtn) {
       StorageManager.clearAll();
       setLocalOwner(null);
       alert("Tu cuenta y todos tus datos fueron eliminados.");
-      window.location.href = "index.html";
+      window.location.href = "/";
     } catch (err) {
       showToast("No se pudo eliminar la cuenta: " + err.message, true);
     }
@@ -2073,7 +2073,7 @@ async function handleSession(user) {
     if (appUserIcon) appUserIcon.className = "fa-solid fa-user text-indigo-400";
     if (accountControls) accountControls.classList.add("hidden");
     if (appAuthBtn) {
-      appAuthBtn.href = "login.html";
+      appAuthBtn.href = "/login";
       appAuthBtn.onclick = null;
     }
     // Si la copia local era de una cuenta (sesión expirada), no se muestra como invitado
@@ -2168,7 +2168,7 @@ async function cabeceraEnPerfilAjeno() {
   const alias = profile?.username || user.email.split("@")[0];
   if (appUserLabel) appUserLabel.innerText = alias;
   if (appUserIcon) appUserIcon.className = "fa-solid fa-cloud text-emerald-400";
-  if (appAuthBtn) { appAuthBtn.href = "/app.html"; appAuthBtn.title = "Ir a mi estante"; appAuthBtn.onclick = null; }
+  if (appAuthBtn) { appAuthBtn.href = "/estante"; appAuthBtn.title = "Ir a mi estante"; appAuthBtn.onclick = null; }
   const comparar = document.getElementById("perfilCompararBtn");
   if (comparar && profile?.username && profile.username !== String(publicProfileTarget).toLowerCase()) {
     comparar.href = `/u/${encodeURIComponent(profile.username)}/vs/${encodeURIComponent(String(publicProfileTarget).toLowerCase())}`;
@@ -2259,7 +2259,7 @@ async function pintarSocial(nombre, miPerfil) {
   if (esMio) return;
   boton.hidden = false;
   boton.addEventListener("click", async () => {
-    if (!miPerfil) { window.location.href = "/login.html"; return; }
+    if (!miPerfil) { window.location.href = "/login"; return; }
     boton.disabled = true;
     try {
       await DB.seguir(nombre, !lo_sigo);
@@ -2274,7 +2274,7 @@ async function pintarSocial(nombre, miPerfil) {
   });
 }
 
-// Desde la página de un juego: app.html?anadir=Título abre el formulario con ese juego buscado
+// Desde la página de un juego: /estante?anadir=Título abre el formulario con ese juego buscado
 (function () {
   const t = new URLSearchParams(location.search).get("anadir");
   if (!t || isSpectatorMode || !gameSearch) return;

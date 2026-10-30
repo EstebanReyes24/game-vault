@@ -7,7 +7,7 @@
 export default function handler(req, res) {
   const publica = process.env.OPENXBL_PUBLIC_KEY;
   if (!publica) {
-    res.setHeader("Location", "/app.html?xbox=error&motivo=config");
+    res.setHeader("Location", "/estante?xbox=error&motivo=config");
     return res.status(302).end();
   }
   res.setHeader("Cache-Control", "no-store");

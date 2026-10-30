@@ -50,7 +50,7 @@
     
     <!-- Barra superior -->
     <header class="w-full flex justify-between items-center gap-3 py-2">
-      <a href="index.html" class="marca" aria-label="Paindex Vault, inicio">
+      <a href="/" class="marca" aria-label="Paindex Vault, inicio">
         <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M15 58V9h18a19 19 0 0 1 0 38H15" fill="none" stroke="currentColor" stroke-width="6.5"/><path d="M21 23.5l10 3.6v3.6l-10-3.6z" fill="#ff2a48"/><path d="M46 23.5l-10 3.6v3.6l10-3.6z" fill="#ff2a48"/></svg>
         <span class="marca-texto">PAINDEX<small>Vault</small></span>
       </a>
@@ -66,12 +66,12 @@
           <i class="fa-solid fa-download text-xs" aria-hidden="true"></i> <span class="hidden md:inline">Instalar</span>
         </button>
 
-        <a href="login.html" id="authBtn" class="px-3 py-2 rounded-md border border-white/15 text-sm font-semibold text-slate-200 hover:text-white transition flex items-center gap-1.5 cursor-pointer">
+        <a href="/login" id="authBtn" class="px-3 py-2 rounded-md border border-white/15 text-sm font-semibold text-slate-200 hover:text-white transition flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-user text-xs text-indigo-400" id="authIcon" aria-hidden="true"></i>
           <span id="authBtnText">Iniciar sesión</span>
         </a>
 
-        <a href="app.html" class="hidden sm:inline-flex boton boton-senal" style="padding:.55rem 1rem;font-size:.875rem">Mi estante</a>
+        <a href="/estante" class="hidden sm:inline-flex boton boton-senal" style="padding:.55rem 1rem;font-size:.875rem">Mi estante</a>
       </div>
     </header>
 
@@ -81,7 +81,7 @@
         <h1>Tu historial gamer, en un solo estante.</h1>
         <p class="bajada">Registra lo que juegas, ponle nota y compártelo con un enlace. Importa tu biblioteca de Steam y aquí mismo lees las reseñas y reflexiones del canal Paindex.</p>
         <div class="acciones">
-          <a href="app.html" class="boton boton-senal">Crear mi estante</a>
+          <a href="/estante" class="boton boton-senal">Crear mi estante</a>
           <a href="https://youtube.com/@paindexhq" target="_blank" rel="noopener noreferrer" class="boton boton-linea">
             <i class="fa-brands fa-youtube" aria-hidden="true"></i> Ver el canal
           </a>
@@ -135,7 +135,7 @@
           <button id="openHofModalBtn" class="hidden px-3 py-1.5 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold hover:bg-amber-500/30 transition flex items-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Editar Destacados
           </button>
-          <a href="app.html" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 transition">
+          <a href="/estante" class="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 transition">
             Ver mi estante
           </a>
         </div>
@@ -231,9 +231,9 @@
   <i class="fa-brands fa-youtube" aria-hidden="true"></i> Canal de YouTube
 </a>
 <span>•</span>
-<a href="legal.html" class="hover:text-indigo-400 transition">Términos y privacidad</a>
+<a href="/legal" class="hover:text-indigo-400 transition">Términos y privacidad</a>
 <span>•</span>
-<a href="app.html" class="hover:text-indigo-400 transition" aria-label="Ir a mi estante personal de juegos">
+<a href="/estante" class="hover:text-indigo-400 transition" aria-label="Ir a mi estante personal de juegos">
   Entrar al Estante
 </a>
       </div>

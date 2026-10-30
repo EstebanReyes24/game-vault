@@ -1,10 +1,9 @@
-const CACHE_NAME = 'paindex-vault-v35';
+const CACHE_NAME = 'paindex-vault-v36';
 const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './app.html',
-  './legal.html',
-  './login.html',
+  '/',
+  '/estante',
+  '/legal',
+  '/login',
   './manifest.json',
   './css/styles.css',
   './css/paindex.css',

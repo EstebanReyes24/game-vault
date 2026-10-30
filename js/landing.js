@@ -122,7 +122,7 @@ async function checkUserSession() {
       if (authIcon) authIcon.className = "fa-solid fa-cloud-check text-emerald-400";
       if (authBtn) {
         // Tu usuario lleva a "Mi perfil" (foto, descripción, privacidad, cerrar sesión…)
-        authBtn.href = "/app.html?perfil=1";
+        authBtn.href = "/estante?perfil=1";
         authBtn.title = "Mi perfil";
         authBtn.onclick = null;
       }
@@ -145,13 +145,13 @@ async function checkUserSession() {
       if (authBtnText) authBtnText.innerText = "Iniciar Sesión";
       if (authIcon) authIcon.className = "fa-solid fa-user text-indigo-400";
       if (authBtn) {
-        authBtn.href = "login.html";
+        authBtn.href = "/login";
         authBtn.onclick = null;
       }
       if (authorBar) authorBar.classList.add("hidden");
       if (openHofModalBtn) openHofModalBtn.classList.add("hidden");
       if (commentAuthNotice) {
-        commentAuthNotice.innerHTML = `<a href="login.html" class="underline text-indigo-400">Inicia sesión</a> para comentar`;
+        commentAuthNotice.innerHTML = `<a href="/login" class="underline text-indigo-400">Inicia sesión</a> para comentar`;
       }
     }
   } catch (err) {
