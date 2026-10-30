@@ -235,3 +235,25 @@ authForm.addEventListener("submit", async (e) => {
     if (user) window.location.href = "/estante";
   } catch (e) { /* sin sesión */ }
 })();
+
+// ---------- Entrar con Google ----------
+// El botón solo aparece si Google está activado en Supabase (Authentication → Providers)
+(async () => {
+  const bloque = document.getElementById("googleBloque");
+  const boton = document.getElementById("googleBtn");
+  if (!bloque || !boton || !window.supabaseClient) return;
+  try {
+    const r = await fetch("https://epouactrnuhdbzzvzxor.supabase.co/auth/v1/settings", { headers: { apikey: "sb_publishable_i2sc-SaHk8H6e3c-Dwf0IQ_hhdBlx_I" } });
+    const ajustes = await r.json();
+    if (!ajustes?.external?.google) return;
+  } catch (e) { return; }
+  bloque.hidden = false;
+  boton.addEventListener("click", async () => {
+    boton.disabled = true;
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/estante`, queryParams: { prompt: "select_account" } }
+    });
+    if (error) { boton.disabled = false; showAlert("No se pudo abrir Google. Inténtalo de nuevo."); }
+  });
+})();

@@ -44,8 +44,8 @@
     numero.textContent = nuevos > 9 ? "9+" : String(nuevos);
     lista.innerHTML = avisos.length ? avisos.map(a => `
       <li class="${a.leida ? "" : "nuevo"}"><a href="${esc(a.enlace || "#")}" role="menuitem">
-        <i class="fa-solid ${a.kind === "seguidor" ? "fa-user-plus" : "fa-comment"}" aria-hidden="true"></i>
-        <span><b>@${esc(a.actor || "alguien")}</b> ${esc(a.texto || "")}<small>${hace(a.created_at)}</small></span>
+        <i class="fa-solid ${{ seguidor: "fa-user-plus", comentario: "fa-comment", precio: "fa-tag", salida: "fa-rocket" }[a.kind] || "fa-bell"}" aria-hidden="true"></i>
+        <span>${["precio", "salida"].includes(a.kind) ? "" : `<b>@${esc(a.actor || "alguien")}</b> `}${esc(a.texto || "")}<small>${hace(a.created_at)}</small></span>
       </a></li>`).join("") : `<li class="avisos-vacio">Todavía no tienes avisos.</li>`;
   }
 
