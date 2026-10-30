@@ -735,108 +735,215 @@ if (readPostModal) {
   });
 }
 
-function renderArticles() {
-  if (!newsFeed) return;
+// ==========================================
+// FEED: noticias y artículos
+// En la portada: 1 noticia grande + 4 titulares y 4 artículos. El resto vive en
+// /noticias y /articulos (misma página, vista de archivo con buscador y "Cargar más").
+// ==========================================
+const ES_NOTICIA = (p) => p.category === "Noticia";
+const POR_PAGINA = 12;
+const MODO_ARCHIVO = (window.location.pathname.match(/^\/(noticias|articulos)\/?$/) || [])[1] || null;
+const IMAGEN_RESPALDO = "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80";
+let archivoVisibles = POR_PAGINA;
+let archivoFiltro = "all";
+let esAdminFeed = false;
 
-  let filtered = [...cachedPosts];
-  if (activeCategoryFilter !== "all") {
-    filtered = filtered.filter(p => p.category === activeCategoryFilter);
-  }
+const fechaCorta = (f) => f ? new Date(f).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
+function haceCuanto(f) {
+  if (!f) return "";
+  const min = Math.round((Date.now() - Date.parse(f)) / 60000);
+  if (min < 60) return `hace ${Math.max(min, 1)} min`;
+  if (min < 1440) return `hace ${Math.round(min / 60)} h`;
+  if (min < 2880) return "ayer";
+  return fechaCorta(f);
+}
+const indiceDe = (post) => cachedPosts.findIndex(p => p.id === post.id);
+const resumen = (t, n) => { const x = String(t || "").replace(/\s+/g, " ").trim(); return x.length > n ? x.slice(0, n).replace(/\s+\S*$/, "") + "…" : x; };
+const imgPost = (post, clases) => `<img src="${escapeHTML(String(post.cover_url || IMAGEN_RESPALDO))}" class="${clases}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${IMAGEN_RESPALDO}'">`;
 
-  if (filtered.length === 0) {
+function colorCategoria(cat) {
+  if (cat === "Recomendación") return "bg-amber-500/20 text-amber-300 border-amber-500/40";
+  if (cat === "Reflexión") return "bg-purple-500/20 text-purple-300 border-purple-500/40";
+  if (cat === "Análisis") return "bg-rose-500/20 text-rose-300 border-rose-500/40";
+  if (cat === "Noticia") return "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
+  return "bg-indigo-500/20 text-indigo-300 border-indigo-500/40";
+}
+
+function controlesAdmin(post) {
+  if (!esAdminFeed) return "";
+  return `
+    <div class="flex items-center gap-2 ml-auto">
+      <button class="edit-post-btn text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 cursor-pointer transition" data-id="${post.id}">
+        <i class="fa-solid fa-pen-to-square"></i> Editar
+      </button>
+      <button class="delete-post-btn text-xs text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1 cursor-pointer transition" data-id="${post.id}">
+        <i class="fa-solid fa-trash"></i> Eliminar
+      </button>
+    </div>`;
+}
+
+// Tarjeta de siempre (artículos de la portada y archivo)
+function tarjetaPost(post) {
+  const i = indiceDe(post);
+  return `
+    <article class="glass-panel glow-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between hover:border-purple-500/30 transition group shadow-xl">
+      <div class="relative h-48 w-full overflow-hidden bg-slate-950 cursor-pointer" onclick="openPostByIndex(${i})">
+        ${imgPost(post, "w-full h-full object-cover group-hover:scale-105 transition-transform duration-500")}
+        <div class="absolute inset-0 bg-gradient-to-t from-[#0d1326] via-transparent"></div>
+        <div class="absolute top-3 left-3 flex items-center gap-1.5">
+          <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${colorCategoria(post.category)} backdrop-blur-md">${escapeHTML(String(post.category || ''))}</span>
+          ${post.game_tag ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-black/60 text-slate-300 border border-white/10">${escapeHTML(String(post.game_tag))}</span>` : ''}
+        </div>
+      </div>
+      <div class="p-5 flex flex-col justify-between flex-1 gap-3 text-left">
+        <div class="space-y-1.5 cursor-pointer" onclick="openPostByIndex(${i})">
+          <span class="text-[10px] text-slate-500 font-semibold block">${fechaCorta(post.created_at)} • Por Paindex</span>
+          <h3 class="text-base font-black text-white console-font leading-snug group-hover:text-purple-300 transition">${escapeHTML(String(post.title || ''))}</h3>
+          <p class="text-xs text-slate-300 leading-relaxed line-clamp-3">${escapeHTML(String(post.content || ''))}</p>
+        </div>
+        <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
+          <button onclick="openPostByIndex(${i})" class="text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer">
+            Leer y debatir <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </button>
+          ${controlesAdmin(post)}
+        </div>
+      </div>
+    </article>`;
+}
+
+// Bloque de noticias de la portada: una grande y titulares compactos al lado
+function pintarNoticiasPortada(noticias) {
+  const seccion = document.getElementById("noticiasPortada");
+  const bloque = document.getElementById("noticiasBloque");
+  if (!seccion || !bloque) return;
+  seccion.hidden = !noticias.length;
+  if (!noticias.length) return;
+  const [principal, ...resto] = noticias;
+  const nota = document.getElementById("noticiasNota");
+  if (nota) nota.textContent = noticias.length > 5 ? `${noticias.length} noticias en el archivo` : "";
+  bloque.innerHTML = `
+    <article class="noticia-principal" onclick="openPostByIndex(${indiceDe(principal)})">
+      <div class="noticia-principal-img">${imgPost(principal, "")}</div>
+      <div class="noticia-principal-texto">
+        <span class="noticia-meta">${principal.game_tag ? `<b>${escapeHTML(String(principal.game_tag))}</b> · ` : ""}${haceCuanto(principal.created_at)}</span>
+        <h3>${escapeHTML(String(principal.title || ""))}</h3>
+        <p>${escapeHTML(resumen(principal.content, 220))}</p>
+      </div>
+    </article>
+    <ol class="noticias-titulares">
+      ${resto.slice(0, 4).map(n => `
+        <li><button type="button" onclick="openPostByIndex(${indiceDe(n)})">
+          ${imgPost(n, "")}
+          <span>
+            <span class="noticia-meta">${n.game_tag ? `<b>${escapeHTML(String(n.game_tag))}</b> · ` : ""}${haceCuanto(n.created_at)}</span>
+            <strong>${escapeHTML(String(n.title || ""))}</strong>
+          </span>
+        </button></li>`).join("")}
+      ${noticias.length > 5 ? `<li class="noticias-mas"><a href="/noticias">Ver las ${noticias.length - 5} anteriores <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></li>` : ""}
+    </ol>`;
+}
+
+function pintarArticulosPortada(articulos) {
+  let lista = articulos;
+  if (activeCategoryFilter !== "all") lista = lista.filter(p => p.category === activeCategoryFilter);
+  const verTodos = document.getElementById("verTodosArticulos");
+  if (verTodos) verTodos.hidden = articulos.length <= 4;
+  if (!lista.length) {
     if (postCounter) postCounter.innerText = "0 entradas en esta categoría";
     newsFeed.innerHTML = `
       <div class="col-span-full py-14 text-center glass-panel rounded-3xl border border-white/10">
         <i class="fa-solid fa-filter text-4xl text-slate-600 mb-2 block"></i>
-        <p class="text-xs font-bold text-slate-400 console-font">No hay entradas para la categoría "${escapeHTML(String(activeCategoryFilter))}".</p>
-      </div>
-    `;
+        <p class="text-xs font-bold text-slate-400 console-font">Todavía no hay entradas aquí.</p>
+      </div>`;
     return;
   }
+  if (postCounter) postCounter.innerText = lista.length > 4 ? `Las 4 más recientes de ${lista.length}` : `${lista.length} entrada(s)`;
+  newsFeed.innerHTML = lista.slice(0, 4).map(tarjetaPost).join("");
+}
 
-  if (postCounter) postCounter.innerText = `${filtered.length} entrada(s) mostrada(s)`;
+// Vista de archivo (/noticias o /articulos)
+function pintarArchivo() {
+  const esNoticias = MODO_ARCHIVO === "noticias";
+  const base = cachedPosts.filter(p => esNoticias ? ES_NOTICIA(p) : !ES_NOTICIA(p));
+  const filtros = document.getElementById("archivoFiltros");
+  // filtros: categorías en artículos; las etiquetas más usadas en noticias
+  let opciones;
+  if (esNoticias) {
+    const cuenta = {};
+    base.forEach(p => { if (p.game_tag) cuenta[p.game_tag] = (cuenta[p.game_tag] || 0) + 1; });
+    opciones = Object.entries(cuenta).filter(([, n]) => n > 1).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([t]) => [t, t]);
+  } else {
+    opciones = [["Recomendación", "Recomendaciones"], ["Reflexión", "Reflexiones"], ["Análisis", "Análisis"]];
+  }
+  filtros.innerHTML = [["all", "Todo"], ...opciones].map(([v, t]) =>
+    `<button type="button" data-filtro="${escapeHTML(v)}" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 transition cursor-pointer ${archivoFiltro === v ? "active" : ""}">${escapeHTML(t)}</button>`).join("");
 
-  DB.isAdmin().then(isAdmin => {
-    newsFeed.innerHTML = filtered.map((post) => {
-      const originalIdx = cachedPosts.findIndex(p => p.id === post.id);
-      const dateFormatted = post.created_at ? new Date(post.created_at).toLocaleDateString("es-ES", {
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-      }) : "";
-
-      let catColor = "bg-indigo-500/20 text-indigo-300 border-indigo-500/40";
-      if (post.category === "Recomendación") catColor = "bg-amber-500/20 text-amber-300 border-amber-500/40";
-      if (post.category === "Reflexión") catColor = "bg-purple-500/20 text-purple-300 border-purple-500/40";
-      if (post.category === "Análisis") catColor = "bg-rose-500/20 text-rose-300 border-rose-500/40";
-      if (post.category === "Noticia") catColor = "bg-emerald-500/20 text-emerald-300 border-emerald-500/40";
-
-      const adminControlsHtml = isAdmin ? `
-        <div class="flex items-center gap-2 ml-auto">
-          <button class="edit-post-btn text-xs text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 cursor-pointer transition" data-id="${post.id}">
-            <i class="fa-solid fa-pen-to-square"></i> Editar
-          </button>
-          <button class="delete-post-btn text-xs text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1 cursor-pointer transition" data-id="${post.id}">
-            <i class="fa-solid fa-trash"></i> Eliminar
-          </button>
-        </div>
-      ` : '';
-
-      return `
-        <article class="glass-panel glow-card rounded-3xl overflow-hidden border border-white/10 flex flex-col justify-between hover:border-purple-500/30 transition group shadow-xl">
-          <div class="relative h-48 w-full overflow-hidden bg-slate-950 cursor-pointer" onclick="openPostByIndex(${originalIdx})">
-            <img src="${escapeHTML(String(post.cover_url || ''))}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${escapeHTML(String(post.title || ''))}" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'">
-            <div class="absolute inset-0 bg-gradient-to-t from-[#0d1326] via-transparent"></div>
-            <div class="absolute top-3 left-3 flex items-center gap-1.5">
-              <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider border ${catColor} backdrop-blur-md">
-                ${escapeHTML(String(post.category || ''))}
-              </span>
-              ${post.game_tag ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-black/60 text-slate-300 border border-white/10">${escapeHTML(String(post.game_tag))}</span>` : ''}
-            </div>
-          </div>
-
-          <div class="p-5 flex flex-col justify-between flex-1 gap-3 text-left">
-            <div class="space-y-1.5 cursor-pointer" onclick="openPostByIndex(${originalIdx})">
-              <span class="text-[10px] text-slate-500 font-semibold block">${dateFormatted} • Por Paindex</span>
-              <h3 class="text-base font-black text-white console-font leading-snug group-hover:text-purple-300 transition">${escapeHTML(String(post.title || ''))}</h3>
-              <p class="text-xs text-slate-300 leading-relaxed line-clamp-3">${escapeHTML(String(post.content || ''))}</p>
-            </div>
-
-            <div class="flex items-center justify-between pt-2 border-t border-white/10 text-xs">
-              <button onclick="openPostByIndex(${originalIdx})" class="text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 cursor-pointer">
-                Leer y debatir <i class="fa-solid fa-arrow-right text-[10px]"></i>
-              </button>
-              ${adminControlsHtml}
-            </div>
-          </div>
-        </article>
-      `;
+  const q = (document.getElementById("archivoBuscar").value || "").toLowerCase().trim();
+  const lista = base
+    .filter(p => archivoFiltro === "all" || p.category === archivoFiltro || p.game_tag === archivoFiltro)
+    .filter(p => !q || `${p.title} ${p.game_tag || ""} ${p.content || ""}`.toLowerCase().includes(q));
+  document.getElementById("archivoSub").textContent = `${lista.length} ${esNoticias ? "noticias" : "entradas"}${q || archivoFiltro !== "all" ? " con ese filtro" : ""}`;
+  const cont = document.getElementById("archivoLista");
+  if (!lista.length) {
+    cont.innerHTML = `<p class="archivo-vacio">No hay nada que coincida.</p>`;
+  } else {
+    // separadas por mes para que el archivo se lea como una línea de tiempo
+    let mes = "";
+    cont.innerHTML = lista.slice(0, archivoVisibles).map(p => {
+      const m = p.created_at ? new Date(p.created_at).toLocaleDateString("es-ES", { month: "long", year: "numeric" }) : "";
+      const cabecera = m && m !== mes ? `<h2 class="archivo-mes">${escapeHTML(m)}</h2>` : "";
+      mes = m || mes;
+      return cabecera + tarjetaPost(p);
     }).join("");
+  }
+  document.getElementById("archivoMas").hidden = lista.length <= archivoVisibles;
+}
 
-    document.querySelectorAll(".edit-post-btn").forEach(btn => {
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const id = Number(btn.dataset.id);
-        const post = cachedPosts.find(p => p.id === id);
-        if (post) openEditPostModal(post);
-      });
-    });
-
-    document.querySelectorAll(".delete-post-btn").forEach(btn => {
-      btn.addEventListener("click", async (e) => {
-        e.stopPropagation();
-        const id = btn.dataset.id;
-        if (confirm("¿Estás seguro de eliminar esta publicación del portal?")) {
-          try {
-            await DB.deletePost(id);
-            await loadPublicFeed();
-          } catch (err) {
-            alert("Error: " + err.message);
-          }
-        }
-      });
-    });
+function renderArticles() {
+  if (!newsFeed) return;
+  DB.isAdmin().then(isAdmin => {
+    esAdminFeed = Boolean(isAdmin);
+    if (MODO_ARCHIVO) { pintarArchivo(); return; }
+    pintarNoticiasPortada(cachedPosts.filter(ES_NOTICIA));
+    pintarArticulosPortada(cachedPosts.filter(p => !ES_NOTICIA(p)));
   });
+}
+
+// Botones de admin (una sola vez, para cualquier tarjeta)
+document.addEventListener("click", async (e) => {
+  const editar = e.target.closest(".edit-post-btn");
+  const borrar = e.target.closest(".delete-post-btn");
+  if (!editar && !borrar) return;
+  e.stopPropagation();
+  const id = Number((editar || borrar).dataset.id);
+  if (editar) {
+    const post = cachedPosts.find(p => p.id === id);
+    if (post) openEditPostModal(post);
+    return;
+  }
+  if (confirm("¿Estás seguro de eliminar esta publicación del portal?")) {
+    try { await DB.deletePost(id); await loadPublicFeed(); } catch (err) { alert("Error: " + err.message); }
+  }
+});
+
+if (MODO_ARCHIVO) {
+  document.body.classList.add("modo-archivo");
+  document.getElementById("archivo").hidden = false;
+  document.getElementById("archivoTitulo").textContent = MODO_ARCHIVO === "noticias" ? "Noticias" : "Reseñas y artículos";
+  document.title = `${MODO_ARCHIVO === "noticias" ? "Noticias" : "Reseñas y artículos"} · Paindex Vault`;
+  let espera;
+  document.getElementById("archivoBuscar").addEventListener("input", () => {
+    clearTimeout(espera);
+    espera = setTimeout(() => { archivoVisibles = POR_PAGINA; pintarArchivo(); }, 200);
+  });
+  document.getElementById("archivoFiltros").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-filtro]");
+    if (!b) return;
+    archivoFiltro = b.dataset.filtro;
+    archivoVisibles = POR_PAGINA;
+    pintarArchivo();
+  });
+  document.getElementById("archivoMas").addEventListener("click", () => { archivoVisibles += POR_PAGINA; pintarArchivo(); });
 }
 
 async function loadPublicFeed() {
@@ -861,8 +968,8 @@ function abrirArticuloDeLaUrl() {
 function cerrarArticulo() {
   readPostModal.classList.add("hidden");
   activeViewingPostId = null;
-  if (window.location.pathname.startsWith("/a/")) history.replaceState(null, "", "/");
-  document.title = "Paindex Vault · Tu estante de juegos";
+  if (window.location.pathname.startsWith("/a/")) history.replaceState(null, "", MODO_ARCHIVO ? `/${MODO_ARCHIVO}` : "/");
+  document.title = MODO_ARCHIVO ? `${MODO_ARCHIVO === "noticias" ? "Noticias" : "Reseñas y artículos"} · Paindex Vault` : "Paindex Vault · Tu estante de juegos";
 }
 
 const copyPostLinkBtn = document.getElementById("copyPostLinkBtn");
