@@ -57,7 +57,9 @@ export default async function handler(req, res) {
     // el más popular (más gente lo tiene añadido) y se descartan las fichas casi vacías
     const porPopularidad = (a, b) => (b.added || 0) - (a.added || 0);
     const fiables = resultados.filter(g => (g.added || 0) >= 5 || g.released);
-    const juego = fiables.filter(g => limpio(g.name) === objetivo).sort(porPopularidad)[0]
+    // "God of War (2018)" cuenta como el mismo nombre que "God of War"
+    const mismoNombre = (g) => { const x = limpio(g.name); return x === objetivo || (x.startsWith(objetivo) && /^(19|20)\d\d$/.test(x.slice(objetivo.length))); };
+    const juego = fiables.filter(mismoNombre).sort(porPopularidad)[0]
       || fiables.filter(g => limpio(g.name).startsWith(objetivo) || objetivo.startsWith(limpio(g.name))).sort(porPopularidad)[0]
       || null;
     if (!juego) return res.status(200).json({ encontrado: false });
