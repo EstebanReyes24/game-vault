@@ -60,7 +60,11 @@ async function jugadoresAhora(req, res) {
     const conTiempo = { signal: AbortSignal.timeout(6000), headers: { Accept: 'application/json' } };
     const busqueda = await fetch(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(titulo)}&l=spanish&cc=US`, conTiempo).then(r => r.json());
     const objetivo = limpio(titulo);
-    const juego = (busqueda.items || []).find(i => i.type === "app" && limpio(i.name) === objetivo);
+    // Exacto, o la versión de PC con apellido ("Ghost of Tsushima DIRECTOR'S CUT", "… Remastered")
+    const EDICION = /^(directorscut|remastered|remaster|definitiveedition|completeedition|gameoftheyearedition|goty|gotyedition|enhancededition|deluxeedition|ultimateedition|royaledition|specialedition|pcport|digitaldeluxe)$/;
+    const apps = (busqueda.items || []).filter(i => i.type === "app");
+    const juego = apps.find(i => limpio(i.name) === objetivo)
+      || apps.find(i => { const n = limpio(i.name); return n.startsWith(objetivo) && EDICION.test(n.slice(objetivo.length)); });
     if (!juego) {
       res.setHeader('Cache-Control', 'public, s-maxage=86400');
       return res.status(200).json({ enSteam: false });
