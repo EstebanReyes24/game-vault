@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v51';
+const CACHE_NAME = 'paindex-vault-v52';
 // Lo mínimo para que la app abra sin internet (el resto se guarda al visitarlo)
 const ASSETS_TO_CACHE = [
   '/',

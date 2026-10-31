@@ -1125,3 +1125,14 @@ ol.metricas-lista { counter-reset: n; }
 .boton-discord:hover { border-color: #5865f2; color: #fff; background: rgba(88, 101, 242, 0.18); }
 .boton-discord .fa-discord { color: #8b95ff; }
 .canal-enlaces { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+/* Jugando ahora en Steam (página de juego) */
+.juego-cifras.con-vivo { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+@media (max-width: 900px) { .juego-cifras.con-vivo { grid-template-columns: repeat(3, minmax(0, 1fr)); } .juego-cifras.con-vivo > div:nth-child(4) { border-left: none; padding-left: 0; } .juego-cifras.con-vivo > div:nth-child(n+4) { border-top: 1px solid var(--border-light); } }
+@media (max-width: 640px) { .juego-cifras.con-vivo { grid-template-columns: 1fr 1fr; } }
+.juego-en-vivo b { display: flex; align-items: center; gap: 0.45rem; color: #66c0f4; }
+.juego-en-vivo a { color: inherit; text-decoration: underline; }
+.punto-vivo { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: #5ee07a; flex: none; box-shadow: 0 0 0 0 rgba(94, 224, 122, 0.6); animation: punto-vivo 1.8s infinite; }
+@keyframes punto-vivo { 0% { box-shadow: 0 0 0 0 rgba(94, 224, 122, 0.55); } 70% { box-shadow: 0 0 0 0.5rem rgba(94, 224, 122, 0); } 100% { box-shadow: 0 0 0 0 rgba(94, 224, 122, 0); } }
+@media (prefers-reduced-motion: reduce) { .punto-vivo { animation: none; } }
+body.light-mode .juego-en-vivo b { color: #1a6fa8; }
