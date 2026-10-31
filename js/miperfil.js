@@ -51,6 +51,7 @@
     pintarFoto(perfil.avatar_url || null);
     modal.classList.remove("hidden");
     pintarCuentas();
+    window.Push?.pintar($("miPerfilPush"));
   }
   const cerrar = () => modal.classList.add("hidden");
 

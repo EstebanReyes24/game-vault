@@ -55,6 +55,7 @@
     const b = e.target.closest("button[data-seguidos]");
     if (!b) return;
     pestanas.querySelectorAll("button").forEach(x => x.setAttribute("aria-selected", String(x === b)));
+    if (b.dataset.seguidos === "1") marcarVisto();
     cargar(b.dataset.seguidos === "1");
   });
 
@@ -80,9 +81,31 @@
     caja.hidden = false;
   }
 
+  // Novedades de quienes sigues desde la última vez que miraste esa pestaña
+  const VISTO = "gv_siguiendo_visto";
+  const leerVisto = () => { try { return Number(localStorage.getItem(VISTO) || 0); } catch (e) { return 0; } };
+  function marcarVisto() {
+    try { localStorage.setItem(VISTO, String(Date.now())); } catch (e) { /* nada */ }
+    pestanas?.querySelector(".actividad-nuevas")?.remove();
+  }
+  async function contarNovedades() {
+    const b = pestanas?.querySelector('button[data-seguidos="1"]');
+    if (!b) return;
+    const visto = leerVisto();
+    if (!visto) { marcarVisto(); return; } // primera vez: se empieza a contar desde ahora
+    const datos = await DB.getActividad(true, 20).catch(() => []);
+    const nuevas = datos.filter(a => Date.parse(a.created_at) > visto).length;
+    if (!nuevas) return;
+    const n = document.createElement("span");
+    n.className = "actividad-nuevas";
+    n.textContent = nuevas >= 20 ? "20+" : String(nuevas);
+    n.setAttribute("aria-label", `${nuevas} novedades`);
+    b.appendChild(n);
+  }
+
   (async () => {
     cargar(false);
     destacadas();
-    try { if (await DB.getUser()) pestanas && pestanas.classList.remove("hidden"); } catch (e) { /* invitado */ }
+    try { if (await DB.getUser()) { pestanas && pestanas.classList.remove("hidden"); contarNovedades(); } } catch (e) { /* invitado */ }
   })();
 })();

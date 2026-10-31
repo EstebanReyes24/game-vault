@@ -1,5 +1,6 @@
 /**
- * Campana de avisos (migración 014): "te empezó a seguir" y "comentó tu artículo".
+ * Campana de avisos (migraciones 014, 019 y 021): seguidores, comentarios, precios, lanzamientos
+ * y lo que platinan o terminan quienes sigues. Abajo se activan las notificaciones del dispositivo.
  * Aparece en la cabecera solo con sesión iniciada; al abrirla, los avisos se marcan como leídos.
  */
 (function () {
@@ -24,6 +25,7 @@
     <div class="avisos-panel" hidden role="menu">
       <p class="avisos-titulo">Avisos</p>
       <ul class="avisos-lista"></ul>
+      <div class="avisos-pie push-caja" hidden></div>
     </div>`;
   ancla.parentNode.insertBefore(caja, ancla);
   const boton = caja.querySelector(".avisos-boton");
@@ -44,8 +46,8 @@
     numero.textContent = nuevos > 9 ? "9+" : String(nuevos);
     lista.innerHTML = avisos.length ? avisos.map(a => `
       <li class="${a.leida ? "" : "nuevo"}"><a href="${esc(a.enlace || "#")}" role="menuitem">
-        <i class="fa-solid ${{ seguidor: "fa-user-plus", comentario: "fa-comment", precio: "fa-tag", salida: "fa-rocket" }[a.kind] || "fa-bell"}" aria-hidden="true"></i>
-        <span>${["precio", "salida"].includes(a.kind) ? "" : `<b>@${esc(a.actor || "alguien")}</b> `}${esc(a.texto || "")}<small>${hace(a.created_at)}</small></span>
+        <i class="fa-solid ${{ seguidor: "fa-user-plus", comentario: "fa-comment", precio: "fa-tag", salida: "fa-rocket", amigo: "fa-gamepad", prueba: "fa-bell" }[a.kind] || "fa-bell"}" aria-hidden="true"></i>
+        <span>${["precio", "salida", "prueba"].includes(a.kind) ? "" : `<b>@${esc(a.actor || "alguien")}</b> `}${esc(a.texto || "")}<small>${hace(a.created_at)}</small></span>
       </a></li>`).join("") : `<li class="avisos-vacio">Todavía no tienes avisos.</li>`;
   }
 
@@ -53,6 +55,7 @@
     const abrir = panel.hidden;
     panel.hidden = !abrir;
     boton.setAttribute("aria-expanded", String(abrir));
+    if (abrir) window.Push?.pintar(caja.querySelector(".avisos-pie"));
     if (abrir && avisos.some(a => !a.leida)) {
       const ids = avisos.filter(a => !a.leida).map(a => a.id);
       await supabaseClient.from("notifications").update({ leida: true }).in("id", ids);
