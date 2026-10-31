@@ -67,7 +67,7 @@ async function jugadoresAhora(req, res) {
       || apps.find(i => { const n = limpio(i.name); return n.startsWith(objetivo) && EDICION.test(n.slice(objetivo.length)); });
     if (!juego) {
       res.setHeader('Cache-Control', 'public, s-maxage=86400');
-      return res.status(200).json({ enSteam: false });
+      return res.status(200).json({ enSteam: false, candidatos: (busqueda.items || []).slice(0, 5).map(i => `${i.type}:${i.name}`) });
     }
     const d = await fetch(`https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${juego.id}`, conTiempo).then(r => r.json());
     const ahora = d?.response?.result === 1 ? Number(d.response.player_count) : null;
