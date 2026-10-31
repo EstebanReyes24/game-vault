@@ -1,6 +1,86 @@
 {
-  "actualizado": "2026-10-31T11:03:49Z",
+  "actualizado": "2026-10-31T23:03:50Z",
   "borradores": [
+    {
+      "id": "2026-10-31-ffxiv-evercold-retraso-23-febrero",
+      "fecha": "2026-10-31",
+      "titulo": "Final Fantasy XIV: Evercold se retrasa al 23 de febrero de 2027 y presenta el job Zephyr",
+      "juego": "Final Fantasy XIV Online",
+      "etiqueta": "#FFXIV",
+      "imagen": "",
+      "contenido": "Square Enix aprovechó el Fan Festival de Tokio para confirmar que Evercold, la próxima expansión de Final Fantasy XIV, ya no sale en enero. La nueva fecha es el 23 de febrero de 2027, con acceso anticipado desde el 19 de febrero para quienes la reserven. Las reservas abren el 4 de noviembre e incluyen una edición de coleccionista con figura y otros extras.\n\nNaoki Yoshida explicó en el escenario que el equipo necesitaba unas tres semanas más para pulir ciertos elementos. No es un retraso largo, pero sí mueve los planes de muchos jugadores que ya contaban con enero.\n\nEl keynote también trajo novedades jugables: Zephyr, un nuevo job de DPS físico a distancia que pelea con ballesta y un pájaro, empieza en nivel 90 y se desbloquea en Gridania. Además se mostró el tráiler completo de la expansión con su tema principal, una nueva dificultad de raids llamada Fierce, que se ubica entre Normal y Savage, y un sistema de recompensas por temporadas.\n\n¿Les parece bien esperar unas semanas más si eso significa un lanzamiento más pulido?",
+      "fuentes": [
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/10/final-fantasy-xiv-evercold-expansion-delayed-to-february-23-2027"
+        },
+        {
+          "nombre": "TheSixthAxis",
+          "url": "https://www.thesixthaxis.com/2026/10/31/final-fantasy-xiv-fanfest-in-tokyo-reveals-new-job-full-trailer-and-more/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-modern-warfare-4-itaewon-retira-imagenes",
+      "fecha": "2026-10-31",
+      "titulo": "Activision se disculpa y quitará de Modern Warfare 4 imágenes reales de la tragedia de Itaewon",
+      "juego": "Call of Duty: Modern Warfare 4",
+      "etiqueta": "#ModernWarfare4",
+      "imagen": "",
+      "contenido": "La cinemática de apertura de Call of Duty: Modern Warfare 4 incluye unos tres segundos de un noticiero real en los que paramédicos le dan RCP a una persona tras la avalancha humana de Itaewon, en Seúl, ocurrida en Halloween de 2022, donde murieron 159 personas. El juego, que salió el 23 de octubre, gira en torno a una invasión ficticia de Corea del Sur por parte de Corea del Norte, y esas imágenes se usaron para representar víctimas civiles de esa guerra inventada.\n\nLa asociación de familiares de las víctimas y una asociación de jugadores coreanos exigieron que se quitara la escena. Activision respondió con una disculpa a las familias, aseguró que nunca quiso evocar ni minimizar la tragedia y, según confirmó a medios coreanos, eliminará el fragmento en una actualización prevista para el 12 de noviembre. Hasta entonces, la escena sigue en la campaña.\n\nEl caso reabre el debate sobre cómo los juegos de guerra realistas usan material de archivo y qué tanto revisan su origen antes de incluirlo, sobre todo cuando la historia se ambienta en un país que todavía guarda luto por ese suceso.",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/activision-apologizes-and-says-it-will-remove-south-korean-crush-footage-from-modern-warfare-4-after-victims-families-speak-out/"
+        },
+        {
+          "nombre": "Kotaku",
+          "url": "https://kotaku.com/call-of-duty-modern-warfare-4-itaewon-2022-intro-patch-2000751584"
+        },
+        {
+          "nombre": "Dexerto",
+          "url": "https://www.dexerto.com/call-of-duty/real-footage-of-a-south-korean-tragedy-to-be-removed-from-modern-warfare-4-after-backlash-3423160/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-romero-games-nuevo-editor-shooter",
+      "fecha": "2026-10-31",
+      "titulo": "John Romero consigue nuevo editor para su shooter cancelado y recontrata a parte del equipo",
+      "juego": "Empire of Sin",
+      "etiqueta": "#RomeroGames",
+      "imagen": "",
+      "contenido": "John Romero, cocreador de Doom y Quake, confirmó que el shooter de Romero Games que se quedó sin financiación este año ya tiene un nuevo editor. Lo dijo en una entrevista con VGC durante Gamescom Asia, aunque no puede revelar quién es ni cuándo se anunciará.\n\nEl proyecto no sigue igual que antes. El juego original estaba pensado para un equipo de unas 110 personas, y tras perder el dinero el estudio llegó a quedarse con apenas cinco. Ahora han vuelto a contratar a diez de los antiguos líderes de área y el equipo ronda las 15 o 16 personas, así que Romero decidió rediseñar el juego por completo, aprovechando arte, armas, personajes y código del proyecto anterior. Según él, el estudio conserva la propiedad intelectual y el editor no tendrá voz en las decisiones creativas.\n\nRomero dice que está feliz con un equipo pequeño porque le permite meter mano directamente en el diseño en vez de pasarse el día en reuniones. Del juego todavía no hay nombre, plataformas ni fecha, pero es una buena noticia en un año lleno de cancelaciones y cierres.",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/john-romero-confirms-his-axed-xbox-game-has-a-new-publisher-and-hes-rehired-some-staff/"
+        },
+        {
+          "nombre": "Game Developer",
+          "url": "https://www.gamedeveloper.com/business/john-romero-canceled-game-finds-a-new-publisher-amidst-an-overall-scope-change"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-chronicles-medieval-raw-power-pierde-financiacion",
+      "fecha": "2026-10-31",
+      "titulo": "El estudio de Chronicles: Medieval pierde su financiación y advierte que podría cerrar",
+      "juego": "Chronicles: Medieval",
+      "etiqueta": "#ChroniclesMedieval",
+      "imagen": "",
+      "contenido": "Raw Power Games, el estudio danés detrás de Chronicles: Medieval, anunció que se quedó sin la financiación que sostenía el proyecto y que corre un riesgo real de cerrar. En su comunicado explica que, por circunstancias ajenas a su control, ese dinero ya no está disponible, pero no aclara de dónde venía ni por qué se retiró.\n\nChronicles: Medieval es un RPG de mundo abierto ambientado en la Europa de la Guerra de los Cien Años, donde comandas tropas en tiempo real y peleas junto a ellas en batallas con cientos de soldados. Se presentó en el Summer Game Fest de 2025 con un tráiler narrado por Tom Hardy y su página de Steam lo sigue mostrando para 2027 en acceso anticipado.\n\nEl equipo dice que está en conversaciones con posibles socios, aunque no promete nada y avisará a la comunidad sea cual sea el resultado. Mientras tanto, pide a los fans que lo mantengan en su lista de deseados y sigan hablando del juego, porque eso pesa más de lo que parece a la hora de negociar.\n\nOtro proyecto prometedor que queda en el aire en un año muy duro para los estudios medianos.",
+      "fuentes": [
+        {
+          "nombre": "Inven Global",
+          "url": "https://www.invenglobal.com/articles/27961/chronicles-medieval-studio-raw-power-games-loses-funding-warns-it-may-close-before-early-access"
+        },
+        {
+          "nombre": "iXBT.games",
+          "url": "https://ixbt.games/en/news/2026/10/31/chronicles-medieval-pod-ugrozoi-otmeny-iz-za-finansovyx-problem-razrabotcikov.html"
+        }
+      ]
+    },
     {
       "id": "2026-10-31-circana-septiembre-wolverine-ps5-switch-2",
       "fecha": "2026-10-31",
