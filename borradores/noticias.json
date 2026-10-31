@@ -1,6 +1,59 @@
 {
-  "actualizado": "2026-10-30T22:53:03Z",
+  "actualizado": "2026-10-31T11:03:49Z",
   "borradores": [
+    {
+      "id": "2026-10-31-circana-septiembre-wolverine-ps5-switch-2",
+      "fecha": "2026-10-31",
+      "titulo": "Circana de septiembre: Wolverine dispara la PS5 en EE. UU. y Switch 2 baja un 12%",
+      "juego": "Marvel's Wolverine",
+      "etiqueta": "#Ventas",
+      "imagen": "",
+      "contenido": "Circana publicó sus datos de septiembre para Estados Unidos y el gran ganador fue PlayStation. Los ingresos por hardware de PS5 subieron un 43% frente al mismo mes del año pasado, y el analista Mat Piscatella se lo atribuye sobre todo a Marvel's Wolverine. Hasta el DualSense edición Wolverine terminó como el accesorio más vendido del mes.\n\nNintendo Switch 2, en cambio, bajó un 12% en ingresos por hardware y ya no es la consola que más rápido se vende en la historia del país. Piscatella le quita dramatismo: la comparación es rara porque la consola nunca tuvo problemas de stock en su primer año, hubo una subida de precio y septiembre fue un mes flojo de lanzamientos. Según él, no ve \"nada de qué preocuparse\" y espera un salto fuerte con el nuevo Zelda.\n\nEl dato más incómodo es para Xbox: Circana no detectó ningún empujón en ventas de consola con el lanzamiento de Gears of War: E-Day, a pesar de ser exclusivo. Una señal más de que hoy los juegos grandes mueven software, pero no necesariamente máquinas.\n\nLos números de octubre llegan en unas semanas. ¿Creen que Zelda le devuelve el primer lugar a Switch 2?",
+      "fuentes": [
+        {
+          "nombre": "The Game Business",
+          "url": "https://www.thegamebusiness.com/p/wolverine-lifts-ps5-but-xbox-struggles"
+        },
+        {
+          "nombre": "Nintendo Wire",
+          "url": "https://nintendowire.com/news/2026/10/30/switch-2-is-no-longer-the-fastest-selling-console-in-the-us-despite-selling-very-well/"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-crimson-desert-prueba-gratis-charting-the-unknown",
+      "fecha": "2026-10-31",
+      "titulo": "Crimson Desert estrena expansión y una prueba gratis de cinco horas en Xbox",
+      "juego": "Crimson Desert",
+      "etiqueta": "#CrimsonDesert",
+      "imagen": "https://xboxwire.thesourcemediaassets.com/sites/2/2026/10/Hero-Image_Crimson-Desert_DLC_KeyArtLayer_1920x1080-05f91c8520d05d01d228.jpg",
+      "contenido": "Pearl Abyss lanzó el 29 de octubre Charting the Unknown, la primera expansión de pago de Crimson Desert. Trae tres historias nuevas, una para cada protagonista (Kliff, Oongka y Damiane), exploración en el océano con ruinas submarinas y barco propio, romances que pueden terminar en boda, una casa personalizable y castillos que se pueden decorar. También suma el Garden of Trials, un modo de combate donde enfrentas a jefes ya conocidos uno tras otro. En la tienda de Xbox cuesta 24,99 dólares.\n\nJunto con la expansión llegó una sorpresa: una prueba gratuita de cinco horas del juego base para Xbox Series X|S, disponible hasta principios de enero de 2027. Hay que buscar específicamente Crimson Desert Enhanced en la tienda, que es la versión que incluye la actualización 2.00 con escenas nuevas y más doblaje. Si después compras el juego, el progreso se conserva.\n\nEs una buena oportunidad para quien se quedó con la duda en marzo: el juego cambió bastante desde su lanzamiento. ¿Le van a dar una oportunidad?",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/10/29/crimson-desert-charting-the-unknown/"
+        },
+        {
+          "nombre": "Pure Xbox",
+          "url": "https://www.purexbox.com/news/2026/10/crimson-desert-enhanced-adds-surprise-free-trial-for-all-xbox-series-xs-owners"
+        }
+      ]
+    },
+    {
+      "id": "2026-10-31-silver-palace-fecha-14-diciembre",
+      "fecha": "2026-10-31",
+      "titulo": "Silver Palace, el RPG de mundo abierto con detectives, sale el 14 de diciembre",
+      "juego": "Silver Palace",
+      "etiqueta": "#SilverPalace",
+      "imagen": "",
+      "contenido": "El estudio Elementa confirmó en un comunicado oficial que Silver Palace se lanzará en todo el mundo el 14 de diciembre de 2026 en PC, iOS y Android. El prerregistro ya está abierto, y el anuncio también enlaza preinscripciones en PlayStation Store y Epic Games Store.\n\nSilver Palace es un RPG de acción en mundo abierto con estilo anime y una buena dosis de investigación: el jugador resuelve casos junto a un grupo de compañeros en una ciudad de inspiración victoriana, donde varias facciones se pelean por una sustancia misteriosa llamada silverio. El combate es en tiempo real y permite cambiar de personaje al vuelo para encadenar habilidades. Está hecho con Unreal Engine 5 y ya pasó por varias pruebas beta con jugadores.\n\nElementa es una compañía fundada en 2020 en Singapur, con oficinas en Japón y Corea del Sur. Antes del lanzamiento, el juego se dejará ver en gamescom asia x Thailand Game Show 2026 y en el Anime X Game Festival de Corea.\n\nDiciembre viene cargado, pero a los fans de los RPG estilo anime les toca anotar esta fecha.",
+      "fuentes": [
+        {
+          "nombre": "Games Press (comunicado oficial de Elementa)",
+          "url": "https://www.gamespress.com/es/Silver-Palace-Sets-Global-Launch-Date-for-December-14-2026"
+        }
+      ]
+    },
     {
       "id": "2026-10-30-patrick-stewart-fallece-oblivion",
       "fecha": "2026-10-30",
