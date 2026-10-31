@@ -58,7 +58,8 @@ async function jugadoresAhora(req, res) {
   if (titulo.length < 2) return res.status(400).json({ error: "Falta el título." });
   try {
     const conTiempo = { signal: AbortSignal.timeout(6000), headers: { Accept: 'application/json' } };
-    const busqueda = await fetch(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(titulo)}&l=spanish&cc=US`, conTiempo).then(r => r.json());
+    // En inglés: en español Steam traduce algunos nombres ("The Last of Us™ Parte I")
+    const busqueda = await fetch(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(titulo)}&l=english&cc=US`, conTiempo).then(r => r.json());
     const objetivo = limpio(titulo);
     // Exacto, o la versión de PC con apellido ("Ghost of Tsushima DIRECTOR'S CUT", "… Remastered")
     const EDICION = /^(directorscut|remastered|remaster|definitiveedition|completeedition|gameoftheyearedition|goty|gotyedition|enhancededition|deluxeedition|ultimateedition|royaledition|specialedition|pcport|digitaldeluxe)$/;
@@ -67,7 +68,7 @@ async function jugadoresAhora(req, res) {
       || apps.find(i => { const n = limpio(i.name); return n.startsWith(objetivo) && EDICION.test(n.slice(objetivo.length)); });
     if (!juego) {
       res.setHeader('Cache-Control', 'public, s-maxage=86400');
-      return res.status(200).json({ enSteam: false, candidatos: (busqueda.items || []).slice(0, 5).map(i => `${i.type}:${i.name}`) });
+      return res.status(200).json({ enSteam: false });
     }
     const d = await fetch(`https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${juego.id}`, conTiempo).then(r => r.json());
     const ahora = d?.response?.result === 1 ? Number(d.response.player_count) : null;
