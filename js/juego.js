@@ -110,6 +110,7 @@
     `;
 
     cargarSinopsis(d.titulo);
+    cargarJugadores(d.titulo);
 
     // "Lo quiero": a tu lista de deseos (migración 019), con su precio de PC si existe
     document.getElementById("jDeseo").addEventListener("click", async (e) => {
@@ -150,6 +151,23 @@
         if (!error) cargar();
       });
     }
+  }
+
+  // Gente jugándolo ahora mismo en Steam (Xbox y PlayStation no publican esa cifra)
+  async function cargarJugadores(titulo) {
+    const cifras = document.querySelector(".juego-cifras");
+    if (!cifras) return;
+    try {
+      const s = await fetch(`/api/steam?jugadores=1&titulo=${encodeURIComponent(titulo)}`).then(r => r.json());
+      if (!s.enSteam || s.jugadores === null || s.jugadores === undefined) return;
+      const caja = document.createElement("div");
+      caja.className = "juego-en-vivo";
+      caja.innerHTML = `<b><span class="punto-vivo" aria-hidden="true"></span>${Number(s.jugadores).toLocaleString("es")}</b>
+        <span>jugando ahora en <a href="https://store.steampowered.com/app/${Number(s.appid)}/" target="_blank" rel="noopener noreferrer">Steam</a></span>`;
+      caja.title = `Dato de Steam, actualizado cada 5 minutos`;
+      cifras.prepend(caja);
+      cifras.classList.add("con-vivo");
+    } catch (e) { /* sin dato de Steam */ }
   }
 
   // Sinopsis de Wikipedia (llega aparte para no retrasar la página)

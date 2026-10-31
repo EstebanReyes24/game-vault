@@ -9,6 +9,7 @@
  *   ?steamid=https://steamcommunity.com/profiles/76561198000000000
  *   ?steamid=https://steamcommunity.com/id/mi_alias   (URL personalizada)
  *   ?steamid=mi_alias
+ *   ?jugadores=1&titulo=Elden%20Ring   → cuánta gente lo está jugando ahora mismo en Steam (no usa la key)
  */
 
 const STEAM_ID64 = /^7656119\d{10}$/;
@@ -47,7 +48,36 @@ async function steamGet(url) {
 
 import { limitePorIp, DEMASIADO } from "./_supabase.js";
 
+const limpio = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[™®©]/g, "").replace(/[^a-z0-9]+/g, "");
+
+// Jugadores en este momento: se busca el juego en la tienda de Steam por su nombre exacto
+async function jugadoresAhora(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  if (!limitePorIp(req, "steam-jugadores", 120, 60)) return res.status(429).json(DEMASIADO);
+  const titulo = String(req.query.titulo || "").trim().slice(0, 120);
+  if (titulo.length < 2) return res.status(400).json({ error: "Falta el título." });
+  try {
+    const conTiempo = { signal: AbortSignal.timeout(6000), headers: { Accept: 'application/json' } };
+    const busqueda = await fetch(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(titulo)}&l=spanish&cc=US`, conTiempo).then(r => r.json());
+    const objetivo = limpio(titulo);
+    const juego = (busqueda.items || []).find(i => i.type === "app" && limpio(i.name) === objetivo);
+    if (!juego) {
+      res.setHeader('Cache-Control', 'public, s-maxage=86400');
+      return res.status(200).json({ enSteam: false });
+    }
+    const d = await fetch(`https://api.steampowered.com/ISteamUserStats/GetNumberOfCurrentPlayers/v1/?appid=${juego.id}`, conTiempo).then(r => r.json());
+    const ahora = d?.response?.result === 1 ? Number(d.response.player_count) : null;
+    // La cifra cambia cada pocos minutos: el CDN la guarda 5
+    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=600');
+    return res.status(200).json({ enSteam: true, appid: juego.id, nombre: juego.name, jugadores: ahora, hora: new Date().toISOString() });
+  } catch (e) {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(502).json({ error: "Steam no respondió." });
+  }
+}
+
 export default async function handler(req, res) {
+  if (req.query.jugadores === "1") return jugadoresAhora(req, res);
   if (!limitePorIp(req, "steam", 20, 60)) return res.status(429).json(DEMASIADO);
   res.setHeader('Content-Type', 'application/json');
   // Sin Access-Control-Allow-Origin: el endpoint solo lo usa esta misma web.
