@@ -1,4 +1,4 @@
-const CACHE_NAME = 'paindex-vault-v52';
+const CACHE_NAME = 'paindex-vault-v53';
 // Lo mínimo para que la app abra sin internet (el resto se guarda al visitarlo)
 const ASSETS_TO_CACHE = [
   '/',
@@ -91,4 +91,28 @@ self.addEventListener('fetch', (event) => {
       return cachedResponse || fetchPromise;
     })
   );
+});
+
+// ---------- Notificaciones en el teléfono (api/push.js) ----------
+self.addEventListener('push', (event) => {
+  let datos = {};
+  try { datos = event.data ? event.data.json() : {}; } catch (e) { datos = { texto: event.data ? event.data.text() : '' }; }
+  event.waitUntil(self.registration.showNotification(datos.titulo || 'Paindex Vault', {
+    body: datos.texto || 'Tienes un aviso nuevo',
+    icon: '/icons/icon-192.png',
+    badge: '/icons/icon-96.png',
+    tag: datos.etiqueta || undefined,
+    data: { enlace: datos.enlace || '/' }
+  }));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const destino = new URL(event.notification.data?.enlace || '/', self.location.origin).href;
+  event.waitUntil((async () => {
+    const ventanas = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+    const misma = ventanas.find((v) => v.url.startsWith(self.location.origin));
+    if (misma) { await misma.focus(); return misma.navigate(destino).catch(() => self.clients.openWindow(destino)); }
+    return self.clients.openWindow(destino);
+  })());
 });
