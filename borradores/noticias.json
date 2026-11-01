@@ -1,6 +1,71 @@
 {
-  "actualizado": "2026-10-31T23:03:50Z",
+  "actualizado": "2026-11-01T11:09:00Z",
   "borradores": [
+    {
+      "id": "2026-11-01-pikmin-day-direct-demo-pikmin-4-switch-2",
+      "fecha": "2026-11-01",
+      "titulo": "Nintendo declara el 1 de noviembre Día de Pikmin y anuncia demo de Pikmin 4 en Switch 2",
+      "juego": "Pikmin 4",
+      "etiqueta": "#Pikmin",
+      "imagen": "",
+      "contenido": "Nintendo sorprendió el 31 de octubre con un Direct dedicado a Pikmin y presentado por Shigeru Miyamoto. No hubo juego nuevo, pero sí una noticia simpática: a partir de este año, el 1 de noviembre será oficialmente el Día de Pikmin, una fecha que la compañía piensa celebrar cada año.\n\nLo más práctico para los jugadores es la demo gratuita de Pikmin 4 – Nintendo Switch 2 Edition + Dandori Academy, que llega a la eShop de Switch 2 el 2 de noviembre. Incluye la zona inicial del juego y dos desafíos de Dandori Academy, el nuevo modo de retos contrarreloj. La edición completa sale el 12 de noviembre e incluye comandos de voz para Oatchi; quienes ya tengan Pikmin 4 en Switch podrán actualizar por 9.99 dólares.\n\nEl Direct también estrenó Hello! Pikmin, una serie de cortos animados que irán saliendo aproximadamente una vez al mes, y adelantó que Pikmin Bloom, el juego para móviles, recibirá una función de cuevas secretas más adelante.\n\nCon Pikmin 4 como uno de los juegos mejor valorados de la saga, la demo es una buena oportunidad para que quienes nunca la probaron vean si les engancha. ¿La van a descargar?",
+      "fuentes": [
+        {
+          "nombre": "Gaming Route",
+          "url": "https://gamingroute.com/pikmin-day-direct-pikmin-4-demo/"
+        },
+        {
+          "nombre": "GameLuster",
+          "url": "https://gameluster.com/nintendo-makes-it-official-november-1-is-now-pikmin-day/"
+        },
+        {
+          "nombre": "Nintendo of America (YouTube)",
+          "url": "https://www.youtube.com/watch?v=7-1lQh551UY"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-fortnite-treasure-hunters-one-piece",
+      "fecha": "2026-11-01",
+      "titulo": "Fortnite estrena Treasure Hunters, su minitemporada pirata con personajes de One Piece",
+      "juego": "Fortnite",
+      "etiqueta": "#Fortnite",
+      "imagen": "",
+      "contenido": "Fortnite arrancó este 1 de noviembre Treasure Hunters, una minitemporada de temática pirata que llega tras unas horas de mantenimiento de los servidores. Es la etapa que cierra el Capítulo 7 y su gran atractivo es la colaboración con One Piece, que Epic y Toei Animation confirmaron a finales de octubre con un teaser dentro del propio juego.\n\nEntre los personajes del anime que llegan como skins están Luffy, Nami, Zoro, Usopp, Sanji y Buggy. El mapa también se viste de One Piece con lugares inspirados en la serie, como Arlong Park, y la minitemporada trae nuevas armas y habilidades basadas en los poderes de la tripulación del Sombrero de Paja.\n\nNo es la primera vez que Fortnite apuesta por el anime, pero One Piece es de las franquicias más populares del mundo y su base de fans en Latinoamérica es enorme, así que es de esperar mucho movimiento en la tienda de objetos durante las próximas semanas.\n\n¿Cuál personaje de la tripulación es el primero que van a comprar?",
+      "fuentes": [
+        {
+          "nombre": "VICE",
+          "url": "https://www.vice.com/en/article/fortnite-treasure-hunters-map-sprites-weapons-skins/"
+        },
+        {
+          "nombre": "LevelUp",
+          "url": "https://www.levelup.com/noticias/fortnite-y-one-piece-revelan-su-esperada-colaboracion-que-personajes-del-anime-tendran-skins-en-el-battle-royale-y-cuando-estaran-disponibles/"
+        },
+        {
+          "nombre": "Tech Times",
+          "url": "https://www.techtimes.com/articles/329506/20261026/straw-hats-deck-fortnite-confirms-one-piece-treasure-hunters-mini-season-starting-november-1.htm"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-01-ocarina-of-time-switch-2-precarga-novedades",
+      "fecha": "2026-11-01",
+      "titulo": "Zelda: Ocarina of Time para Switch 2 ya se puede precargar: estas son sus novedades",
+      "juego": "The Legend of Zelda: Ocarina of Time",
+      "etiqueta": "#Zelda",
+      "imagen": "",
+      "contenido": "Falta muy poco para el regreso de uno de los juegos más queridos de la historia. El remake de The Legend of Zelda: Ocarina of Time sale el 5 de noviembre en exclusiva para Nintendo Switch 2, y la versión digital ya se puede precargar en la eShop para jugar en cuanto se desbloquee.\n\nNintendo publicó un nuevo tráiler que repasa los cambios frente al original de 1998. Link ahora puede saltar y correr, hay apuntado con giroscopio opcional para armas como el arco y el gancho, y las escenas cinemáticas vienen con voces y diálogos ampliados. Los gráficos se rehicieron por completo y se puede usar el micrófono de la consola para tocar las melodías de la ocarina, aunque los botones siguen disponibles.\n\nTambién hay dos añadidos nuevos: Threads of Time, un tapiz que ayuda a seguir el progreso y el próximo objetivo, y una sala donde se puede leer sobre los enemigos derrotados y volver a enfrentarlos.\n\nEl reto para Nintendo es modernizar un clásico sin perder lo que lo hizo especial. ¿Lo van a jugar de lanzamiento o esperan las primeras opiniones?",
+      "fuentes": [
+        {
+          "nombre": "Zelda Central",
+          "url": "https://zeldacentral.com/ocarina-of-time-remake-whats-new-trailer/"
+        },
+        {
+          "nombre": "Gaming Route",
+          "url": "https://gamingroute.com/ocarina-of-time-switch-2-new-features/"
+        }
+      ]
+    },
     {
       "id": "2026-10-31-ffxiv-evercold-retraso-23-febrero",
       "fecha": "2026-10-31",
