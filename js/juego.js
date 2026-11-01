@@ -25,8 +25,10 @@
     if (!d.titulo) {
       try {
         const r = await fetch(`/api/rawg?detalle=1&search=${encodeURIComponent(slug.replace(/-/g, " "))}`).then(x => x.json());
-        if (r.encontrado && window.slugJuego(r.nombre).replace(/-/g, "") === clave) {
-          d = { ...d, titulo: r.nombre, portada: r.portada, anio: r.anio, desarrollador: r.desarrollador, etiquetas: r.etiquetas };
+        // RAWG a veces añade el año al nombre: "The Legend of Zelda: Ocarina of Time (1998)"
+        const nombre = String(r.nombre || "").replace(/\s*\((19|20)\d\d\)\s*$/, "");
+        if (r.encontrado && window.slugJuego(nombre).replace(/-/g, "") === clave) {
+          d = { ...d, titulo: nombre, portada: r.portada, anio: r.anio, desarrollador: r.desarrollador, etiquetas: r.etiquetas };
         }
       } catch (e) { /* sin datos extra */ }
     }
