@@ -1,1 +1,2048 @@
-{"actualizado":"","fuente":{"nombre":"awesome-unofficial-pc-ports","autor":"Sebastrion","url":"https://github.com/Sebastrion/awesome-unofficial-pc-ports","licencia":"MIT"},"total":0,"juegos":[]}
+{
+ "actualizado": "2026-11-01",
+ "fuente": {
+  "nombre": "awesome-unofficial-pc-ports",
+  "autor": "Sebastrion",
+  "url": "https://github.com/Sebastrion/awesome-unofficial-pc-ports",
+  "licencia": "MIT"
+ },
+ "total": 75,
+ "juegos": [
+  {
+   "juego": "Super Mario 64",
+   "slug": "super-mario-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "sm64pcbuilder2",
+     "url": "https://sm64pc.info/sm64pcbuilder2/",
+     "destacado": true,
+     "descripcion": "GUI app for compiling ports, applying mods, texture packs, and more."
+    },
+    {
+     "nombre": "sm64plus",
+     "url": "https://www.mfgg.net/?act=resdb&param=02&c=2&id=38190",
+     "destacado": true,
+     "descripcion": "Installer with GUI + quality-of-life features like 60 FPS and better camera. Also buildable with sm64pcbuilder2"
+    },
+    {
+     "nombre": "Ghostship",
+     "url": "https://github.com/HarbourMasters/Ghostship",
+     "destacado": true,
+     "descripcion": "Harbour Masters source port. Extract the release, launch Ghostship.exe, and select a supported US or JP ROM. Includes mods, modern graphics backends, and additional platform support.",
+     "repo": "HarbourMasters/Ghostship",
+     "estrellas": 881,
+     "actividad": "2026-10-27",
+     "version": {
+      "nombre": "3.0.0",
+      "fecha": "2026-09-07",
+      "url": "https://github.com/HarbourMasters/Ghostship/releases/tag/3.0.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android"
+     ]
+    },
+    {
+     "nombre": "n64decomp: sm64",
+     "url": "https://github.com/n64decomp/sm64",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "n64decomp/sm64",
+     "estrellas": 8950,
+     "actividad": "2024-02-04",
+     "version": {
+      "nombre": "irix2",
+      "fecha": "2019-08-25",
+      "url": "https://github.com/n64decomp/sm64/releases/tag/irix2"
+     }
+    },
+    {
+     "nombre": "sm64",
+     "url": "https://github.com/sm64-port/sm64",
+     "destacado": false,
+     "descripcion": "Port for modern systems",
+     "repo": "sm64-port/sm64-port",
+     "estrellas": 1330,
+     "actividad": "2024-11-15"
+    },
+    {
+     "nombre": "sm64ex",
+     "url": "https://github.com/sm64pc/sm64ex",
+     "destacado": false,
+     "descripcion": "Easier modding",
+     "repo": "sm64pc/sm64ex",
+     "estrellas": 1880,
+     "actividad": "2024-12-17"
+    },
+    {
+     "nombre": "sm64rt",
+     "url": "https://github.com/DarioSamo/sm64rt",
+     "destacado": false,
+     "descripcion": "Ray tracing",
+     "repo": "DarioSamo/sm64rt",
+     "estrellas": 382,
+     "actividad": "2024-02-20"
+    },
+    {
+     "nombre": "Coop Deluxe",
+     "url": "https://sm64coopdx.com/",
+     "destacado": false,
+     "descripcion": ""
+    },
+    {
+     "nombre": "sm64js (Browser MMO)",
+     "url": "https://vanilla.sm64js.com/",
+     "destacado": false,
+     "descripcion": ""
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: Ocarina of Time",
+   "slug": "the-legend-of-zelda-ocarina-of-time",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Ship of Harkinian",
+     "url": "https://github.com/HarbourMasters/Shipwright",
+     "destacado": true,
+     "descripcion": "GUI installer. Easily install mods.",
+     "repo": "HarbourMasters/Shipwright",
+     "estrellas": 5812,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "9.3.1",
+      "fecha": "2026-10-18",
+      "url": "https://github.com/HarbourMasters/Shipwright/releases/tag/9.3.1"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    },
+    {
+     "nombre": "oot",
+     "url": "https://github.com/zeldaret/oot",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "zeldaret/oot",
+     "estrellas": 5634,
+     "actividad": "2026-10-18"
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: Majora's Mask",
+   "slug": "the-legend-of-zelda-majoras-mask",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Zelda 64: Recompiled",
+     "url": "https://github.com/Mr-Wiseguy/Zelda64Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer.",
+     "repo": "Zelda64Recomp/Zelda64Recomp",
+     "estrellas": 7567,
+     "actividad": "2026-09-25",
+     "version": {
+      "nombre": "v1.2.2",
+      "fecha": "2025-08-27",
+      "url": "https://github.com/Zelda64Recomp/Zelda64Recomp/releases/tag/v1.2.2"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    },
+    {
+     "nombre": "2 Ship 2 Harkinian",
+     "url": "https://github.com/HarbourMasters/2ship2harkinian",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "2ship2harkinian/2ship2harkinian",
+     "estrellas": 2411,
+     "actividad": "2026-10-29",
+     "version": {
+      "nombre": "5.0.1",
+      "fecha": "2026-08-25",
+      "url": "https://github.com/2ship2harkinian/2ship2harkinian/releases/tag/5.0.1"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: The Minish Cap",
+   "slug": "the-legend-of-zelda-the-minish-cap",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "auto-tmc",
+     "url": "https://github.com/StonedModder/auto-tmc",
+     "destacado": true,
+     "descripcion": "Automated launcher/installer",
+     "repo": "StonedModder/auto-tmc",
+     "estrellas": 71,
+     "actividad": "2026-07-25",
+     "version": {
+      "nombre": "1.0.1",
+      "fecha": "2026-05-03",
+      "url": "https://github.com/StonedModder/auto-tmc/releases/tag/1.0.1"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    },
+    {
+     "nombre": "tmc",
+     "url": "https://github.com/MatheoVignaud/tmc",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "MatheoVignaud/tmc",
+     "estrellas": 402,
+     "actividad": "2026-05-17",
+     "version": {
+      "nombre": "0.2.0-pre",
+      "fecha": "2026-05-17",
+      "url": "https://github.com/MatheoVignaud/tmc/releases/tag/0.2.0-pre"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: The Wind Waker HD",
+   "slug": "the-legend-of-zelda-the-wind-waker-hd",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "ZeldaWWHDRecomp",
+     "url": "https://github.com/ZeldaWWHDRecomp/ZeldaWWHDRecomp",
+     "destacado": true,
+     "descripcion": "Native static recompilation of the Wii U version for Windows, Linux, macOS, and Android. Portable releases prepare the game from your own dump on first launch and include a built-in mod manager.",
+     "repo": "ZeldaWWHDRecomp/ZeldaWWHDRecomp",
+     "estrellas": 1212,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v0.5.0",
+      "fecha": "2026-10-29",
+      "url": "https://github.com/ZeldaWWHDRecomp/ZeldaWWHDRecomp/releases/tag/v0.5.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: The Wind Waker",
+   "slug": "the-legend-of-zelda-the-wind-waker",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "BlueWake",
+     "url": "https://github.com/chrissotraidis/bluewake",
+     "destacado": true,
+     "descripcion": "Native GameCube static recompilation. The Windows build is ready-made: launch it and select your own USA revision 0 disc image. Also supports iOS/macOS builds, controller support, and mods.",
+     "repo": "chrissotraidis/bluewake",
+     "estrellas": 534,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v0.10.0",
+      "fecha": "2026-11-01",
+      "url": "https://github.com/chrissotraidis/bluewake/releases/tag/v0.10.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: Twilight Princess",
+   "slug": "the-legend-of-zelda-twilight-princess",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "dusk",
+     "url": "https://github.com/TwilitRealm/dusk",
+     "destacado": true,
+     "descripcion": "PC port",
+     "repo": "TwilitRealm/dusklight",
+     "estrellas": 6183,
+     "actividad": "2026-10-26",
+     "version": {
+      "nombre": "v2.0.3",
+      "fecha": "2026-09-30",
+      "url": "https://github.com/TwilitRealm/dusklight/releases/tag/v2.0.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Star Fox 64",
+   "slug": "star-fox-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Starship",
+     "url": "https://github.com/HarbourMasters/starship/releases/tag/v1.0.0",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "HarbourMasters/Starship",
+     "estrellas": 2127,
+     "actividad": "2026-09-15",
+     "version": {
+      "nombre": "v2.0.0",
+      "fecha": "2025-05-25",
+      "url": "https://github.com/HarbourMasters/Starship/releases/tag/v2.0.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "switch"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Super Smash Bros.",
+   "slug": "super-smash-bros",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "BattleShip",
+     "url": "https://github.com/JRickey/BattleShip/releases/tag/v0.8.2-beta",
+     "destacado": true,
+     "descripcion": "GUI installer",
+     "repo": "JRickey/BattleShip",
+     "estrellas": 527,
+     "actividad": "2026-10-31",
+     "version": {
+      "nombre": "v1.6",
+      "fecha": "2026-08-12",
+      "url": "https://github.com/JRickey/BattleShip/releases/tag/v1.6"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Perfect Dark",
+   "slug": "perfect-dark",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Perfect Dark port",
+     "url": "https://github.com/fgsfdsfgs/perfect_dark",
+     "destacado": true,
+     "descripcion": "Easy install/play",
+     "repo": "perfect-dark-pc-port/perfect_dark",
+     "estrellas": 2098,
+     "actividad": "2026-10-27",
+     "version": {
+      "nombre": "ci-dev-build",
+      "fecha": "2024-05-14",
+      "url": "https://github.com/perfect-dark-pc-port/perfect_dark/releases/tag/ci-dev-build"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "switch"
+     ]
+    },
+    {
+     "nombre": "Perfect Dark Decompilation",
+     "url": "https://github.com/n64decomp/perfect_dark",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "n64decomp/perfect_dark",
+     "estrellas": 879,
+     "actividad": "2025-03-15"
+    }
+   ]
+  },
+  {
+   "juego": "Banjo-Kazooie",
+   "slug": "banjo-kazooie",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Lighthouse",
+     "url": "https://github.com/HarbourMasters/Lighthouse",
+     "destacado": true,
+     "descripcion": "Native PC port with Anchor multiplayer, romhack/multi-language support, and a built-in randomizer. Extract the release, launch it, and select your compatible ROM.",
+     "repo": "HarbourMasters/Lighthouse",
+     "estrellas": 538,
+     "actividad": "2026-10-31",
+     "version": {
+      "nombre": "1.2.2",
+      "fecha": "2026-10-30",
+      "url": "https://github.com/HarbourMasters/Lighthouse/releases/tag/1.2.2"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    },
+    {
+     "nombre": "BanjoRecomp",
+     "url": "https://github.com/BanjoRecomp/BanjoRecomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "BanjoRecomp/BanjoRecomp",
+     "estrellas": 2111,
+     "actividad": "2026-09-25",
+     "version": {
+      "nombre": "v1.0.2",
+      "fecha": "2026-07-31",
+      "url": "https://github.com/BanjoRecomp/BanjoRecomp/releases/tag/v1.0.2"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Banjo-Tooie",
+   "slug": "banjo-tooie",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Banjo-Tooie: Recompiled",
+     "url": "https://github.com/Vidanox/BanjoTooieRecompiled",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation. Ready-made Windows/Linux releases; select your US ROM on first launch. Playable end-to-end with widescreen and high-refresh-rate support.",
+     "repo": "Vidanox/BanjoTooieRecompiled",
+     "estrellas": 24,
+     "actividad": "2026-10-25",
+     "version": {
+      "nombre": "v1.0.1",
+      "fecha": "2026-10-25",
+      "url": "https://github.com/Vidanox/BanjoTooieRecompiled/releases/tag/v1.0.1"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "BattleTanx: Global Assault",
+   "slug": "battletanx-global-assault",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "BattleTanx: Global Assault PC Port",
+     "url": "https://github.com/TheGh0stShip/BattleTanx-Global-Assault-PC-Port",
+     "destacado": true,
+     "descripcion": "Native Windows and Linux recompilation with a portable Windows release. Supply your own USA Rev 0 ROM; includes modern rendering and keyboard/controller support.",
+     "repo": "TheGh0stShip/BattleTanx-Global-Assault-PC-Port",
+     "estrellas": 17,
+     "actividad": "2026-10-15",
+     "version": {
+      "nombre": "v0.2.5",
+      "fecha": "2026-10-13",
+      "url": "https://github.com/TheGh0stShip/BattleTanx-Global-Assault-PC-Port/releases/tag/v0.2.5"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    },
+    {
+     "nombre": "BattleTanx: Global Assault matching decompilation",
+     "url": "https://github.com/TheGh0stShip/BattleTanx-Global-Assault",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "TheGh0stShip/BattleTanx-Global-Assault",
+     "estrellas": 7,
+     "actividad": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "juego": "Bomberman 64",
+   "slug": "bomberman-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "BM64Recomp",
+     "url": "https://github.com/RevoSucks/BM64Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "RevoSucks/BM64Recomp",
+     "estrellas": 310,
+     "actividad": "2026-03-25",
+     "version": {
+      "nombre": "v1.0.0",
+      "fecha": "2026-03-22",
+      "url": "https://github.com/RevoSucks/BM64Recomp/releases/tag/v1.0.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Bomberman Hero",
+   "slug": "bomberman-hero",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "BMHeroRecomp",
+     "url": "https://github.com/RevoSucks/BMHeroRecomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "RevoSucks/BMHeroRecomp",
+     "estrellas": 127,
+     "actividad": "2026-05-12"
+    }
+   ]
+  },
+  {
+   "juego": "Quest 64",
+   "slug": "quest-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Quest64-Recomp",
+     "url": "https://github.com/Rainchus/Quest64-Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "Rainchus/Quest64-Recomp",
+     "estrellas": 284,
+     "actividad": "2026-09-29",
+     "version": {
+      "nombre": "v0.1",
+      "fecha": "2026-01-11",
+      "url": "https://github.com/Rainchus/Quest64-Recomp/releases/tag/v0.1"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Mega Man 64",
+   "slug": "mega-man-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "MegaMan64Recompiled",
+     "url": "https://github.com/MegaMan64Recomp/MegaMan64Recompiled/releases/tag/v0.9.1",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "MegaMan64Recomp/MegaMan64Recompiled",
+     "estrellas": 280,
+     "actividad": "2026-04-30",
+     "version": {
+      "nombre": "v0.9.1",
+      "fecha": "2026-04-30",
+      "url": "https://github.com/MegaMan64Recomp/MegaMan64Recompiled/releases/tag/v0.9.1"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Space Station Silicon Valley",
+   "slug": "space-station-silicon-valley",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "SSSVRecomp",
+     "url": "https://github.com/Cellenseres/SSSV_Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "Cellenseres/SSSV_Recomp",
+     "estrellas": 106,
+     "actividad": "2026-04-26",
+     "version": {
+      "nombre": "v0.2.0",
+      "fecha": "2026-03-13",
+      "url": "https://github.com/Cellenseres/SSSV_Recomp/releases/tag/v0.2.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Mystical Ninja Starring Goemon",
+   "slug": "mystical-ninja-starring-goemon",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Goemon64Recomp",
+     "url": "https://github.com/klorfmorf/Goemon64Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer",
+     "repo": "klorfmorf/Goemon64Recomp",
+     "estrellas": 332,
+     "actividad": "2026-09-19",
+     "version": {
+      "nombre": "v0.2.0-dev",
+      "fecha": "2026-01-31",
+      "url": "https://github.com/klorfmorf/Goemon64Recomp/releases/tag/v0.2.0-dev"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Dinosaur Planet",
+   "slug": "dinosaur-planet",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Dinosaur Planet: Recompiled",
+     "url": "https://github.com/DinosaurPlanetRecomp/dino-recomp",
+     "destacado": true,
+     "descripcion": "GUI installer",
+     "repo": "DinosaurPlanetRecomp/dino-recomp",
+     "estrellas": 333,
+     "actividad": "2026-10-30",
+     "version": {
+      "nombre": "v0.3.0",
+      "fecha": "2026-05-31",
+      "url": "https://github.com/DinosaurPlanetRecomp/dino-recomp/releases/tag/v0.3.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Mario Kart 64",
+   "slug": "mario-kart-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "SpaghettiKart",
+     "url": "https://github.com/HarbourMasters/SpaghettiKart",
+     "destacado": true,
+     "descripcion": "GUI installer + Track editor",
+     "repo": "HarbourMasters/SpaghettiKart",
+     "estrellas": 2475,
+     "actividad": "2026-10-22",
+     "version": {
+      "nombre": "1.0.0",
+      "fecha": "2026-02-25",
+      "url": "https://github.com/HarbourMasters/SpaghettiKart/releases/tag/1.0.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    },
+    {
+     "nombre": "MarioKart64Recomp",
+     "url": "https://github.com/sonicdcer/MarioKart64Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support",
+     "repo": "sonicdcer/MarioKart64Recomp",
+     "estrellas": 621,
+     "actividad": "2026-10-30",
+     "version": {
+      "nombre": "v0.9.2",
+      "fecha": "2026-02-13",
+      "url": "https://github.com/sonicdcer/MarioKart64Recomp/releases/tag/v0.9.2"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Duke Nukem: Zero Hour",
+   "slug": "duke-nukem-zero-hour",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Duke Nukem Zero Hour: Recompiled",
+     "url": "https://github.com/sonicdcer/DNZHRecomp",
+     "destacado": true,
+     "descripcion": "GUI installer + mod support (Gyro aiming, 60+ FPS)",
+     "repo": "sonicdcer/DNZHRecomp",
+     "estrellas": 203,
+     "actividad": "2025-11-03",
+     "version": {
+      "nombre": "0.0.3",
+      "fecha": "2025-11-01",
+      "url": "https://github.com/sonicdcer/DNZHRecomp/releases/tag/0.0.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Chameleon Twist",
+   "slug": "chameleon-twist",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Chameleon Twist: Recompiled",
+     "url": "https://github.com/Rainchus/ChameleonTwist1-JP-Recomp",
+     "destacado": true,
+     "descripcion": "GUI installer",
+     "repo": "Rainchus/ChameleonTwist1-JP-Recomp",
+     "estrellas": 63,
+     "actividad": "2025-03-11",
+     "version": {
+      "nombre": "v0.1",
+      "fecha": "2024-12-14",
+      "url": "https://github.com/Rainchus/ChameleonTwist1-JP-Recomp/releases/tag/v0.1"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Dr. Mario 64",
+   "slug": "dr-mario-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Dr. Mario 64 Recomp Plus",
+     "url": "https://github.com/theboy181/drmario64_recomp_plus",
+     "destacado": true,
+     "descripcion": "GUI installer + improvements (4-player controller support, 60+ FPS interpolation)",
+     "repo": "theboy181/drmario64_recomp_plus",
+     "estrellas": 157,
+     "actividad": "2025-12-18",
+     "version": {
+      "nombre": "1.0.0",
+      "fecha": "2025-12-18",
+      "url": "https://github.com/theboy181/drmario64_recomp_plus/releases/tag/1.0.0"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Pokémon Snap",
+   "slug": "pokemon-snap",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Snap64Recomp",
+     "url": "https://github.com/JackandBeans/Snap64Recomp",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation. Unzip and supply your own ROM on first launch.",
+     "repo": "JackandBeans/Snap64Recomp",
+     "estrellas": 126,
+     "actividad": "2026-10-25",
+     "version": {
+      "nombre": "v1.1.6",
+      "fecha": "2026-10-23",
+      "url": "https://github.com/JackandBeans/Snap64Recomp/releases/tag/v1.1.6"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Snowboard Kids 2",
+   "slug": "snowboard-kids-2",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "snowboardkids2-recomp",
+     "url": "https://github.com/cdlewis/snowboardkids2-recomp",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation + enhancements and mod support.",
+     "repo": "cdlewis/snowboardkids2-recomp",
+     "estrellas": 114,
+     "actividad": "2026-10-25",
+     "version": {
+      "nombre": "v2.0.2",
+      "fecha": "2026-10-17",
+      "url": "https://github.com/cdlewis/snowboardkids2-recomp/releases/tag/v2.0.2"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Mario Strikers Charged",
+   "slug": "mario-strikers-charged",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "strikers",
+     "url": "https://github.com/new-coke/strikers",
+     "destacado": true,
+     "descripcion": "Native PC port/recompilation project for Mario Strikers Charged.",
+     "repo": "new-coke/strikers",
+     "estrellas": 375,
+     "actividad": "2026-10-31",
+     "version": {
+      "nombre": "v1.3.0",
+      "fecha": "2026-09-22",
+      "url": "https://github.com/new-coke/strikers/releases/tag/v1.3.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "switch"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Automobili Lamborghini",
+   "slug": "automobili-lamborghini",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "automobililamborghini-recomp",
+     "url": "https://github.com/alondero/automobililamborghini-recomp",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation with ready-to-use releases.",
+     "repo": "alondero/automobililamborghini-recomp",
+     "estrellas": 47,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v0.10.3",
+      "fecha": "2026-10-30",
+      "url": "https://github.com/alondero/automobililamborghini-recomp/releases/tag/v0.10.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "WCW vs. nWo: World Tour",
+   "slug": "wcw-vs-nwo-world-tour",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "WCWvsNWOWorldTourRecomp",
+     "url": "https://github.com/jessetbh/WCWvsNWOWorldTourRecomp",
+     "destacado": true,
+     "descripcion": "Native N64 recompilation with an easy end-user setup.",
+     "repo": "jessetbh/WCWvsNWOWorldTourRecomp",
+     "estrellas": 43,
+     "actividad": "2026-10-28"
+    }
+   ]
+  },
+  {
+   "juego": "WCW/nWo Revenge",
+   "slug": "wcw-nwo-revenge",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "WCWnWoRevengeRecomp",
+     "url": "https://github.com/jessetbh/WCWnWoRevengeRecomp",
+     "destacado": true,
+     "descripcion": "Native N64 recompilation with an easy end-user setup.",
+     "repo": "jessetbh/WCWnWoRevengeRecomp",
+     "estrellas": 27,
+     "actividad": "2026-10-28"
+    }
+   ]
+  },
+  {
+   "juego": "WWF WrestleMania 2000",
+   "slug": "wwf-wrestlemania-2000",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "WWFWrestleMania2000Recomp",
+     "url": "https://github.com/jessetbh/WWFWrestleMania2000Recomp",
+     "destacado": true,
+     "descripcion": "Native N64 recompilation with an easy end-user setup.",
+     "repo": "jessetbh/WWFWrestleMania2000Recomp",
+     "estrellas": 21,
+     "actividad": "2026-10-28"
+    }
+   ]
+  },
+  {
+   "juego": "Virtual Pro Wrestling 64",
+   "slug": "virtual-pro-wrestling-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "VPW64Recomp",
+     "url": "https://github.com/jessetbh/VPW64Recomp",
+     "destacado": true,
+     "descripcion": "Native N64 recompilation with an easy end-user setup.",
+     "repo": "jessetbh/VPW64Recomp",
+     "estrellas": 10,
+     "actividad": "2026-10-28"
+    }
+   ]
+  },
+  {
+   "juego": "WWF No Mercy",
+   "slug": "wwf-no-mercy",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "WWFNoMercyRecomp",
+     "url": "https://github.com/jessetbh/WWFNoMercyRecomp",
+     "destacado": true,
+     "descripcion": "Native N64 recompilation with an easy end-user setup.",
+     "repo": "jessetbh/WWFNoMercyRecomp",
+     "estrellas": 42,
+     "actividad": "2026-10-29"
+    }
+   ]
+  },
+  {
+   "juego": "Extreme-G",
+   "slug": "extreme-g",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Extreme-G: Recompiled",
+     "url": "https://gitlab.com/sonicdcer/ExtremeGRecomp",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation with ready-to-use releases, modern display options, and mod support."
+    }
+   ]
+  },
+  {
+   "juego": "Paper Mario",
+   "slug": "paper-mario",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "PaperBoat",
+     "url": "https://github.com/HarbourMasters/PaperBoat",
+     "destacado": true,
+     "descripcion": "Harbour Masters source port based on the Paper Mario decompilation. Download a release, provide a supported ROM, and launch.",
+     "repo": "HarbourMasters/PaperBoat",
+     "estrellas": 545,
+     "actividad": "2026-10-28",
+     "version": {
+      "nombre": "1.0.3",
+      "fecha": "2026-10-11",
+      "url": "https://github.com/HarbourMasters/PaperBoat/releases/tag/1.0.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Donkey Kong 64",
+   "slug": "donkey-kong-64",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Donkey Kong 64: Recompiled",
+     "url": "https://github.com/Rainchus/Donkey-Kong-64-Recompiled",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation with plug-and-play releases, high-framerate support, modern menus, and Linux/Steam Deck support.",
+     "repo": "Rainchus/Donkey-Kong-64-Recompiled",
+     "estrellas": 565,
+     "actividad": "2026-09-30",
+     "version": {
+      "nombre": "v1.0.3",
+      "fecha": "2026-09-30",
+      "url": "https://github.com/Rainchus/Donkey-Kong-64-Recompiled/releases/tag/v1.0.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Rocket: Robot on Wheels",
+   "slug": "rocket-robot-on-wheels",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Rocket-R",
+     "url": "https://github.com/ThatGuyMcd/Rocket-R",
+     "destacado": true,
+     "descripcion": "Native N64 static recompilation for Windows, Linux, Steam Deck, and Android. Launch it and select or drag in your supported US ROM.",
+     "repo": "ThatGuyMcd/Rocket-R",
+     "estrellas": 46,
+     "actividad": "2026-10-06",
+     "version": {
+      "nombre": "v.1.0.1",
+      "fecha": "2026-09-27",
+      "url": "https://github.com/ThatGuyMcd/Rocket-R/releases/tag/v.1.0.1"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Star Fox Adventures",
+   "slug": "star-fox-adventures",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "FoxHollow",
+     "url": "https://foxhollow.dev/",
+     "destacado": true,
+     "descripcion": "Native PC port built from the completed Star Fox Adventures decompilation, with Windows, Linux, macOS, modern display support, and mods."
+    },
+    {
+     "nombre": "foxhollow",
+     "url": "https://github.com/JackPriceBurns/foxhollow",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "JackPriceBurns/foxhollow",
+     "estrellas": 86,
+     "actividad": "2026-10-25",
+     "version": {
+      "nombre": "v1.0.30",
+      "fecha": "2026-10-25",
+      "url": "https://github.com/JackPriceBurns/foxhollow/releases/tag/v1.0.30"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Golden Sun",
+   "slug": "golden-sun",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "GSRecomp",
+     "url": "https://github.com/Shmargus/GSRecomp",
+     "destacado": true,
+     "descripcion": "Native Game Boy Advance static recompilation for Windows and Linux. Download the release, launch GoldenSunLauncher, select your own ROM, and the bundled compiler prepares the game automatically. Currently a public-testing pre-release, but playable through the ending credits.",
+     "repo": "Shmargus/GSRecomp",
+     "estrellas": 73,
+     "actividad": "2026-10-28"
+    }
+   ]
+  },
+  {
+   "juego": "Animal Crossing (GameCube)",
+   "slug": "animal-crossing-gamecube",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "ACGC-PC-Port",
+     "url": "https://github.com/flyngmt/ACGC-PC-Port",
+     "destacado": true,
+     "descripcion": "PC port",
+     "repo": "flyngmt/ACGC-PC-Port",
+     "estrellas": 1526,
+     "actividad": "2026-11-01"
+    }
+   ]
+  },
+  {
+   "juego": "The Legend of Zelda: A Link to the Past",
+   "slug": "the-legend-of-zelda-a-link-to-the-past",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Zelda 3 Launcher",
+     "url": "https://github.com/RadzPrower/Zelda-3-Launcher",
+     "destacado": true,
+     "descripcion": "GUI installer + mod/texture support",
+     "repo": "RadzPrower/Zelda-3-Launcher",
+     "estrellas": 485,
+     "actividad": "2026-10-20",
+     "version": {
+      "nombre": "v1.3.7.0",
+      "fecha": "2026-10-20",
+      "url": "https://github.com/RadzPrower/Zelda-3-Launcher/releases/tag/v1.3.7.0"
+     }
+    },
+    {
+     "nombre": "zelda3",
+     "url": "https://github.com/snesrev/zelda3",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "snesrev/zelda3",
+     "estrellas": 4968,
+     "actividad": "2026-10-02",
+     "version": {
+      "nombre": "v0.3",
+      "fecha": "2023-08-17",
+      "url": "https://github.com/snesrev/zelda3/releases/tag/v0.3"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Super Metroid",
+   "slug": "super-metroid",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Super Metroid Launcher",
+     "url": "https://github.com/RadzPrower/Super-Metroid-Launcher",
+     "destacado": true,
+     "descripcion": "GUI installer + mod/texture support",
+     "repo": "RadzPrower/Super-Metroid-Launcher",
+     "estrellas": 215,
+     "actividad": "2026-10-23",
+     "version": {
+      "nombre": "v1.0.1",
+      "fecha": "2026-10-23",
+      "url": "https://github.com/RadzPrower/Super-Metroid-Launcher/releases/tag/v1.0.1"
+     }
+    },
+    {
+     "nombre": "sm",
+     "url": "https://github.com/snesrev/sm",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "snesrev/sm",
+     "estrellas": 563,
+     "actividad": "2023-08-21"
+    },
+    {
+     "nombre": "smrewrite",
+     "url": "https://github.com/enderandrew/sm_rewrite",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "enderandrew/sm_rewrite",
+     "estrellas": 6,
+     "actividad": "2024-03-14"
+    }
+   ]
+  },
+  {
+   "juego": "Super Mario World + All-Stars",
+   "slug": "super-mario-world-all-stars",
+   "plataforma": "Nintendo",
+   "proyectos": [
+    {
+     "nombre": "Super Mario All-Stars Launcher for SMW",
+     "url": "https://github.com/qurious-pixel/SMAS_Launcher",
+     "destacado": true,
+     "descripcion": "GUI installer",
+     "repo": "qurious-pixel/SMAS_Launcher",
+     "estrellas": 61,
+     "actividad": "2023-11-03",
+     "version": {
+      "nombre": "launcher",
+      "fecha": "2023-10-19",
+      "url": "https://github.com/qurious-pixel/SMAS_Launcher/releases/tag/launcher"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    },
+    {
+     "nombre": "smw",
+     "url": "https://github.com/snesrev/smw",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "snesrev/smw",
+     "estrellas": 651,
+     "actividad": "2024-01-22",
+     "version": {
+      "nombre": "v0.1",
+      "fecha": "2023-08-16",
+      "url": "https://github.com/snesrev/smw/releases/tag/v0.1"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Castlevania: Symphony of the Night",
+   "slug": "castlevania-symphony-of-the-night",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "SymphonyRecomp",
+     "url": "https://github.com/BlackLabelHQ/SymphonyRecomp",
+     "destacado": true,
+     "descripcion": "Native PlayStation recompilation with downloadable releases for modern PCs. Open beta: game-breaking bugs may still occur; see the repository for runtime requirements and setup instructions.",
+     "repo": "BlackLabelHQ/SymphonyRecomp",
+     "estrellas": 1029,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v0.5.1b",
+      "fecha": "2026-08-19",
+      "url": "https://github.com/BlackLabelHQ/SymphonyRecomp/releases/tag/v0.5.1b"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Crash Team Racing",
+   "slug": "crash-team-racing",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "Crash Team Racing: Turbocharged",
+     "url": "https://github.com/CameronRedmore/Crash-Team-Racing-Turbocharged",
+     "destacado": true,
+     "descripcion": "PC-focused source port with a native 3D renderer, true widescreen, high-resolution rendering, up to 240 FPS, and additional quality-of-life options.",
+     "repo": "CameronRedmore/Crash-Team-Racing-Turbocharged",
+     "estrellas": 185,
+     "actividad": "2026-10-06"
+    },
+    {
+     "nombre": "Crash Team Racing: High Octane",
+     "url": "https://github.com/Rinnegatamante/Crash-Team-Racing-High-Octane",
+     "destacado": false,
+     "descripcion": "Advanced source port for PC, PS Vita, and web with widescreen, 60 FPS, and gameplay enhancements.",
+     "repo": "Rinnegatamante/Crash-Team-Racing-High-Octane",
+     "estrellas": 217,
+     "actividad": "2026-10-31",
+     "version": {
+      "nombre": "v.1.5",
+      "fecha": "2026-10-12",
+      "url": "https://github.com/Rinnegatamante/Crash-Team-Racing-High-Octane/releases/tag/v.1.5"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    },
+    {
+     "nombre": "CTR Native",
+     "url": "https://github.com/CTR-tools/ctr-native",
+     "destacado": false,
+     "descripcion": "Native PC port based on the CTR decompilation.",
+     "repo": "CTR-tools/ctr-native",
+     "estrellas": 428,
+     "actividad": "2026-11-01"
+    }
+   ]
+  },
+  {
+   "juego": "Wipeout",
+   "slug": "wipeout",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "WipeOut Phantom Edition",
+     "url": "https://github.com/wipeout-phantom-edition/wipeout-phantom-edition",
+     "destacado": true,
+     "descripcion": "Drop BIN+CUE into diskimages and launch",
+     "repo": "wipeout-phantom-edition/wipeout-phantom-edition",
+     "estrellas": 987,
+     "actividad": "2024-08-21",
+     "version": {
+      "nombre": "v1.2.256",
+      "fecha": "2024-02-17",
+      "url": "https://github.com/wipeout-phantom-edition/wipeout-phantom-edition/releases/tag/v1.2.256"
+     }
+    },
+    {
+     "nombre": "wipeout-rewrite",
+     "url": "https://github.com/phoboslab/wipeout-rewrite?tab=readme-ov-file",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "phoboslab/wipeout-rewrite",
+     "estrellas": 3003,
+     "actividad": "2026-09-27"
+    }
+   ]
+  },
+  {
+   "juego": "Jak and Daxter 1-3",
+   "slug": "jak-and-daxter-1-3",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "OpenGoal",
+     "url": "https://github.com/open-goal/jak-project",
+     "destacado": true,
+     "descripcion": "GUI installer + mods",
+     "repo": "open-goal/jak-project",
+     "estrellas": 3625,
+     "actividad": "2026-10-31",
+     "version": {
+      "nombre": "v0.3.9",
+      "fecha": "2026-10-15",
+      "url": "https://github.com/open-goal/jak-project/releases/tag/v0.3.9"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Driver 2",
+   "slug": "driver-2",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "REDRIVER2",
+     "url": "https://github.com/OpenDriver2/REDRIVER2",
+     "destacado": true,
+     "descripcion": "GUI installer + mods",
+     "repo": "OpenDriver2/REDRIVER2",
+     "estrellas": 1446,
+     "actividad": "2026-09-22",
+     "version": {
+      "nombre": "7.4-rc2",
+      "fecha": "2022-02-04",
+      "url": "https://github.com/OpenDriver2/REDRIVER2/releases/tag/7.4-rc2"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Vandal Hearts",
+   "slug": "vandal-hearts",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "VandalHearts-PcPort",
+     "url": "https://github.com/HalmyLyseas/VandalHearts-PcPort",
+     "destacado": true,
+     "descripcion": "Native PC port based on a byte-exact matching decompilation. Put your supported .bin disc image in the game folder and launch. Windows and Linux releases are available.",
+     "repo": "HalmyLyseas/VandalHearts-PcPort",
+     "estrellas": 58,
+     "actividad": "2026-08-31",
+     "version": {
+      "nombre": "v2.1.0",
+      "fecha": "2026-08-31",
+      "url": "https://github.com/HalmyLyseas/VandalHearts-PcPort/releases/tag/v2.1.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Legend of Dragoon",
+   "slug": "legend-of-dragoon",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "Severed Chains",
+     "url": "https://github.com/Legend-of-Dragoon-Modding/Severed-Chains",
+     "destacado": true,
+     "descripcion": "Reverse-engineered native recreation with mod support. Drop your disc images into the isos folder. 📖 Setup Guide",
+     "repo": "Legend-of-Dragoon-Modding/Severed-Chains",
+     "estrellas": 581,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "release-3.0.0",
+      "fecha": "2026-10-17",
+      "url": "https://github.com/Legend-of-Dragoon-Modding/Severed-Chains/releases/tag/release-3.0.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Silent Hill",
+   "slug": "silent-hill",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "Silent Hill Native PC Port",
+     "url": "https://github.com/SlickAmogus/silent-hill-decomp",
+     "destacado": true,
+     "descripcion": "Native PC port based on the PlayStation decompilation. Extract the release, add your disc image to gamedata, and launch.",
+     "repo": "SlickAmogus/silent-hill-decomp",
+     "estrellas": 799,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "crossplatform-beta",
+      "fecha": "2026-09-04",
+      "url": "https://github.com/SlickAmogus/silent-hill-decomp/releases/tag/crossplatform-beta"
+     },
+     "sistemas": [
+      "linux",
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "WWF SmackDown! 2: Know Your Role",
+   "slug": "wwf-smackdown-2-know-your-role",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "KnowYourRoleRecomp",
+     "url": "https://github.com/Comfubar/KnowYourRoleRecomp",
+     "destacado": true,
+     "descripcion": "GUI setup from your own CUE/BIN disc image; the game is checked, built, and launched automatically.",
+     "repo": "Comfubar/KnowYourRoleRecomp",
+     "estrellas": 7,
+     "actividad": "2026-10-01",
+     "version": {
+      "nombre": "v0.2.0",
+      "fecha": "2026-09-30",
+      "url": "https://github.com/Comfubar/KnowYourRoleRecomp/releases/tag/v0.2.0"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Bloody Roar II",
+   "slug": "bloody-roar-ii",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "BloodyRoar2Recomp",
+     "url": "https://github.com/novapowers0/BloodyRoar2Recomp",
+     "destacado": true,
+     "descripcion": "Native PlayStation recompilation with ready-to-use Windows/Linux releases.",
+     "repo": "novapowers0/BloodyRoar2Recomp",
+     "estrellas": 85,
+     "actividad": "2026-10-13",
+     "version": {
+      "nombre": "v0.7.1",
+      "fecha": "2026-09-26",
+      "url": "https://github.com/novapowers0/BloodyRoar2Recomp/releases/tag/v0.7.1"
+     },
+     "sistemas": [
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "King's Field",
+   "slug": "kings-field",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "kf1-enhanced",
+     "url": "https://github.com/Acranon/kf1-enhanced",
+     "destacado": true,
+     "descripcion": "Enhanced native PC port based on reverse engineering of the original PlayStation game.",
+     "repo": "Acranon/kf1-enhanced",
+     "estrellas": 6,
+     "actividad": "2026-10-01"
+    }
+   ]
+  },
+  {
+   "juego": "Yu-Gi-Oh! Forbidden Memories",
+   "slug": "yu-gi-oh-forbidden-memories",
+   "plataforma": "PlayStation",
+   "proyectos": [
+    {
+     "nombre": "Yu-Gi-Oh-Forbidden-Memories-Recompiled",
+     "url": "https://github.com/Unchiga/Yu-Gi-Oh-Forbidden-Memories-Recompiled",
+     "destacado": true,
+     "descripcion": "Native PlayStation recompilation with an end-user-friendly setup.",
+     "repo": "Unchiga/Yu-Gi-Oh-Forbidden-Memories-Recompiled",
+     "estrellas": 275,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v0.3.0",
+      "fecha": "2026-10-11",
+      "url": "https://github.com/Unchiga/Yu-Gi-Oh-Forbidden-Memories-Recompiled/releases/tag/v0.3.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Forza Horizon",
+   "slug": "forza-horizon",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "Pinyon Shift",
+     "url": "https://github.com/arcanite24/pinyon-shift",
+     "destacado": true,
+     "descripcion": "Native recompilation of the Xbox 360 version with a Windows launcher. Select your own supported disc ISO; the launcher verifies it and automatically builds the playable preview. Preview/WIP: the initial setup requires Windows build tools, about 25 GB of free space, and can take 2",
+     "repo": "arcanite24/pinyon-shift",
+     "estrellas": 970,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v0.7.1",
+      "fecha": "2026-10-28",
+      "url": "https://github.com/arcanite24/pinyon-shift/releases/tag/v0.7.1"
+     },
+     "sistemas": [
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Dead or Alive Xtreme Beach Volleyball",
+   "slug": "dead-or-alive-xtreme-beach-volleyball",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "doaxvb-re",
+     "url": "https://github.com/NoRain211/doaxvb-re",
+     "destacado": true,
+     "descripcion": "Native original-Xbox static recompilation. Drag your ISO onto BuildGame.cmd, then launch through Launcher.cmd.",
+     "repo": "NoRain211/doaxvb-re",
+     "estrellas": 234,
+     "actividad": "2026-10-30",
+     "version": {
+      "nombre": "v0.6.0",
+      "fecha": "2026-10-28",
+      "url": "https://github.com/NoRain211/doaxvb-re/releases/tag/v0.6.0"
+     },
+     "sistemas": [
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "The Darkness",
+   "slug": "the-darkness",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "The-Darkness-Recomp",
+     "url": "https://github.com/portingpete/The-Darkness-Recomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation. Extract the release, copy your own game dump into the included Darkness folder, and launch.",
+     "repo": "portingpete/The-Darkness-Recomp",
+     "estrellas": 370,
+     "actividad": "2026-10-30"
+    }
+   ]
+  },
+  {
+   "juego": "Silent Hill: Downpour",
+   "slug": "silent-hill-downpour",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "DownpourRecomp",
+     "url": "https://github.com/LittleBitUA/DownpourRecomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation with a launcher and first-run ISO installer.",
+     "repo": "LittleBitUA/DownpourRecomp",
+     "estrellas": 352,
+     "actividad": "2026-09-02",
+     "version": {
+      "nombre": "v1.1.8",
+      "fecha": "2026-09-02",
+      "url": "https://github.com/LittleBitUA/DownpourRecomp/releases/tag/v1.1.8"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Deadly Premonition",
+   "slug": "deadly-premonition",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "DPRecomp",
+     "url": "https://github.com/LittleBitUA/DPRecomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation with a built-in ISO installer and launcher.",
+     "repo": "LittleBitUA/DPRecomp",
+     "estrellas": 178,
+     "actividad": "2026-10-03",
+     "version": {
+      "nombre": "v2.0.14",
+      "fecha": "2026-10-03",
+      "url": "https://github.com/LittleBitUA/DPRecomp/releases/tag/v2.0.14"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Tony Hawk's Project 8",
+   "slug": "tony-hawks-project-8",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "Project8Recomp",
+     "url": "https://github.com/theokyr/Project8Recomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation. The launcher reads your own disc image and sets up the game.",
+     "repo": "theokyr/Project8Recomp",
+     "estrellas": 54,
+     "actividad": "2026-08-24",
+     "version": {
+      "nombre": "v0.3.0",
+      "fecha": "2026-08-24",
+      "url": "https://github.com/theokyr/Project8Recomp/releases/tag/v0.3.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Spider-Man: Edge of Time",
+   "slug": "spider-man-edge-of-time",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "Project-2099",
+     "url": "https://github.com/GenryTheFox0/Project-2099",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 recompilation with a GUI installer, launcher, keyboard/mouse controls, and mod support.",
+     "repo": "GenryTheFox0/Project-2099",
+     "estrellas": 83,
+     "actividad": "2026-10-21",
+     "version": {
+      "nombre": "v2.0.0-beta.5",
+      "fecha": "2026-10-13",
+      "url": "https://github.com/GenryTheFox0/Project-2099/releases/tag/v2.0.0-beta.5"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "3 on 3 NHL Arcade",
+   "slug": "3-on-3-nhl-arcade",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "3on3NHL-recomp",
+     "url": "https://github.com/Wndwsqrrl/3on3NHL-recomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation. Put your XBLA package next to the release and use the launcher to set up and play.",
+     "repo": "Wndwsqrrl/3on3NHL-recomp",
+     "estrellas": 12,
+     "actividad": "2026-10-27",
+     "version": {
+      "nombre": "v0.1.1",
+      "fecha": "2026-10-06",
+      "url": "https://github.com/Wndwsqrrl/3on3NHL-recomp/releases/tag/v0.1.1"
+     },
+     "sistemas": [
+      "windows"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Dead Rising 2: Case Zero",
+   "slug": "dead-rising-2-case-zero",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "DeadRising2CaseZeroXenonRecomp",
+     "url": "https://github.com/wivi514/Dead_Rising_2_Case_Zero_Xenon_Recomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 recompilation of the standalone Case Zero release.",
+     "repo": "wivi514/Dead_Rising_2_Case_Zero_Xenon_Recomp",
+     "estrellas": 108,
+     "actividad": "2026-10-20",
+     "version": {
+      "nombre": "v1.1.3",
+      "fecha": "2026-10-14",
+      "url": "https://github.com/wivi514/Dead_Rising_2_Case_Zero_Xenon_Recomp/releases/tag/v1.1.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Dead Rising 2: Case West",
+   "slug": "dead-rising-2-case-west",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "DeadRising2CaseWestXenonRecomp",
+     "url": "https://github.com/wivi514/Dead_Rising_2_Case_West_Xenon_Recomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 recompilation of the standalone Case West release.",
+     "repo": "wivi514/Dead_Rising_2_Case_West_Xenon_Recomp",
+     "estrellas": 106,
+     "actividad": "2026-10-20",
+     "version": {
+      "nombre": "v1.1.2",
+      "fecha": "2026-10-14",
+      "url": "https://github.com/wivi514/Dead_Rising_2_Case_West_Xenon_Recomp/releases/tag/v1.1.2"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "The Simpsons Game",
+   "slug": "the-simpsons-game",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "TheSimpsonsGameRecomp",
+     "url": "https://github.com/YesterMester/TheSimpsonsGameRecomp",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 recompilation with an installer/launcher for end users.",
+     "repo": "YesterMester/TheSimpsonsGameRecomp",
+     "estrellas": 400,
+     "actividad": "2026-10-11",
+     "version": {
+      "nombre": "v0.0.6.5",
+      "fecha": "2026-10-10",
+      "url": "https://github.com/YesterMester/TheSimpsonsGameRecomp/releases/tag/v0.0.6.5"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Blue Dragon",
+   "slug": "blue-dragon",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "re:Blue",
+     "url": "https://github.com/zolaware/reblue",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation. The setup wizard asks for your three retail disc images, validates them, extracts the required files, and installs the port. Includes modern resolutions, unlocked frame rates, keyboard/mouse support, and mods.",
+     "repo": "zolaware/reblue",
+     "estrellas": 878,
+     "actividad": "2026-10-09",
+     "version": {
+      "nombre": "v1.3.1",
+      "fecha": "2026-10-05",
+      "url": "https://github.com/zolaware/reblue/releases/tag/v1.3.1"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Earthworm Jim HD",
+   "slug": "earthworm-jim-hd",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "Earthworm Jim HD: Recompiled",
+     "url": "https://github.com/TekRantGaming/earthworm-jim-hd-recompiled",
+     "destacado": true,
+     "descripcion": "Native Xbox Live Arcade static recompilation for Windows. Download the release, launch it, select or drag in your own XBLA package, and press Play. Includes automatic updates, modern graphics settings, high frame-rate support, remappable controls, and achievements.",
+     "repo": "TekRantGaming/earthworm-jim-hd-recompiled",
+     "estrellas": 103,
+     "actividad": "2026-10-18",
+     "version": {
+      "nombre": "v0.9.6",
+      "fecha": "2026-10-18",
+      "url": "https://github.com/TekRantGaming/earthworm-jim-hd-recompiled/releases/tag/v0.9.6"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Peter Jackson's King Kong",
+   "slug": "peter-jacksons-king-kong",
+   "plataforma": "Xbox",
+   "proyectos": [
+    {
+     "nombre": "King Kong: Recompiled",
+     "url": "https://github.com/TekRantGaming/king-kong-recompiled",
+     "destacado": true,
+     "descripcion": "Native Xbox 360 static recompilation for Windows. The launcher installs the game directly from your own disc image and adds modern resolutions, high frame-rate options, keyboard/mouse support, remappable controls, achievements, and automatic updates.",
+     "repo": "TekRantGaming/king-kong-recompiled",
+     "estrellas": 251,
+     "actividad": "2026-11-01",
+     "version": {
+      "nombre": "v2.0.6",
+      "fecha": "2026-11-01",
+      "url": "https://github.com/TekRantGaming/king-kong-recompiled/releases/tag/v2.0.6"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Sonic the Hedgehog 1",
+   "slug": "sonic-the-hedgehog-1",
+   "plataforma": "SEGA",
+   "proyectos": [
+    {
+     "nombre": "Sonic the Hedgehog Forever",
+     "url": "https://teamforeveronline.wixsite.com/home/sonic-1-forever",
+     "destacado": true,
+     "descripcion": "Drag-and-drop setup 📺 Tutorial"
+    },
+    {
+     "nombre": "Sonic 1/2 Decompilation",
+     "url": "https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "RSDKModding/RSDKv4-Decompilation",
+     "estrellas": 1158,
+     "actividad": "2026-10-28",
+     "version": {
+      "nombre": "1.3.3",
+      "fecha": "2025-11-02",
+      "url": "https://github.com/RSDKModding/RSDKv4-Decompilation/releases/tag/1.3.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Sonic the Hedgehog 2",
+   "slug": "sonic-the-hedgehog-2",
+   "plataforma": "SEGA",
+   "proyectos": [
+    {
+     "nombre": "Sonic the Hedgehog 2 Absolute",
+     "url": "https://teamforeveronline.wixsite.com/home/sonic-2-absolute",
+     "destacado": true,
+     "descripcion": "Drag-and-drop setup 📺 Tutorial"
+    },
+    {
+     "nombre": "Sonic 1/2 Decompilation",
+     "url": "https://github.com/Rubberduckycooly/Sonic-1-2-2013-Decompilation",
+     "destacado": false,
+     "descripcion": "",
+     "repo": "RSDKModding/RSDKv4-Decompilation",
+     "estrellas": 1158,
+     "actividad": "2026-10-28",
+     "version": {
+      "nombre": "1.3.3",
+      "fecha": "2025-11-02",
+      "url": "https://github.com/RSDKModding/RSDKv4-Decompilation/releases/tag/1.3.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Sonic 3 & Knuckles",
+   "slug": "sonic-3-and-knuckles",
+   "plataforma": "SEGA",
+   "proyectos": [
+    {
+     "nombre": "Sonic 3 AIR",
+     "url": "https://github.com/Eukaryot/sonic3air",
+     "destacado": true,
+     "descripcion": "Launcher with mod support 📄 Manual",
+     "repo": "Eukaryot/sonic3air",
+     "estrellas": 678,
+     "actividad": "2026-10-24",
+     "version": {
+      "nombre": "v26.03.28.0-stable",
+      "fecha": "2026-03-28",
+      "url": "https://github.com/Eukaryot/sonic3air/releases/tag/v26.03.28.0-stable"
+     },
+     "sistemas": [
+      "mac",
+      "android"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "Sonic Unleashed",
+   "slug": "sonic-unleashed",
+   "plataforma": "SEGA",
+   "proyectos": [
+    {
+     "nombre": "UnleashedRecomp",
+     "url": "https://github.com/hedge-dev/UnleashedRecomp",
+     "destacado": true,
+     "descripcion": "Launcher with mod support 📖 Install Guide",
+     "repo": "hedge-dev/UnleashedRecomp",
+     "estrellas": 5318,
+     "actividad": "2026-06-29",
+     "version": {
+      "nombre": "v1.0.3",
+      "fecha": "2025-04-03",
+      "url": "https://github.com/hedge-dev/UnleashedRecomp/releases/tag/v1.0.3"
+     },
+     "sistemas": [
+      "windows",
+      "linux"
+     ]
+    }
+   ]
+  },
+  {
+   "juego": "OutRun",
+   "slug": "outrun",
+   "plataforma": "SEGA",
+   "proyectos": [
+    {
+     "nombre": "Cannonball - OutRun Engine",
+     "url": "https://github.com/djyt/cannonball",
+     "destacado": true,
+     "descripcion": "Drag-and-drop install 📖 Setup Guide",
+     "repo": "djyt/cannonball",
+     "estrellas": 891,
+     "actividad": "2023-12-26",
+     "version": {
+      "nombre": "v0.34",
+      "fecha": "2021-04-26",
+      "url": "https://github.com/djyt/cannonball/releases/tag/v0.34"
+     }
+    }
+   ]
+  },
+  {
+   "juego": "Cave Story+",
+   "slug": "cave-story",
+   "plataforma": "Indie",
+   "proyectos": [
+    {
+     "nombre": "doukutsu-rs",
+     "url": "https://github.com/doukutsu-rs/doukutsu-rs",
+     "destacado": true,
+     "descripcion": "Just drop the EXE into the Cave Story folder and run",
+     "repo": "doukutsu-rs/doukutsu-rs",
+     "estrellas": 1322,
+     "actividad": "2026-10-31",
+     "version": {
+      "nombre": "1.0.0",
+      "fecha": "2026-06-03",
+      "url": "https://github.com/doukutsu-rs/doukutsu-rs/releases/tag/1.0.0"
+     },
+     "sistemas": [
+      "windows",
+      "linux",
+      "mac",
+      "android",
+      "switch"
+     ]
+    }
+   ]
+  }
+ ]
+}
