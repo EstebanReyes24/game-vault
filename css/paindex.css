@@ -1188,3 +1188,20 @@ body.light-mode .ports-recomendado { color: #a86d00; }
 .juego-port { display: flex; gap: 0.9rem; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 0.9rem 1.1rem; border-radius: 0.9rem; border: 1px solid rgba(94, 224, 122, 0.35); background: rgba(94, 224, 122, 0.07); }
 .juego-port p { margin: 0; color: var(--hueso); font-size: 0.92rem; }
 .juego-port p small { display: block; color: var(--niebla); font-size: 0.8rem; margin-top: 0.15rem; }
+.ports-herramientas { display: flex; flex-wrap: wrap; gap: 0.7rem; align-items: center; }
+.ports-select { padding: 0.55rem 0.8rem; border-radius: 0.7rem; font-size: 0.85rem; max-width: 100%; }
+.ports-solidos { display: flex; gap: 0.45rem; align-items: center; font-size: 0.85rem; color: var(--hueso); cursor: pointer; }
+.ports-solidos input { accent-color: var(--senal); width: 1rem; height: 1rem; }
+.ports-verificado { color: #5ee07a; font-weight: 700; }
+.ports-estado { padding: 0.05rem 0.45rem; border-radius: 99px; font-weight: 700; font-size: 0.7rem; border: 1px solid currentColor; }
+.ports-estado.estable { color: #5ee07a; }
+.ports-estado.beta { color: #66c0f4; }
+.ports-estado.alfa { color: #ffb15a; }
+.ports-otros summary { cursor: pointer; padding: 0.5rem 0; font-size: 0.82rem; font-weight: 700; color: var(--senal); list-style: none; }
+.ports-otros summary::-webkit-details-marker { display: none; }
+.ports-otros summary::before { content: "＋ "; }
+.ports-otros[open] summary::before { content: "－ "; }
+.ports-mas { display: flex; justify-content: center; }
+body.light-mode .ports-verificado, body.light-mode .ports-estado.estable { color: #1f8a3b; }
+body.light-mode .ports-estado.beta { color: #1a6fa8; }
+body.light-mode .ports-estado.alfa { color: #a85a00; }
