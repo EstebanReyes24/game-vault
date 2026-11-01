@@ -74,9 +74,9 @@ function analizar(md) {
 }
 
 const SISTEMAS = [
-  ["windows", /win(dows|64|32)?|\.exe$|\.msi$/i],
+  ["windows", /windows|\bwin(64|32|x64|-x64)?\b|\.exe$|\.msi$/i],
   ["linux", /linux|appimage|\.deb$|\.rpm$|flatpak|steamdeck|steam-deck/i],
-  ["mac", /mac|osx|darwin|\.dmg$|apple|arm64.*\.zip/i],
+  ["mac", /mac|osx|darwin|\.dmg$|apple/i],
   ["android", /android|\.apk$/i],
   ["switch", /switch|\.nro$|\.nsp$/i]
 ];
