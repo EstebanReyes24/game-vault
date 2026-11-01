@@ -167,9 +167,9 @@
       const clave = window.slugJuego(titulo).replace(/-/g, "");
       const j = (datos.juegos || []).find(x => x.slug.replace(/-/g, "") === clave);
       if (!j) return;
-      const mejor = j.proyectos.find(p => p.destacado) || j.proyectos[0];
+      const mejor = j.proyectos.find(p => p.recomendado) || j.proyectos[0];
       caja.className = "juego-port";
-      caja.innerHTML = `<p><i class="fa-solid fa-microchip" aria-hidden="true"></i> <b>Se puede jugar nativo en PC</b><small>${j.proyectos.length === 1 ? esc(mejor.nombre) : `${esc(mejor.nombre)} y ${j.proyectos.length - 1} ${j.proyectos.length === 2 ? "port más" : "ports más"}`} · necesitas tu propia copia del juego</small></p>
+      caja.innerHTML = `<p><i class="fa-solid fa-microchip" aria-hidden="true"></i> <b>Se puede jugar nativo en PC${j.proyectos.every(p => (p.plataformas || []).length === 1 && p.plataformas[0] === "android") ? " o Android" : ""}</b><small>${j.proyectos.length === 1 ? esc(mejor.nombre) : `${esc(mejor.nombre)} y ${j.proyectos.length - 1} ${j.proyectos.length === 2 ? "port más" : "ports más"}`} · necesitas tu propia copia del juego</small></p>
         <a class="boton boton-linea" href="/ports#${encodeURIComponent(j.slug)}">Ver ports</a>`;
       caja.hidden = false;
     } catch (e) { /* sin datos de ports */ }
