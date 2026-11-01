@@ -74,6 +74,7 @@
     if (!data?.session) { caja.hidden = true; return; }
     const e = await estado();
     const [icono, texto] = TEXTOS[e];
+    const esAdmin = await window.DB?.isAdmin?.().catch(() => false);
     caja.hidden = false;
     caja.innerHTML = `
       <p class="push-texto"><i class="fa-solid ${icono}" aria-hidden="true"></i> ${texto}</p>
@@ -81,7 +82,8 @@
         ${e === "inactivo" ? `<button type="button" class="boton boton-senal" data-push="activar">Activar en este dispositivo</button>` : ""}
         ${e === "activo" ? `<button type="button" class="boton boton-linea" data-push="probar">Probar</button><button type="button" class="resena-mas" data-push="desactivar">Desactivar</button>` : ""}
       </div>
-      <p class="push-estado" role="status"></p>`;
+      <p class="push-estado" role="status"></p>
+      ${esAdmin ? `<button type="button" class="resena-mas" data-push="diagnostico">Diagnóstico (solo admin)</button><pre class="push-diagnostico" hidden></pre>` : ""}`;
     caja.onclick = async (ev) => {
       const b = ev.target.closest("[data-push]");
       if (!b) return;
@@ -92,6 +94,14 @@
         if (b.dataset.push === "activar") { await activar(); await pintar(caja); caja.querySelector(".push-estado").textContent = "¡Listo! Pulsa Probar para comprobarlo."; return; }
         if (b.dataset.push === "probar") { await probar(); aviso.textContent = "Enviada: debería llegarte en unos segundos."; }
         if (b.dataset.push === "desactivar") { await desactivar(); await pintar(caja); return; }
+        if (b.dataset.push === "diagnostico") {
+          const { data, error } = await supabaseClient.rpc("diagnostico_push");
+          if (error) throw new Error(/diagnostico_push/.test(error.message) ? "Falta ejecutar la migración 022." : error.message);
+          const local = { permiso: "Notification" in window ? Notification.permission : "sin soporte", suscrito_en_este_navegador: !!(await suscripcion()), clave_publica: !!(await clave()), app_instalada: instalada };
+          const pre = caja.querySelector(".push-diagnostico");
+          pre.textContent = JSON.stringify({ ...local, ...data }, null, 1);
+          pre.hidden = false;
+        }
       } catch (err) { aviso.textContent = err.message || "No se pudo completar."; }
       b.disabled = false;
     };
