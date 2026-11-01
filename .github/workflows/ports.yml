@@ -34,3 +34,13 @@ jobs:
           git add data/ports.json
           git commit -m "Ports nativos: actualización semanal"
           git push
+      # Con el repositorio privado en el plan Hobby, Vercel no despliega los commits del bot:
+      # se pide el despliegue con un Deploy Hook (secreto VERCEL_DEPLOY_HOOK en GitHub).
+      - name: Desplegar en Vercel
+        env:
+          HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then echo "Sin VERCEL_DEPLOY_HOOK: Vercel desplegará solo si acepta el commit."; exit 0; fi
+          if git log -1 --format=%s | grep -q "Ports nativos: actualización semanal"; then
+            curl -fsS -X POST "$HOOK" > /dev/null && echo "Despliegue pedido."
+          fi
