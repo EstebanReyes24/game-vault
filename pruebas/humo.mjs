@@ -13,6 +13,7 @@ const PAGINAS = [
   { ruta: "/estante", espera: "#gamesGrid, .bienvenida" },
   { ruta: "/comparar", espera: "#comparar" },
   { ruta: "/juegos", espera: "#juegos" },
+  { ruta: "/ports", espera: "#ports" },
   { ruta: "/j/elden-ring", espera: "#juego" },
   { ruta: "/legal", espera: "main, h1" },
   { ruta: "/login", espera: "form" }

@@ -78,6 +78,8 @@
         </div>
       </section>
 
+      <div id="jPort" hidden></div>
+
       <section class="cifras juego-cifras" aria-label="La comunidad y este juego">
         ${cifras.map(([n, t]) => `<div><b>${esc(n)}</b><span>${esc(t)}</span></div>`).join("")}
       </section>
@@ -111,6 +113,7 @@
 
     cargarSinopsis(d.titulo);
     cargarJugadores(d.titulo);
+    cargarPort(d.titulo);
 
     // "Lo quiero": a tu lista de deseos (migración 019), con su precio de PC si existe
     document.getElementById("jDeseo").addEventListener("click", async (e) => {
@@ -151,6 +154,23 @@
         if (!error) cargar();
       });
     }
+  }
+
+  // ¿Tiene port nativo para PC? (data/ports.json, ver /ports)
+  async function cargarPort(titulo) {
+    const caja = document.getElementById("jPort");
+    if (!caja || !window.slugJuego) return;
+    try {
+      const datos = await fetch("/data/ports.json").then(r => r.json());
+      const clave = window.slugJuego(titulo).replace(/-/g, "");
+      const j = (datos.juegos || []).find(x => x.slug.replace(/-/g, "") === clave);
+      if (!j) return;
+      const mejor = j.proyectos.find(p => p.destacado) || j.proyectos[0];
+      caja.className = "juego-port";
+      caja.innerHTML = `<p><i class="fa-solid fa-microchip" aria-hidden="true"></i> <b>Se puede jugar nativo en PC</b><small>${j.proyectos.length === 1 ? esc(mejor.nombre) : `${esc(mejor.nombre)} y ${j.proyectos.length - 1} ${j.proyectos.length === 2 ? "port más" : "ports más"}`} · necesitas tu propia copia del juego</small></p>
+        <a class="boton boton-linea" href="/ports#${encodeURIComponent(j.slug)}">Ver ports</a>`;
+      caja.hidden = false;
+    } catch (e) { /* sin datos de ports */ }
   }
 
   // Gente jugándolo ahora mismo en Steam (Xbox y PlayStation no publican esa cifra)

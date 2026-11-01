@@ -23,6 +23,7 @@
     { "name": "Mi estante", "url": "/estante?ref=app", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
     { "name": "Lista de deseos", "short_name": "Deseos", "url": "/estante?deseos=1&ref=app", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
     { "name": "Juegos de la comunidad", "short_name": "Juegos", "url": "/juegos?ref=app", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
+    { "name": "Ports nativos", "short_name": "Ports", "url": "/ports?ref=app", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] },
     { "name": "Noticias", "url": "/noticias?ref=app", "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }] }
   ]
 }
