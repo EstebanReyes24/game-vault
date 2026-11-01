@@ -34,7 +34,7 @@ function inyectar(html, meta) {
 }
 
 // ---------- Sitemap dinámico (/sitemap.xml → ?tipo=sitemap): páginas fijas + cada /j/<juego> ----------
-const FIJAS = [["/", "daily", "1.0"], ["/juegos", "daily", "0.9"], ["/noticias", "daily", "0.8"], ["/articulos", "weekly", "0.8"], ["/comparar", "monthly", "0.4"], ["/legal", "yearly", "0.2"]];
+const FIJAS = [["/", "daily", "1.0"], ["/juegos", "daily", "0.9"], ["/ports", "weekly", "0.8"], ["/noticias", "daily", "0.8"], ["/articulos", "weekly", "0.8"], ["/comparar", "monthly", "0.4"], ["/legal", "yearly", "0.2"]];
 const slug = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/['’]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 120);
 const escXml = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
 
