@@ -1,6 +1,67 @@
 {
-  "actualizado": "2026-11-04T15:19:06Z",
+  "actualizado": "2026-11-04T23:09:08Z",
   "borradores": [
+    {
+      "id": "2026-11-04-god-of-war-laufey-retraso-20-mayo",
+      "fecha": "2026-11-04",
+      "titulo": "God of War Laufey se retrasa: ahora sale el 20 de mayo de 2027 en PS5",
+      "juego": "God of War Laufey",
+      "etiqueta": "#GodOfWar",
+      "imagen": "",
+      "contenido": "Santa Monica Studio confirmó que God of War Laufey no llegará en febrero como estaba previsto. La nueva fecha de lanzamiento es el 20 de mayo de 2027, poco más de tres meses después del plan original del 16 de febrero, y sigue siendo exclusivo de PlayStation 5.\n\nEl estudio anunció el cambio en sus redes sociales y explicó que usará ese tiempo extra para dar los últimos retoques y llevar el juego a su máximo potencial. También agradeció el entusiasmo de los fans desde la presentación en el State of Play de junio y prometió compartir más detalles pronto.\n\nPara quien llegue nuevo: Laufey es la primera entrega principal de la saga en la que Kratos no es el protagonista. Aquí controlamos a Faye, la difunta esposa de Kratos y madre de Atreus, en un más allá donde se cruzan dioses y criaturas de varias mitologías. La historia corre en paralelo a los eventos de God of War (2018) y Ragnarök, y promete un combate más ágil que el de las dos entregas anteriores.\n\nAun con el retraso, el juego saldrá menos de un año después de su anuncio. ¿Prefieren esperar unos meses más si eso significa un lanzamiento más pulido?",
+      "fuentes": [
+        {
+          "nombre": "Push Square",
+          "url": "https://www.pushsquare.com/news/2026/11/ps5-exclusive-god-of-war-laufey-has-officially-been-delayed-by-three-months"
+        },
+        {
+          "nombre": "Vandal",
+          "url": "https://vandal.elespanol.com/noticia/2026308040/oficial-god-of-war-laufey-no-llegara-en-febrero-y-su-lanzamiento-se-retrasa-unos-meses/"
+        },
+        {
+          "nombre": "Engadget",
+          "url": "https://www.engadget.com/2306802/god-of-war-laufey-is-delayed-until-may-20/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-steam-cambia-revision-juegos-avalancha-ia",
+      "fecha": "2026-11-04",
+      "titulo": "Steam endurece su proceso de revisión ante la avalancha de lanzamientos",
+      "juego": "Steam",
+      "etiqueta": "#Steam",
+      "imagen": "",
+      "contenido": "Valve actualizó las reglas que deben seguir los desarrolladores antes de enviar un juego a revisión en Steam. El cambio llega después de que la propia compañía reconociera que las revisiones están tardando más de la cuenta: su meta es resolverlas en tres a cinco días, pero ahora mismo pueden llegar a doce días hábiles.\n\nSegún el anuncio publicado en Steamworks, los estudios tendrán que probar su juego desde el cliente de Steam durante al menos cinco minutos antes de enviarlo, ya que Valve recibía versiones que nunca se habían ejecutado en la plataforma. Además deberán confirmar que los redistribuibles comunes como DirectX y Visual C++ están bien configurados, que los logros funcionan, que las rutas de guardado en la nube son correctas y clasificar las capturas de pantalla según muestren jugabilidad, menús, arte conceptual o cinemáticas.\n\nValve dice que el objetivo es reducir las revisiones repetidas, que son las que alargan la espera. Aunque la empresa no lo atribuye directamente a la inteligencia artificial, el aumento de envíos coincide con el auge de juegos que declaran contenido generado con IA en la tienda. Y la compañía ya adelantó que vendrán más mejoras al proceso.",
+      "fuentes": [
+        {
+          "nombre": "Engadget",
+          "url": "https://www.engadget.com/2306215/valve-changed-its-steam-release-rules-amid-a-flood-of-ai-games/"
+        },
+        {
+          "nombre": "Vandal",
+          "url": "https://vandal.elespanol.com/noticia/2026308015/steam-cambia-su-proceso-de-revision-ante-la-avalancha-de-juegos-generados-por-inteligencia-artificial/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-ps-store-descargas-octubre-beamng",
+      "fecha": "2026-11-04",
+      "titulo": "Modern Warfare 4 lidera las descargas de PS Store en octubre y BeamNG.drive sorprende",
+      "juego": "BeamNG.drive",
+      "etiqueta": "#PlayStation",
+      "imagen": "",
+      "contenido": "PlayStation publicó en su blog oficial la lista de juegos más descargados en PS Store durante octubre, y hay una sorpresa. Como era de esperarse, Call of Duty: Modern Warfare 4 quedó primero en PS5 tanto en Estados Unidos y Canadá como en Europa, pero justo detrás aparece BeamNG.drive, el simulador de conducción con físicas de choques que llegó a PS5 a mediados de octubre en acceso anticipado.\n\nBeamNG.drive terminó segundo en Estados Unidos y Canadá y tercero en Europa, por delante de pesos pesados como EA Sports FC 27 (en Norteamérica), Phantom Blade Zero, Madden NFL 27 y NBA 2K27. Completan el top 10 de PS5 títulos como Peak, Star Wars: Galactic Racer y Minecraft, mientras que en Europa se colaron Enshrouded, Mafia III y Planet Zoo 2.\n\nEn PS4, Red Dead Redemption 2 sigue mandando en ambas regiones; en PS VR2 el número uno fue Hard Bullet, y entre los gratuitos destacan Once Human en Norteamérica y Fortnite en Europa.\n\nQue un juego de PC tan veterano y todavía en acceso anticipado pelee con los lanzamientos grandes del mes dice mucho del hambre que había por verlo en consola. ¿Alguno ya se puso a destrozar carros en PS5?",
+      "fuentes": [
+        {
+          "nombre": "PlayStation Blog",
+          "url": "https://blog.playstation.com/2026/11/04/playstation-store-october-2026s-top-downloads/"
+        },
+        {
+          "nombre": "Push Square",
+          "url": "https://www.pushsquare.com/news/2026/11/early-access-ps5-racer-outperforms-every-october-release-apart-from-call-of-duty"
+        }
+      ]
+    },
     {
       "id": "2026-11-04-pokopia-dazzling-decorations-9-diciembre",
       "fecha": "2026-11-04",
