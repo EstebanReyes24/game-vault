@@ -1,6 +1,105 @@
 {
-  "actualizado": "2026-11-04T10:53:05Z",
+  "actualizado": "2026-11-04T15:19:06Z",
   "borradores": [
+    {
+      "id": "2026-11-04-pokopia-dazzling-decorations-9-diciembre",
+      "fecha": "2026-11-04",
+      "titulo": "Pokémon Pokopia recibe su segunda expansión, Dazzling Decorations, el 9 de diciembre",
+      "juego": "Pokémon Pokopia",
+      "etiqueta": "#Pokopia",
+      "imagen": "",
+      "contenido": "The Pokémon Company confirmó que la segunda parte del pase de expansión de Pokémon Pokopia, llamada Dazzling Decorations, llega el 9 de diciembre a Nintendo Switch 2. El anuncio salió desde la cuenta oficial de Pokémon y llega casi cuatro meses después de Bubbly Basin, la primera entrega del pase, que debutó en agosto.\n\nEsta vez el enfoque va por la personalización: habrá accesorios para vestir a tu Ditto y a los Pokémon con los que hayas hecho amistad, además de muebles nuevos y más Pokémon que conocer. Para jugarla hace falta tener instalada la actualización gratuita 3.0.0, que sale ese mismo día, y haber avanzado en la historia: completar los encargos para subir el nivel del entorno y reconstruir el Centro Pokémon en Withered Wasteland, más el pedido de Drifloon de encontrar una muñeca.\n\nNo es poca cosa para el juego: Pokopia ya pasó los cinco millones de copias y es uno de los títulos más fuertes de Switch 2, solo por detrás de Mario Kart World. La tercera parte del pase ya está prevista para 2027 y, según lo anunciado, traerá una zona nueva.\n\n¿Ustedes son de los que se pasan horas decorando o de los que van directo a completar la Pokédex?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/pokemon-pokopias-second-expansion-announced-for-december/"
+        },
+        {
+          "nombre": "Game Informer",
+          "url": "https://gameinformer.com/2026/11/04/pokemon-pokopia-expansion-pass-part-2-dazzling-decorations-arrives-next-month-with-new"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-playstation-store-black-friday-4-30-noviembre",
+      "fecha": "2026-11-04",
+      "titulo": "El Black Friday de PlayStation Store arranca hoy y dura hasta el 30 de noviembre",
+      "juego": "Marvel's Wolverine",
+      "etiqueta": "#BlackFriday",
+      "imagen": "",
+      "contenido": "Sony adelantó su Black Friday este año: la rebaja de PlayStation Store empieza hoy, 4 de noviembre, y se mantiene hasta el 30 de noviembre. La compañía habla de miles de juegos, expansiones y contenido descargable de PS5, PS4 y PS VR2 con descuentos de hasta el 75%.\n\nEntre los títulos que Sony mostró como adelanto están Marvel's Wolverine, Saros, Astro Bot, 007 First Light, Silent Hill: Townfall, The Blood of Dawnwalker, Pragmata, Death Stranding 2: On the Beach, God of War Ragnarök, Balatro y Stardew Valley. La lista completa y los precios de cada juego se conocen al abrir la oferta, y Sony advierte que algunas ofertas pueden cambiar durante el mes: unas saldrán antes y otras se sumarán por el camino.\n\nPor ahora la promoción es solo de software. No se han anunciado descuentos en consolas, mandos ni en la suscripción de PS Plus, que en otros años llegaron más cerca del propio Black Friday, el 27 de noviembre. Con varios lanzamientos grandes de septiembre y octubre ya rebajados, puede ser buen momento para ponerse al día antes de que llegue GTA VI.\n\n¿Qué tienen en la lista de deseos esperando este descuento?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/playstations-black-friday-sale-includes-wolverine-astro-bot-and-more/"
+        },
+        {
+          "nombre": "9to5Toys",
+          "url": "https://9to5toys.com/2026/11/03/sony-reveals-2026-playstation-store-black-friday-sale/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-nintendo-etiquetas-accesibilidad-eshop",
+      "fecha": "2026-11-04",
+      "titulo": "Nintendo añade etiquetas de accesibilidad a su tienda con la Accessible Games Initiative",
+      "juego": "Mario Kart World",
+      "etiqueta": "#Accesibilidad",
+      "imagen": "",
+      "contenido": "Nintendo empezó a mostrar etiquetas de accesibilidad en las fichas de los juegos de su tienda web en Estados Unidos, dentro del sistema creado por la Accessible Games Initiative, un proyecto impulsado por la ESA, la asociación de la industria del videojuego estadounidense. Al pulsar una etiqueta, la tienda muestra todos los juegos que tienen esa función.\n\nLas etiquetas se reparten en cuatro áreas: audio, jugabilidad, controles y visual. Hay más de veinte, con ejemplos como subtítulos grandes y claros, menús narrados, reasignación completa de botones, jugar solo con botones, opciones de color alternativas, varios controles de volumen o niveles de dificultad seleccionables.\n\nNintendo no está sola. Xbox, Ubisoft, EA, Riot Games, Amazon Games y Google (en YouTube Playables) también usan ya estas etiquetas en sus webs o tiendas; Ubisoft, por ejemplo, las ha añadido a unos 80 juegos. La adopción es voluntaria y puede convivir con otros sistemas de etiquetado.\n\nPara quien necesita una función concreta para poder jugar, saber antes de comprar si un juego la tiene ahorra tiempo y dinero. Falta ver si Sony y Valve se suman para que el estándar cubra a toda la industria.",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/nintendo-joins-the-accessible-games-initiative-adopting-a-bunch-of-new-eshop-game-tags"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://videogameschronicle.com/news/accessible-games-initiative-tags-adopted-by-nintendo-xbox-ubisoft-and-ea-making-it-easier-to-find-accessibility-features"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-dragons-dogma-2-delicious-in-dungeon-colaboracion",
+      "fecha": "2026-11-04",
+      "titulo": "Dragon's Dogma 2 suma una colaboración gratis con Delicious in Dungeon: llegan Laios y Marcille",
+      "juego": "Dragon's Dogma 2",
+      "etiqueta": "#DragonsDogma2",
+      "imagen": "",
+      "contenido": "Capcom lanzó por sorpresa una nueva actualización de Dragon's Dogma 2: Dark Arisen que incluye una colaboración por tiempo limitado con Delicious in Dungeon, el manga y anime de aventuras y cocina en mazmorras. El contenido es gratuito y trae trajes inspirados en Laios y Marcille, además de peones oficiales con el aspecto de ambos personajes. El traje de Laios incluye incluso su mochila, algo que hasta ahora solo se conseguía con mods.\n\nLa colaboración ya está disponible en PS5, Xbox Series X|S y PC, y en Nintendo Switch 2 llegará con la actualización del 11 de noviembre (12 según la región). Los trajes se añaden al almacén al cargar una partida durante el periodo del evento, que termina con la actualización de finales de enero de 2027, así que conviene entrar antes de esa fecha.\n\nEl parche también corrige un buen número de errores, entre ellos un congelamiento al equipar cierta flecha con la vocación Warfarer, misiones que se quedaban bloqueadas y enemigos imposibles de derrotar en algunos eventos. Es una buena excusa para volver a Vermund, sobre todo si eres fan del anime.",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/dragons-dogma-2-dark-arisen-new-update-and-anime-collab-announced-here-are-the-full-patch-notes"
+        },
+        {
+          "nombre": "Kotaku",
+          "url": "https://kotaku.com/dragons-dogma-2-drops-surprise-delicious-in-dungeon-collab-2000753287"
+        },
+        {
+          "nombre": "Noisy Pixel",
+          "url": "https://noisypixel.net/dragons-dogma-2-dark-arisen-delicious-in-dungeon-collaboration"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-wonderfall-fecha-9-diciembre-pc",
+      "fecha": "2026-11-04",
+      "titulo": "Wonderfall, la aventura indie en un París que se vuelve arena, sale el 9 de diciembre en PC",
+      "juego": "Wonderfall",
+      "etiqueta": "#Indie",
+      "imagen": "",
+      "contenido": "Attaboy Interactive, un estudio independiente de París fundado en 2022, anunció que Wonderfall saldrá el 9 de diciembre de 2026 en PC a través de Steam. Es una aventura narrativa en tercera persona ambientada en el París de los años veinte, una ciudad que se está convirtiendo en arena por culpa de una fuerza llamada Entropía.\n\nControlamos a Léon, un huérfano capaz de moldear la arena, que recorre la Île de la Cité, con lugares como Notre-Dame y la Sainte-Chapelle. La propuesta mezcla exploración, desplazamiento por el escenario, sigilo y puzles ambientales basados en esos poderes. El estudio habla de una duración de seis a ocho horas y de más de mil líneas de diálogo con voces completas en inglés.\n\nPara el público hispanohablante hay buena noticia: la interfaz y los subtítulos estarán en español. Además, la demo ya está disponible en Steam, así que se puede probar antes de decidir. Una aventura corta, con una ambientación poco vista, que puede ser buena opción para despejar entre lanzamientos enormes.",
+      "fuentes": [
+        {
+          "nombre": "Comunicado de Attaboy Interactive (Games Press)",
+          "url": "https://www.gamespress.com/ja-JP/WONDERFALL-the-narrative-adventure-set-in-a-Paris-collapsing-into-sand"
+        },
+        {
+          "nombre": "Steam",
+          "url": "https://store.steampowered.com/app/3444810"
+        }
+      ]
+    },
     {
       "id": "2026-11-04-phantom-blade-zero-4-millones-72-horas",
       "fecha": "2026-11-04",
