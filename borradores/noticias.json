@@ -1,6 +1,109 @@
 {
-  "actualizado": "2026-11-03T22:51:54Z",
+  "actualizado": "2026-11-04T10:53:05Z",
   "borradores": [
+    {
+      "id": "2026-11-04-phantom-blade-zero-4-millones-72-horas",
+      "fecha": "2026-11-04",
+      "titulo": "Phantom Blade Zero vende más de 4 millones de copias en sus primeras 72 horas",
+      "juego": "Phantom Blade Zero",
+      "etiqueta": "#PhantomBladeZero",
+      "imagen": "",
+      "contenido": "S-GAME confirmó en su cuenta oficial que Phantom Blade Zero superó los 4 millones de copias vendidas en apenas tres días. El juego de acción salió el 29 de octubre en PS5 y PC, por ahora solo en formato digital, con un precio de 59.99 dólares en PlayStation Store. Las ediciones físicas llegarán en 2027.\n\nEn Steam el arranque también fue fuerte: el juego rozó los 800,000 jugadores simultáneos en su lanzamiento, una cifra que muy pocos títulos de un solo jugador alcanzan. Según Push Square, la mayor parte de las ventas se han dado en PC, aunque en consola tiene exclusividad temporal con PlayStation.\n\nPor qué importa: es un estudio chino relativamente pequeño, con casi una década de desarrollo, que entra al terreno de los grandes. La comparación inevitable es Black Myth: Wukong, que en 2024 vendió unos 10 millones en el mismo periodo, pero el ritmo de Phantom Blade Zero confirma que hay un público enorme para la acción exigente fuera de Japón y Occidente. También es uno de los títulos que Sony apoyó a través de su programa China Hero Project.\n\n¿Ya lo están jugando? ¿Les parece que puede llegar a los números de Wukong?",
+      "fuentes": [
+        {
+          "nombre": "Push Square",
+          "url": "https://www.pushsquare.com/news/2026/11/phantom-blade-zero-is-an-instant-hit-with-4-million-sales-on-ps5-pc"
+        },
+        {
+          "nombre": "KitGuru",
+          "url": "https://www.kitguru.net/tech-news/mustafa-mahmoud/phantom-blade-zero-officially-sells-4-million-copies-in-3-days/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-control-resonant-millon-remedy-ingresos",
+      "fecha": "2026-11-04",
+      "titulo": "Control Resonant pasa el millón de copias y es el juego que más rápido ha vendido Remedy",
+      "juego": "Control Resonant",
+      "etiqueta": "#ControlResonant",
+      "imagen": "",
+      "contenido": "Remedy publicó su informe del tercer trimestre y la noticia principal es Control Resonant: el juego superó el millón de copias el 15 de octubre, unas tres semanas después de su lanzamiento digital del 24 de septiembre. Eso lo convierte en el título que más rápido ha vendido el estudio finlandés en toda su historia.\n\nEl impacto en las cuentas fue inmediato. Los ingresos del trimestre llegaron a 39.6 millones de euros, frente a 12.2 millones en el mismo periodo del año pasado, y eso que solo se contaron los primeros siete días de ventas del juego. La empresa volvió a tener beneficio operativo, aunque pequeño (0.6 millones), tras el golpe que supuso el fracaso de FBC: Firebreak. Además, casi la mitad de los compradores no había jugado el Control original, y unos 2.4 millones de usuarios aún lo tienen en su lista de deseados.\n\nEl CEO Jean-Charles Gaudechon lo describió como \"un hito decisivo\", ya que es el primer juego de esta escala que Remedy publica por su cuenta. Para un estudio que durante años tuvo críticas excelentes pero ventas modestas, es una señal de que apostar por su propia marca puede salir bien.",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/control-resonant-is-the-fastest-selling-game-in-remedys-history-says-ceo/"
+        },
+        {
+          "nombre": "PC Gamer",
+          "url": "https://www.pcgamer.com/games/action/control-resonant-is-remedys-fastest-selling-game-to-date-tripling-the-studios-quarterly-revenue/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-nagoshi-studio-cierra-gang-of-dragon",
+      "fecha": "2026-11-04",
+      "titulo": "Cierra Nagoshi Studio, el estudio del creador de Yakuza, y Gang of Dragon queda en el aire",
+      "juego": "Gang of Dragon",
+      "etiqueta": "#GangOfDragon",
+      "imagen": "",
+      "contenido": "Nagoshi Studio, el equipo que fundó Toshihiro Nagoshi (creador de la saga Yakuza) tras salir de Sega, ya no existe. Un aviso en el boletín oficial del gobierno japonés confirmó que la compañía fue disuelta por decisión de sus accionistas con efecto desde el 31 de octubre.\n\nEl estudio nació en 2021 con dinero de NetEase y trabajaba en Gang of Dragon, una aventura de acción ambientada en Kabukicho, Tokio, protagonizada por el actor Ma Dong-seok (Don Lee). El juego se mostró en diciembre de 2025, pero en marzo Bloomberg informó que NetEase dejaría de financiarlo después de saber que hacían falta unos 7,000 millones de yenes adicionales para terminarlo. Ni NetEase ni Nagoshi han hecho declaraciones, pero con el estudio cerrado es muy difícil que el proyecto salga adelante.\n\nEl cierre se suma al gran recorte de NetEase fuera de China, que ya se llevó por delante a estudios como T-Minus, Bad Brain y Ouka Studio. Una pena para quienes esperaban ver qué hacía Nagoshi con total libertad creativa.",
+      "fuentes": [
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/nagoshi-studio-shuts-down"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/nagoshi-studio-officially-closes-after-netease-cuts-funding/"
+        },
+        {
+          "nombre": "Push Square",
+          "url": "https://www.pushsquare.com/news/2026/11/yakuza-creators-gang-of-dragon-ps5-game-and-new-studio-officially-dead"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-thief-dark-project-remastered-3-diciembre",
+      "fecha": "2026-11-04",
+      "titulo": "Thief: The Dark Project Remastered sale el 3 de diciembre con una campaña nueva",
+      "juego": "Thief: The Dark Project Remastered",
+      "etiqueta": "#Thief",
+      "imagen": "",
+      "contenido": "El clásico del sigilo de 1998 vuelve el 3 de diciembre. Nightdive Studios confirmó la fecha de Thief: The Dark Project Remastered, que llegará a PC (Steam y GOG), PlayStation y Xbox. En PC ya está en preventa: la edición estándar cuesta 29.99 dólares y la Deluxe 34.99, con libro de arte, banda sonora y un adelanto de una novela basada en el juego.\n\nEl paquete incluye las 12 misiones originales y el contenido de Thief Gold, ahora con el motor KEX de Nightdive: hasta 4K a 120 FPS, texturas y animaciones mejoradas, soporte completo para mando con giroscopio y un selector de misiones. Se mantiene la base de siempre: la luz y el sonido deciden si los guardias te descubren.\n\nLo más llamativo es The Tarnished Mirror, una campaña nueva hecha por los creadores de The Black Parade, una de las expansiones de fans más queridas de la saga. Se ubica entre el primer Thief y The Metal Age, con nuevas facciones y un toque de terror lovecraftiano. Además, el remaster admite mods y campañas de la comunidad.\n\nPara quienes nunca lo jugaron, es buena oportunidad de conocer uno de los padres del sigilo en primera persona.",
+      "fuentes": [
+        {
+          "nombre": "GamingOnLinux",
+          "url": "https://www.gamingonlinux.com/2026/11/thief-the-dark-project-remastered-launches-december-3-with-pre-orders-up/"
+        },
+        {
+          "nombre": "Shacknews",
+          "url": "https://www.shacknews.com/article/151238/thief-the-dark-project-remastered-gets-december-release-date"
+        },
+        {
+          "nombre": "Steam",
+          "url": "https://store.steampowered.com/app/4200960/Thief_The_Dark_Project_Remastered/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-04-ocarina-of-time-switch-2-famitsu-37",
+      "fecha": "2026-11-04",
+      "titulo": "Primera nota para Zelda: Ocarina of Time en Switch 2: Famitsu le da 37 de 40",
+      "juego": "The Legend of Zelda: Ocarina of Time",
+      "etiqueta": "#Zelda",
+      "imagen": "",
+      "contenido": "A un día de su estreno, ya llegó la primera reseña de la nueva versión de The Legend of Zelda: Ocarina of Time para Nintendo Switch 2. La revista japonesa Famitsu le dio 37 de 40 puntos, con notas de 10, 9, 9 y 9 de sus cuatro críticos.\n\nSegún lo recogido por varios medios, los analistas destacaron el nuevo control de cámara con dos sticks, una progresión y unos controles más amigables, y un alto nivel de detalle gráfico. En el lado negativo, algunos sintieron que el diseño se queda algo simple frente a los juegos actuales y que ciertos momentos pueden confundir.\n\nComo referencia, el original de Nintendo 64 fue el primer juego en la historia de Famitsu en sacar un 40 perfecto, y la versión de 3DS de 2011 obtuvo el mismo 37. El juego sale este jueves 5 de noviembre, en exclusiva para Switch 2, a 69.99 dólares en formato físico y 59.99 en la eShop.\n\n¿Lo van a jugar de lanzamiento o esperan más reseñas?",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/the-first-review-for-zelda-ocarina-of-time-switch-2-is-in"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/zelda-ocarina-of-time-switch-2-remake-review-published-in-famitsu/"
+        }
+      ]
+    },
     {
       "id": "2026-11-03-elder-scrolls-vi-sentinel-nombre-oficial",
       "fecha": "2026-11-03",
