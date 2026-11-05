@@ -1,7 +1,7 @@
 # Borradores de noticias
 
-Una tarea programada de Claude investiga dos veces al día (6:44 y 18:44, hora de La Paz) las noticias de videojuegos
-y escribe aquí los borradores en `noticias.json`. El admin los revisa en la
+Una tarea programada de Claude investiga una vez al día (6:44, hora de La Paz) las noticias de videojuegos
+de las últimas 24 horas y escribe aquí los borradores en `noticias.json`. El admin los revisa en la
 portada con el botón **Noticias por revisar** (solo lo ve el admin) y pulsa
 **Publicar** o **Descartar**. Lo revisado se guarda en la tabla
 `news_drafts_done` (migración `003_borradores.sql`) y no vuelve a salir.
