@@ -56,7 +56,9 @@ async function openPorts() {
     plataformas: (p.platforms || []).filter(x => PLATAFORMAS.includes(x)),
     version: p.release?.version ? { nombre: p.release.version, fecha: p.release.date || undefined } : undefined,
     descripcion: recortar(p.notesEs || p.summaryEs || p.notes || p.summary || "", 220),
-    ficha: `https://openportsgames.com/es/ports/${p.id}/`
+    ficha: `https://openportsgames.com/es/ports/${p.id}/`,
+    // Portada de la ficha (Wikipedia, Steam, libretro…); las generadas por OpenPortsGames no se usan
+    _portada: /^https:\/\/(?!(www\.)?openportsgames\.com\/)[^\s"'<>]+$/.test(p.cover?.src || "") ? p.cover.src : undefined
   }));
 }
 
@@ -141,7 +143,8 @@ for (const p of proyectos) {
   if (!porJuego.has(clave)) porJuego.set(clave, { juego: p.juego, slug: clave, sistema: p.sistema, proyectos: [] });
   const j = porJuego.get(clave);
   if (j.sistema === "Otros" && p.sistema !== "Otros") j.sistema = p.sistema;
-  const { juego, sistema, ...resto } = p;
+  if (!j.portada && p._portada) j.portada = p._portada;
+  const { juego, sistema, _portada, ...resto } = p;
   j.proyectos.push(resto);
 }
 const puntos = (p) => (p.recomendado ? 1e7 : 0) + (p.verificado ? 1e6 : 0) + (ORDEN_ESTADO[p.estado] || 0) * 1e5 + Math.min(p.estrellas || 0, 99999) - (p.archivado ? 5e6 : 0);

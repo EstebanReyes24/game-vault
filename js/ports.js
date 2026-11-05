@@ -80,7 +80,7 @@
     const primeros = ps.slice(0, 3), resto = ps.slice(3);
     return `
       <li class="ports-juego" id="${esc(j.slug)}">
-        <div class="ports-tapa" data-portada="${esc(j.juego)}"><span class="lista-sin-tapa"></span></div>
+        <div class="ports-tapa"${j.portada ? "" : ` data-portada="${esc(j.juego)}"`}>${j.portada ? `<img src="${esc(seguro(j.portada))}" alt="" loading="lazy" referrerpolicy="no-referrer" data-juego="${esc(j.juego)}">` : `<span class="lista-sin-tapa"></span>`}</div>
         <div class="ports-cuerpo">
           <p class="ports-plataforma">${esc(j.sistema)} · ${ps.length} ${ps.length === 1 ? "port" : "ports"}</p>
           <h2><a href="${esc(window.urlJuego ? window.urlJuego(j.juego) : "#")}">${esc(j.juego)}</a></h2>
@@ -166,6 +166,15 @@
     if (e.target.id === "portsSolidos") { filtro.solidos = e.target.checked; filtrar(); }
   });
   document.getElementById("portsMas").addEventListener("click", mas);
+  // Si una portada guardada no carga, se intenta con RAWG
+  document.getElementById("portsLista").addEventListener("error", (e) => {
+    const img = e.target;
+    if (img.tagName !== "IMG" || !img.dataset.juego) return;
+    const caja = img.closest(".ports-tapa");
+    caja.innerHTML = `<span class="lista-sin-tapa"></span>`;
+    caja.dataset.portada = img.dataset.juego;
+    ponerPortada(caja);
+  }, true);
 
   cargar();
 })();
