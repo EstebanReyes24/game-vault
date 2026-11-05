@@ -1,6 +1,94 @@
 {
-  "actualizado": "2026-11-04T23:09:08Z",
+  "actualizado": "2026-11-05T10:58:49Z",
   "borradores": [
+    {
+      "id": "2026-11-05-nintendo-resultados-switch-2-26-millones",
+      "fecha": "2026-11-05",
+      "titulo": "Switch 2 llega a 26,35 millones, aunque Nintendo vende menos consolas que hace un año",
+      "juego": "Tomodachi Life: Living the Dream",
+      "etiqueta": "#Nintendo",
+      "imagen": "",
+      "contenido": "Nintendo publicó sus resultados del primer semestre de su año fiscal (abril a septiembre de 2026) y la Switch 2 ya suma 26,35 millones de unidades vendidas en todo el mundo. En estos seis meses colocó 6,49 millones de consolas, un 37,4 % menos que en el mismo periodo del año pasado, cuando la máquina acababa de salir. La compañía ya había advertido que el segundo año sería más flojo en hardware y mantuvo sin cambios su previsión de 16,5 millones de unidades para el año fiscal.\n\nEl software va en la dirección contraria: los juegos de Switch 2 vendieron 24,49 millones de copias en el semestre, un 18,8 % más. Tomodachi Life: Living the Dream encabeza la lista con 8,81 millones, seguido por Rhythm Heaven Groove (2,89 millones) y Splatoon Raiders (2,42 millones). En lo económico, las ventas netas bajaron un 12,1 %, hasta 966.000 millones de yenes, pero el beneficio operativo subió un 49,1 %, ayudado por la devolución de aranceles en Estados Unidos, y las ventas digitales crecieron un 60,5 %.\n\nLa primera Switch, por su parte, llega a 157,20 millones y se queda a un paso de los 160 millones de PlayStation 2. Con Ocarina of Time saliendo hoy y Pikmin 4 para Switch 2 la semana próxima, el cierre de año será clave. ¿Creen que Nintendo llega a su meta?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/nintendo-switch-2-sales-have-dropped-37-but-its-still-comfortably-beating-the-original-console/"
+        },
+        {
+          "nombre": "Nintendo Everything",
+          "url": "https://nintendoeverything.com/nintendo-financial-results-november-2026-switch-2-at-26-35-million-switch-at-157-20-million-more/"
+        },
+        {
+          "nombre": "Inven Global",
+          "url": "https://www.invenglobal.com/articles/28208/switch-2-surpasses-2635-million-cumulative-units-aprilseptember-sales-down-374"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-ocarina-of-time-switch-2-lanzamiento-metacritic-96",
+      "fecha": "2026-11-05",
+      "titulo": "Zelda: Ocarina of Time sale hoy en Switch 2 y debuta con 96 en Metacritic",
+      "juego": "The Legend of Zelda: Ocarina of Time",
+      "etiqueta": "#Zelda",
+      "imagen": "",
+      "contenido": "El remake de The Legend of Zelda: Ocarina of Time llega hoy, 5 de noviembre, a Nintendo Switch 2, y lo hace con la crítica de su lado. Tras levantarse el embargo de análisis, el juego se colocó con una nota media de 96 en Metacritic, con más de 80 reseñas, lo que lo convierte en el título mejor valorado de 2026 en ese agregador, por delante de Sektori (93).\n\nEse 96 también lo deja como el juego de Switch 2 con mejor media en Metacritic, por encima de las ediciones de Switch 2 de Tears of the Kingdom (95) y Breath of the Wild (94), y lo mete entre los 30 mejores de la lista histórica del sitio. El original de Nintendo 64 sigue siendo el único juego con 99, así que el listón era altísimo.\n\nEl precio oficial en Estados Unidos es de 69,99 dólares en físico y 59,99 en la eShop. Para muchos fue el primer Zelda en 3D, así que la expectativa estaba por las nubes, y por lo visto Nintendo cumplió. ¿Lo van a jugar de lanzamiento o esperan a que pase la fiebre de GTA VI?",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/ocarina-of-time-remake-tops-metacritics-goty-list-and-its-high-on-the-all-time-ranking"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/the-zelda-ocarina-of-time-remake-has-shot-to-the-top-of-metacritics-best-games-of-2026-so-far-makes-its-all-time-top-30/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-arkane-lyon-sindicato-acusa-microsoft-blade",
+      "fecha": "2026-11-05",
+      "titulo": "El sindicato de Arkane Lyon acusa a Microsoft de frenar Blade para justificar el cierre",
+      "juego": "Marvel's Blade",
+      "etiqueta": "#Arkane",
+      "imagen": "",
+      "contenido": "El sindicato francés de trabajadores del videojuego STJV publicó una carta abierta en la que acusa a Microsoft de haber saboteado el desarrollo de Marvel's Blade en Arkane Lyon. Según el sindicato, la compañía congeló las contrataciones durante 19 meses, lo que provocó retrasos y costos extra que ahora usaría como argumento para cerrar el estudio. Microsoft no había respondido públicamente a la carta al momento de publicarse estas notas.\n\nEl contexto: Arkane Lyon, el equipo detrás de Dishonored y Deathloop, busca comprador y, si no aparece una oferta seria, cerrará sus puertas, con 217 empleos en riesgo. El sindicato asegura que Blade avanza bien, que el estudio es rentable y que cerrarlo saldría más caro que terminar el juego. Microsoft amplió un mes el plazo para encontrar comprador, algo que el STJV considera insuficiente.\n\nEntre sus peticiones están que los trabajadores tengan voz en la elección de un posible comprador, un fondo de protección ante despidos y una indemnización de 200.000 euros por empleado si el estudio cierra. Por ahora, el futuro de Blade sigue en el aire.",
+      "fuentes": [
+        {
+          "nombre": "PC Gamer",
+          "url": "https://www.pcgamer.com/gaming-industry/french-game-union-accuses-microsoft-of-sabotaging-blade-and-then-using-the-fallout-to-justify-closing-arkane/"
+        },
+        {
+          "nombre": "GamesRadar+",
+          "url": "https://www.gamesradar.com/games/microsoft-chose-to-close-arkane-by-sabotaging-the-game-it-funded-workers-claim-in-damning-letter-we-want-to-finish-blade-and-release-it-to-the-players/"
+        },
+        {
+          "nombre": "Inven Global",
+          "url": "https://www.invenglobal.com/articles/28156/arkane-lyon-union-says-microsofts-hiring-freeze-caused-the-delays-it-now-cites-to-close-the-studio"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-05-gog-primer-showcase-18-aniversario",
+      "fecha": "2026-11-05",
+      "titulo": "GOG celebra 18 años con su primer showcase, hoy a las 2:00 p. m. en Santo Domingo y La Paz",
+      "juego": "The Witcher 3: Wild Hunt",
+      "etiqueta": "#GOG",
+      "imagen": "",
+      "contenido": "GOG, la tienda digital de PC conocida por vender juegos sin DRM y rescatar clásicos, celebra su 18 aniversario con algo que nunca había hecho: su propio showcase. La transmisión será hoy, 5 de noviembre, a las 10:00 a. m. de la costa oeste de EE. UU., 1:00 p. m. de la costa este, 2:00 p. m. en Santo Domingo y La Paz y 7:00 p. m. en España, a través de su canal de YouTube, con subtítulos en varios idiomas.\n\nLa propia GOG resume el evento como \"nuevos juegos, nuevas funciones, nuevo capítulo\". Promete anuncios de títulos que llegarán a la tienda, novedades para la plataforma y una mirada a su futuro, además de su trabajo de preservación para que los juegos viejos funcionen en equipos modernos. No ha confirmado qué juegos aparecerán, así que conviene no hacerse ilusiones con títulos concretos.\n\nPara quienes juegan en PC y valoran tener sus juegos de verdad, sin depender de una conexión ni de un launcher, es una cita interesante. ¿Qué clásico les gustaría ver rescatado?",
+      "fuentes": [
+        {
+          "nombre": "Windows Central",
+          "url": "https://www.windowscentral.com/gaming/pc-gaming/gog-is-hosting-its-first-ever-gaming-showcase-revealing-new-games-features-and-more-heres-where-and-when-you-can-watch-it-live-tomorrow"
+        },
+        {
+          "nombre": "Noisy Pixel",
+          "url": "https://noisypixel.net/gog-showcase-november-5-new-games-platform-updates/"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/gog-announces-first-ever-games-showcase/"
+        }
+      ]
+    },
     {
       "id": "2026-11-04-god-of-war-laufey-retraso-20-mayo",
       "fecha": "2026-11-04",
