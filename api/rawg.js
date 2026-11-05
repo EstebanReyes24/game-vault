@@ -54,8 +54,8 @@ export default async function handler(req, res) {
   const preciso = req.query.precise === "1" ? "&search_precise=true" : "";
 
   try {
-    const r = await fetch(`https://api.rawg.io/api/games?key=${clave}&search=${encodeURIComponent(busqueda)}&page_size=${n}${preciso}`);
-    if (!r.ok) return res.status(502).json({ error: `RAWG respondió ${r.status}` });
+    const r = await fetch(`https://api.rawg.io/api/games?key=${clave}&search=${encodeURIComponent(busqueda)}&page_size=${n}${preciso}`, { signal: AbortSignal.timeout(8000) });
+    if (!r.ok) { res.setHeader("Cache-Control", "public, s-maxage=120"); return res.status(502).json({ error: `RAWG respondió ${r.status}` }); }
     const data = await r.json();
     const resultados = data.results || [];
     // Las búsquedas se repiten mucho: el CDN de Vercel las guarda un día
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
     // El desarrollador solo viene en la ficha completa del juego
     let desarrollador = null;
     try {
-      const f = await fetch(`https://api.rawg.io/api/games/${juego.id}?key=${clave}`);
+      const f = await fetch(`https://api.rawg.io/api/games/${juego.id}?key=${clave}`, { signal: AbortSignal.timeout(6000) });
       if (f.ok) desarrollador = ((await f.json()).developers || []).map(d => d.name).slice(0, 2).join(", ") || null;
     } catch (e) { /* sin desarrollador */ }
 
@@ -99,7 +99,8 @@ export default async function handler(req, res) {
       portada: juego.background_image || null
     });
   } catch (e) {
-    res.setHeader("Cache-Control", "no-store");
+    // RAWG caído o lento: se recuerda 2 minutos para no saturarlo con reintentos
+    res.setHeader("Cache-Control", "public, s-maxage=120");
     return res.status(502).json({ error: "No se pudo consultar RAWG." });
   }
 }
