@@ -1,6 +1,90 @@
 {
-  "actualizado": "2026-11-05T10:58:49Z",
+  "actualizado": "2026-11-06T10:52:36Z",
   "borradores": [
+    {
+      "id": "2026-11-06-sony-resultados-ps5-97-9-millones",
+      "fecha": "2026-11-06",
+      "titulo": "PS5 llega a 97,9 millones y PlayStation firma uno de sus mejores trimestres",
+      "juego": "Marvel's Wolverine",
+      "etiqueta": "#PlayStation",
+      "imagen": "",
+      "contenido": "Sony presentó sus resultados del trimestre de julio a septiembre y dejó una imagen con dos caras. Por un lado, PS5 distribuyó 2,6 millones de unidades, frente a los 4 millones del mismo periodo del año pasado, una caída de alrededor del 35%. Con eso la consola suma 97,9 millones y queda a un paso de los 100 millones.\n\nPor el otro, el negocio de PlayStation va mejor que nunca. La división de juegos facturó unos 1,21 billones de yenes (un 8,6% más) y su beneficio operativo casi se duplicó. Se vendieron 88,2 millones de juegos para PS4 y PS5, los títulos propios subieron a 8,2 millones, las ventas digitales crecieron un 23% y los usuarios activos al mes llegaron a 127 millones. Sony además subió su previsión de ingresos y beneficios para todo el año fiscal.\n\nEn la presentación, el director financiero Lin Tao aseguró que el trabajo en la próxima consola avanza según lo previsto y que la inversión en esa plataforma empezará el próximo año fiscal, aunque no dio fecha ni detalles.\n\nEl mensaje es claro: PlayStation gana más con juegos, suscripciones y tienda digital que con hardware. ¿Te preocupa que la consola pese cada vez menos en la estrategia de Sony?",
+      "fuentes": [
+        {
+          "nombre": "Push Square",
+          "url": "https://www.pushsquare.com/news/2026/11/ps5-closing-in-on-100-million-sales-as-gradual-drop-off-continues"
+        },
+        {
+          "nombre": "Wccftech",
+          "url": "https://wccftech.com/playstation-profit-record-quarter-ps5-shipments-drop/"
+        },
+        {
+          "nombre": "Push Square (PS6)",
+          "url": "https://www.pushsquare.com/news/2026/11/ps6-development-on-track-sony-making-solid-progress-towards-next-gen"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-gog-showcase-retrovibe-galaxy-linux-wing-commander",
+      "fecha": "2026-11-06",
+      "titulo": "GOG Showcase: nace Retrovibe, Galaxy llega a Linux y vuelven Wing Commander y Road Rash",
+      "juego": "Wing Commander: Prophecy",
+      "etiqueta": "#GOG",
+      "imagen": "",
+      "contenido": "GOG celebró sus 18 años con su primer showcase y dejó varios anuncios para los fans del PC. El más llamativo es Retrovibe, su primer paso como editora: un sello para apoyar a estudios independientes con juegos de estilo retro, todos sin DRM. La primera tanda incluye Project Warlock: Lost Chapters, Shardpunk 2, The Looter, After Hell Freezes Over y Cop Bastard.\n\nTambién confirmó que GOG Galaxy llegará a Linux, aunque sin fecha, y que los clientes de Windows y Mac recibieron un rediseño para ir más rápido y ordenar mejor la biblioteca. A eso se suma GOG Social, una red para compartir capturas, videos y encuestas sobre juegos, que abrió las inscripciones para su beta cerrada.\n\nPara los nostálgicos, desde ayer están disponibles siete ediciones de aniversario: toda la saga Wing Commander, incluido un Prophecy restaurado con sus videos originales y soporte para mando, Privateer 2 y Road Rash. Quien ya tenga alguno de esos Wing Commander en GOG recibe la nueva edición gratis. Además, Nox se suma a su programa de preservación.\n\nEs una apuesta clara por la conservación de clásicos y por el indie con sabor noventero. ¿Cuál de estos te interesa más?",
+      "fuentes": [
+        {
+          "nombre": "GOG (comunicado oficial)",
+          "url": "https://www.gog.com/pressroom/were-celebrating-18-years-with-the-first-gog-showcase-restored-wing-commander-prophecy-gog-galaxy-announcements-and-more/"
+        },
+        {
+          "nombre": "Instant Gaming News",
+          "url": "https://news.instant-gaming.com/en/articles/22897-everything-you-need-to-know-about-today-s-gog-showcase"
+        },
+        {
+          "nombre": "Out of Games",
+          "url": "https://outof.games/news/10260-gog-showcase-2026-recap-linux-client-retrovibe-and-more/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-stellar-blade-switch-2-lanzamiento-bayonetta",
+      "fecha": "2026-11-06",
+      "titulo": "Stellar Blade ya está en Switch 2, con todo el contenido y trajes gratis de Bayonetta",
+      "juego": "Stellar Blade",
+      "etiqueta": "#StellarBlade",
+      "imagen": "",
+      "contenido": "Stellar Blade: Complete Edition ya salió en Nintendo Switch 2. Shift Up lo lanzó en todo el mundo ayer, 5 de noviembre, a 59,99 dólares. Es la primera vez que la aventura de EVE llega a una consola de Nintendo.\n\nEsta edición trae todo lo publicado hasta ahora, incluidas las colaboraciones con NieR: Automata y Goddess of Victory: NIKKE, además de extras como el conjunto de trajes Stargazer, accesorios para EVE y el dron, puntos de habilidad y oro. La versión física viene con el juego completo en el cartucho, sin tarjeta de descarga ni descargas obligatorias, un detalle que muchos jugadores de Switch 2 agradecen.\n\nEl lanzamiento también trae una colaboración gratis con Bayonetta: cuatro trajes inspirados en la bruja de PlatinumGames que llegan a la vez a Switch 2, PS5 y PC, así que los jugadores de las otras versiones también salen ganando.\n\nLas primeras reseñas destacan que el combate y la exploración se mantienen intactos, aunque con un recorte visual y de rendimiento frente a PS5 y PC. ¿Lo jugarías en portátil o te quedas con la versión de sobremesa?",
+      "fuentes": [
+        {
+          "nombre": "Shift Up (comunicado oficial)",
+          "url": "https://indigo-pearl.prezly.com/stellar-blade-complete-edition-confirms-november-5-release-date-on-nintendo-switch-2-unveils-new-trailer-and-bayonetta-collaboration"
+        },
+        {
+          "nombre": "RPG Site",
+          "url": "https://www.rpgsite.net/news/21333-stellar-blade-complete-edition-launches-on-november-5-for-switch-2-bayonetta-dlc-revealed-update"
+        },
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/we-have-so-many-questions-about-this-stellar-blade-launch-trailer"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-06-xbox-app-pc-cloud-web-redisenio",
+      "fecha": "2026-11-06",
+      "titulo": "Xbox renueva su app de PC y la web de juego en la nube: más rápida y más fácil de usar",
+      "juego": "Halo Infinite",
+      "etiqueta": "#Xbox",
+      "imagen": "",
+      "contenido": "Microsoft anunció un rediseño de su app de Xbox para PC y de su servicio de juego en la nube desde el navegador. La nueva app ya se puede probar si eres Xbox Insider y, según la compañía, abre hasta un 60% más rápido, mientras que el inicio, la tienda y la sección de Game Pass cargan hasta un 50% antes.\n\nLos cambios no son solo de velocidad. La biblioteca tiene filtros nuevos y más formas de organizar los juegos, los amigos y las fiestas de chat pasan al menú principal y la búsqueda ahora encuentra juegos instalados, complementos y personas desde un mismo lugar. También hay un lavado de cara general con nuevas tarjetas de juego y animaciones.\n\nEn play.xbox.com, la versión renovada llegará a más usuarios en las próximas semanas, aunque ya se puede activar desde la web. Incluye una pestaña de biblioteca en la nube con los juegos que tienes o que vienen con Game Pass, un modo de escritorio para pantallas grandes y temas claro, oscuro y cinco de alto contraste. Xbox dijo que la nueva interfaz también empezará a llegar a las apps de nube en televisores y visores de realidad virtual, sin dar fechas.\n\nPara quienes juegan Game Pass en PC, la velocidad de la app se nota en el día a día. ¿La has sentido lenta?",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire (oficial)",
+          "url": "https://news.xbox.com/en-us/2026/11/05/a-faster-simpler-xbox-experience-is-coming-to-pc-web-and-cloud/"
+        }
+      ]
+    },
     {
       "id": "2026-11-05-nintendo-resultados-switch-2-26-millones",
       "fecha": "2026-11-05",
