@@ -1,6 +1,59 @@
 {
-  "actualizado": "2026-11-06T10:52:36Z",
+  "actualizado": "2026-11-07T10:52:45Z",
   "borradores": [
+    {
+      "id": "2026-11-07-ratchet-clank-ranger-rumble-cancelado",
+      "fecha": "2026-11-07",
+      "titulo": "Sony cancela Ratchet & Clank: Ranger Rumble antes de su lanzamiento mundial",
+      "juego": "Ratchet & Clank: Ranger Rumble",
+      "etiqueta": "#RatchetAndClank",
+      "imagen": "",
+      "contenido": "Ratchet & Clank: Ranger Rumble no llegará a lanzarse en todo el mundo. Sony Interactive Entertainment y el estudio francés Oh BiBi anunciaron que dejan de desarrollar este shooter multijugador gratuito para móviles, que llevaba casi un año en pruebas limitadas en países como Filipinas, Canadá y el Reino Unido, y que ya tenía abierta la prerregistración desde julio.\n\nEl calendario de cierre es claro: la última actualización salió el 6 de noviembre, el juego desaparecerá de App Store y Google Play el 21 de noviembre y los servidores se apagarán para siempre el 1 de mayo de 2027. Hasta entonces, quienes ya lo tengan podrán seguir jugando. Las compras dentro del juego se eliminaron, el pase premium ahora es gratis y todo se puede desbloquear jugando. Los reembolsos dependen de las políticas de Apple y Google.\n\nLos responsables aclararon que la cancelación no afecta a otros juegos de Ratchet & Clank ni a los servicios de PlayStation. Aun así, es otro golpe a los planes móviles de Sony, que todavía tiene en desarrollo Horizon Steel Frontiers con NCSOFT. ¿Les hacía falta un Ratchet en el celular o prefieren esperar una nueva entrega en PS5?",
+      "fuentes": [
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/ratchet-clank-ranger-rumble-canceled"
+        },
+        {
+          "nombre": "Push Square",
+          "url": "https://www.pushsquare.com/news/2026/11/sonys-killing-this-ratchet-and-clank-game-before-it-even-comes-out"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/sonys-free-to-play-mobile-ratchet-clank-multiplayer-shooter-has-been-cancelled/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-gears-of-war-20-anos-e-day-temporada-2-raam",
+      "fecha": "2026-11-07",
+      "titulo": "Gears of War cumple 20 años: RAAM gratis en E-Day y la temporada 2 llega el 1 de diciembre",
+      "juego": "Gears of War: E-Day",
+      "etiqueta": "#GearsOfWar",
+      "imagen": "https://xboxwire.thesourcemediaassets.com/sites/2/2026/11/GoW_EDAY_20th_Lancer-027826f9d544349f4546.jpg",
+      "contenido": "Hoy, 7 de noviembre, se cumplen 20 años del primer Gears of War en Xbox 360, y The Coalition lo celebra dentro de Gears of War: E-Day. El estudio confirmó en Xbox Wire un evento de aniversario de dos semanas con modos por tiempo limitado y nuevas recompensas, además de un regalo para todos los jugadores: el general RAAM, uno de los villanos más recordados de la saga, como personaje multijugador gratis con solo iniciar sesión.\n\nEntre los modos especiales hay uno de Versus en el que solo sobrevive un líder y una variante de Horde Siege sin cofre de suministros, donde dependes por completo de tu equipamiento inicial.\n\nLa otra gran noticia es la temporada 2, llamada Legacy, que arranca el 1 de diciembre. Según el estudio, recupera mapas, modos y aspectos favoritos de la historia de la serie, y reinterpreta personajes con guiños a momentos clásicos, como un traje de Dom inspirado en su famosa foto con María de Gears of War 2. Xbox no detalló si todo el contenido de la temporada será gratuito.\n\nE-Day está disponible en Xbox Series X|S y PC, también dentro de Game Pass. ¿Cuál es su Gears favorito después de dos décadas?",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/11/06/gears-of-war-e-day-season-2-20th-anniversary/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-07-where-winds-meet-aniversario-hutuo-13-noviembre",
+      "fecha": "2026-11-07",
+      "titulo": "Where Winds Meet celebra su aniversario con la región de Hutuo el 13 de noviembre",
+      "juego": "Where Winds Meet",
+      "etiqueta": "#WhereWindsMeet",
+      "imagen": "https://xboxwire.thesourcemediaassets.com/sites/2/2026/10/Image-0-Key-Art-6339ba614c83318a9327.jpg",
+      "contenido": "Where Winds Meet, el RPG de acción de mundo abierto ambientado en la China antigua, recibirá su actualización de aniversario el 13 de noviembre. Se llama Hutuo y lleva a los jugadores a una región marcada por la guerra fronteriza, con la batalla del puente de Zhongdu como eje de la historia.\n\nLa actualización suma tres jefes nuevos y dos modos de mesa para relajarse entre combates: Horse Racing Chess y Jianghu Tactics. Además, el 26 de noviembre llegará un nuevo arte marcial, las lanzas dobles, con coreografía de Yuen Woo-ping, el legendario coreógrafo de acción de películas como Matrix y El tigre y el dragón.\n\nPara celebrar, el juego repartirá regalos con solo iniciar sesión y participar en los eventos: un conjunto de ropa a elegir entre 12 estilos y decenas de tiradas gratis en sus dos tipos de sorteo. En Xbox Series X la imagen se escalará a 4K y en Series S a 2K.\n\nEl juego es gratuito y tiene juego cruzado entre PS5, Xbox Series X|S, PC y móviles, así que es buen momento para volver o probarlo por primera vez.",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/11/06/where-winds-meet-anniversary-update-hutuo/"
+        }
+      ]
+    },
     {
       "id": "2026-11-06-sony-resultados-ps5-97-9-millones",
       "fecha": "2026-11-06",
