@@ -1,6 +1,67 @@
 {
-  "actualizado": "2026-11-07T10:52:45Z",
+  "actualizado": "2026-11-08T10:53:14Z",
   "borradores": [
+    {
+      "id": "2026-11-08-wow-forever-mayor-lanzamiento-historia",
+      "fecha": "2026-11-08",
+      "titulo": "WoW Forever logra el mayor lanzamiento en la historia de World of Warcraft",
+      "juego": "World of Warcraft",
+      "etiqueta": "#WoWForever",
+      "imagen": "",
+      "contenido": "Blizzard confirmó que World of Warcraft: Forever, el nuevo modo que reimagina la etapa clásica del MMO, tuvo el lanzamiento más grande en la historia de la saga si se mide por jugadores conectados a la vez. El anuncio salió el 7 de noviembre en las redes oficiales de Warcraft, donde la compañía también aseguró que es el estreno con más jugadores que regresan después de haberlo dejado.\n\nEso significa que Forever supera incluso a Wrath of the Lich King, considerada durante casi dos décadas el gran pico de popularidad del juego. Eso sí, Blizzard no dio cifras: no sabemos cuántas personas se conectaron ni cuántas volvieron, solo que el récord es suyo. El modo está disponible en PC a través de Battle.net y, según la prensa especializada, arrancó con colas mínimas gracias a sus megaservidores.\n\nPara un juego con más de 20 años, atraer a tanta gente que lo había abandonado no es poca cosa, y deja una pregunta interesante sobre el futuro de la versión principal. ¿Volviste a Azeroth con Forever o prefieres el WoW de siempre?",
+      "fuentes": [
+        {
+          "nombre": "Windows Central",
+          "url": "https://www.windowscentral.com/gaming/blizzard/blizzard-confirms-world-of-warcraft-forever-is-the-biggest-launch-in-wow-history-beating-wrath-of-the-lich-king-is-wow-retail-cooked"
+        },
+        {
+          "nombre": "Warcraft Tavern",
+          "url": "https://www.warcrafttavern.com/forever/news/forever-is-world-of-warcrafts-biggest-launch-ever/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-gta-vi-coches-reales-west-coast-customs",
+      "fecha": "2026-11-08",
+      "titulo": "Rockstar convierte seis coches de GTA VI en vehículos reales con West Coast Customs",
+      "juego": "Grand Theft Auto VI",
+      "etiqueta": "#GTAVI",
+      "imagen": "",
+      "contenido": "A menos de dos semanas del lanzamiento de GTA VI, Rockstar Games compartió nuevas imágenes de seis de sus coches junto a versiones reales construidas por West Coast Customs, el conocido taller de personalización de Los Ángeles. Las fotos ponen cada modelo del juego al lado de su réplica física, y el parecido es tan grande que cuesta distinguir cuál es cuál.\n\nLos elegidos son el Grotti Cheetah, inspirado en el Ferrari Testarossa de los años 80; el Invetero Coquette, con aire de Corvette moderno; el Albany Manana, que recuerda al Cadillac Eldorado de finales de los 60; el Albany Buccaneer, una mezcla de clásicos americanos de los 70; el Pegassi Tempesta, con librea de policía y base de Lamborghini Huracán, y el Progen Emerus, la versión de Rockstar del McLaren Senna. El taller transformó coches reales por dentro y por fuera para que coincidieran con los modelos virtuales.\n\nGTA VI sale el 19 de noviembre en PS5 y Xbox Series X|S. ¿Cuál de estos seis será el primero que vas a buscar por Leonida?",
+      "fuentes": [
+        {
+          "nombre": "Wallpaper*",
+          "url": "https://www.wallpaper.com/transportation/gta6-real-world-cars"
+        },
+        {
+          "nombre": "Vandal",
+          "url": "https://vandal.elespanol.com/noticia/2026311002/gta-6-muestra-nuevas-imagenes-de-seis-de-sus-coches-y-sus-replicas-en-la-vida-real/"
+        },
+        {
+          "nombre": "Pixel Twelve",
+          "url": "https://pixeltwelve.com/articles/gta-6-cars-vs-real-life-west-coast-customs"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-08-warzone-switch-2-disponible-gratis",
+      "fecha": "2026-11-08",
+      "titulo": "Call of Duty: Warzone ya está disponible gratis en Nintendo Switch 2",
+      "juego": "Call of Duty: Warzone",
+      "etiqueta": "#Warzone",
+      "imagen": "",
+      "contenido": "El battle royale de Activision ya llegó a Nintendo Switch 2. Call of Duty: Warzone se puede descargar gratis desde la eShop desde el 6 de noviembre, el mismo día en que arrancó la temporada 1 de Modern Warfare 4 y Warzone. Para jugar hace falta una cuenta de Activision, y la descarga ronda los 122 GB, así que conviene revisar el espacio de la consola antes.\n\nSegún el blog oficial de Call of Duty, la versión de Switch 2 tiene las mismas funciones y el mismo contenido de temporada que las demás plataformas. La temporada 1 integra Modern Warfare 4 con un nuevo sistema de niveles, armas nuevas, el mapa de battle royale Hajin y el de Resurgence Zodiac, además de objetos como el lanzador de tirolesa y el dron con gancho. Modern Warfare 4 también admite controles tipo ratón con los Joy-Con 2.\n\nEs la primera vez que Warzone sale en una consola de Nintendo, algo impensable hace unos años. ¿Lo vas a jugar en modo portátil o te quedas en tu plataforma de siempre?",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/icymi-call-of-duty-warzone-is-now-available-for-switch-2"
+        },
+        {
+          "nombre": "Final Weapon",
+          "url": "https://finalweapon.net/2026/11/02/call-of-duty-warzone-is-coming-to-switch-2-on-november-6/"
+        }
+      ]
+    },
     {
       "id": "2026-11-07-ratchet-clank-ranger-rumble-cancelado",
       "fecha": "2026-11-07",
