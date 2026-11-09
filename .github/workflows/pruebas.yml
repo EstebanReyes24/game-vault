@@ -11,10 +11,17 @@ on:
         description: "URL a probar"
         required: true
         default: "https://game-vault-beige.vercel.app"
+      modo:
+        description: "humo (rápida) o revision (a fondo)"
+        required: false
+        default: "humo"
+  # Revisión a fondo de producción cada lunes (servicios, permisos, páginas, accesibilidad)
+  schedule:
+    - cron: "41 11 * * 1"
 
 jobs:
   humo:
-    if: github.event_name == 'workflow_dispatch' || (github.event.state == 'success' && contains(github.event.context, 'Vercel'))
+    if: github.event_name != 'status' || (github.event.state == 'success' && contains(github.event.context, 'Vercel'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -39,8 +46,16 @@ jobs:
             echo "url=https://paindex-vault-git-${SLUG}-paindex1.vercel.app" >> "$GITHUB_OUTPUT"
           fi
       - name: Probar páginas
+        if: github.event_name == 'status' || (github.event_name == 'workflow_dispatch' && inputs.modo != 'revision')
         env:
           BASE: ${{ steps.base.outputs.url }}
         run: |
           echo "Probando $BASE"
           node pruebas/humo.mjs
+      - name: Revisión a fondo
+        if: github.event_name == 'schedule' || inputs.modo == 'revision'
+        env:
+          BASE: ${{ steps.base.outputs.url }}
+        run: |
+          npm install --no-save axe-core@4.10.2
+          node pruebas/revision.mjs
