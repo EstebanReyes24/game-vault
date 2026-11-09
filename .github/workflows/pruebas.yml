@@ -15,6 +15,10 @@ on:
         description: "humo (rápida) o revision (a fondo)"
         required: false
         default: "humo"
+      solo:
+        description: "revision: solo estas secciones (separadas por comas)"
+        required: false
+        default: ""
   # Revisión a fondo de producción cada lunes (servicios, permisos, páginas, accesibilidad)
   schedule:
     - cron: "41 11 * * 1"
@@ -56,6 +60,7 @@ jobs:
         if: github.event_name == 'schedule' || inputs.modo == 'revision'
         env:
           BASE: ${{ steps.base.outputs.url }}
+          SOLO: ${{ inputs.solo }}
         run: |
           npm install --no-save playwright@1.48.2 axe-core@4.10.2
           node pruebas/revision.mjs

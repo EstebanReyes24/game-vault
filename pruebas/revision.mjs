@@ -27,7 +27,8 @@ async function pedir(url, op = {}) {
     return { status: r.status, ms: Date.now() - t0, h: Object.fromEntries(r.headers), texto, json };
   } catch (e) { return { status: 0, ms: Date.now() - t0, h: {}, texto: "", json: null, error: String(e.message || e) }; }
 }
-const seccion = async (nombre, fn) => { try { informe[nombre] = await fn(); } catch (e) { informe[nombre] = { error: String(e.message || e) }; aviso(`${nombre}: ${e.message}`); } };
+const SOLO = (process.env.SOLO || "").split(",").filter(Boolean); // p. ej. SOLO=respaldo,apis
+const seccion = async (nombre, fn) => { if (SOLO.length && !SOLO.includes(nombre)) return; try { informe[nombre] = await fn(); } catch (e) { informe[nombre] = { error: String(e.message || e) }; aviso(`${nombre}: ${e.message}`); } };
 
 // ---------- 1. Servicios (vigía) y APIs ----------
 await seccion("vigia", async () => {
@@ -65,6 +66,33 @@ await seccion("apis", async () => {
   const post = await pedir(`${BASE}/api/push`, { method: "POST", headers: { "Content-Type": "application/json", "x-push-secreto": "no" }, body: "{}" });
   o["push POST sin secreto"] = { status: post.status, ok: post.status === 401 };
   if (post.status !== 401) grave(`/api/push acepta POST sin secreto (${post.status})`);
+  return o;
+});
+
+// ---------- 1b. Respaldo de RAWG (Steam y Wikipedia) y miniaturas, probados directamente ----------
+await seccion("respaldo", async () => {
+  const { buscarRespaldo, detalleRespaldo } = await import("../api/_respaldo.js");
+  const o = { buscar: {}, detalle: {} };
+  for (const q of ["elden ring", "zelda breath of the wild", "hollow knight", "god of war ragnarok", "pokemon esmeralda"]) {
+    const r = await buscarRespaldo(q, 4).catch(e => [{ name: "ERROR " + e.message }]);
+    o.buscar[q] = r.map(x => `${x.name} | ${(x.background_image || "sin imagen").split("/")[2]}`);
+    if (!r.length) aviso(`Respaldo: sin resultados para «${q}»`);
+  }
+  for (const q of ["Elden Ring", "Super Mario Galaxy", "The Legend of Zelda: Ocarina of Time", "Hades", "Bloodborne", "Juego Que No Existe Xyz"]) {
+    const d = await detalleRespaldo(q).catch(e => ({ error: e.message }));
+    o.detalle[q] = d.encontrado ? `${d.fuente} · ${d.nombre} · ${d.anio} · ${d.desarrollador} · ${(d.etiquetas || []).join(",")} · ${(d.portada || "").split("/")[2]}` : JSON.stringify(d);
+  }
+  // ¿Carga de verdad la carátula que se deduce de Steam?
+  const st = await detalleRespaldo("Elden Ring").catch(() => ({}));
+  if (st.portada) { const r = await fetch(st.portada); o.caratula_steam = `${r.status} ${r.headers.get("content-type")}`; if (!r.ok) aviso("La carátula de Steam del respaldo no carga"); }
+  // Miniaturas de RAWG
+  const original = "https://media.rawg.io/media/games/b29/b294fdd866dcdb643e7bab370a552855.jpg";
+  o.miniaturas = {};
+  for (const [n, u] of [["original", original], ["420", original.replace("/media/", "/media/resize/420/-/")], ["640", original.replace("/media/", "/media/resize/640/-/")]]) {
+    const r = await fetch(u).catch(() => null);
+    o.miniaturas[n] = r ? `${r.status} · ${Math.round((await r.arrayBuffer()).byteLength / 1024)} KB · ${r.headers.get("content-type")}` : "sin respuesta";
+    if (n !== "original" && (!r || !r.ok)) aviso(`La miniatura ${n} de RAWG no carga`);
+  }
   return o;
 });
 
