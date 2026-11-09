@@ -18,7 +18,7 @@
     <div class="archivo-herramientas">
       <label class="archivo-buscar"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
         <input type="search" id="juegosBuscar" placeholder="Buscar un juego" autocomplete="off"></label>
-      <div class="archivo-filtros" id="juegosOrden" role="tablist">
+      <div class="archivo-filtros" id="juegosOrden" role="group" aria-label="Ordenar por">
         ${ORDENES.map(([o, t]) => `<button type="button" data-orden="${o}" class="filter-pill px-3 py-1 rounded-xl text-xs font-bold border border-white/10 text-slate-300 cursor-pointer">${t}</button>`).join("")}
       </div>
     </div>

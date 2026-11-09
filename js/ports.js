@@ -55,7 +55,7 @@
       TIPOS[p.tipo] ? `<span>${TIPOS[p.tipo]}</span>` : "",
       p.version ? `<span>${esc(p.version.nombre)}${p.version.fecha ? ` · ${fecha(p.version.fecha)}` : ""}</span>` : (p.actividad ? `<span>Actualizado ${fecha(p.actividad)}</span>` : ""),
       p.estrellas ? `<span title="Estrellas en GitHub"><i class="fa-regular fa-star" aria-hidden="true"></i> ${miles(p.estrellas)}</span>` : "",
-      (p.plataformas || []).map(s => SO[s] ? `<i class="${SO[s][0]}" title="${SO[s][1]}" aria-label="${SO[s][1]}"></i>` : "").join(" "),
+      (p.plataformas || []).map(s => SO[s] ? `<i class="${SO[s][0]}" title="${SO[s][1]}" role="img" aria-label="${SO[s][1]}"></i>` : "").join(" "),
       p.archivado ? `<span class="ports-alerta">Archivado</span>` : ""
     ].filter(Boolean).join("");
     return `

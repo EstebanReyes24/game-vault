@@ -4,6 +4,7 @@
  *   /api/rawg?search=elden%20ring&detalle=1       → el juego que mejor coincide, con etiquetas
  *                                                    en español, año de lanzamiento y desarrollador
  *   /api/rawg?sinopsis=1&search=ghost%20of%20tsushima → sinopsis de Wikipedia (no usa RAWG)
+ * Si RAWG no responde, los dos primeros se resuelven con la tienda de Steam y Wikipedia (api/_respaldo.js).
  */
 const GENEROS = {
   action: "Acción", indie: "Indie", adventure: "Aventura", "role-playing-games-rpg": "RPG", strategy: "Estrategia",
@@ -31,6 +32,10 @@ const limpio = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[�
 
 import { limitePorIp, DEMASIADO } from "./_supabase.js";
 import { sinopsis } from "./_sinopsis.js";
+import { buscarRespaldo, detalleRespaldo } from "./_respaldo.js";
+
+// Si RAWG falla, durante 5 minutos ni se intenta: se va directo al respaldo (Steam y Wikipedia)
+let rawgCaidoHasta = 0;
 
 export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/json");
@@ -44,18 +49,29 @@ export default async function handler(req, res) {
     res.setHeader("Cache-Control", s ? "public, s-maxage=604800, stale-while-revalidate=2592000" : "public, s-maxage=86400");
     return res.status(200).json(s ? { encontrado: true, ...s } : { encontrado: false });
   }
-  const clave = process.env.RAWG_API_KEY;
-  if (!clave) return res.status(503).json({ error: "Falta RAWG_API_KEY en Vercel." });
-
   const busqueda = String(req.query.search || "").trim().slice(0, 100);
   if (busqueda.length < 2) return res.status(400).json({ error: "Búsqueda demasiado corta." });
   const detalle = req.query.detalle === "1";
   const n = detalle ? 12 : Math.min(Math.max(parseInt(req.query.n, 10) || 6, 1), 8);
   const preciso = req.query.precise === "1" ? "&search_precise=true" : "";
+  const clave = process.env.RAWG_API_KEY;
+
+  // Respaldo: mismos campos, guardado solo una hora para volver a RAWG en cuanto se recupere
+  const conRespaldo = async () => {
+    try {
+      const datos = detalle ? await detalleRespaldo(busqueda) : { results: await buscarRespaldo(busqueda, n), fuente: "respaldo" };
+      res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+      return res.status(200).json(datos);
+    } catch (e) {
+      res.setHeader("Cache-Control", "public, s-maxage=120");
+      return res.status(502).json({ error: "No se pudo consultar RAWG ni el respaldo." });
+    }
+  };
+  if (!clave || Date.now() < rawgCaidoHasta) return conRespaldo();
 
   try {
-    const r = await fetch(`https://api.rawg.io/api/games?key=${clave}&search=${encodeURIComponent(busqueda)}&page_size=${n}${preciso}`, { signal: AbortSignal.timeout(8000) });
-    if (!r.ok) { res.setHeader("Cache-Control", "public, s-maxage=120"); return res.status(502).json({ error: `RAWG respondió ${r.status}` }); }
+    const r = await fetch(`https://api.rawg.io/api/games?key=${clave}&search=${encodeURIComponent(busqueda)}&page_size=${n}${preciso}`, { signal: AbortSignal.timeout(4500) });
+    if (!r.ok) throw new Error(`RAWG respondió ${r.status}`);
     const data = await r.json();
     const resultados = data.results || [];
     // Las búsquedas se repiten mucho: el CDN de Vercel las guarda un día
@@ -64,7 +80,6 @@ export default async function handler(req, res) {
     if (!detalle) {
       return res.status(200).json({ results: resultados.map(g => ({ name: g.name, background_image: g.background_image, released: g.released })) });
     }
-
     const objetivo = limpio(busqueda);
     // RAWG mezcla juegos reales con fichas creadas por usuarios: entre los que coinciden se elige
     // el más popular (más gente lo tiene añadido) y se descartan las fichas casi vacías
@@ -99,8 +114,8 @@ export default async function handler(req, res) {
       portada: juego.background_image || null
     });
   } catch (e) {
-    // RAWG caído o lento: se recuerda 2 minutos para no saturarlo con reintentos
-    res.setHeader("Cache-Control", "public, s-maxage=120");
-    return res.status(502).json({ error: "No se pudo consultar RAWG." });
+    // RAWG caído o lento: se anota y se responde con Steam y Wikipedia
+    rawgCaidoHasta = Date.now() + 5 * 60 * 1000;
+    return conRespaldo();
   }
 }

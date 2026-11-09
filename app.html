@@ -257,8 +257,8 @@
       </div>
 
       <div class="flex items-center gap-1.5 sm:gap-3 min-w-0">
-        <button id="openCommandBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold border border-white/10 transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-magnifying-glass text-xs"></i>
+        <button id="openCommandBtn" type="button" aria-label="Buscar" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold border border-white/10 transition flex items-center gap-1.5 cursor-pointer">
+          <i class="fa-solid fa-magnifying-glass text-xs" aria-hidden="true"></i>
           <span class="hidden sm:inline">Buscar (Ctrl+K)</span>
         </button>
 
@@ -331,7 +331,7 @@
       <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-5 w-full md:w-auto">
           <div class="relative w-20 h-28 sm:w-24 sm:h-32 rounded-2xl overflow-hidden border-2 border-white/10 bg-slate-950 shrink-0 shadow-2xl">
-            <img id="npCover" src="" class="w-full h-full object-cover transition duration-300 hidden">
+            <img id="npCover" alt="" class="w-full h-full object-cover transition duration-300 hidden">
             <div id="npPlaceholderIcon" class="w-full h-full flex items-center justify-center text-slate-700">
               <i class="fa-solid fa-gamepad text-3xl"></i>
             </div>
@@ -576,7 +576,7 @@
 
           <div class="p-3.5 rounded-2xl bg-black/40 border border-white/5 flex items-center gap-4">
             <div class="w-16 h-22 rounded-xl bg-slate-900 border border-white/10 overflow-hidden flex items-center justify-center shrink-0">
-              <img id="coverPreview" src="" class="w-full h-full object-cover hidden">
+              <img id="coverPreview" alt="Vista previa de la portada" class="w-full h-full object-cover hidden">
               <i id="posterIcon" class="fa-solid fa-image text-slate-600 text-xl"></i>
             </div>
             <div class="overflow-hidden">
@@ -675,11 +675,11 @@
 
       <!-- Banner con Portada Blur -->
       <div class="relative h-44 sm:h-52 w-full overflow-hidden bg-slate-950">
-        <img id="modalCover" src="" class="w-full h-full object-cover opacity-30 blur-md scale-110">
+        <img id="modalCover" alt="" class="w-full h-full object-cover opacity-30 blur-md scale-110">
         <div class="absolute inset-0 bg-gradient-to-t from-[#1e1a25] via-[#1e1a25]/60 to-transparent"></div>
         
         <div class="absolute bottom-4 left-6 right-6 flex items-end gap-4">
-          <img id="modalCoverThumb" src="" class="w-20 h-28 sm:w-24 sm:h-32 object-cover rounded-2xl border-2 border-white/15 shadow-2xl shrink-0 bg-slate-900">
+          <img id="modalCoverThumb" alt="" class="w-20 h-28 sm:w-24 sm:h-32 object-cover rounded-2xl border-2 border-white/15 shadow-2xl shrink-0 bg-slate-900">
           <div class="overflow-hidden pb-1">
             <h2 id="modalTitle" class="text-xl sm:text-2xl font-black text-white truncate console-font">Título</h2>
             <a id="modalGameLink" href="/" class="ver-todo modal-juego-enlace">Página del juego <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>

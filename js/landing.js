@@ -902,6 +902,8 @@ if (MODO_ARCHIVO) {
   document.getElementById("archivo").hidden = false;
   document.getElementById("archivoTitulo").textContent = MODO_ARCHIVO === "noticias" ? "Noticias" : "Reseñas y artículos";
   document.title = `${MODO_ARCHIVO === "noticias" ? "Noticias" : "Reseñas y artículos"} · Paindex Vault`;
+  // /noticias y /articulos son páginas propias para los buscadores, no copias de la portada
+  document.querySelector('link[rel="canonical"]')?.setAttribute("href", `${location.origin}/${MODO_ARCHIVO}`);
   let espera;
   document.getElementById("archivoBuscar").addEventListener("input", () => {
     clearTimeout(espera);

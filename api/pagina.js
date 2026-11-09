@@ -15,12 +15,14 @@ const leer = (archivo) => (plantillas[archivo] ||= readFileSync(join(process.cwd
 function inyectar(html, meta) {
   const limpio = html
     .replace(/<title>[\s\S]*?<\/title>/i, "")
-    .replace(/\s*<meta (?:property|name)="(?:og:[^"]+|twitter:[^"]+|description)"[^>]*>/gi, "");
+    .replace(/\s*<meta (?:property|name)="(?:og:[^"]+|twitter:[^"]+|description)"[^>]*>/gi, "")
+    .replace(/\s*<link rel="canonical"[^>]*>/gi, "");
   const etiquetas = `
   <title>${esc(meta.titulo)}</title>
   <meta name="description" content="${esc(meta.descripcion)}">
   <meta property="og:type" content="${meta.tipo || "website"}">
   <meta property="og:site_name" content="Paindex Vault">
+  <link rel="canonical" href="${esc(meta.url)}">
   <meta property="og:url" content="${esc(meta.url)}">
   <meta property="og:title" content="${esc(meta.titulo)}">
   <meta property="og:description" content="${esc(meta.descripcion)}">

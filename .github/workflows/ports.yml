@@ -25,13 +25,14 @@ jobs:
         run: node scripts/ports.mjs
       - name: Guardar si cambió
         run: |
-          if git diff --quiet -- data/ports.json; then
+          git add -N data/ports-indice.json
+          if git diff --quiet -- data/ports.json data/ports-indice.json; then
             echo "Sin cambios."
             exit 0
           fi
           git config user.name "Paindex Vault (bot)"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ports.json
+          git add data/ports.json data/ports-indice.json
           git commit -m "Ports nativos: actualización semanal"
           git push
       # Con el repositorio privado en el plan Hobby, Vercel no despliega los commits del bot:

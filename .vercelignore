@@ -1,0 +1,7 @@
+# Archivos del repositorio que la web no necesita servir
+supabase
+scripts
+pruebas
+reserva
+.github
+borradores/README.md
