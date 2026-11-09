@@ -19,7 +19,9 @@ const caratulaSteam = (item) => String(item.tiny_image || "").replace(/capsule_[
 
 async function buscarSteam(q) {
   const d = await json(`https://store.steampowered.com/api/storesearch/?term=${encodeURIComponent(q)}&l=english&cc=US`);
-  return (d?.items || []).filter(i => i.type === "app");
+  // Fuera bandas sonoras, libros de arte y packs, salvo que se busquen a propósito
+  const EXTRAS = /soundtrack|artbook|art book|upgrade|season pass|\bdlc\b|\bpack\b|\bost\b|banda sonora/i;
+  return (d?.items || []).filter(i => i.type === "app" && (EXTRAS.test(q) || !EXTRAS.test(i.name)));
 }
 
 async function buscarWikipedia(q, n) {
