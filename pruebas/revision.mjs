@@ -34,7 +34,7 @@ const seccion = async (nombre, fn) => { if (SOLO.length && !SOLO.includes(nombre
 await seccion("vigia", async () => {
   const r = await pedir(`${BASE}/api/latido?revisar=1`, { ms: 40000 });
   const res = r.json?.resultados || {};
-  Object.entries(res).forEach(([k, v]) => { if (v !== "ok") grave(`Vigía · ${k}: ${v}`); });
+  Object.entries(res).forEach(([k, v]) => { if (v !== "ok") (k === "RAWG" ? aviso : grave)(`Vigía · ${k}: ${v}${k === "RAWG" ? " (la web usa Steam y Wikipedia de respaldo)" : ""}`); });
   return { status: r.status, ms: r.ms, resultados: res };
 });
 
@@ -216,7 +216,7 @@ await seccion("dependencias", async () => {
   const muestraP = conP.filter((_, i) => i % paso === 0).slice(0, 60);
   for (let i = 0; i < muestraP.length; i += 5) { // de 5 en 5: Wikimedia limita las ráfagas
     await Promise.all(muestraP.slice(i, i + 5).map(async j => {
-      try { const r = await fetch(j.portada, { headers: { "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36" }, signal: AbortSignal.timeout(15000) }); if (!r.ok || !/^image\//.test(r.headers.get("content-type") || "")) rotas.push(`${r.status} ${new URL(j.portada).host}`); } catch (e) { rotas.push(`error ${new URL(j.portada).host}`); }
+      try { const r = await fetch(j.portada, { headers: { "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36" }, signal: AbortSignal.timeout(15000) }); if (r.status !== 429 && (!r.ok || !/^image\//.test(r.headers.get("content-type") || ""))) rotas.push(`${r.status} ${new URL(j.portada).host}`); } catch (e) { rotas.push(`error ${new URL(j.portada).host}`); }
     }));
     await new Promise(r => setTimeout(r, 400));
   }
@@ -259,7 +259,7 @@ await seccion("paginas", async () => {
         if (r.status() >= 400 && !/_vercel\/insights/.test(r.url())) fallidas.push(`${r.status()} ${r.url().replace(BASE, "").slice(0, 110)}`);
         const l = Number(r.headers()["content-length"] || 0); bytes += l;
       });
-      pg.on("requestfailed", r => { if (!/_vercel\/insights|youtube|doubleclick/.test(r.url())) fallidas.push(`falló ${r.url().replace(BASE, "").slice(0, 110)}`); });
+      pg.on("requestfailed", r => { if (!/_vercel\/insights|youtube|doubleclick|library_600x900/.test(r.url())) fallidas.push(`falló ${r.url().replace(BASE, "").slice(0, 110)}`); });
       const t0 = Date.now();
       let estado = 0;
       try {

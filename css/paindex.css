@@ -468,9 +468,9 @@ body.light-mode #openTop5Btn {
 .bienvenida-opcion i { font-size: 1.5rem; margin-top: 0.1rem; width: 1.6rem; text-align: center; color: var(--niebla); }
 .bienvenida-opcion b { display: block; font-size: 1rem; }
 .bienvenida-opcion small { display: block; margin-top: 0.25rem; font-size: 0.85rem; color: var(--niebla); line-height: 1.45; }
-.bienvenida-opcion.principal { background: var(--senal); border-color: var(--senal); color: #fff; }
-.bienvenida-opcion.principal i, .bienvenida-opcion.principal small { color: rgba(255, 255, 255, 0.88); }
-.bienvenida-opcion.principal:hover { background: #ff4560; }
+.bienvenida-opcion.principal { background: #e01b3c; border-color: #e01b3c; color: #fff; }
+.bienvenida-opcion.principal i, .bienvenida-opcion.principal small { color: #fff; }
+.bienvenida-opcion.principal:hover { background: #f02a4a; }
 .bienvenida-nota { margin: 1.4rem 0 0; max-width: 40rem; font-size: 0.9rem; color: var(--niebla); line-height: 1.55; }
 .bienvenida-nota a { color: var(--hueso); text-decoration: underline; text-underline-offset: 3px; }
 .bienvenida-demo { margin-top: 1.1rem; padding: 0; background: none; border: 0; color: var(--niebla); font-size: 0.85rem; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
