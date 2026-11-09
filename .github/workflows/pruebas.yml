@@ -57,5 +57,5 @@ jobs:
         env:
           BASE: ${{ steps.base.outputs.url }}
         run: |
-          npm install --no-save axe-core@4.10.2
+          npm install --no-save playwright@1.48.2 axe-core@4.10.2
           node pruebas/revision.mjs
