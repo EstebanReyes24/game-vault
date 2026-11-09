@@ -30,6 +30,14 @@
   window.addEventListener("error", (e) => {
     const img = e.target;
     if (!img || img.tagName !== "IMG") return;
+    // Miniatura de RAWG que no existe: se vuelve a la imagen original
+    if (img.dataset.original && img.src !== img.dataset.original) { const o = img.dataset.original; delete img.dataset.original; img.src = o; return; }
+    // Steam no tiene carátula vertical de todos los juegos: se usa la horizontal
+    if (/\/steam\/apps\/\d+\/library_600x900(_2x)?\.jpg/.test(img.src) && !img.dataset.steamAncha) {
+      img.dataset.steamAncha = "1";
+      img.src = img.src.replace(/library_600x900(_2x)?\.jpg.*/, "header.jpg");
+      return;
+    }
     // Imagen de respaldo declarada en el HTML (data-respaldo), en vez de onerror en línea
     if (img.dataset.respaldo && img.src !== img.dataset.respaldo && !/\/api\/icono/.test(img.src) && !img.dataset.reintento) {
       if (!/psnobj\.prod\.dl\.playstation\.net/.test(img.src)) { img.src = img.dataset.respaldo; return; }
@@ -42,6 +50,30 @@
       img.src = `/api/icono?u=${encodeURIComponent(u.href)}`;
     } catch (err) { /* nada */ }
   }, true);
+
+  // Las portadas de RAWG pesan 300–800 KB cada una: en listas y tarjetas se pide la versión reducida
+  // (media.rawg.io/media/resize/<ancho>/-/…). Vale para cualquier <img> que aparezca en la página.
+  const ANCHO = window.innerWidth <= 640 ? 420 : 640;
+  const RAWG = /^https:\/\/media\.rawg\.io\/media\/(games|screenshots)\//;
+  function reducir(img) {
+    const src = img.getAttribute("src") || "";
+    if (!RAWG.test(src) || img.dataset.original || img.hasAttribute("data-tal-cual")) return;
+    img.dataset.original = src;
+    img.setAttribute("src", src.replace("/media/", `/media/resize/${ANCHO}/-/`));
+  }
+  window.miniatura = (url) => (RAWG.test(String(url || "")) ? String(url).replace("/media/", `/media/resize/${ANCHO}/-/`) : url);
+  if ("MutationObserver" in window) {
+    new MutationObserver((cambios) => {
+      for (const c of cambios) {
+        if (c.type === "attributes") { if (c.target.tagName === "IMG") reducir(c.target); continue; }
+        c.addedNodes.forEach(n => {
+          if (n.nodeType !== 1) return;
+          if (n.tagName === "IMG") reducir(n);
+          else n.querySelectorAll?.("img").forEach(reducir);
+        });
+      }
+    }).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ["src"] });
+  }
 
   window.addEventListener("error", (e) => {
     if (e.target && e.target !== window) return; // imágenes rotas, etc.

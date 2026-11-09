@@ -163,14 +163,13 @@
     const caja = document.getElementById("jPort");
     if (!caja || !window.slugJuego) return;
     try {
-      const datos = await fetch("/data/ports.json").then(r => r.json());
-      const clave = window.slugJuego(titulo).replace(/-/g, "");
-      const j = (datos.juegos || []).find(x => x.slug.replace(/-/g, "") === clave);
-      if (!j) return;
-      const mejor = j.proyectos.find(p => p.recomendado) || j.proyectos[0];
+      const indice = await fetch("/data/ports-indice.json").then(r => r.json());
+      const p = indice[window.slugJuego(titulo).replace(/-/g, "")];
+      if (!p) return;
+      const [cuantos, mejor, soloAndroid, slugPort] = p;
       caja.className = "juego-port";
-      caja.innerHTML = `<p><i class="fa-solid fa-microchip" aria-hidden="true"></i> <b>Se puede jugar nativo en PC${j.proyectos.every(p => (p.plataformas || []).length === 1 && p.plataformas[0] === "android") ? " o Android" : ""}</b><small>${j.proyectos.length === 1 ? esc(mejor.nombre) : `${esc(mejor.nombre)} y ${j.proyectos.length - 1} ${j.proyectos.length === 2 ? "port más" : "ports más"}`} · necesitas tu propia copia del juego</small></p>
-        <a class="boton boton-linea" href="/ports#${encodeURIComponent(j.slug)}">Ver ports</a>`;
+      caja.innerHTML = `<p><i class="fa-solid fa-microchip" aria-hidden="true"></i> <b>Se puede jugar nativo en ${soloAndroid ? "Android" : "PC"}</b><small>${cuantos === 1 ? esc(mejor) : `${esc(mejor)} y ${cuantos - 1} ${cuantos === 2 ? "port más" : "ports más"}`} · necesitas tu propia copia del juego</small></p>
+        <a class="boton boton-linea" href="/ports#${encodeURIComponent(slugPort)}">Ver ports</a>`;
       caja.hidden = false;
     } catch (e) { /* sin datos de ports */ }
   }

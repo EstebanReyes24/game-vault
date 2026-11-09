@@ -46,8 +46,8 @@ await seccion("apis", async () => {
     o[nombre] = { status: r.status, ms: r.ms, ok, nota: String(nota ?? "").slice(0, 160), cache: r.h["cache-control"] };
     if (!ok) aviso(`API ${nombre}: ${r.status} ${String(nota).slice(0, 120)}`);
   };
-  await p("rawg buscar", "/api/rawg?search=hollow%20knight&n=3", r => [r.status === 200 && r.json?.results?.length > 0, r.json?.results?.[0]?.name || r.texto.slice(0, 100)]);
-  await p("rawg detalle", "/api/rawg?detalle=1&search=Elden%20Ring", r => [r.json?.encontrado === true && /^https:/.test(r.json.portada || ""), `${r.json?.nombre} · ${r.json?.anio} · ${r.json?.desarrollador} · duracion=${r.json?.duracion}`]);
+  await p("rawg buscar", "/api/rawg?search=hollow%20knight&n=3", r => [r.status === 200 && r.json?.results?.length > 0, `${r.json?.fuente || "rawg"} · ${(r.json?.results || []).map(x => x.name).join(" / ") || r.texto.slice(0, 100)}`]);
+  await p("rawg detalle", "/api/rawg?detalle=1&search=Elden%20Ring", r => [r.json?.encontrado === true && /^https:/.test(r.json.portada || ""), `${r.json?.fuente || "rawg"} · ${r.json?.nombre} · ${r.json?.anio} · ${r.json?.desarrollador} · ${(r.json?.etiquetas || []).join(",")} · ${(r.json?.portada || "").split("/")[2]}`]);
   await p("sinopsis", "/api/rawg?sinopsis=1&search=Ghost%20of%20Tsushima", r => [r.json?.encontrado === true, `${r.json?.idioma}/${r.json?.de}: ${(r.json?.texto || "").slice(0, 70)}`]);
   await p("steam jugadores", "/api/steam?jugadores=1&titulo=Elden%20Ring", r => [r.json?.enSteam === true && r.json.jugadores > 0, `jugadores=${r.json?.jugadores}`]);
   await p("canal", "/api/canal", r => [(r.json?.videos || []).length > 0, `${r.json?.videos?.length} videos · ${r.json?.videos?.[0]?.fecha?.slice(0, 10)} · ${r.json?.videos?.[0]?.titulo}`]);
@@ -185,9 +185,13 @@ await seccion("dependencias", async () => {
   const conP = js.filter(j => j.portada);
   const paso = Math.max(1, Math.floor(conP.length / 60));
   const rotas = [];
-  await Promise.all(conP.filter((_, i) => i % paso === 0).slice(0, 60).map(async j => {
-    try { const r = await fetch(j.portada, { method: "GET", headers: { "User-Agent": "Mozilla/5.0 PaindexVault-revision" }, signal: AbortSignal.timeout(15000) }); if (!r.ok || !/^image\//.test(r.headers.get("content-type") || "")) rotas.push(`${r.status} ${new URL(j.portada).host}`); } catch (e) { rotas.push(`error ${new URL(j.portada).host}`); }
-  }));
+  const muestraP = conP.filter((_, i) => i % paso === 0).slice(0, 60);
+  for (let i = 0; i < muestraP.length; i += 5) { // de 5 en 5: Wikimedia limita las ráfagas
+    await Promise.all(muestraP.slice(i, i + 5).map(async j => {
+      try { const r = await fetch(j.portada, { headers: { "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36" }, signal: AbortSignal.timeout(15000) }); if (!r.ok || !/^image\//.test(r.headers.get("content-type") || "")) rotas.push(`${r.status} ${new URL(j.portada).host}`); } catch (e) { rotas.push(`error ${new URL(j.portada).host}`); }
+    }));
+    await new Promise(r => setTimeout(r, 400));
+  }
   o.ports.portadas_muestra = { probadas: Math.min(60, conP.length), rotas: rotas.length, detalle: rotas.slice(0, 8) };
   if (rotas.length > 6) aviso(`${rotas.length} de 60 portadas de ports no cargan`);
   // Enlaces de descarga: muestra de 40
@@ -244,6 +248,8 @@ await seccion("paginas", async () => {
             ancho: [document.documentElement.scrollWidth, window.innerWidth],
             imgs: imgs.length, rotas: imgs.filter(i => i.complete && i.naturalWidth === 0 && i.src && !i.src.startsWith("data:")).map(i => i.src.slice(0, 100)).slice(0, 4),
             sinAlt: imgs.filter(i => !i.hasAttribute("alt")).length,
+            reducidas: imgs.filter(i => /\/media\/resize\//.test(i.src) && i.complete && i.naturalWidth > 0).length,
+            rawgOriginal: imgs.filter(i => /media\.rawg\.io\/media\/(games|screenshots)/.test(i.src)).length,
             ttfb: Math.round(nav.responseStart || 0), dcl: Math.round(nav.domContentLoadedEventEnd || 0),
             titulo: document.title, h1: (document.querySelector("h1")?.innerText || "").slice(0, 70), h1s: q("h1"),
             cargando: [...document.querySelectorAll(".juego-cargando, .skeleton")].filter(e => e.offsetParent).length,
@@ -283,8 +289,16 @@ await seccion("interacciones", async () => {
   const pg = await ctx.newPage();
   const errores = [];
   pg.on("pageerror", e => errores.push(e.message.slice(0, 160)));
-  // Ports: buscar y filtrar
+  // Ports: portadas al bajar por la página, buscar y filtrar
   await pg.goto(BASE + "/ports", { waitUntil: "load" }); await pg.waitForSelector(".ports-juego", { timeout: 20000 });
+  for (let y = 0; y < 14; y++) { await pg.mouse.wheel(0, 1600); await pg.waitForTimeout(450); }
+  await pg.waitForTimeout(2500);
+  o.ports_portadas = await pg.evaluate(() => { const t = [...document.querySelectorAll(".ports-tapa")]; const i = t.map(x => x.querySelector("img")).filter(Boolean); return { tarjetas: t.length, con_imagen: i.filter(x => x.complete && x.naturalWidth > 0).length, sin_cargar: i.filter(x => !x.complete).length, rotas: i.filter(x => x.complete && x.naturalWidth === 0).length, sin_portada: t.length - i.length }; });
+  await pg.evaluate(() => window.scrollTo(0, 0));
+  // Añadir un juego buscándolo por nombre (portadas de RAWG o del respaldo)
+  const busca = await pg.evaluate(async () => { const r = await fetch("/api/rawg?search=zelda%20breath&n=4"); const d = await r.json().catch(() => ({})); return { estado: r.status, fuente: d.fuente || "rawg", resultados: (d.results || []).map(x => `${x.name} | ${(x.background_image || "").split("/")[2]}`) }; });
+  o.buscar_portadas = busca;
+  o.detalle_nintendo = await pg.evaluate(async () => { const d = await fetch("/api/rawg?detalle=1&search=Super%20Mario%20Galaxy").then(r => r.json()).catch(() => ({})); return `${d.encontrado} · ${d.fuente || "rawg"} · ${d.nombre} · ${d.anio} · ${d.desarrollador} · ${(d.etiquetas || []).join(",")} · ${(d.portada || "").split("/")[2]}`; });
   await pg.fill("#portsBuscar", "zelda"); await pg.waitForTimeout(900);
   o.ports_buscar_zelda = await pg.locator("#portsCuenta").innerText();
   await pg.fill("#portsBuscar", ""); await pg.selectOption("#portsSO", "android"); await pg.check("#portsSolidos"); await pg.waitForTimeout(600);

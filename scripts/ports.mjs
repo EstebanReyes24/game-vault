@@ -162,6 +162,14 @@ const salida = {
   proyectos: proyectos.length,
   juegos
 };
+// Índice ligero para la página de cada juego: slug → [n.º de ports, nombre del mejor, solo Android]
+const indice = {};
+for (const j of juegos) {
+  const soloAndroid = j.proyectos.every(p => (p.plataformas || []).length === 1 && p.plataformas[0] === "android");
+  indice[j.slug.replace(/-/g, "")] = [j.proyectos.length, (j.proyectos.find(p => p.recomendado) || j.proyectos[0]).nombre, soloAndroid ? 1 : 0, j.slug];
+}
+writeFileSync("data/ports-indice.json", JSON.stringify(indice) + "\n");
+
 const destino = "data/ports.json";
 const antes = existsSync(destino) ? JSON.parse(readFileSync(destino, "utf8")) : null;
 if (antes && JSON.stringify({ ...antes, actualizado: "" }) === JSON.stringify({ ...salida, actualizado: "" })) {
