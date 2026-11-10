@@ -276,6 +276,8 @@ await seccion("paginas", async () => {
             ancho: [document.documentElement.scrollWidth, window.innerWidth],
             imgs: imgs.length, rotas: imgs.filter(i => i.complete && i.naturalWidth === 0 && i.src && !i.src.startsWith("data:")).map(i => i.src.slice(0, 100)).slice(0, 4),
             sinAlt: imgs.filter(i => !i.hasAttribute("alt")).length,
+            steamAnchas: imgs.filter(i => /\/header\.jpg/.test(i.src) && i.dataset.steamAncha && i.naturalWidth > 0).length,
+            posters: imgs.filter(i => i.dataset.fallbackApplied).length,
             reducidas: imgs.filter(i => /\/media\/resize\//.test(i.src) && i.complete && i.naturalWidth > 0).length,
             rawgOriginal: imgs.filter(i => /media\.rawg\.io\/media\/(games|screenshots)/.test(i.src)).length,
             ttfb: Math.round(nav.responseStart || 0), dcl: Math.round(nav.domContentLoadedEventEnd || 0),
