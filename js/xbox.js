@@ -63,6 +63,7 @@
       const data = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
       if (data.privado) {
+        window.marcarUso?.("importacion_privada");
         estado.textContent = `Encontramos a ${data.gamertag}, pero su historial de juegos no es público. Abre "Si no aparecen tus juegos" para ver cómo cambiarlo.`;
         document.getElementById("xboxResultado").hidden = true;
         return;
@@ -70,6 +71,7 @@
       mostrar(data.juegos, data.gamertag);
       if (window.Autodatos) window.Autodatos.guardarCuenta({ xbox_gamertag: data.gamertag, xbox_xuid: data.xuid });
     } catch (err) {
+      window.marcarUso?.("importacion_fallo");
       estado.textContent = err.message;
     } finally {
       b.disabled = false;
@@ -152,6 +154,7 @@
     StorageManager.saveGames([...actuales.map(g => unidos.get(g.id) || g), ...nuevos]);
     await cloudRun(() => DB.upsertGames([...fusionados, ...nuevos]), "No se pudieron subir los juegos importados a la nube.");
     renderLibrary();
+    window.marcarUso?.("importacion_ok");
     cerrar();
     if (window.Autodatos) window.Autodatos.completar([...nuevos, ...fusionados]);
     document.getElementById("xboxClave").value = "";

@@ -104,12 +104,16 @@
     return (item) => idx.get("id:" + item.id) || idx.get("t:" + clave(porTitulo(item)));
   }
 
-  async function sincronizar() {
+  // Devuelve qué cambió ({ novedades, nuevos, informe }); con silencioso no muestra avisos (actualización automática)
+  async function sincronizar({ silencioso = false } = {}) {
     const c = cuentas || await cargarCuentas();
-    if (!c) { showToast("Importa primero desde Steam o Xbox para vincular tu cuenta.", true); return; }
+    if (!c) { if (!silencioso) showToast("Importa primero desde Steam o Xbox para vincular tu cuenta.", true); return null; }
     const juegos = StorageManager.getGames();
     const cambios = {};
     const informe = [];
+    // Juegos jugados hace poco que aún no están en el estante (para ofrecer añadirlos)
+    const nuevos = { Steam: [], Xbox: [], PlayStation: [] };
+    const reciente = (f) => f && Date.now() - Date.parse(f) < 60 * 86400000;
 
     if (c.steam_id) {
       try {
@@ -120,9 +124,9 @@
         let n = 0;
         (data.response?.games || []).forEach(s => {
           const g = buscar({ id: s.appid, name: s.name });
-          if (!g) return;
           const horas = Math.round((s.playtime_forever || 0) / 60);
           const ultima = s.rtime_last_played ? new Date(s.rtime_last_played * 1000).toISOString() : null;
+          if (!g) { if ((s.playtime_forever || 0) >= 30 && reciente(ultima) && typeof s.name === "string") nuevos.Steam.push(s.name); return; }
           const cambio = { steamAppId: s.appid };
           if (horas > (g.hours || 0)) cambio.hours = horas;
           if (ultima && (!g.lastPlayed || ultima > g.lastPlayed)) cambio.lastPlayed = ultima;
@@ -142,7 +146,7 @@
         let n = 0;
         (data.juegos || []).forEach(x => {
           const g = buscar({ id: x.titleId, titulo: x.titulo });
-          if (!g) return;
+          if (!g) { if (reciente(x.ultimaVez) && x.titulo) nuevos.Xbox.push(x.titulo); return; }
           const cambio = { xboxTitleId: x.titleId || g.xboxTitleId };
           if (x.ultimaVez && (!g.lastPlayed || x.ultimaVez > g.lastPlayed)) cambio.lastPlayed = x.ultimaVez;
           if (x.logros > (g.achUnlocked || 0)) cambio.achUnlocked = x.logros;
@@ -166,7 +170,7 @@
         let n = 0;
         (data.juegos || []).forEach(x => {
           const g = buscar({ id: x.npId, titulo: x.titulo });
-          if (!g) return;
+          if (!g) { if (reciente(x.ultimaVez) && x.titulo) nuevos.PlayStation.push(x.titulo); return; }
           const cambio = x.npId ? { psnNpId: x.npId, psnService: x.servicio } : {};
           if (x.ultimaVez && (!g.lastPlayed || x.ultimaVez > g.lastPlayed)) cambio.lastPlayed = x.ultimaVez;
           if (x.horas > (g.hours || 0)) cambio.hours = x.horas;
@@ -181,8 +185,83 @@
       } catch (e) { informe.push(`PlayStation: ${e.message}`); }
     }
 
-    aplicar(cambios);
-    showToast(informe.join(" · ") || "Nada que actualizar.");
+    // Qué cambió de verdad para quien mira: horas, logros y platinos
+    const antes = new Map(juegos.map(g => [String(g.id), g]));
+    const novedades = [];
+    for (const [id, cb] of Object.entries(cambios)) {
+      const g = antes.get(String(id));
+      if (!g) continue;
+      const horas = cb.hours ? cb.hours - (g.hours || 0) : 0;
+      const logros = cb.achUnlocked ? cb.achUnlocked - (g.achUnlocked || 0) : 0;
+      const platino = cb.status === "platinum" && g.status !== "platinum";
+      if (horas > 0 || logros > 0 || platino) novedades.push({ titulo: g.title, horas, logros, platino });
+    }
+    novedades.sort((a, b) => (b.platino - a.platino) || (b.horas - a.horas) || (b.logros - a.logros));
+
+    const cambiados = aplicar(cambios);
+    if (!silencioso) showToast(informe.join(" · ") || "Nada que actualizar.");
+    return { novedades, nuevos, informe, cambiados };
+  }
+
+  // ---------- 2b. al abrir el estante: actualizar solo y contar qué cambió ----------
+  function pintarNovedades(r, ultima) {
+    const hayNuevos = Object.values(r.nuevos).some(l => l.length);
+    if (!r.novedades.length && !hayNuevos) return;
+    const ancla = document.getElementById("barraHerramientas");
+    if (!ancla) return;
+    document.getElementById("novedadesEstante")?.remove();
+    const dias = ultima ? Math.round((Date.now() - ultima) / 86400000) : null;
+    const hace = dias === null ? "Desde que importaste" : dias < 1 ? "Desde tu última visita de hoy" : `Desde tu última visita, hace ${dias} ${dias === 1 ? "día" : "días"}`;
+    const totalHoras = r.novedades.reduce((n, x) => n + x.horas, 0);
+    const totalLogros = r.novedades.reduce((n, x) => n + x.logros, 0);
+    const resumen = [totalHoras ? `${totalHoras} h jugadas` : "", totalLogros ? `${totalLogros} ${totalLogros === 1 ? "logro nuevo" : "logros nuevos"}` : ""].filter(Boolean).join(" · ");
+    const fichas = r.novedades.slice(0, 6).map(x => `
+      <li${x.platino ? ' class="platino"' : ""}><b>${esc(x.titulo)}</b>
+        <span>${[x.platino ? '<i class="fa-solid fa-trophy" aria-hidden="true"></i> Platino' : "", x.horas ? `+${x.horas} h` : "", x.logros ? `+${x.logros} ${x.logros === 1 ? "logro" : "logros"}` : ""].filter(Boolean).join(" · ")}</span></li>`).join("");
+    const BOTON = { Steam: "openSteamSyncBtn", Xbox: "openXboxBtn", PlayStation: "openPsnBtn" };
+    const sinEstante = Object.entries(r.nuevos).filter(([, l]) => l.length).map(([plataforma, l]) => `
+      <p class="novedades-nuevos">Jugaste ${l.length === 1 ? "un juego que no está" : `${l.length} juegos que no están`} en tu estante: <b>${l.slice(0, 3).map(esc).join(", ")}${l.length > 3 ? ` y ${l.length - 3} más` : ""}</b>.
+        <button type="button" class="resena-mas" data-abrir="${BOTON[plataforma]}">Añadir desde ${plataforma}</button></p>`).join("");
+    const caja = document.createElement("section");
+    caja.id = "novedadesEstante";
+    caja.className = "novedades";
+    caja.setAttribute("aria-label", "Novedades de tu estante");
+    caja.innerHTML = `
+      <header><p><b>${hace}</b>${resumen ? ` · ${resumen}` : ""}</p>
+        <button type="button" class="novedades-x" data-cerrar aria-label="Cerrar">×</button></header>
+      ${fichas ? `<ul>${fichas}</ul>` : ""}
+      ${r.novedades.length > 6 ? `<p class="novedades-mas">y ${r.novedades.length - 6} juegos más con cambios.</p>` : ""}
+      ${sinEstante}`;
+    caja.addEventListener("click", (e) => {
+      if (e.target.closest("[data-cerrar]")) caja.remove();
+      const b = e.target.closest("[data-abrir]");
+      if (b) document.getElementById(b.dataset.abrir)?.click();
+    });
+    ancla.parentNode.insertBefore(caja, ancla);
+    window.marcarUso?.("novedades");
+  }
+
+  let autoHecho = false;
+  async function autoSincronizar(intento = 0) {
+    if (autoHecho || isSpectatorMode) return;
+    if (!cloudUserId) { if (intento < 2) setTimeout(() => autoSincronizar(intento + 1), 4000); return; }
+    const c = await cargarCuentas();
+    if (!hayCuenta(c) || !StorageManager.getGames().length) return;
+    const k = `gv_sync_auto_${cloudUserId}`;
+    let ultima = 0;
+    try { ultima = Number(localStorage.getItem(k) || 0); } catch (e) { return; } // sin almacenamiento no hay forma de espaciarlo
+    if (Date.now() - ultima < 6 * 3600000) return; // como mucho cada 6 horas
+    autoHecho = true;
+    try { localStorage.setItem(k, String(Date.now())); } catch (e) { return; }
+    if (btnSync) btnSync.disabled = true;
+    try {
+      const r = await sincronizar({ silencioso: true });
+      if (!r) return;
+      window.marcarUso?.("sync_auto");
+      pintarNovedades(r, ultima);
+      if (r.cambiados.length) analizar(r.cambiados, false); // estado y fechas según los logros nuevos
+    } catch (e) { /* se reintenta en la próxima visita */ }
+    finally { if (btnSync) btnSync.disabled = false; }
   }
 
   // ---------- 3 y 4. logros en la ficha + fechas automáticas ----------
@@ -447,7 +526,11 @@
     btnSync.addEventListener("click", async () => {
       btnSync.disabled = true;
       showToast("Actualizando desde Steam y Xbox…");
-      try { await sincronizar(); await analizar(StorageManager.getGames(), true); } finally { btnSync.disabled = false; }
+      try {
+        const r = await sincronizar();
+        if (r) { document.getElementById("novedadesEstante")?.remove(); pintarNovedades(r, Number(localStorage.getItem(`gv_sync_auto_${cloudUserId}`) || 0) || null); try { localStorage.setItem(`gv_sync_auto_${cloudUserId}`, String(Date.now())); } catch (e) { /* nada */ } }
+        await analizar(StorageManager.getGames(), true);
+      } finally { btnSync.disabled = false; }
     });
   }
 
@@ -455,7 +538,7 @@
     // tras añadir o importar: datos de RAWG y, si están vinculados, estado y fechas desde sus logros
     // las dos cosas a la vez: el estado sale al momento y los logros no esperan a RAWG
     completar: (j) => Promise.all([completar(j, false), analizar(j, (j || []).length > 3)]),
-    guardarCuenta, sincronizar, analizar
+    guardarCuenta, sincronizar, analizar, pintarNovedades
   };
-  if (!isSpectatorMode) setTimeout(cargarCuentas, 1500); // tras cargar la sesión
+  if (!isSpectatorMode) { setTimeout(cargarCuentas, 1500); setTimeout(autoSincronizar, 4500); } // tras cargar la sesión
 })();
