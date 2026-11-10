@@ -344,6 +344,19 @@ await seccion("interacciones", async () => {
   // Estante sin sesión: añadir un juego a mano como invitado
   await pg.goto(BASE + "/estante", { waitUntil: "load" }); await pg.waitForTimeout(3000);
   o.estante_invitado = await pg.evaluate(() => ({ bienvenida: !!document.querySelector(".bienvenida"), botones: [...document.querySelectorAll(".bienvenida button, .bienvenida a")].map(b => b.innerText.trim()).slice(0, 6), usuario: document.getElementById("appUserLabel")?.innerText }));
+  // Menús del estante en el celular (con los juegos de ejemplo): deben caber en la pantalla
+  await pg.locator('[data-bienvenida="demo"]').click().catch(() => {}); await pg.waitForTimeout(1500);
+  o.menus_estante = await pg.evaluate(async () => {
+    const esp = (ms) => new Promise(r => setTimeout(r, ms)); const r = { ancho: window.innerWidth, arriba: [...document.querySelectorAll("#barraHerramientas > *")].filter(e => e.offsetParent).length };
+    for (const m of document.querySelectorAll(".menu-barra")) {
+      m.querySelector(".menu-barra-boton").click(); await esp(250);
+      const c = m.querySelector(".menu-panel").getBoundingClientRect();
+      r[m.dataset.menu] = { izq: Math.round(c.left), der: Math.round(c.right), opciones: [...m.querySelectorAll(".menu-panel button")].filter(b => b.offsetParent).length };
+    }
+    document.body.click(); r.desborde = document.documentElement.scrollWidth > window.innerWidth + 1;
+    return r;
+  });
+  for (const k of ["importar", "resumen", "mas"]) { const m = o.menus_estante[k]; if (!m || m.izq < 0 || m.der > o.menus_estante.ancho || !m.opciones) grave(`El menú «${k}» del estante se sale de la pantalla o está vacío en el celular`); }
   // Login: validación con datos vacíos
   await pg.goto(BASE + "/login", { waitUntil: "load" }); await pg.waitForTimeout(2500);
   o.login = await pg.evaluate(() => ({ google: !!document.querySelector("#googleBloque:not([hidden])"), campos: [...document.querySelectorAll("form input")].map(i => `${i.type}${i.required ? "*" : ""}${i.autocomplete ? ":" + i.autocomplete : ""}`), olvide: !!document.querySelector("[id*=forgot], [id*=olvid], [id*=reset]") }));
