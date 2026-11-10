@@ -18,8 +18,10 @@
       boton.setAttribute("aria-expanded", String(abrir));
       if (abrir) {
         // Que no se salga por la derecha en pantallas estrechas
-        panel.classList.remove("a-la-derecha");
-        if (panel.getBoundingClientRect().right > window.innerWidth - 8) panel.classList.add("a-la-derecha");
+        panel.style.transform = "";
+        const r = panel.getBoundingClientRect();
+        const sobra = r.right - (document.documentElement.clientWidth - 8);
+        if (sobra > 0) panel.style.transform = `translateX(${-Math.min(sobra, Math.max(r.left - 8, 0))}px)`;
         panel.querySelector("button:not(.hidden)")?.focus({ preventScroll: true });
       }
     });

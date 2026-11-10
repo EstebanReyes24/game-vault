@@ -1216,7 +1216,7 @@ body.light-mode .ports-estado.alfa { color: #a85a00; }
 .menu-barra-boton.menu-principal:hover { background: #f02a4a; }
 .menu-panel { position: absolute; top: calc(100% + 0.4rem); left: 0; z-index: 30; min-width: 15.5rem; padding: 0.35rem; border-radius: 0.9rem; background: var(--carbon, #1c1824); border: 1px solid var(--border-light, rgba(255, 255, 255, 0.12)); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); display: grid; gap: 0.1rem; }
 .menu-panel[hidden] { display: none; }
-.menu-panel.a-la-derecha { left: auto; right: 0; }
+.menu-panel { max-width: calc(100vw - 1rem); }
 #barraHerramientas .menu-panel > button { display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.6rem 0.7rem; border: 0; border-radius: 0.6rem; background: transparent; color: var(--hueso); font-size: 0.85rem; font-weight: 600; text-align: left; cursor: pointer; }
 #barraHerramientas .menu-panel > button.hidden { display: none; }
 #barraHerramientas .menu-panel > button:hover, #barraHerramientas .menu-panel > button:focus-visible { background: rgba(255, 255, 255, 0.08); outline: none; }
