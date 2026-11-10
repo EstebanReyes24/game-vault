@@ -312,6 +312,40 @@ await seccion("paginas", async () => {
   return o;
 });
 
+// ---------- 5b. Imágenes: recorrer estantes públicos y la portada, y decir cuáles fallan y de dónde son ----------
+await seccion("imagenes", async () => {
+  const o = {};
+  const rutas = ["/", ...(informe._usuarios || ["paindex"]).slice(0, 12).map(u => `/u/${u}`)];
+  for (const pantalla of [{ n: "celular", width: 390, height: 844, isMobile: true }, { n: "computadora", width: 1366, height: 900, isMobile: false }]) {
+    const ctx = await navegador.newContext({ viewport: { width: pantalla.width, height: pantalla.height }, isMobile: pantalla.isMobile, serviceWorkers: "block" });
+    for (const ruta of rutas) {
+      const pg = await ctx.newPage();
+      const red = {};
+      pg.on("response", r => { if (r.request().resourceType() === "image" && r.status() >= 400) red[r.url().slice(0, 140)] = r.status(); });
+      pg.on("requestfailed", r => { if (r.resourceType() === "image") red[r.url().slice(0, 140)] = r.failure()?.errorText || "falló"; });
+      try {
+        await pg.goto(BASE + ruta, { waitUntil: "load", timeout: 45000 }); await pg.waitForTimeout(3500);
+        for (let y = 0; y < 30; y++) { await pg.mouse.wheel(0, 1400); await pg.waitForTimeout(350); }
+        await pg.waitForTimeout(4000);
+        const d = await pg.evaluate(() => {
+          const imgs = [...document.images].filter(i => i.offsetParent || i.closest("#gamesGrid"));
+          const host = (i) => (i.src.startsWith("data:") ? "póster generado" : (i.src.split("/")[2] || "?"));
+          const cuenta = {};
+          imgs.forEach(i => { const k = `${host(i)} · ${!i.complete ? "sin cargar" : i.naturalWidth ? "ok" : "ROTA"}`; cuenta[k] = (cuenta[k] || 0) + 1; });
+          const posters = imgs.filter(i => i.dataset.fallbackApplied).map(i => `${i.alt || i.dataset.fallbackTitle || "?"} ← ${(i.dataset.srcOriginal || i.dataset.original || "").slice(0, 90)}`);
+          const sinImagen = [...document.querySelectorAll(".lista-sin-tapa, .sin-portada, [data-sin-imagen]")].filter(e => e.offsetParent).length;
+          const fondos = [...document.querySelectorAll("[style*='background-image']")].length;
+          return { total: imgs.length, cuenta, posters: posters.slice(0, 40), nPosters: posters.length, sinImagen, fondos };
+        });
+        o[`${pantalla.n} ${ruta}`] = { ...d, red: Object.entries(red).slice(0, 25).map(([u, e]) => `${e} ${u}`) };
+      } catch (e) { o[`${pantalla.n} ${ruta}`] = { error: e.message.split("\n")[0] }; }
+      await pg.close();
+    }
+    await ctx.close();
+  }
+  return o;
+});
+
 // ---------- 6. Interacciones sin sesión ----------
 await seccion("interacciones", async () => {
   const o = {};
