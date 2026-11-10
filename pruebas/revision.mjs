@@ -371,6 +371,41 @@ await seccion("interacciones", async () => {
   return o;
 });
 
+// ---------- 6b. Imágenes por origen: cuáles cargan y cuáles no, bajando por toda la página ----------
+await seccion("imagenes", async () => {
+  const o = {};
+  const usuarios = (await pedir(`${SUPA}/rest/v1/profiles?select=username&is_public=eq.true&limit=12`, { headers: H })).json || [];
+  const rutas = ["/", "/noticias", "/juegos", ...usuarios.map(u => `/u/${u.username}`)];
+  for (const pantalla of [{ n: "celular", width: 390, height: 844, isMobile: true }, { n: "computadora", width: 1366, height: 900, isMobile: false }]) {
+    const ctx = await navegador.newContext({ viewport: { width: pantalla.width, height: pantalla.height }, isMobile: pantalla.isMobile, serviceWorkers: "block" });
+    for (const ruta of rutas) {
+      const pg = await ctx.newPage();
+      const http = {};
+      pg.on("response", r => { if (r.request().resourceType() === "image" && r.status() >= 400) http[r.url()] = r.status(); });
+      pg.on("requestfailed", r => { if (r.resourceType() === "image") http[r.url()] = r.failure()?.errorText || "falló"; });
+      try {
+        await pg.goto(BASE + ruta, { waitUntil: "load", timeout: 45000 }); await pg.waitForTimeout(3000);
+        for (let y = 0; y < 40; y++) { await pg.mouse.wheel(0, 1400); await pg.waitForTimeout(350); if (await pg.evaluate(() => window.innerHeight + window.scrollY >= document.body.scrollHeight - 50)) break; }
+        await pg.waitForTimeout(3500);
+        const d = await pg.evaluate(() => {
+          const host = (i) => { const s = i.currentSrc || i.src || ""; if (s.startsWith("data:")) return i.dataset.fallbackApplied ? "PÓSTER (falló la portada)" : "data:"; try { return new URL(s).host; } catch (e) { return "?"; } };
+          const r = {};
+          [...document.images].filter(i => i.src).forEach(i => { const h = host(i); r[h] = r[h] || { ok: 0, rota: 0, pendiente: 0 }; r[h][!i.complete ? "pendiente" : i.naturalWidth > 0 ? "ok" : "rota"]++; });
+          const posters = [...document.images].filter(i => i.dataset.fallbackApplied).map(i => i.alt).slice(0, 12);
+          const respaldo = [...document.images].filter(i => i.dataset.reintento || (i.dataset.respaldo && i.src === i.dataset.respaldo)).length;
+          return { total: document.images.length, porOrigen: r, posters, conRespaldo: respaldo };
+        });
+        const fallos = {};
+        Object.entries(http).forEach(([u, e]) => { let h = "?"; try { h = new URL(u).host; } catch (x) { /* nada */ } fallos[h] = fallos[h] || { n: 0, tipos: {}, ejemplo: u.slice(0, 150) }; fallos[h].n++; fallos[h].tipos[e] = (fallos[h].tipos[e] || 0) + 1; });
+        o[`${pantalla.n} ${ruta}`] = { ...d, fallos };
+      } catch (e) { o[`${pantalla.n} ${ruta}`] = { error: e.message.split("\n")[0] }; }
+      await pg.close();
+    }
+    await ctx.close();
+  }
+  return o;
+});
+
 // ---------- 7. Accesibilidad (axe) ----------
 await seccion("accesibilidad", async () => {
   const axe = readFileSync("node_modules/axe-core/axe.min.js", "utf8");
