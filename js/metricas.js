@@ -124,6 +124,21 @@
     const { data, error } = await supabaseClient.rpc("metricas_admin");
     if (error) { cuerpo.innerHTML = `<p class="metricas-nota">${/metricas_admin/.test(error.message) ? "Falta ejecutar la migración 020 en Supabase." : esc(error.message)}</p>`; return; }
     pintar(data);
+    // Registro: dónde se pierde la gente (migración 023; si falta, no se muestra)
+    const c = await supabaseClient.rpc("metricas_cuentas");
+    if (!c.error && c.data) {
+      const d = c.data;
+      const bloque = document.createElement("section");
+      bloque.className = "metricas-bloque";
+      bloque.innerHTML = `<h3>Registro: dónde se pierde la gente</h3>
+        <ul class="metricas-lista">
+          <li>Cuentas creadas<b>${num(d.registradas)} · Google ${num(d.con_google)} · correo ${num(d.con_correo)}</b></li>
+          <li>Nunca confirmaron el correo<b>${num(d.sin_confirmar_correo)}</b></li>
+          <li>Estante vacío<b>${num(d.sin_juegos)} (${num(d.sin_juegos_y_sin_confirmar)} sin confirmar · ${num(d.sin_juegos_confirmadas)} entraron y no añadieron nada)</b></li>
+          <li>Entraron solo el primer día<b>${num(d.entraron_una_sola_vez)}</b></li>
+        </ul>`;
+      cuerpo.insertBefore(bloque, cuerpo.children[2] || null);
+    }
   }
 
   btn.addEventListener("click", abrir);

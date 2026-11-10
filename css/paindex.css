@@ -1206,3 +1206,23 @@ body.light-mode .ports-verificado, body.light-mode .ports-estado.estable { color
 body.light-mode .ports-estado.beta { color: #1a6fa8; }
 body.light-mode .ports-estado.alfa { color: #a85a00; }
 .push-diagnostico { margin: 0.5rem 0 0; padding: 0.6rem; max-height: 16rem; overflow: auto; border-radius: 0.5rem; background: rgba(0, 0, 0, 0.35); color: var(--hueso); font-size: 0.7rem; white-space: pre-wrap; word-break: break-all; }
+
+/* ---------- Menús de la barra del estante (Importar, Resumen, Más) ---------- */
+.menu-barra { position: relative; }
+.menu-barra:not(:has(.menu-panel > button)) { display: none; } /* perfil ajeno: sin opciones, sin menú */
+.menu-barra-flecha { font-size: 0.6rem; opacity: 0.7; transition: transform 0.15s; }
+.menu-barra-boton[aria-expanded="true"] .menu-barra-flecha { transform: rotate(180deg); }
+.menu-barra-boton.menu-principal { background: #e01b3c; border-color: #e01b3c; color: #fff; }
+.menu-barra-boton.menu-principal:hover { background: #f02a4a; }
+.menu-panel { position: absolute; top: calc(100% + 0.4rem); left: 0; z-index: 30; min-width: 15.5rem; padding: 0.35rem; border-radius: 0.9rem; background: var(--carbon, #1c1824); border: 1px solid var(--border-light, rgba(255, 255, 255, 0.12)); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5); display: grid; gap: 0.1rem; }
+.menu-panel[hidden] { display: none; }
+.menu-panel.a-la-derecha { left: auto; right: 0; }
+#barraHerramientas .menu-panel > button { display: flex; align-items: center; gap: 0.7rem; width: 100%; padding: 0.6rem 0.7rem; border: 0; border-radius: 0.6rem; background: transparent; color: var(--hueso); font-size: 0.85rem; font-weight: 600; text-align: left; cursor: pointer; }
+#barraHerramientas .menu-panel > button.hidden { display: none; }
+#barraHerramientas .menu-panel > button:hover, #barraHerramientas .menu-panel > button:focus-visible { background: rgba(255, 255, 255, 0.08); outline: none; }
+#barraHerramientas .menu-panel > button > i { width: 1.1rem; text-align: center; color: var(--niebla); font-size: 0.9rem; }
+#barraHerramientas .menu-panel > button:disabled { opacity: 0.5; cursor: wait; }
+body.light-mode .menu-panel { background: #fff; border-color: #ded6e2; box-shadow: 0 16px 40px rgba(40, 20, 60, 0.18); }
+body.light-mode #barraHerramientas .menu-panel > button { background: transparent !important; border: 0 !important; color: #2a2430 !important; }
+body.light-mode #barraHerramientas .menu-panel > button:hover { background: #f4f0f5 !important; }
+body.light-mode #barraHerramientas .menu-barra-boton.menu-principal { background: #e01b3c !important; border-color: #e01b3c !important; color: #fff !important; }

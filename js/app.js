@@ -323,7 +323,9 @@ const soundIcon = document.getElementById("soundIcon");
 
 function updateSoundUI() {
   if (soundIcon) {
-    soundIcon.className = isAudioEnabled ? "fa-solid fa-volume-high text-indigo-400" : "fa-solid fa-volume-xmark text-slate-500";
+    soundIcon.className = isAudioEnabled ? "fa-solid fa-volume-high" : "fa-solid fa-volume-xmark";
+    const texto = soundToggleBtn?.querySelector("span");
+    if (texto) texto.textContent = isAudioEnabled ? "Sonidos: activados" : "Sonidos: quitados";
   }
 }
 updateSoundUI();
