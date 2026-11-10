@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   if (!/^https?:$/.test(url.protocol) || !PERMITIDOS.has(url.hostname)) return res.status(400).json({ error: "Origen no permitido." });
   for (const intento of [url.href.replace(/^http:/, "https:"), url.href.replace(/^https:/, "http:")]) {
     try {
-      const r = await fetch(intento, { headers: { "User-Agent": "Mozilla/5.0 PaindexVault" }, signal: AbortSignal.timeout(8000) });
+      const r = await fetch(intento, { headers: { "User-Agent": "Mozilla/5.0 PaindexVault" }, redirect: "error", signal: AbortSignal.timeout(8000) });
       const tipo = r.headers.get("content-type") || "";
       if (!r.ok || !tipo.startsWith("image/")) continue;
       const datos = Buffer.from(await r.arrayBuffer());
