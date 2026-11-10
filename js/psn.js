@@ -12,6 +12,7 @@
     StorageManager.saveGames([...actuales.map(g => unidos.get(g.id) || g), ...nuevos]);
     await cloudRun(() => DB.upsertGames([...fusionados, ...nuevos]), "No se pudieron subir los juegos importados a la nube.");
     renderLibrary();
+    window.marcarUso?.("importacion_ok");
     showToast(`${texto}: ${nuevos.length} juegos nuevos${fusionados.length ? ` y ${fusionados.length} unidos a los que ya tenías` : ""}. Ahora completo sus datos.`);
     if (window.Autodatos) window.Autodatos.completar([...nuevos, ...fusionados]);
   }
@@ -67,6 +68,7 @@
         const data = await r.json().catch(() => ({}));
         if (!r.ok) throw new Error(data.error || `Error ${r.status}`);
         if (data.privado) {
+          window.marcarUso?.("importacion_privada");
           estado.textContent = `Encontramos a ${data.onlineId}, pero sus trofeos no son visibles. Abre "Si no aparecen tus juegos" para ver cómo cambiarlo.`;
           document.getElementById("psnResultado").hidden = true;
           return;
@@ -74,6 +76,7 @@
         mostrar(data.juegos, data.onlineId, data.conHoras);
         if (window.Autodatos) window.Autodatos.guardarCuenta({ psn_online_id: data.onlineId, psn_account_id: data.accountId });
       } catch (err) {
+        window.marcarUso?.("importacion_fallo");
         estado.textContent = err.message;
       } finally {
         b.disabled = false;

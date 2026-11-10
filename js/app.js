@@ -1083,6 +1083,7 @@ function renderLibrary() {
   if (estanteVacio) {
     gamesGrid.className = "block";
     gamesGrid.innerHTML = bienvenidaHTML();
+    window.marcarUso?.("bienvenida_vista"); // solo cuenta con sesión, una vez al día
     return;
   }
 
@@ -1730,6 +1731,7 @@ window.ejecutarConsultaSteam = async function() {
     if (data?.steamid && window.Autodatos) window.Autodatos.guardarCuenta({ steam_id: data.steamid });
 
     if (!rawGames || rawGames.length === 0) {
+      window.marcarUso?.("importacion_privada");
       throw new Error("Steam no devolvió títulos. Verifica que tu perfil y la lista de juegos estén en PÚBLICO y desmarques 'Ocultar tiempo total de juego'.");
     }
 
@@ -1777,6 +1779,7 @@ window.ejecutarConsultaSteam = async function() {
     if (previewContainer) previewContainer.classList.remove("hidden");
 
   } catch (err) {
+    if (!/Steam no devolvió títulos/.test(err.message)) window.marcarUso?.("importacion_fallo");
     alert("Error al conectar con Steam: " + err.message);
   } finally {
     if (btnEl) btnEl.disabled = false;
@@ -1852,6 +1855,7 @@ if (confirmImportSteamBtn) {
     renderLibrary();
     SoundFX.playTrophy();
     steamModal.classList.add("hidden");
+    window.marcarUso?.("importacion_ok");
     showToast(`Steam: ${toImport.length} juegos nuevos${fusionados.length ? ` y ${fusionados.length} unidos a los que ya tenías` : ""}. Ahora reviso sus logros para ponerles estado y fechas.`);
     if (window.Autodatos) window.Autodatos.completar([...toImport, ...fusionados]);
   });
