@@ -25,31 +25,50 @@
     } catch (e) { /* nunca romper la página por registrar un error */ }
   }
 
-  // Portadas e iconos de PlayStation (psnobj) no cargan directo en muchos navegadores:
-  // si una falla, se vuelve a pedir a través de la web (/api/icono). Vale para toda la página.
+  // Hay redes que bloquean los servidores de imágenes de juegos (Steam, RAWG, PlayStation, Xbox).
+  // Si una portada falla, se vuelve a pedir a través de la web (/api/icono). Si por ahí sí carga,
+  // ese servidor queda anotado como bloqueado y el resto de sus imágenes va directo por la web.
+  const POR_LA_WEB = /^https:\/\/(cdn\.(cloudflare|akamai)\.steamstatic\.com|shared\.(akamai|fastly|cloudflare)\.steamstatic\.com|steamcdn-a\.akamaihd\.net|media\.rawg\.io|image\.api\.playstation\.com|images-eds-ssl\.xboxlive\.com|store-images\.s-microsoft\.com|psnobj\.prod\.dl\.playstation\.net)\//;
+  const viaWeb = (u) => `/api/icono?u=${encodeURIComponent(u)}`;
+  const host = (u) => { try { return new URL(u).host; } catch (e) { return ""; } };
+  let bloqueados = new Set();
+  try { bloqueados = new Set(JSON.parse(sessionStorage.getItem("gv_img_bloqueados") || "[]")); } catch (e) { /* nada */ }
+  const anotarBloqueado = (h) => {
+    if (!h || bloqueados.has(h)) return;
+    bloqueados.add(h);
+    try { sessionStorage.setItem("gv_img_bloqueados", JSON.stringify([...bloqueados])); } catch (e) { /* nada */ }
+  };
+  // Cambia la imagen y avisa a app.js de que espere a este intento antes de poner el póster
+  const reintentar = (img, src) => { img.dataset.reintentando = "1"; img.src = src; };
+  const pedir = (img, directa) => { // por la web si ese servidor está bloqueado aquí; si no, directo
+    img.dataset.directa = directa;
+    if (bloqueados.has(host(directa))) { img.dataset.proxy = "1"; reintentar(img, viaWeb(directa)); }
+    else { delete img.dataset.proxy; reintentar(img, directa); }
+  };
+
+  window.addEventListener("load", (e) => {
+    const img = e.target;
+    // Cargó por la web lo que no cargaba directo: ese servidor está bloqueado en esta red
+    if (img && img.tagName === "IMG" && img.dataset.proxy === "1" && img.dataset.directa && img.naturalWidth > 0) anotarBloqueado(host(img.dataset.directa));
+  }, true);
+
   window.addEventListener("error", (e) => {
     const img = e.target;
     if (!img || img.tagName !== "IMG") return;
-    // Miniatura de RAWG que no existe: se vuelve a la imagen original
-    if (img.dataset.original && img.src !== img.dataset.original) { const o = img.dataset.original; delete img.dataset.original; img.dataset.reintentando = "1"; img.src = o; return; }
-    // Steam no tiene carátula vertical de todos los juegos: se usa la horizontal
-    if (/\/steam\/apps\/\d+\/library_600x900(_2x)?\.jpg/.test(img.src) && !img.dataset.steamAncha) {
+    const actual = img.getAttribute("src") || "";
+    const directa = img.dataset.directa || actual;
+    // 1. Falló directo: el mismo archivo, pero pedido a través de la web
+    if (POR_LA_WEB.test(actual) && !img.dataset.proxy) { img.dataset.proxy = "1"; img.dataset.directa = actual; reintentar(img, viaWeb(actual)); return; }
+    // 2. Miniatura de RAWG que no existe: se vuelve a la imagen original
+    if (img.dataset.original && directa !== img.dataset.original) { const o = img.dataset.original; delete img.dataset.original; img.setAttribute("data-tal-cual", ""); pedir(img, o); return; }
+    // 3. Steam no tiene carátula vertical de todos los juegos: se usa la horizontal
+    if (/\/steam\/apps\/\d+\/library_600x900(_2x)?\.jpg/.test(directa) && !img.dataset.steamAncha) {
       img.dataset.steamAncha = "1";
-      img.dataset.reintentando = "1"; // app.js espera a este segundo intento antes de poner el póster
-      img.src = img.src.replace(/library_600x900(_2x)?\.jpg.*/, "header.jpg");
+      pedir(img, directa.replace(/library_600x900(_2x)?\.jpg.*/, "header.jpg"));
       return;
     }
-    // Imagen de respaldo declarada en el HTML (data-respaldo), en vez de onerror en línea
-    if (img.dataset.respaldo && img.src !== img.dataset.respaldo && !/\/api\/icono/.test(img.src) && !img.dataset.reintento) {
-      if (!/psnobj\.prod\.dl\.playstation\.net/.test(img.src)) { img.src = img.dataset.respaldo; return; }
-    }
-    if (img.dataset.reintento) { if (img.dataset.respaldo && img.src !== img.dataset.respaldo) img.src = img.dataset.respaldo; return; }
-    try {
-      const u = new URL(img.currentSrc || img.src);
-      if (u.hostname !== "psnobj.prod.dl.playstation.net") return;
-      img.dataset.reintento = "1";
-      img.src = `/api/icono?u=${encodeURIComponent(u.href)}`;
-    } catch (err) { /* nada */ }
+    // 4. Imagen de respaldo declarada en el HTML (data-respaldo), en vez de onerror en línea
+    if (img.dataset.respaldo && actual !== img.dataset.respaldo && img.src !== img.dataset.respaldo) { img.src = img.dataset.respaldo; }
   }, true);
 
   // Las portadas de RAWG pesan 300–800 KB cada una: en listas y tarjetas se pide la versión reducida
@@ -57,10 +76,17 @@
   const ANCHO = window.innerWidth <= 640 ? 420 : 640;
   const RAWG = /^https:\/\/media\.rawg\.io\/media\/(games|screenshots)\//;
   function reducir(img) {
-    const src = img.getAttribute("src") || "";
-    if (!RAWG.test(src) || img.dataset.original || img.hasAttribute("data-tal-cual")) return;
-    img.dataset.original = src;
-    img.setAttribute("src", src.replace("/media/", `/media/resize/${ANCHO}/-/`));
+    let src = img.getAttribute("src") || "";
+    if (RAWG.test(src) && !img.dataset.original && !img.hasAttribute("data-tal-cual")) {
+      img.dataset.original = src;
+      src = src.replace("/media/", `/media/resize/${ANCHO}/-/`);
+      img.setAttribute("src", src);
+    }
+    // Servidor bloqueado en esta red: la imagen se pide por la web desde el principio
+    if (bloqueados.size && !img.dataset.proxy && POR_LA_WEB.test(src) && bloqueados.has(host(src))) {
+      img.dataset.proxy = "1"; img.dataset.directa = src;
+      img.setAttribute("src", viaWeb(src));
+    }
   }
   window.miniatura = (url) => (RAWG.test(String(url || "")) ? String(url).replace("/media/", `/media/resize/${ANCHO}/-/`) : url);
   if ("MutationObserver" in window) {
