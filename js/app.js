@@ -84,6 +84,8 @@ function coverImg(game, className, extraAttrs = "") {
 // Un solo manejador para todas las portadas rotas (sin onerror inline).
 document.addEventListener("error", (e) => {
   const img = e.target;
+  // errores.js ya está probando otra versión de la imagen (carátula ancha de Steam, original de RAWG)
+  if (img && img.dataset && img.dataset.reintentando) { delete img.dataset.reintentando; return; }
   if (img && img.tagName === "IMG" && img.dataset.fallbackTitle !== undefined && !img.dataset.fallbackApplied) {
     img.dataset.fallbackApplied = "1";
     img.src = posterFor(img.dataset.fallbackTitle);

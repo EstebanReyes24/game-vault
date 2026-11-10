@@ -31,10 +31,11 @@
     const img = e.target;
     if (!img || img.tagName !== "IMG") return;
     // Miniatura de RAWG que no existe: se vuelve a la imagen original
-    if (img.dataset.original && img.src !== img.dataset.original) { const o = img.dataset.original; delete img.dataset.original; img.src = o; return; }
+    if (img.dataset.original && img.src !== img.dataset.original) { const o = img.dataset.original; delete img.dataset.original; img.dataset.reintentando = "1"; img.src = o; return; }
     // Steam no tiene carátula vertical de todos los juegos: se usa la horizontal
     if (/\/steam\/apps\/\d+\/library_600x900(_2x)?\.jpg/.test(img.src) && !img.dataset.steamAncha) {
       img.dataset.steamAncha = "1";
+      img.dataset.reintentando = "1"; // app.js espera a este segundo intento antes de poner el póster
       img.src = img.src.replace(/library_600x900(_2x)?\.jpg.*/, "header.jpg");
       return;
     }
