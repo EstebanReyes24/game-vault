@@ -153,6 +153,8 @@
     try {
       if (localStorage.getItem("gv_nombre_sugerido")) return;
       const p = await DB.getMyProfile();
+      const vacio = typeof StorageManager !== "undefined" && StorageManager.getGames().length === 0;
+      if (vacio) return; // primero que arme su estante; el nombre se le ofrece en la siguiente visita
       if (p && p.nombre_elegido === false) {
         localStorage.setItem("gv_nombre_sugerido", "1");
         await abrir();

@@ -272,10 +272,6 @@
           <span id="appUserLabel" class="hidden sm:inline max-w-[100px] truncate">Invitado</span>
         </a>
 
-        <button id="soundToggleBtn" type="button" class="hidden sm:flex w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition cursor-pointer" title="Efectos de sonido">
-          <i id="soundIcon" class="fa-solid fa-volume-high text-indigo-400 text-xs"></i>
-        </button>
-
         <button id="themeToggleBtn" type="button" class="w-9 h-9 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition cursor-pointer" title="Cambiar tema">
           <i id="themeIcon" class="fa-solid fa-sun text-amber-400 text-xs"></i>
         </button>
@@ -449,64 +445,55 @@
     </div>
 
     <!-- BOTONES DE HERRAMIENTAS ADICIONALES -->
-    <div id="barraHerramientas" class="solo-con-juegos flex flex-wrap items-center justify-between gap-3">
-      <div class="flex flex-wrap items-center gap-2">
-        <button id="openSteamSyncBtn" type="button" class="px-3 py-2 rounded-xl bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 border border-blue-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-brands fa-steam"></i> STEAM SYNC
-        </button>
-        <button id="openXboxBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-brands fa-xbox"></i> XBOX
-        </button>
-        <button id="deseosBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Juegos que quieres: te avisamos cuando bajan de precio o salen">
-          <i class="fa-solid fa-heart"></i> DESEOS
-        </button>
-        <button id="presumirBtn" type="button" class="px-3 py-2 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 text-rose-300 border border-rose-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Crea imágenes de tu estante para Instagram, TikTok o WhatsApp">
-          <i class="fa-solid fa-share-from-square"></i> PRESUMIR
-        </button>
-        <button id="queJuegoBtn" type="button" class="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Te propone qué jugar de tus pendientes">
-          <i class="fa-solid fa-dice"></i> ¿QUÉ JUEGO?
-        </button>
-        <button id="openPsnBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Importar desde PlayStation con tu ID de PSN">
-          <i class="fa-brands fa-playstation"></i> PLAYSTATION
-        </button>
-        <button id="openPegarBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Añade varios juegos pegando sus nombres (Switch, PlayStation o cualquier plataforma)">
-          <i class="fa-solid fa-list"></i> PEGAR LISTA
-        </button>
+    <div id="barraHerramientas" class="solo-con-juegos flex flex-wrap items-center gap-2">
+        <div class="menu-barra" data-menu="importar">
+          <button type="button" class="menu-barra-boton px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer menu-principal" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-cloud-arrow-down" aria-hidden="true"></i> IMPORTAR <i class="fa-solid fa-chevron-down menu-barra-flecha" aria-hidden="true"></i>
+          </button>
+          <div class="menu-panel" role="menu" hidden>
+            <button id="openSteamSyncBtn" type="button" role="menuitem"><i class="fa-brands fa-steam" aria-hidden="true"></i> <span>Steam</span></button>
+            <button id="openXboxBtn" type="button" role="menuitem"><i class="fa-brands fa-xbox" aria-hidden="true"></i> <span>Xbox</span></button>
+            <button id="openPsnBtn" type="button" role="menuitem" title="Importar desde PlayStation con tu ID de PSN"><i class="fa-brands fa-playstation" aria-hidden="true"></i> <span>PlayStation</span></button>
+            <button id="openPegarBtn" type="button" role="menuitem" title="Añade varios juegos pegando sus nombres (Switch, PlayStation o cualquier plataforma)"><i class="fa-solid fa-list-check" aria-hidden="true"></i> <span>Pegar una lista</span></button>
+          </div>
+        </div>
         <button id="syncPlatformsBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Actualiza horas, última vez jugado y logros de tus juegos vinculados">
           <i class="fa-solid fa-rotate"></i> ACTUALIZAR
         </button>
         <button id="dupesBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Une los juegos que tienes repetidos entre Steam, Xbox y a mano">
           <i class="fa-solid fa-object-group"></i> <span id="dupesBtnTexto">UNIR REPETIDOS</span>
         </button>
-        <button id="autoDataBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Añade etiquetas, año y desarrollador a los juegos que no los tienen">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> COMPLETAR DATOS
+        <div class="menu-barra" data-menu="resumen">
+          <button type="button" class="menu-barra-boton px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-chart-simple" aria-hidden="true"></i> RESUMEN <i class="fa-solid fa-chevron-down menu-barra-flecha" aria-hidden="true"></i>
+          </button>
+          <div class="menu-panel" role="menu" hidden>
+            <button id="openStatsBtn" type="button" role="menuitem"><i class="fa-solid fa-chart-pie" aria-hidden="true"></i> <span>Estadísticas</span></button>
+            <button id="openWrappedBtn" type="button" role="menuitem"><i class="fa-solid fa-bolt" aria-hidden="true"></i> <span>Wrapped: tu año</span></button>
+            <button id="openTop5Btn" type="button" role="menuitem"><i class="fa-solid fa-crown" aria-hidden="true"></i> <span>Top cards</span></button>
+            <button id="presumirBtn" type="button" role="menuitem" title="Crea imágenes de tu estante para Instagram, TikTok o WhatsApp"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i> <span>Presumir: imágenes para compartir</span></button>
+          </div>
+        </div>
+        <button id="queJuegoBtn" type="button" class="px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Te propone qué jugar de tus pendientes">
+          <i class="fa-solid fa-dice"></i> ¿QUÉ JUEGO?
         </button>
-        <button id="openWrappedBtn" type="button" class="px-3 py-2 rounded-xl bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 border border-purple-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-bolt"></i> WRAPPED
+        <button id="deseosBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" title="Juegos que quieres: te avisamos cuando bajan de precio o salen">
+          <i class="fa-solid fa-heart"></i> DESEOS
         </button>
-        <button id="openStatsBtn" type="button" class="px-3 py-2 rounded-xl bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-chart-pie"></i> STATS
-        </button>
-        <button id="openTop5Btn" type="button" class="px-3 py-2 rounded-xl bg-amber-600/20 hover:bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-crown"></i> TOP CARDS
-        </button>
-        <button id="openListsBtn" type="button" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-solid fa-list-ol"></i> LISTAS
-        </button>
-        <button id="openVideosBtn" type="button" class="hidden px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/15 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer">
-          <i class="fa-brands fa-youtube"></i> MIS VIDEOS
-        </button>
-      </div>
-
-      <div class="flex items-center gap-2">
-        <button id="exportBtn" type="button" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold border border-white/10 transition cursor-pointer flex items-center gap-1">
-          <i class="fa-solid fa-download text-xs"></i> Exportar
-        </button>
-        <button id="importBtn" type="button" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-semibold border border-white/10 transition cursor-pointer flex items-center gap-1">
-          <i class="fa-solid fa-upload text-xs"></i> Importar
-        </button>
+        <div class="menu-barra" data-menu="mas">
+          <button type="button" class="menu-barra-boton px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 border border-white/10 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer" aria-haspopup="true" aria-expanded="false">
+            <i class="fa-solid fa-ellipsis" aria-hidden="true"></i> MÁS <i class="fa-solid fa-chevron-down menu-barra-flecha" aria-hidden="true"></i>
+          </button>
+          <div class="menu-panel" role="menu" hidden>
+            <button id="openListsBtn" type="button" role="menuitem"><i class="fa-solid fa-list" aria-hidden="true"></i> <span>Listas</span></button>
+            <button id="openVideosBtn" type="button" role="menuitem" class="hidden"><i class="fa-solid fa-video" aria-hidden="true"></i> <span>Mis videos</span></button>
+            <button id="autoDataBtn" type="button" role="menuitem" class="hidden" title="Añade etiquetas, año y desarrollador a los juegos que no los tienen"><i class="fa-solid fa-wand-magic-sparkles" aria-hidden="true"></i> <span>Completar datos que falten</span></button>
+            <button id="exportBtn" type="button" role="menuitem"><i class="fa-solid fa-download" aria-hidden="true"></i> <span>Exportar copia de mi estante</span></button>
+            <button id="importBtn" type="button" role="menuitem"><i class="fa-solid fa-upload" aria-hidden="true"></i> <span>Importar una copia</span></button>
+            <button id="soundToggleBtn" type="button" role="menuitem" title="Activar o quitar los sonidos de la web"><i id="soundIcon" class="fa-solid fa-volume-high" aria-hidden="true"></i> <span>Sonidos</span></button>
+          </div>
+        </div>
         <input type="file" id="fileInput" class="hidden" accept=".json">
-      </div>
     </div>
 
     <!-- GRID PRINCIPAL DE JUEGOS -->
@@ -1185,6 +1172,7 @@
   <script src="js/canvas-poster.js"></script>
   <script src="js/supabase.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/barra.js"></script>
   <script src="js/listas.js"></script>
   <script src="js/resenas.js"></script>
   <script src="js/xbox.js"></script>
