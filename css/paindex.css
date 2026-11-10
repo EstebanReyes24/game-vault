@@ -1226,3 +1226,11 @@ body.light-mode .menu-panel { background: #fff; border-color: #ded6e2; box-shado
 body.light-mode #barraHerramientas .menu-panel > button { background: transparent !important; border: 0 !important; color: #2a2430 !important; }
 body.light-mode #barraHerramientas .menu-panel > button:hover { background: #f4f0f5 !important; }
 body.light-mode #barraHerramientas .menu-barra-boton.menu-principal { background: #e01b3c !important; border-color: #e01b3c !important; color: #fff !important; }
+
+/* Aviso único: tu estante ahora es público (migración 024) */
+.aviso-publico { display: flex; flex-wrap: wrap; gap: 0.9rem 1.2rem; align-items: center; justify-content: space-between; padding: 1rem 1.1rem; margin-bottom: 1rem; border-radius: 1rem; border: 1px solid rgba(102, 192, 244, 0.4); background: rgba(102, 192, 244, 0.08); }
+.aviso-publico p { margin: 0; flex: 1 1 20rem; color: var(--hueso); font-size: 0.9rem; line-height: 1.5; }
+.aviso-publico a { color: inherit; text-decoration: underline; }
+.aviso-publico-botones { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.aviso-publico-botones .boton { padding: 0.5rem 0.9rem; font-size: 0.82rem; }
+.google-nota { margin: 0; font-size: 0.72rem; line-height: 1.4; color: var(--niebla); text-align: center; }

@@ -181,11 +181,11 @@ const DB = {
     const user = await currentUser();
     if (!user) return null;
     // avatar_url (migración 015) y bio (016): si aún no existen, se piden sin ellas
-    let columnas = ["id", "username", "is_public", "avatar_url", "bio", "nombre_elegido"];
+    let columnas = ["id", "username", "is_public", "avatar_url", "bio", "nombre_elegido", "hecho_publico_el"];
     let data = null, error = null;
-    for (let intento = 0; intento < 4; intento++) {
+    for (let intento = 0; intento < 5; intento++) {
       ({ data, error } = await supabaseClient.from("profiles").select(columnas.join(", ")).eq("id", user.id).maybeSingle());
-      const falta = error && columnas.find(c => ["avatar_url", "bio", "nombre_elegido"].includes(c) && error.message.includes(c));
+      const falta = error && columnas.find(c => ["avatar_url", "bio", "nombre_elegido", "hecho_publico_el"].includes(c) && error.message.includes(c));
       if (!falta) break;
       columnas = columnas.filter(c => c !== falta);
     }

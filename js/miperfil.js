@@ -148,6 +148,41 @@
   }
   window.MiPerfil = { abrir };
 
+  // Estantes públicos por defecto (migración 024): a quien se le cambió, se le avisa una vez y decide
+  function avisoPublico(p) {
+      if (!p || !p.hecho_publico_el || !p.is_public) return;
+      const ancla = document.getElementById("barraHerramientas") || document.querySelector("main");
+      if (!ancla || document.getElementById("avisoPublico")) return;
+      const aviso = document.createElement("div");
+      aviso.id = "avisoPublico";
+      aviso.className = "aviso-publico";
+      aviso.setAttribute("role", "region");
+      aviso.setAttribute("aria-label", "Tu estante ahora es público");
+      aviso.innerHTML = `
+        <p><b><i class="fa-solid fa-globe" aria-hidden="true"></i> Tu estante ahora es público.</b>
+        Cualquiera con tu enlace (<a href="/u/${encodeURIComponent(p.username)}">/u/${esc(p.username)}</a>) puede ver tus juegos, horas, notas y reseñas, y tu actividad sale en la portada. Si lo prefieres, puedes dejarlo solo para ti.</p>
+        <div class="aviso-publico-botones">
+          <button type="button" class="boton boton-senal" data-aviso="publico">Dejarlo público</button>
+          <button type="button" class="boton boton-linea" data-aviso="privado">Volver a privado</button>
+        </div>`;
+      aviso.addEventListener("click", async (e) => {
+        const b = e.target.closest("[data-aviso]");
+        if (!b) return;
+        try {
+          if (b.dataset.aviso === "privado") {
+            await DB.setProfilePublic(false);
+            if (typeof updateVisibilityUI === "function") updateVisibilityUI(false);
+            showToast("Tu estante vuelve a ser privado: solo lo ves tú.");
+          } else showToast("Perfecto: tu estante queda público.");
+          await supabaseClient.rpc("aviso_publico_visto");
+          aviso.remove();
+        } catch (err) { showToast(err.message || "No se pudo guardar. Prueba otra vez.", true); }
+      });
+      ancla.parentNode.insertBefore(aviso, ancla);
+  }
+  window.MiPerfil.avisoPublico = avisoPublico;
+  setTimeout(async () => { try { avisoPublico(await DB.getMyProfile()); } catch (e) { /* sin sesión o sin la migración 024 */ } }, 2200);
+
   // Primera vez con Google: se abre "Mi perfil" para que elija su nombre (una sola vez por navegador)
   setTimeout(async () => {
     try {
