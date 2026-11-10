@@ -88,6 +88,7 @@ document.addEventListener("error", (e) => {
   if (img && img.dataset && img.dataset.reintentando) { delete img.dataset.reintentando; return; }
   if (img && img.tagName === "IMG" && img.dataset.fallbackTitle !== undefined && !img.dataset.fallbackApplied) {
     img.dataset.fallbackApplied = "1";
+    img.dataset.srcOriginal = img.src.slice(0, 200); // para saber qué portada falló
     img.src = posterFor(img.dataset.fallbackTitle);
   }
 }, true);
