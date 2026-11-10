@@ -146,7 +146,7 @@
         let n = 0;
         (data.juegos || []).forEach(x => {
           const g = buscar({ id: x.titleId, titulo: x.titulo });
-          if (!g) { if (reciente(x.ultimaVez) && x.titulo) nuevos.Xbox.push(x.titulo); return; }
+          if (!g) { if (reciente(x.ultimaVez) && x.titulo && x.logros > 0) nuevos.Xbox.push(x.titulo); return; } // con algún logro: abrirlo un rato no cuenta
           const cambio = { xboxTitleId: x.titleId || g.xboxTitleId };
           if (x.ultimaVez && (!g.lastPlayed || x.ultimaVez > g.lastPlayed)) cambio.lastPlayed = x.ultimaVez;
           if (x.logros > (g.achUnlocked || 0)) cambio.achUnlocked = x.logros;
@@ -170,7 +170,7 @@
         let n = 0;
         (data.juegos || []).forEach(x => {
           const g = buscar({ id: x.npId, titulo: x.titulo });
-          if (!g) { if (reciente(x.ultimaVez) && x.titulo) nuevos.PlayStation.push(x.titulo); return; }
+          if (!g) { if (reciente(x.ultimaVez) && x.titulo && (x.logros > 0 || x.horas > 0)) nuevos.PlayStation.push(x.titulo); return; }
           const cambio = x.npId ? { psnNpId: x.npId, psnService: x.servicio } : {};
           if (x.ultimaVez && (!g.lastPlayed || x.ultimaVez > g.lastPlayed)) cambio.lastPlayed = x.ultimaVez;
           if (x.horas > (g.hours || 0)) cambio.hours = x.horas;
@@ -205,6 +205,13 @@
 
   // ---------- 2b. al abrir el estante: actualizar solo y contar qué cambió ----------
   function pintarNovedades(r, ultima) {
+    // Cada juego que falta en el estante se sugiere una sola vez, para no insistir en cada visita
+    const k = `gv_sugeridos_${cloudUserId || "invitado"}`;
+    let sugeridos = [];
+    try { sugeridos = JSON.parse(localStorage.getItem(k) || "[]"); } catch (e) { sugeridos = []; }
+    const ya = new Set(sugeridos);
+    r = { ...r, nuevos: Object.fromEntries(Object.entries(r.nuevos).map(([p, l]) => [p, l.filter(t => !ya.has(clave(t)))])) };
+    try { localStorage.setItem(k, JSON.stringify([...sugeridos, ...Object.values(r.nuevos).flat().map(clave)].slice(-400))); } catch (e) { /* nada */ }
     const hayNuevos = Object.values(r.nuevos).some(l => l.length);
     if (!r.novedades.length && !hayNuevos) return;
     const ancla = document.getElementById("barraHerramientas");
