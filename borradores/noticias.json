@@ -1,6 +1,86 @@
 {
-  "actualizado": "2026-11-10T10:47:09Z",
+  "actualizado": "2026-11-11T10:52:07Z",
   "borradores": [
+    {
+      "id": "2026-11-11-fairgames-cancelado-haven-sony",
+      "fecha": "2026-11-11",
+      "titulo": "Sony cancela Fairgame$ y Haven Studios pasa a apoyar a otros equipos de PlayStation",
+      "juego": "Fairgame$",
+      "etiqueta": "#Fairgames",
+      "imagen": "",
+      "contenido": "PlayStation detuvo el desarrollo de Fairgame$, el shooter multijugador de atracos que Haven Studios preparaba para PS5 y PC desde que se presentó en mayo de 2023. La noticia la reveló Bloomberg a partir de un correo interno de los ejecutivos Sean Decker y John Doyle, y luego un portavoz de Sony la confirmó.\n\nSegún ese mensaje, la prueba con miles de jugadores no alcanzó las metas de valoración ni de retención que se habían fijado, y el difícil momento de los shooters competitivos también pesó en la decisión. La parte positiva es que no habrá despidos: Haven seguirá en pie y se dedicará a colaborar con otros estudios de PlayStation Studios mientras explora nuevas ideas.\n\nEl proyecto llevaba tiempo dando señales de problemas. Jade Raymond, cofundadora del estudio, salió en 2025, y Sony ya venía recortando su apuesta por los juegos como servicio después del tropiezo de Concord en 2024 y de cancelar títulos como el multijugador de The Last of Us.\n\nCon esto, la lista de proyectos en línea de PlayStation sigue encogiéndose. ¿Creen que Sony hace bien en volver a enfocarse en sus aventuras para un jugador?",
+      "fuentes": [
+        {
+          "nombre": "Bloomberg",
+          "url": "https://www.bloomberg.com/news/articles/2026-11-10/playstation-cancels-online-shooting-title-fairgames"
+        },
+        {
+          "nombre": "PC Gamer",
+          "url": "https://www.pcgamer.com/gaming-industry/sony-cancels-another-live-service-game-ahead-of-release-but-at-least-there-wont-be-any-layoffs-this-time/"
+        },
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/fairgame-canceled"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-ps-plus-app-pc-cierra-death-stranding-2",
+      "fecha": "2026-11-11",
+      "titulo": "La app de PS Plus para PC cierra el 10 de diciembre y Death Stranding 2 llega al catálogo",
+      "juego": "Death Stranding 2: On the Beach",
+      "etiqueta": "#PSPlus",
+      "imagen": "",
+      "contenido": "Sony anunció que la aplicación de PlayStation Plus para PC dejará de estar disponible el 10 de diciembre de 2026. Con ella desaparece la opción de jugar en la nube desde Windows que incluía el nivel Premium. La razón es sencilla: según la propia compañía, menos del 0,4 % de los suscriptores Premium que podían usarla lo hacían.\n\nEl aviso llegó junto con el catálogo de noviembre para Extra y Premium. Lo más llamativo es Death Stranding 2: On the Beach, que entra el 17 de noviembre en PS5 junto a Atomfall y Dragon Quest III HD-2D Remake. El 24 de noviembre se suman Like a Dragon: Pirate Yakuza in Hawaii, Trepang2, MotoGP 26 y Cricket 26, mientras que Hell Let Loose llega este 11 de noviembre. Los de Premium reciben además Legacy of Kain: Soul Reaver 2 y Freedom Wars Remastered en la sección de clásicos.\n\nLa disponibilidad exacta puede variar según la región, así que conviene revisar la tienda local. Si usaban PS Plus en la computadora, tienen menos de un mes para aprovecharla.",
+      "fuentes": [
+        {
+          "nombre": "Shacknews",
+          "url": "https://www.shacknews.com/article/151319/playstation-plus-pc-app-shutdown"
+        },
+        {
+          "nombre": "Noisy Pixel",
+          "url": "https://noisypixel.net/playstation-plus-november-2026-game-catalog-pc-cloud-streaming-ends/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-outer-worlds-2-dlc-side-effects-guaranteed-2-diciembre",
+      "fecha": "2026-11-11",
+      "titulo": "The Outer Worlds 2 recibe su primera expansión, Side Effects Guaranteed, el 2 de diciembre",
+      "juego": "The Outer Worlds 2",
+      "etiqueta": "#OuterWorlds2",
+      "imagen": "",
+      "contenido": "Obsidian y Xbox Game Studios pusieron fecha a la primera expansión de historia de The Outer Worlds 2: Side Effects Guaranteed sale el 2 de diciembre a 14,99 dólares. También viene incluida en la Edición Premium y en su mejora, que traen un pase con dos expansiones.\n\nLa trama arranca con una señal de auxilio que lleva a la tripulación hasta una nave abandonada, con su gente en animación suspendida tras una infección. Buscar la cura nos lleva a Elysium Valley, una región nueva de Eden donde viven antiguos súbditos olvidados del Protectorado, con enemigos nuevos esperando.\n\nEn lo jugable, el nivel máximo sube de 30 a 36, hay más de 15 ventajas nuevas, cuatro defectos adicionales, armas, armaduras, trajes para cada compañero y una emisora de radio con 20 canciones. Quien no quiera rejugar la campaña podrá empezar directamente en la expansión con una partida personalizada desde el menú principal.\n\nEs la primera de dos partes: la segunda llegará en primavera de 2027 y tendrá en cuenta las decisiones que tomemos en esta. Una buena excusa para volver a Arcadia antes de que termine el año.",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/11/10/side-effects-guaranteed-the-outer-worlds-2-dlc/"
+        },
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/the-outer-worlds-2-dlc-side-effects-guaranteed-launches-december-2"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-11-arc-raiders-17-millones-nexon-resultados",
+      "fecha": "2026-11-11",
+      "titulo": "ARC Raiders supera los 17 millones de copias y Nexon prevé un cierre de año más tranquilo",
+      "juego": "ARC Raiders",
+      "etiqueta": "#ARCRaiders",
+      "imagen": "",
+      "contenido": "Nexon presentó sus resultados del tercer trimestre de 2026 y confirmó que ARC Raiders, el shooter de extracción de Embark Studios, ya vendió más de 17 millones de unidades. La compañía destacó que la actualización Frozen Trail de octubre hizo regresar a jugadores que lo habían dejado y empujó nuevas ventas.\n\nEl trimestre fue bueno para la editora: ingresó 138.400 millones de yenes, un 17 % más que hace un año, con MapleStory marcando un récord trimestral. Además, Dave the Diver superó los 10 millones de unidades en septiembre, un logro enorme para un juego que empezó como proyecto pequeño.\n\nEso sí, Nexon espera un cuarto trimestre más flojo, con ingresos entre 107.700 y 118.900 millones de yenes, por debajo del mismo periodo del año pasado, cuando ARC Raiders acababa de salir. Aun así, calcula que 2026 cerrará con ingresos y beneficio operativo récord.\n\nPara ARC Raiders, el ritmo de ventas se ha calmado tras su explosivo primer año, pero el juego sigue vivo con actualizaciones. ¿Todavía lo están jugando?",
+      "fuentes": [
+        {
+          "nombre": "Nexon (comunicado oficial)",
+          "url": "https://www.gamespress.com/en-US/Nexon-Releases-Earnings-for-Third-Quarter-2026"
+        },
+        {
+          "nombre": "Niche Gamer",
+          "url": "https://nichegamer.com/arc-raiders-tops-17-million-sales-as-nexon-forecasts-slower-fourth-quarter-revenue/"
+        }
+      ]
+    },
     {
       "id": "2026-11-10-take-two-resultados-gta-vi-reservas",
       "fecha": "2026-11-10",
@@ -822,139 +902,6 @@
         {
           "nombre": "Gaming Route",
           "url": "https://gamingroute.com/ocarina-of-time-switch-2-new-features/"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-ffxiv-evercold-retraso-23-febrero",
-      "fecha": "2026-10-31",
-      "titulo": "Final Fantasy XIV: Evercold se retrasa al 23 de febrero de 2027 y presenta el job Zephyr",
-      "juego": "Final Fantasy XIV Online",
-      "etiqueta": "#FFXIV",
-      "imagen": "",
-      "contenido": "Square Enix aprovechó el Fan Festival de Tokio para confirmar que Evercold, la próxima expansión de Final Fantasy XIV, ya no sale en enero. La nueva fecha es el 23 de febrero de 2027, con acceso anticipado desde el 19 de febrero para quienes la reserven. Las reservas abren el 4 de noviembre e incluyen una edición de coleccionista con figura y otros extras.\n\nNaoki Yoshida explicó en el escenario que el equipo necesitaba unas tres semanas más para pulir ciertos elementos. No es un retraso largo, pero sí mueve los planes de muchos jugadores que ya contaban con enero.\n\nEl keynote también trajo novedades jugables: Zephyr, un nuevo job de DPS físico a distancia que pelea con ballesta y un pájaro, empieza en nivel 90 y se desbloquea en Gridania. Además se mostró el tráiler completo de la expansión con su tema principal, una nueva dificultad de raids llamada Fierce, que se ubica entre Normal y Savage, y un sistema de recompensas por temporadas.\n\n¿Les parece bien esperar unas semanas más si eso significa un lanzamiento más pulido?",
-      "fuentes": [
-        {
-          "nombre": "Gematsu",
-          "url": "https://www.gematsu.com/2026/10/final-fantasy-xiv-evercold-expansion-delayed-to-february-23-2027"
-        },
-        {
-          "nombre": "TheSixthAxis",
-          "url": "https://www.thesixthaxis.com/2026/10/31/final-fantasy-xiv-fanfest-in-tokyo-reveals-new-job-full-trailer-and-more/"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-modern-warfare-4-itaewon-retira-imagenes",
-      "fecha": "2026-10-31",
-      "titulo": "Activision se disculpa y quitará de Modern Warfare 4 imágenes reales de la tragedia de Itaewon",
-      "juego": "Call of Duty: Modern Warfare 4",
-      "etiqueta": "#ModernWarfare4",
-      "imagen": "",
-      "contenido": "La cinemática de apertura de Call of Duty: Modern Warfare 4 incluye unos tres segundos de un noticiero real en los que paramédicos le dan RCP a una persona tras la avalancha humana de Itaewon, en Seúl, ocurrida en Halloween de 2022, donde murieron 159 personas. El juego, que salió el 23 de octubre, gira en torno a una invasión ficticia de Corea del Sur por parte de Corea del Norte, y esas imágenes se usaron para representar víctimas civiles de esa guerra inventada.\n\nLa asociación de familiares de las víctimas y una asociación de jugadores coreanos exigieron que se quitara la escena. Activision respondió con una disculpa a las familias, aseguró que nunca quiso evocar ni minimizar la tragedia y, según confirmó a medios coreanos, eliminará el fragmento en una actualización prevista para el 12 de noviembre. Hasta entonces, la escena sigue en la campaña.\n\nEl caso reabre el debate sobre cómo los juegos de guerra realistas usan material de archivo y qué tanto revisan su origen antes de incluirlo, sobre todo cuando la historia se ambienta en un país que todavía guarda luto por ese suceso.",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/activision-apologizes-and-says-it-will-remove-south-korean-crush-footage-from-modern-warfare-4-after-victims-families-speak-out/"
-        },
-        {
-          "nombre": "Kotaku",
-          "url": "https://kotaku.com/call-of-duty-modern-warfare-4-itaewon-2022-intro-patch-2000751584"
-        },
-        {
-          "nombre": "Dexerto",
-          "url": "https://www.dexerto.com/call-of-duty/real-footage-of-a-south-korean-tragedy-to-be-removed-from-modern-warfare-4-after-backlash-3423160/"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-romero-games-nuevo-editor-shooter",
-      "fecha": "2026-10-31",
-      "titulo": "John Romero consigue nuevo editor para su shooter cancelado y recontrata a parte del equipo",
-      "juego": "Empire of Sin",
-      "etiqueta": "#RomeroGames",
-      "imagen": "",
-      "contenido": "John Romero, cocreador de Doom y Quake, confirmó que el shooter de Romero Games que se quedó sin financiación este año ya tiene un nuevo editor. Lo dijo en una entrevista con VGC durante Gamescom Asia, aunque no puede revelar quién es ni cuándo se anunciará.\n\nEl proyecto no sigue igual que antes. El juego original estaba pensado para un equipo de unas 110 personas, y tras perder el dinero el estudio llegó a quedarse con apenas cinco. Ahora han vuelto a contratar a diez de los antiguos líderes de área y el equipo ronda las 15 o 16 personas, así que Romero decidió rediseñar el juego por completo, aprovechando arte, armas, personajes y código del proyecto anterior. Según él, el estudio conserva la propiedad intelectual y el editor no tendrá voz en las decisiones creativas.\n\nRomero dice que está feliz con un equipo pequeño porque le permite meter mano directamente en el diseño en vez de pasarse el día en reuniones. Del juego todavía no hay nombre, plataformas ni fecha, pero es una buena noticia en un año lleno de cancelaciones y cierres.",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/john-romero-confirms-his-axed-xbox-game-has-a-new-publisher-and-hes-rehired-some-staff/"
-        },
-        {
-          "nombre": "Game Developer",
-          "url": "https://www.gamedeveloper.com/business/john-romero-canceled-game-finds-a-new-publisher-amidst-an-overall-scope-change"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-chronicles-medieval-raw-power-pierde-financiacion",
-      "fecha": "2026-10-31",
-      "titulo": "El estudio de Chronicles: Medieval pierde su financiación y advierte que podría cerrar",
-      "juego": "Chronicles: Medieval",
-      "etiqueta": "#ChroniclesMedieval",
-      "imagen": "",
-      "contenido": "Raw Power Games, el estudio danés detrás de Chronicles: Medieval, anunció que se quedó sin la financiación que sostenía el proyecto y que corre un riesgo real de cerrar. En su comunicado explica que, por circunstancias ajenas a su control, ese dinero ya no está disponible, pero no aclara de dónde venía ni por qué se retiró.\n\nChronicles: Medieval es un RPG de mundo abierto ambientado en la Europa de la Guerra de los Cien Años, donde comandas tropas en tiempo real y peleas junto a ellas en batallas con cientos de soldados. Se presentó en el Summer Game Fest de 2025 con un tráiler narrado por Tom Hardy y su página de Steam lo sigue mostrando para 2027 en acceso anticipado.\n\nEl equipo dice que está en conversaciones con posibles socios, aunque no promete nada y avisará a la comunidad sea cual sea el resultado. Mientras tanto, pide a los fans que lo mantengan en su lista de deseados y sigan hablando del juego, porque eso pesa más de lo que parece a la hora de negociar.\n\nOtro proyecto prometedor que queda en el aire en un año muy duro para los estudios medianos.",
-      "fuentes": [
-        {
-          "nombre": "Inven Global",
-          "url": "https://www.invenglobal.com/articles/27961/chronicles-medieval-studio-raw-power-games-loses-funding-warns-it-may-close-before-early-access"
-        },
-        {
-          "nombre": "iXBT.games",
-          "url": "https://ixbt.games/en/news/2026/10/31/chronicles-medieval-pod-ugrozoi-otmeny-iz-za-finansovyx-problem-razrabotcikov.html"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-circana-septiembre-wolverine-ps5-switch-2",
-      "fecha": "2026-10-31",
-      "titulo": "Circana de septiembre: Wolverine dispara la PS5 en EE. UU. y Switch 2 baja un 12%",
-      "juego": "Marvel's Wolverine",
-      "etiqueta": "#Ventas",
-      "imagen": "",
-      "contenido": "Circana publicó sus datos de septiembre para Estados Unidos y el gran ganador fue PlayStation. Los ingresos por hardware de PS5 subieron un 43% frente al mismo mes del año pasado, y el analista Mat Piscatella se lo atribuye sobre todo a Marvel's Wolverine. Hasta el DualSense edición Wolverine terminó como el accesorio más vendido del mes.\n\nNintendo Switch 2, en cambio, bajó un 12% en ingresos por hardware y ya no es la consola que más rápido se vende en la historia del país. Piscatella le quita dramatismo: la comparación es rara porque la consola nunca tuvo problemas de stock en su primer año, hubo una subida de precio y septiembre fue un mes flojo de lanzamientos. Según él, no ve \"nada de qué preocuparse\" y espera un salto fuerte con el nuevo Zelda.\n\nEl dato más incómodo es para Xbox: Circana no detectó ningún empujón en ventas de consola con el lanzamiento de Gears of War: E-Day, a pesar de ser exclusivo. Una señal más de que hoy los juegos grandes mueven software, pero no necesariamente máquinas.\n\nLos números de octubre llegan en unas semanas. ¿Creen que Zelda le devuelve el primer lugar a Switch 2?",
-      "fuentes": [
-        {
-          "nombre": "The Game Business",
-          "url": "https://www.thegamebusiness.com/p/wolverine-lifts-ps5-but-xbox-struggles"
-        },
-        {
-          "nombre": "Nintendo Wire",
-          "url": "https://nintendowire.com/news/2026/10/30/switch-2-is-no-longer-the-fastest-selling-console-in-the-us-despite-selling-very-well/"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-crimson-desert-prueba-gratis-charting-the-unknown",
-      "fecha": "2026-10-31",
-      "titulo": "Crimson Desert estrena expansión y una prueba gratis de cinco horas en Xbox",
-      "juego": "Crimson Desert",
-      "etiqueta": "#CrimsonDesert",
-      "imagen": "https://xboxwire.thesourcemediaassets.com/sites/2/2026/10/Hero-Image_Crimson-Desert_DLC_KeyArtLayer_1920x1080-05f91c8520d05d01d228.jpg",
-      "contenido": "Pearl Abyss lanzó el 29 de octubre Charting the Unknown, la primera expansión de pago de Crimson Desert. Trae tres historias nuevas, una para cada protagonista (Kliff, Oongka y Damiane), exploración en el océano con ruinas submarinas y barco propio, romances que pueden terminar en boda, una casa personalizable y castillos que se pueden decorar. También suma el Garden of Trials, un modo de combate donde enfrentas a jefes ya conocidos uno tras otro. En la tienda de Xbox cuesta 24,99 dólares.\n\nJunto con la expansión llegó una sorpresa: una prueba gratuita de cinco horas del juego base para Xbox Series X|S, disponible hasta principios de enero de 2027. Hay que buscar específicamente Crimson Desert Enhanced en la tienda, que es la versión que incluye la actualización 2.00 con escenas nuevas y más doblaje. Si después compras el juego, el progreso se conserva.\n\nEs una buena oportunidad para quien se quedó con la duda en marzo: el juego cambió bastante desde su lanzamiento. ¿Le van a dar una oportunidad?",
-      "fuentes": [
-        {
-          "nombre": "Xbox Wire",
-          "url": "https://news.xbox.com/en-us/2026/10/29/crimson-desert-charting-the-unknown/"
-        },
-        {
-          "nombre": "Pure Xbox",
-          "url": "https://www.purexbox.com/news/2026/10/crimson-desert-enhanced-adds-surprise-free-trial-for-all-xbox-series-xs-owners"
-        }
-      ]
-    },
-    {
-      "id": "2026-10-31-silver-palace-fecha-14-diciembre",
-      "fecha": "2026-10-31",
-      "titulo": "Silver Palace, el RPG de mundo abierto con detectives, sale el 14 de diciembre",
-      "juego": "Silver Palace",
-      "etiqueta": "#SilverPalace",
-      "imagen": "",
-      "contenido": "El estudio Elementa confirmó en un comunicado oficial que Silver Palace se lanzará en todo el mundo el 14 de diciembre de 2026 en PC, iOS y Android. El prerregistro ya está abierto, y el anuncio también enlaza preinscripciones en PlayStation Store y Epic Games Store.\n\nSilver Palace es un RPG de acción en mundo abierto con estilo anime y una buena dosis de investigación: el jugador resuelve casos junto a un grupo de compañeros en una ciudad de inspiración victoriana, donde varias facciones se pelean por una sustancia misteriosa llamada silverio. El combate es en tiempo real y permite cambiar de personaje al vuelo para encadenar habilidades. Está hecho con Unreal Engine 5 y ya pasó por varias pruebas beta con jugadores.\n\nElementa es una compañía fundada en 2020 en Singapur, con oficinas en Japón y Corea del Sur. Antes del lanzamiento, el juego se dejará ver en gamescom asia x Thailand Game Show 2026 y en el Anime X Game Festival de Corea.\n\nDiciembre viene cargado, pero a los fans de los RPG estilo anime les toca anotar esta fecha.",
-      "fuentes": [
-        {
-          "nombre": "Games Press (comunicado oficial de Elementa)",
-          "url": "https://www.gamespress.com/es/Silver-Palace-Sets-Global-Launch-Date-for-December-14-2026"
         }
       ]
     }
