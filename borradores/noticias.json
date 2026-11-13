@@ -1,6 +1,90 @@
 {
-  "actualizado": "2026-11-12T10:52:40Z",
+  "actualizado": "2026-11-13T10:47:15Z",
   "borradores": [
+    {
+      "id": "2026-11-13-wolfenstein-3-produccion-machinegames",
+      "fecha": "2026-11-13",
+      "titulo": "Wolfenstein 3 es oficial: MachineGames ya lo tiene en producción",
+      "juego": "Wolfenstein II: The New Colossus",
+      "etiqueta": "#Wolfenstein3",
+      "imagen": "",
+      "contenido": "Después de casi una década de espera, Xbox confirmó que Wolfenstein 3 está en producción en MachineGames. Lo anunció Asha Sharma, CEO de Xbox, durante la celebración por los 25 años de la marca, y lo acompañó con una imagen que parece ser la primera página del guion del juego.\n\nEl estudio sueco también confirmó que regresan Brian Bloom como B.J. Blazkowicz y Debra Wilson como Grace Walker, dos voces clave de la saga moderna. Eso apunta a una continuación directa de Wolfenstein II: The New Colossus (2017), y no a un spin-off como Youngblood. Por ahora no hay fecha, plataformas ni tráiler.\n\nEn el mismo evento, Sharma confirmó que id Software ya trabaja en su próximo juego tras Doom: The Dark Ages, aunque sin nombre ni detalles. Es una buena señal para el estudio, que fue golpeado por los despidos de Microsoft este año.\n\nMachineGames viene de dejar el listón alto con Indiana Jones and the Great Circle, así que las expectativas para el regreso de Blazkowicz son grandes. ¿Qué esperan de esta tercera entrega?",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/11/12/xbox-25th-anniversary-news-recap/"
+        },
+        {
+          "nombre": "GamesRadar+",
+          "url": "https://www.gamesradar.com/games/fps/wolfenstein-3-is-in-the-works-at-machinegames-xbox-ceo-announces-one-of-gamings-most-important-franchises/"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/id-software-confirms-its-working-on-a-new-game-after-layoffs/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-xbox-original-21-juegos-pc-kotor-morrowind",
+      "fecha": "2026-11-13",
+      "titulo": "KOTOR, Morrowind y TimeSplitters 2 llegan a PC con la retrocompatibilidad de Xbox",
+      "juego": "Star Wars: Knights of the Old Republic",
+      "etiqueta": "#XboxRetro",
+      "imagen": "",
+      "contenido": "Microsoft sumó 21 juegos de la primera Xbox a su retrocompatibilidad en PC, con lo que el catálogo llega a 25 títulos. La ampliación coincide con el 25 aniversario de la consola original, que se cumple el 15 de noviembre.\n\nLa lista tiene peso: Star Wars: Knights of the Old Republic y su secuela, The Elder Scrolls III: Morrowind, TimeSplitters 2 y Future Perfect, los dos Star Wars Battlefront clásicos, Jedi Outcast, Jedi Academy, Republic Commando, Red Faction 2 y Grabbed by the Ghoulies, entre otros. Se suman a Blinx, Conker: Live and Reloaded, Crimson Skies y Fuzion Frenzy, que ya estaban disponibles.\n\nTodos admiten teclado y ratón y funcionan en portátiles como la ROG Xbox Ally. Además, KOTOR, KOTOR II, Blinx y Conker estrenan logros, que también se pueden desbloquear en Xbox One y Series. Hace falta Windows 11 y, según el caso, comprar el juego o tener Game Pass: de los nuevos, solo Morrowind y Grabbed by the Ghoulies están en el servicio. La disponibilidad varía según la región.\n\nEs una de las mejores noticias del año para la preservación en PC. ¿Cuál de estos clásicos van a volver a jugar primero?",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/11/12/xbox-25th-anniversary-news-recap/"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/uncategorised/21-original-xbox-games-are-now-on-pc-via-backward-compatibility/"
+        },
+        {
+          "nombre": "Outputlag",
+          "url": "https://outputlag.com/news/original-xbox-games-pc-knights-of-the-old-republic-morrowind-timesplitters-2/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-slay-the-spire-2-the-fool-blitz-dread-beta",
+      "fecha": "2026-11-13",
+      "titulo": "Slay the Spire 2 estrena The Fool, su primer personaje nuevo, y dos modos en beta",
+      "juego": "Slay the Spire 2",
+      "etiqueta": "#SlayTheSpire2",
+      "imagen": "",
+      "contenido": "Mega Crit lanzó la actualización más grande de Slay the Spire 2 desde que llegó en acceso anticipado en marzo. La versión 0.113.0 añade The Fool, el primer personaje nuevo del juego, al que el estudio presenta como un músico algo bobo que pelea con un arco.\n\nTambién llegan dos modos. Blitz es una partida condensada y caótica centrada en armar el mazo: no hay mapa, el oro deja de importar y la tienda funciona distinto. Dread es el reto para los veteranos: solo se desbloquea al llegar a la ascensión 10 con todos los personajes, incluido The Fool, y activa a la vez todos los modificadores de dificultad.\n\nPor ahora todo está en la rama beta. Para probarlo, hay que entrar en las propiedades del juego en Steam y escoger \"public-beta\" en la sección de versiones y betas. Mega Crit avisa que hará bastantes cambios de contenido y balance antes de pasarlo a la versión principal.\n\nEl estudio había dicho que espaciaría las actualizaciones para enfocarse en contenido más grande, y esta es la primera prueba. ¿Ya le dieron una oportunidad a The Fool?",
+      "fuentes": [
+        {
+          "nombre": "GamesRadar+",
+          "url": "https://www.gamesradar.com/games/roguelike/slay-the-spire-2s-biggest-update-yet-adds-the-roguelike-deckbuilders-first-new-character-and-two-new-game-modes/"
+        },
+        {
+          "nombre": "Vandal",
+          "url": "https://vandal.elespanol.com/noticia/2026317010/slay-the-spire-2-suma-un-nuevo-personaje-y-dos-modos-de-juego-con-su-nueva-actualizacion/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-13-nintendo-black-friday-switch-2-mario-kart-world",
+      "fecha": "2026-11-13",
+      "titulo": "Nintendo anuncia su Black Friday: Switch 2 con Mario Kart World baja a 499,99 dólares",
+      "juego": "Mario Kart World",
+      "etiqueta": "#BlackFriday",
+      "imagen": "",
+      "contenido": "Nintendo of America detalló sus ofertas de Black Friday. La más llamativa es el pack de Nintendo Switch 2 con Mario Kart World, que baja unos 50 dólares hasta los 499,99 entre el 22 de noviembre y el 5 de diciembre. Incluye la descarga completa del juego y 90 días de Nintendo Switch Online.\n\nEn la eShop habrá rebajas digitales del 19 de noviembre al 2 de diciembre, aunque Nintendo todavía no ha dicho qué juegos entran. Desde el 22 de noviembre, varios juegos físicos tendrán 20 dólares de descuento en tiendas seleccionadas, como Donkey Kong Bananza, Metroid Prime 4: Beyond, Kirby Air Riders, Super Mario Party Jamboree y Super Mario Galaxy + Super Mario Galaxy 2.\n\nOjo: estas ofertas son para Estados Unidos. Por ahora no se ha confirmado una campaña igual en Europa ni en otras regiones, aunque la rebaja digital podría extenderse a otras eShops.\n\nPara quien todavía no tiene Switch 2, es una de las mejores ventanas del año para dar el salto. ¿Alguien está esperando esta oferta?",
+      "fuentes": [
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/nintendo-announces-black-friday-2026-deals"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/nintendos-black-friday-deals-include-switch-2-and-mario-kart-world-bundle/"
+        }
+      ]
+    },
     {
       "id": "2026-11-12-ocarina-of-time-switch-2-5-2-millones-4-dias",
       "fecha": "2026-11-12",
