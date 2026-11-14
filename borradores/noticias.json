@@ -1,6 +1,86 @@
 {
-  "actualizado": "2026-11-13T10:47:15Z",
+  "actualizado": "2026-11-14T10:58:18Z",
   "borradores": [
+    {
+      "id": "2026-11-14-marvel-rivals-temporada-11-doomsday-nightcrawler",
+      "fecha": "2026-11-14",
+      "titulo": "Marvel Rivals arranca su temporada 11, Doomsday, con Nightcrawler como nuevo estratega",
+      "juego": "Marvel Rivals",
+      "etiqueta": "#MarvelRivals",
+      "imagen": "",
+      "contenido": "Marvel Rivals ya está en su temporada 11, bautizada como Doomsday, que comenzó el 13 de noviembre. La gran novedad jugable es Nightcrawler, el mutante de los X-Men, que entra como estratega (el rol de apoyo del juego) con habilidades basadas en teletransportarse por el mapa. NetEase también confirmó a Drácula como otro personaje nuevo de esta temporada, aunque por ahora ha contado muy poco de él.\n\nLa historia gira alrededor de una incursión en la que chocan dos líneas temporales de Nueva York, con el Doctor Doom como villano de fondo. De ahí sale el contenido más ambicioso: el modo Chrono-Annihilation, con partidas de 18 contra 18 en un mapa propio, Incursion Point, que llega con la actualización del 26 de noviembre.\n\nComo el juego cumple su segundo año, hay eventos de aniversario con premios por iniciar sesión: completarlos da 2.500 unidades y un traje legendario de Deadpool gratis. Además, el 19 de noviembre abre en Times Square un espacio con seis minijuegos. En lo competitivo, las finales de Marvel Rivals Ignite 2026 se juegan del 23 al 29 de noviembre en Estocolmo con un millón de dólares en premios.\n\n¿Van a darle una oportunidad a Nightcrawler como support o siguen fieles a su main?",
+      "fuentes": [
+        {
+          "nombre": "Comunicado de NetEase (Gamespress)",
+          "url": "https://www.gamespress.com/BAMF-Nightcrawler-and-Dracula-Join-the-Marvel-Rivals-Battle-as-Season-"
+        },
+        {
+          "nombre": "GosuGamers",
+          "url": "https://www.gosugamers.net/entertainment/news/79487-marvel-rivals-season-11-adds-nightcrawler-teases-dracula-as-second-playable-hero"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-14-blood-of-dawnwalker-actualizacion-1-2-nueva-partida-plus",
+      "fecha": "2026-11-14",
+      "titulo": "The Blood of Dawnwalker recibe Nueva Partida+ la próxima semana y sube el nivel máximo a 100",
+      "juego": "The Blood of Dawnwalker",
+      "etiqueta": "#Dawnwalker",
+      "imagen": "",
+      "contenido": "Rebel Wolves, el estudio fundado por veteranos de The Witcher, anunció en la cuenta oficial del juego que la actualización 1.2 de The Blood of Dawnwalker llega la próxima semana. Todavía no hay día exacto, pero ya se sabe lo más importante: trae el modo Nueva Partida+, la función que más pedía la comunidad desde el lanzamiento en septiembre.\n\nEl modo se desbloquea al terminar el epílogo y permite empezar otra vez conservando el nivel, las habilidades desbloqueadas y el inventario. Los objetos tendrán versiones especiales para esta segunda vuelta, con estadísticas mejoradas, y el nivel máximo sube hasta 100.\n\nEl parche no es solo para quienes ya acabaron la historia. Los enemigos se reequilibran en todas las regiones, con cambios en su vida y en la frecuencia con la que usan sus habilidades, y se ajusta el terreno para que moverse sea más fluido. Quienes tengan la Eclipse Edition reciben además una banda sonora ampliada con temas nuevos, que también llegarán a plataformas de streaming.\n\nEs la segunda gran actualización del juego tras la 1.1 de octubre, que añadió un nuevo nivel de dificultad y más de mil correcciones. ¿Alguien se anima a una segunda vuelta con Coen?",
+      "fuentes": [
+        {
+          "nombre": "Gamereactor",
+          "url": "https://www.gamereactor.eu/blood-of-dawnwalker-new-game-plus-update-1-2/"
+        },
+        {
+          "nombre": "GamesRadar+",
+          "url": "https://www.gamesradar.com/games/rpg/the-blood-of-dawnwalker-is-getting-new-game-next-week-with-patch-bringing-the-level-cap-for-the-ex-witcher-devs-vampire-rpg-up-to-100/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-14-ue-digital-fairness-act-cajas-botin-menores",
+      "fecha": "2026-11-14",
+      "titulo": "La UE propone prohibir las cajas de botín a menores y la industria responde con dureza",
+      "juego": "EA Sports FC 26",
+      "etiqueta": "#CajasDeBotín",
+      "imagen": "",
+      "contenido": "La Comisión Europea presentó esta semana la Ley de Equidad Digital (Digital Fairness Act), una propuesta que podría cambiar cómo se monetizan muchos juegos en Europa. Para los menores de 18 años, plantea prohibir las cajas de botín de pago y las compras que hagan falta para avanzar o ganar. En juegos dirigidos a ese público, las monedas virtuales vendrían desactivadas por defecto y solo se podrían activar con permiso de madres, padres o tutores.\n\nLos adultos podrían seguir comprando cajas de botín, pero con las probabilidades visibles antes de pagar y opciones sencillas para desactivarlas. Además, toda moneda virtual tendría que mostrar su valor en dinero real, y el jugador podría apagar notificaciones y rachas pensadas para que vuelva a diario. En casos grandes, las multas podrían llegar al 6 % de la facturación anual global.\n\nLa reacción no se hizo esperar: la Federación Europea de Desarrolladores de Juegos y Video Games Europe la calificaron como un posible \"game over\" para la industria europea y alegan que duplica normas que ya existen. Ojo: todavía es solo una propuesta. Ahora la deben debatir el Parlamento Europeo y los gobiernos de la UE, y puede cambiar bastante antes de convertirse en ley.\n\nAunque es una norma europea, sus efectos podrían notarse en las versiones de otros países. ¿Ustedes están a favor de limitar las cajas de botín?",
+      "fuentes": [
+        {
+          "nombre": "Euronews",
+          "url": "https://www.euronews.com/2026/11/11/eu-targets-subscription-traps-addictive-design-and-hidden-fees-with-new-digital-rules"
+        },
+        {
+          "nombre": "Game Developer",
+          "url": "https://www.gamedeveloper.com/business/european-union-proposes-digital-fairness-act-which-could-have-major-effects-on-game-development"
+        },
+        {
+          "nombre": "Comisión Europea",
+          "url": "https://ec.europa.eu/commission/presscorner/detail/en/ip_26_2407"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-14-witcher-3-songs-of-the-past-ia-voz-geralt-polaco",
+      "fecha": "2026-11-14",
+      "titulo": "CD Projekt usa IA, con permiso del actor, para la voz polaca de Geralt en Songs of the Past",
+      "juego": "The Witcher 3: Wild Hunt",
+      "etiqueta": "#TheWitcher3",
+      "imagen": "",
+      "contenido": "CD Projekt Red confirmó que usó inteligencia artificial para ajustar algunas líneas de Geralt en el doblaje polaco de Songs of the Past, la nueva expansión de The Witcher 3 prevista para 2027. El caso es muy particular: Jacek Rozenek, la voz polaca del brujo, sufrió un derrame cerebral en 2019 que lo dejó sin poder hablar. Volvió a actuar en 2022, pero su voz suena hoy más grave y áspera que hace una década.\n\nPara que las frases nuevas no desentonaran con las miles que grabó en su día, Rozenek grabó sus líneas con normalidad y el estudio las pasó por herramientas de Respeecher entrenadas con su trabajo anterior en la saga. El actor dio su consentimiento, sigue contratado y cobra por el trabajo. Según Mikołaj Szwed, productor de localización, fue una excepción que solo se consideró por la salud de Rozenek, y lo defendió como un uso ético de la IA, con consentimiento y con un buen fin.\n\nNo es la primera vez: el estudio ya recurrió a Respeecher en Phantom Liberty, la expansión de Cyberpunk 2077, para recrear la voz de un actor fallecido con permiso de su familia. Llega en plena discusión sobre la IA en los videojuegos. ¿Les parece un uso aceptable?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/the-witcher-3-expansion-uses-ai-to-adjust-geralts-polish-voiceover-because-the-actor-suffered-a-stroke/"
+        },
+        {
+          "nombre": "Game Developer",
+          "url": "https://www.gamedeveloper.com/production/polish-voice-actor-for-geralt-returns-for-the-witcher-3-with-ai"
+        }
+      ]
+    },
     {
       "id": "2026-11-13-wolfenstein-3-produccion-machinegames",
       "fecha": "2026-11-13",
@@ -940,98 +1020,6 @@
         {
           "nombre": "VGC",
           "url": "https://www.videogameschronicle.com/news/zelda-ocarina-of-time-switch-2-remake-review-published-in-famitsu/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-03-elder-scrolls-vi-sentinel-nombre-oficial",
-      "fecha": "2026-11-03",
-      "titulo": "The Elder Scrolls VI ya tiene nombre: se llamará Sentinel y nos lleva a Hammerfell",
-      "juego": "The Elder Scrolls VI",
-      "etiqueta": "#ElderScrollsVI",
-      "imagen": "",
-      "contenido": "Después de ocho años de silencio casi total, Bethesda por fin le puso nombre a su próximo gran RPG: The Elder Scrolls VI: Sentinel. El anuncio llegó al final de un video por los 40 años de Bethesda Game Studios, con un breve teaser en CG y el logo oficial. No hubo gameplay, ni plataformas, ni ventana de lanzamiento.\n\nLo que sí quedó claro es el escenario: la descripción del tráiler menciona a Hammerfell, la región desértica de los redguards, y Sentinel es justamente una de sus ciudades más conocidas. El texto viene firmado por un Moth Priest al servicio de la reina de Hammerfell y deja una frase misteriosa: \"Un futuro perdido. Una victoria deshecha\". La directora de Xbox, Asha Sharma, celebró el anuncio en redes llamándolo \"el próximo capítulo de The Elder Scrolls\".\n\nEso sí, Bethesda avisó que pasará un buen tiempo antes de mostrar más. Como parte del aniversario, The Elder Scrolls Online también estrenó un evento gratuito por tiempo limitado en el desierto de Alik'r.\n\nEl juego se anunció en 2018, así que la paciencia sigue siendo la palabra clave. ¿Les entusiasma volver a Hammerfell o esperaban otra provincia?",
-      "fuentes": [
-        {
-          "nombre": "Pure Xbox",
-          "url": "https://www.purexbox.com/news/2026/11/xbox-ceo-congratulates-bethesda-as-the-elder-scrolls-6-gets-official-name-reveal-trailer"
-        },
-        {
-          "nombre": "Wccftech",
-          "url": "https://wccftech.com/bethesda-40th-anniversary-the-elder-scrolls-vi-sentinel/"
-        },
-        {
-          "nombre": "Hardcore Gamer (OpenCritic)",
-          "url": "https://opencritic.com/news/39015/bethesda-celebrates-40th-anniversary-by-officially-naming-the-elder-scrolls-vi"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-03-gta-vi-precarga-10-noviembre-212-gb",
-      "fecha": "2026-11-03",
-      "titulo": "GTA VI se podrá precargar desde el 10 de noviembre y pedirá hasta 212 GB",
-      "juego": "Grand Theft Auto VI",
-      "etiqueta": "#GTAVI",
-      "imagen": "",
-      "contenido": "Rockstar confirmó en su Newswire cuándo podremos empezar a descargar Grand Theft Auto VI: la precarga arranca el 10 de noviembre en PS5 y Xbox Series X|S, nueve días antes del lanzamiento del 19 de noviembre. Solo podrán hacerlo quienes tengan la reserva digital, y conviene ir liberando espacio, porque la descarga llega hasta los 212 GB según la consola.\n\nLos horarios cambian por plataforma. En PS5 la precarga se abre a la medianoche local de cada región el 10 de noviembre. En Xbox es un desbloqueo global a las 00:00 GMT, lo que en América cae la noche del 9 de noviembre (por ejemplo, a las 7:00 p. m. hora del este de EE. UU.). Quienes compren la edición física con código en la caja recibirán su código a partir del 12 de noviembre.\n\nEl día del estreno, el juego se desbloqueará a la medianoche hora local, así que algunos países jugarán antes que otros. Después de tantos retrasos, por fin hay fecha para ir moviendo cosas del disco duro. ¿Ya tienen sitio para esos 212 GB?",
-      "fuentes": [
-        {
-          "nombre": "Rockstar Newswire",
-          "url": "https://www.rockstargames.com/newswire/article/k4ak9okk485712/grand-theft-auto-vi-pre-load-begins-on-november-10"
-        },
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/rockstar-details-grand-theft-auto-6-pre-load-date-and-time-and-file-size/"
-        },
-        {
-          "nombre": "Pure Xbox",
-          "url": "https://purexbox.com/news/2026/11/gta-6-download-size-and-preload-times-officially-revealed-for-xbox-series-xs"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-03-game-pass-noviembre-oleada-1-banjo-perfect-dark",
-      "fecha": "2026-11-03",
-      "titulo": "Game Pass en noviembre: Football Manager 27, Toxic Commando y clásicos de Rare en Essential",
-      "juego": "Banjo-Kazooie",
-      "etiqueta": "#GamePass",
-      "imagen": "",
-      "contenido": "Xbox anunció la primera tanda de juegos que llegan a Game Pass entre el 3 y el 17 de noviembre. Para Ultimate y PC Game Pass destacan Football Manager 27, con un acceso anticipado en PC desde el 3 de noviembre y lanzamiento completo en consola y nube el 10; Vampire Crawlers y Void/Breaker en su versión 1.0 el 4; John Carpenter's Toxic Commando el 12, y Aphelion el 17. También entran Escape Academy 2, Warhammer Survivors, Thronefall, Tanuki: Pon's Summer y Hope in the City, entre otros.\n\nLa sorpresa está en Game Pass Essential, el plan más básico: desde el 15 de noviembre suma un paquete de clásicos de Rare y Microsoft con Banjo-Kazooie, Banjo-Tooie, Nuts & Bolts, Perfect Dark, los dos Viva Piñata, Gears of War: Judgment y Halo: Spartan Assault.\n\nOjo, que también hay despedidas: 14 juegos salen del servicio el 15 de noviembre, entre ellos Wreckfest, 1000xRESIST, GoldenEye 007, Moonlighter y Dragon Ball Xenoverse 2. Si tenían alguno pendiente, todavía están a tiempo.",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/xboxs-first-wave-of-november-game-pass-releases-includes-vampire-crawlers/"
-        },
-        {
-          "nombre": "Pure Xbox",
-          "url": "https://purexbox.com/news/2026/11/these-23-games-are-coming-to-xbox-game-pass-november-3-17"
-        },
-        {
-          "nombre": "NME",
-          "url": "https://www.nme.com/news/gaming-news/xbox-game-pass-confirms-november-2026-additions-3974805"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-03-dead-by-daylight-disculpa-dlc-streamer",
-      "fecha": "2026-11-03",
-      "titulo": "Behaviour pide disculpas por regalar todo el DLC de Dead by Daylight a un streamer polémico",
-      "juego": "Dead by Daylight",
-      "etiqueta": "#DeadByDaylight",
-      "imagen": "",
-      "contenido": "Behaviour Interactive, el estudio de Dead by Daylight, publicó una disculpa extensa tras una semana complicada con su comunidad. Todo empezó cuando, durante una transmisión, el equipo le regaló cerca de 300 dólares en contenido descargable a TheBurntPeanut, un streamer conocido por un contenido provocador que incluye insultos homofóbicos. Cuando él ofreció devolverlo, la cuenta oficial del juego respondió que se lo quedara y que ellos aguantaban las críticas.\n\nLa reacción fue inmediata: muchos jugadores sintieron que el estudio premiaba a alguien que choca con la comunidad inclusiva que el juego dice defender, y además hubo acoso de seguidores del streamer hacia jugadores de DbD. El 1 de noviembre Behaviour ya había dicho que el regalo no estaba aprobado; ahora admite que actuó demasiado rápido y sin revisar a fondo al creador.\n\nComo consecuencia, el DLC fue retirado de su cuenta, el estudio está reescribiendo sus normas para colaborar con creadores y cambiando quién puede aprobar regalos de contenido o moneda. Behaviour reconoce que recuperar la confianza será un camino lento, y por ahora recibe críticas de ambos lados.",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/dead-by-daylight-studio-apologises-for-gifting-offensive-streamer-dlc-and-telling-them-we-can-take-the-heat/"
-        },
-        {
-          "nombre": "Kotaku",
-          "url": "https://kotaku.com/dead-by-daylight-theburntpeanut-streamer-controversy-behaviour-interactive-2000752726"
-        },
-        {
-          "nombre": "Dexerto",
-          "url": "https://www.dexerto.com/gaming/dead-by-daylight-removes-theburntpeanuts-free-dlc-following-backlash-3424207/"
         }
       ]
     }
