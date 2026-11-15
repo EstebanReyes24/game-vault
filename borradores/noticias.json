@@ -1,6 +1,67 @@
 {
-  "actualizado": "2026-11-14T10:58:18Z",
+  "actualizado": "2026-11-15T10:57:10Z",
   "borradores": [
+    {
+      "id": "2026-11-15-zelnick-take-two-ia-clones-anthropic-openai",
+      "fecha": "2026-11-15",
+      "titulo": "El jefe de Take-Two critica a Anthropic y OpenAI por los clones de juegos hechos con IA",
+      "juego": "Grand Theft Auto VI",
+      "etiqueta": "#TakeTwo",
+      "imagen": "",
+      "contenido": "A pocos días del lanzamiento de GTA VI, Strauss Zelnick, director ejecutivo de Take-Two, se metió de lleno en el debate sobre los juegos clonados con inteligencia artificial. En una entrevista con IGN, le preguntaron si las empresas de IA deberían impedir que sus usuarios recreen juegos ajenos, y su respuesta fue clara: todas las compañías deberían proteger la propiedad intelectual, la suya y la de los demás.\n\nZelnick fue más allá y señaló a Anthropic y OpenAI, a las que considera negocios de propiedad intelectual. Para él resulta irónico pisotear la creación de otros y, al mismo tiempo, esperar que se respete la propia.\n\nEl contexto pesa. Anthropic añadió hace poco una restricción para que Claude no ayude a recrear juegos específicos de otros, aunque aclaró que los juegos originales, los de géneros conocidos y los hechos con diseños propios siguen permitidos. Según los reportes, OpenAI no ha anunciado algo parecido por ahora. Mientras tanto, en Steam crecen las copias rápidas de juegos populares, y algunos desarrolladores indie han llegado a cancelar demos por miedo a que les clonen el proyecto antes de salir.\n\n¿Les toca a las empresas de IA poner el freno, o eso debe resolverse en las tiendas y en los tribunales?",
+      "fuentes": [
+        {
+          "nombre": "GamesRadar+",
+          "url": "https://www.gamesradar.com/games/grand-theft-auto/ahead-of-gta-6-take-two-ceo-calls-out-anthropic-and-openai-over-ai-game-clones-as-its-ironic-to-stomp-on-someone-elses-ip/"
+        },
+        {
+          "nombre": "VGTimes",
+          "url": "https://vgtimes.com/gaming-news/174620-ahead-of-gta-6-take-two-ceo-calls-out-openai-and-anthropic-over-game-clones.html"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-15-metaphor-refantazio-switch-2-parche-error-colores",
+      "fecha": "2026-11-15",
+      "titulo": "Atlus prepara un parche para el error de colores de Metaphor: ReFantazio en Switch 2",
+      "juego": "Metaphor: ReFantazio",
+      "etiqueta": "#Metaphor",
+      "imagen": "",
+      "contenido": "Metaphor: ReFantazio acaba de llegar a Nintendo Switch 2, el 12 de noviembre, y ya tiene su primer problema reconocido. Atlus confirmó que algunos objetos y personajes pueden mostrarse por un rato con colores distintos a los originales, y que está preparando una actualización para corregirlo.\n\nLa buena noticia es que se trata de un fallo visual: según la compañía, no afecta el progreso de la partida. Algunos reportes de la prensa indican que aparece después de muchas horas de juego, alrededor de 30, aunque Atlus no dio una cifra. Tampoco hay fecha para el parche; el estudio dice que avisará por su cuenta oficial de X y su web cuando esté listo.\n\nEl port llegó con un modo de rendimiento y otro de gráficos, y los análisis previos ya habían señalado algunos tropiezos en la tasa de imágenes del modo rendimiento. Aun así, para mucha gente es la primera oportunidad de jugar en una consola de Nintendo el RPG de Studio Zero, el equipo de Katsura Hashino, que debutó en 2024 en PlayStation, Xbox y PC.\n\nSi ya lo están jugando en Switch 2, ¿les ha salido el error o les ha ido bien hasta ahora?",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/metaphor-refantazio-switch-2-patch-to-resolve-colour-glitch"
+        },
+        {
+          "nombre": "Spielemagazin",
+          "url": "https://www.spielemagazin.de/spiele/news/metaphor-refantazio-patch-soll-farbfehler-auf-switch-2-beheben/50085"
+        },
+        {
+          "nombre": "Gaming Route",
+          "url": "https://gamingroute.com/metaphor-refantazio-switch-2-color-glitch/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-15-epic-gratis-alien-isolation-mark-of-the-deep",
+      "fecha": "2026-11-15",
+      "titulo": "Alien: Isolation y Mark of the Deep serán gratis en Epic Games Store desde el 19 de noviembre",
+      "juego": "Alien: Isolation",
+      "etiqueta": "#EpicGratis",
+      "imagen": "",
+      "contenido": "La Epic Games Store ya confirmó sus próximos regalos para PC: Alien: Isolation y Mark of the Deep. Los dos se podrán reclamar gratis desde el jueves 19 de noviembre hasta el jueves 26, con el cambio a las 16:00 UTC, que son las 12:00 del mediodía en Santo Domingo y La Paz. Una vez reclamados, se quedan en la biblioteca para siempre.\n\nAlien: Isolation, de Creative Assembly, sigue siendo uno de los mejores juegos de terror basados en una película: una sola criatura que te persigue por la estación Sevastopol, sin armas para enfrentarla de verdad. Normalmente cuesta 39,99 dólares, y no es la primera vez que Epic lo regala, así que conviene revisar si ya lo tienen.\n\nMark of the Deep, de Mad Mimic, es una aventura de piratas que mezcla la exploración de un metroidvania con combate al estilo souls. Salió en 2025 y su precio habitual es de 19,99 dólares.\n\nHasta el 19, el juego gratuito de la semana sigue siendo Knightica. ¿Cuál de los dos les interesa más?",
+      "fuentes": [
+        {
+          "nombre": "Epic Games Store",
+          "url": "https://store.epicgames.com/en-US/free-games"
+        },
+        {
+          "nombre": "Gaming Route",
+          "url": "https://gamingroute.com/epic-free-games-alien-isolation/"
+        }
+      ]
+    },
     {
       "id": "2026-11-14-marvel-rivals-temporada-11-doomsday-nightcrawler",
       "fecha": "2026-11-14",
@@ -757,269 +818,6 @@
         {
           "nombre": "VGC",
           "url": "https://www.videogameschronicle.com/news/gog-announces-first-ever-games-showcase/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-god-of-war-laufey-retraso-20-mayo",
-      "fecha": "2026-11-04",
-      "titulo": "God of War Laufey se retrasa: ahora sale el 20 de mayo de 2027 en PS5",
-      "juego": "God of War Laufey",
-      "etiqueta": "#GodOfWar",
-      "imagen": "",
-      "contenido": "Santa Monica Studio confirmó que God of War Laufey no llegará en febrero como estaba previsto. La nueva fecha de lanzamiento es el 20 de mayo de 2027, poco más de tres meses después del plan original del 16 de febrero, y sigue siendo exclusivo de PlayStation 5.\n\nEl estudio anunció el cambio en sus redes sociales y explicó que usará ese tiempo extra para dar los últimos retoques y llevar el juego a su máximo potencial. También agradeció el entusiasmo de los fans desde la presentación en el State of Play de junio y prometió compartir más detalles pronto.\n\nPara quien llegue nuevo: Laufey es la primera entrega principal de la saga en la que Kratos no es el protagonista. Aquí controlamos a Faye, la difunta esposa de Kratos y madre de Atreus, en un más allá donde se cruzan dioses y criaturas de varias mitologías. La historia corre en paralelo a los eventos de God of War (2018) y Ragnarök, y promete un combate más ágil que el de las dos entregas anteriores.\n\nAun con el retraso, el juego saldrá menos de un año después de su anuncio. ¿Prefieren esperar unos meses más si eso significa un lanzamiento más pulido?",
-      "fuentes": [
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/ps5-exclusive-god-of-war-laufey-has-officially-been-delayed-by-three-months"
-        },
-        {
-          "nombre": "Vandal",
-          "url": "https://vandal.elespanol.com/noticia/2026308040/oficial-god-of-war-laufey-no-llegara-en-febrero-y-su-lanzamiento-se-retrasa-unos-meses/"
-        },
-        {
-          "nombre": "Engadget",
-          "url": "https://www.engadget.com/2306802/god-of-war-laufey-is-delayed-until-may-20/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-steam-cambia-revision-juegos-avalancha-ia",
-      "fecha": "2026-11-04",
-      "titulo": "Steam endurece su proceso de revisión ante la avalancha de lanzamientos",
-      "juego": "Steam",
-      "etiqueta": "#Steam",
-      "imagen": "",
-      "contenido": "Valve actualizó las reglas que deben seguir los desarrolladores antes de enviar un juego a revisión en Steam. El cambio llega después de que la propia compañía reconociera que las revisiones están tardando más de la cuenta: su meta es resolverlas en tres a cinco días, pero ahora mismo pueden llegar a doce días hábiles.\n\nSegún el anuncio publicado en Steamworks, los estudios tendrán que probar su juego desde el cliente de Steam durante al menos cinco minutos antes de enviarlo, ya que Valve recibía versiones que nunca se habían ejecutado en la plataforma. Además deberán confirmar que los redistribuibles comunes como DirectX y Visual C++ están bien configurados, que los logros funcionan, que las rutas de guardado en la nube son correctas y clasificar las capturas de pantalla según muestren jugabilidad, menús, arte conceptual o cinemáticas.\n\nValve dice que el objetivo es reducir las revisiones repetidas, que son las que alargan la espera. Aunque la empresa no lo atribuye directamente a la inteligencia artificial, el aumento de envíos coincide con el auge de juegos que declaran contenido generado con IA en la tienda. Y la compañía ya adelantó que vendrán más mejoras al proceso.",
-      "fuentes": [
-        {
-          "nombre": "Engadget",
-          "url": "https://www.engadget.com/2306215/valve-changed-its-steam-release-rules-amid-a-flood-of-ai-games/"
-        },
-        {
-          "nombre": "Vandal",
-          "url": "https://vandal.elespanol.com/noticia/2026308015/steam-cambia-su-proceso-de-revision-ante-la-avalancha-de-juegos-generados-por-inteligencia-artificial/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-ps-store-descargas-octubre-beamng",
-      "fecha": "2026-11-04",
-      "titulo": "Modern Warfare 4 lidera las descargas de PS Store en octubre y BeamNG.drive sorprende",
-      "juego": "BeamNG.drive",
-      "etiqueta": "#PlayStation",
-      "imagen": "",
-      "contenido": "PlayStation publicó en su blog oficial la lista de juegos más descargados en PS Store durante octubre, y hay una sorpresa. Como era de esperarse, Call of Duty: Modern Warfare 4 quedó primero en PS5 tanto en Estados Unidos y Canadá como en Europa, pero justo detrás aparece BeamNG.drive, el simulador de conducción con físicas de choques que llegó a PS5 a mediados de octubre en acceso anticipado.\n\nBeamNG.drive terminó segundo en Estados Unidos y Canadá y tercero en Europa, por delante de pesos pesados como EA Sports FC 27 (en Norteamérica), Phantom Blade Zero, Madden NFL 27 y NBA 2K27. Completan el top 10 de PS5 títulos como Peak, Star Wars: Galactic Racer y Minecraft, mientras que en Europa se colaron Enshrouded, Mafia III y Planet Zoo 2.\n\nEn PS4, Red Dead Redemption 2 sigue mandando en ambas regiones; en PS VR2 el número uno fue Hard Bullet, y entre los gratuitos destacan Once Human en Norteamérica y Fortnite en Europa.\n\nQue un juego de PC tan veterano y todavía en acceso anticipado pelee con los lanzamientos grandes del mes dice mucho del hambre que había por verlo en consola. ¿Alguno ya se puso a destrozar carros en PS5?",
-      "fuentes": [
-        {
-          "nombre": "PlayStation Blog",
-          "url": "https://blog.playstation.com/2026/11/04/playstation-store-october-2026s-top-downloads/"
-        },
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/early-access-ps5-racer-outperforms-every-october-release-apart-from-call-of-duty"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-pokopia-dazzling-decorations-9-diciembre",
-      "fecha": "2026-11-04",
-      "titulo": "Pokémon Pokopia recibe su segunda expansión, Dazzling Decorations, el 9 de diciembre",
-      "juego": "Pokémon Pokopia",
-      "etiqueta": "#Pokopia",
-      "imagen": "",
-      "contenido": "The Pokémon Company confirmó que la segunda parte del pase de expansión de Pokémon Pokopia, llamada Dazzling Decorations, llega el 9 de diciembre a Nintendo Switch 2. El anuncio salió desde la cuenta oficial de Pokémon y llega casi cuatro meses después de Bubbly Basin, la primera entrega del pase, que debutó en agosto.\n\nEsta vez el enfoque va por la personalización: habrá accesorios para vestir a tu Ditto y a los Pokémon con los que hayas hecho amistad, además de muebles nuevos y más Pokémon que conocer. Para jugarla hace falta tener instalada la actualización gratuita 3.0.0, que sale ese mismo día, y haber avanzado en la historia: completar los encargos para subir el nivel del entorno y reconstruir el Centro Pokémon en Withered Wasteland, más el pedido de Drifloon de encontrar una muñeca.\n\nNo es poca cosa para el juego: Pokopia ya pasó los cinco millones de copias y es uno de los títulos más fuertes de Switch 2, solo por detrás de Mario Kart World. La tercera parte del pase ya está prevista para 2027 y, según lo anunciado, traerá una zona nueva.\n\n¿Ustedes son de los que se pasan horas decorando o de los que van directo a completar la Pokédex?",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/pokemon-pokopias-second-expansion-announced-for-december/"
-        },
-        {
-          "nombre": "Game Informer",
-          "url": "https://gameinformer.com/2026/11/04/pokemon-pokopia-expansion-pass-part-2-dazzling-decorations-arrives-next-month-with-new"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-playstation-store-black-friday-4-30-noviembre",
-      "fecha": "2026-11-04",
-      "titulo": "El Black Friday de PlayStation Store arranca hoy y dura hasta el 30 de noviembre",
-      "juego": "Marvel's Wolverine",
-      "etiqueta": "#BlackFriday",
-      "imagen": "",
-      "contenido": "Sony adelantó su Black Friday este año: la rebaja de PlayStation Store empieza hoy, 4 de noviembre, y se mantiene hasta el 30 de noviembre. La compañía habla de miles de juegos, expansiones y contenido descargable de PS5, PS4 y PS VR2 con descuentos de hasta el 75%.\n\nEntre los títulos que Sony mostró como adelanto están Marvel's Wolverine, Saros, Astro Bot, 007 First Light, Silent Hill: Townfall, The Blood of Dawnwalker, Pragmata, Death Stranding 2: On the Beach, God of War Ragnarök, Balatro y Stardew Valley. La lista completa y los precios de cada juego se conocen al abrir la oferta, y Sony advierte que algunas ofertas pueden cambiar durante el mes: unas saldrán antes y otras se sumarán por el camino.\n\nPor ahora la promoción es solo de software. No se han anunciado descuentos en consolas, mandos ni en la suscripción de PS Plus, que en otros años llegaron más cerca del propio Black Friday, el 27 de noviembre. Con varios lanzamientos grandes de septiembre y octubre ya rebajados, puede ser buen momento para ponerse al día antes de que llegue GTA VI.\n\n¿Qué tienen en la lista de deseos esperando este descuento?",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/playstations-black-friday-sale-includes-wolverine-astro-bot-and-more/"
-        },
-        {
-          "nombre": "9to5Toys",
-          "url": "https://9to5toys.com/2026/11/03/sony-reveals-2026-playstation-store-black-friday-sale/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-nintendo-etiquetas-accesibilidad-eshop",
-      "fecha": "2026-11-04",
-      "titulo": "Nintendo añade etiquetas de accesibilidad a su tienda con la Accessible Games Initiative",
-      "juego": "Mario Kart World",
-      "etiqueta": "#Accesibilidad",
-      "imagen": "",
-      "contenido": "Nintendo empezó a mostrar etiquetas de accesibilidad en las fichas de los juegos de su tienda web en Estados Unidos, dentro del sistema creado por la Accessible Games Initiative, un proyecto impulsado por la ESA, la asociación de la industria del videojuego estadounidense. Al pulsar una etiqueta, la tienda muestra todos los juegos que tienen esa función.\n\nLas etiquetas se reparten en cuatro áreas: audio, jugabilidad, controles y visual. Hay más de veinte, con ejemplos como subtítulos grandes y claros, menús narrados, reasignación completa de botones, jugar solo con botones, opciones de color alternativas, varios controles de volumen o niveles de dificultad seleccionables.\n\nNintendo no está sola. Xbox, Ubisoft, EA, Riot Games, Amazon Games y Google (en YouTube Playables) también usan ya estas etiquetas en sus webs o tiendas; Ubisoft, por ejemplo, las ha añadido a unos 80 juegos. La adopción es voluntaria y puede convivir con otros sistemas de etiquetado.\n\nPara quien necesita una función concreta para poder jugar, saber antes de comprar si un juego la tiene ahorra tiempo y dinero. Falta ver si Sony y Valve se suman para que el estándar cubra a toda la industria.",
-      "fuentes": [
-        {
-          "nombre": "Nintendo Life",
-          "url": "https://www.nintendolife.com/news/2026/11/nintendo-joins-the-accessible-games-initiative-adopting-a-bunch-of-new-eshop-game-tags"
-        },
-        {
-          "nombre": "VGC",
-          "url": "https://videogameschronicle.com/news/accessible-games-initiative-tags-adopted-by-nintendo-xbox-ubisoft-and-ea-making-it-easier-to-find-accessibility-features"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-dragons-dogma-2-delicious-in-dungeon-colaboracion",
-      "fecha": "2026-11-04",
-      "titulo": "Dragon's Dogma 2 suma una colaboración gratis con Delicious in Dungeon: llegan Laios y Marcille",
-      "juego": "Dragon's Dogma 2",
-      "etiqueta": "#DragonsDogma2",
-      "imagen": "",
-      "contenido": "Capcom lanzó por sorpresa una nueva actualización de Dragon's Dogma 2: Dark Arisen que incluye una colaboración por tiempo limitado con Delicious in Dungeon, el manga y anime de aventuras y cocina en mazmorras. El contenido es gratuito y trae trajes inspirados en Laios y Marcille, además de peones oficiales con el aspecto de ambos personajes. El traje de Laios incluye incluso su mochila, algo que hasta ahora solo se conseguía con mods.\n\nLa colaboración ya está disponible en PS5, Xbox Series X|S y PC, y en Nintendo Switch 2 llegará con la actualización del 11 de noviembre (12 según la región). Los trajes se añaden al almacén al cargar una partida durante el periodo del evento, que termina con la actualización de finales de enero de 2027, así que conviene entrar antes de esa fecha.\n\nEl parche también corrige un buen número de errores, entre ellos un congelamiento al equipar cierta flecha con la vocación Warfarer, misiones que se quedaban bloqueadas y enemigos imposibles de derrotar en algunos eventos. Es una buena excusa para volver a Vermund, sobre todo si eres fan del anime.",
-      "fuentes": [
-        {
-          "nombre": "Nintendo Life",
-          "url": "https://www.nintendolife.com/news/2026/11/dragons-dogma-2-dark-arisen-new-update-and-anime-collab-announced-here-are-the-full-patch-notes"
-        },
-        {
-          "nombre": "Kotaku",
-          "url": "https://kotaku.com/dragons-dogma-2-drops-surprise-delicious-in-dungeon-collab-2000753287"
-        },
-        {
-          "nombre": "Noisy Pixel",
-          "url": "https://noisypixel.net/dragons-dogma-2-dark-arisen-delicious-in-dungeon-collaboration"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-wonderfall-fecha-9-diciembre-pc",
-      "fecha": "2026-11-04",
-      "titulo": "Wonderfall, la aventura indie en un París que se vuelve arena, sale el 9 de diciembre en PC",
-      "juego": "Wonderfall",
-      "etiqueta": "#Indie",
-      "imagen": "",
-      "contenido": "Attaboy Interactive, un estudio independiente de París fundado en 2022, anunció que Wonderfall saldrá el 9 de diciembre de 2026 en PC a través de Steam. Es una aventura narrativa en tercera persona ambientada en el París de los años veinte, una ciudad que se está convirtiendo en arena por culpa de una fuerza llamada Entropía.\n\nControlamos a Léon, un huérfano capaz de moldear la arena, que recorre la Île de la Cité, con lugares como Notre-Dame y la Sainte-Chapelle. La propuesta mezcla exploración, desplazamiento por el escenario, sigilo y puzles ambientales basados en esos poderes. El estudio habla de una duración de seis a ocho horas y de más de mil líneas de diálogo con voces completas en inglés.\n\nPara el público hispanohablante hay buena noticia: la interfaz y los subtítulos estarán en español. Además, la demo ya está disponible en Steam, así que se puede probar antes de decidir. Una aventura corta, con una ambientación poco vista, que puede ser buena opción para despejar entre lanzamientos enormes.",
-      "fuentes": [
-        {
-          "nombre": "Comunicado de Attaboy Interactive (Games Press)",
-          "url": "https://www.gamespress.com/ja-JP/WONDERFALL-the-narrative-adventure-set-in-a-Paris-collapsing-into-sand"
-        },
-        {
-          "nombre": "Steam",
-          "url": "https://store.steampowered.com/app/3444810"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-phantom-blade-zero-4-millones-72-horas",
-      "fecha": "2026-11-04",
-      "titulo": "Phantom Blade Zero vende más de 4 millones de copias en sus primeras 72 horas",
-      "juego": "Phantom Blade Zero",
-      "etiqueta": "#PhantomBladeZero",
-      "imagen": "",
-      "contenido": "S-GAME confirmó en su cuenta oficial que Phantom Blade Zero superó los 4 millones de copias vendidas en apenas tres días. El juego de acción salió el 29 de octubre en PS5 y PC, por ahora solo en formato digital, con un precio de 59.99 dólares en PlayStation Store. Las ediciones físicas llegarán en 2027.\n\nEn Steam el arranque también fue fuerte: el juego rozó los 800,000 jugadores simultáneos en su lanzamiento, una cifra que muy pocos títulos de un solo jugador alcanzan. Según Push Square, la mayor parte de las ventas se han dado en PC, aunque en consola tiene exclusividad temporal con PlayStation.\n\nPor qué importa: es un estudio chino relativamente pequeño, con casi una década de desarrollo, que entra al terreno de los grandes. La comparación inevitable es Black Myth: Wukong, que en 2024 vendió unos 10 millones en el mismo periodo, pero el ritmo de Phantom Blade Zero confirma que hay un público enorme para la acción exigente fuera de Japón y Occidente. También es uno de los títulos que Sony apoyó a través de su programa China Hero Project.\n\n¿Ya lo están jugando? ¿Les parece que puede llegar a los números de Wukong?",
-      "fuentes": [
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/phantom-blade-zero-is-an-instant-hit-with-4-million-sales-on-ps5-pc"
-        },
-        {
-          "nombre": "KitGuru",
-          "url": "https://www.kitguru.net/tech-news/mustafa-mahmoud/phantom-blade-zero-officially-sells-4-million-copies-in-3-days/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-control-resonant-millon-remedy-ingresos",
-      "fecha": "2026-11-04",
-      "titulo": "Control Resonant pasa el millón de copias y es el juego que más rápido ha vendido Remedy",
-      "juego": "Control Resonant",
-      "etiqueta": "#ControlResonant",
-      "imagen": "",
-      "contenido": "Remedy publicó su informe del tercer trimestre y la noticia principal es Control Resonant: el juego superó el millón de copias el 15 de octubre, unas tres semanas después de su lanzamiento digital del 24 de septiembre. Eso lo convierte en el título que más rápido ha vendido el estudio finlandés en toda su historia.\n\nEl impacto en las cuentas fue inmediato. Los ingresos del trimestre llegaron a 39.6 millones de euros, frente a 12.2 millones en el mismo periodo del año pasado, y eso que solo se contaron los primeros siete días de ventas del juego. La empresa volvió a tener beneficio operativo, aunque pequeño (0.6 millones), tras el golpe que supuso el fracaso de FBC: Firebreak. Además, casi la mitad de los compradores no había jugado el Control original, y unos 2.4 millones de usuarios aún lo tienen en su lista de deseados.\n\nEl CEO Jean-Charles Gaudechon lo describió como \"un hito decisivo\", ya que es el primer juego de esta escala que Remedy publica por su cuenta. Para un estudio que durante años tuvo críticas excelentes pero ventas modestas, es una señal de que apostar por su propia marca puede salir bien.",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/control-resonant-is-the-fastest-selling-game-in-remedys-history-says-ceo/"
-        },
-        {
-          "nombre": "PC Gamer",
-          "url": "https://www.pcgamer.com/games/action/control-resonant-is-remedys-fastest-selling-game-to-date-tripling-the-studios-quarterly-revenue/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-nagoshi-studio-cierra-gang-of-dragon",
-      "fecha": "2026-11-04",
-      "titulo": "Cierra Nagoshi Studio, el estudio del creador de Yakuza, y Gang of Dragon queda en el aire",
-      "juego": "Gang of Dragon",
-      "etiqueta": "#GangOfDragon",
-      "imagen": "",
-      "contenido": "Nagoshi Studio, el equipo que fundó Toshihiro Nagoshi (creador de la saga Yakuza) tras salir de Sega, ya no existe. Un aviso en el boletín oficial del gobierno japonés confirmó que la compañía fue disuelta por decisión de sus accionistas con efecto desde el 31 de octubre.\n\nEl estudio nació en 2021 con dinero de NetEase y trabajaba en Gang of Dragon, una aventura de acción ambientada en Kabukicho, Tokio, protagonizada por el actor Ma Dong-seok (Don Lee). El juego se mostró en diciembre de 2025, pero en marzo Bloomberg informó que NetEase dejaría de financiarlo después de saber que hacían falta unos 7,000 millones de yenes adicionales para terminarlo. Ni NetEase ni Nagoshi han hecho declaraciones, pero con el estudio cerrado es muy difícil que el proyecto salga adelante.\n\nEl cierre se suma al gran recorte de NetEase fuera de China, que ya se llevó por delante a estudios como T-Minus, Bad Brain y Ouka Studio. Una pena para quienes esperaban ver qué hacía Nagoshi con total libertad creativa.",
-      "fuentes": [
-        {
-          "nombre": "Gematsu",
-          "url": "https://www.gematsu.com/2026/11/nagoshi-studio-shuts-down"
-        },
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/nagoshi-studio-officially-closes-after-netease-cuts-funding/"
-        },
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/yakuza-creators-gang-of-dragon-ps5-game-and-new-studio-officially-dead"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-thief-dark-project-remastered-3-diciembre",
-      "fecha": "2026-11-04",
-      "titulo": "Thief: The Dark Project Remastered sale el 3 de diciembre con una campaña nueva",
-      "juego": "Thief: The Dark Project Remastered",
-      "etiqueta": "#Thief",
-      "imagen": "",
-      "contenido": "El clásico del sigilo de 1998 vuelve el 3 de diciembre. Nightdive Studios confirmó la fecha de Thief: The Dark Project Remastered, que llegará a PC (Steam y GOG), PlayStation y Xbox. En PC ya está en preventa: la edición estándar cuesta 29.99 dólares y la Deluxe 34.99, con libro de arte, banda sonora y un adelanto de una novela basada en el juego.\n\nEl paquete incluye las 12 misiones originales y el contenido de Thief Gold, ahora con el motor KEX de Nightdive: hasta 4K a 120 FPS, texturas y animaciones mejoradas, soporte completo para mando con giroscopio y un selector de misiones. Se mantiene la base de siempre: la luz y el sonido deciden si los guardias te descubren.\n\nLo más llamativo es The Tarnished Mirror, una campaña nueva hecha por los creadores de The Black Parade, una de las expansiones de fans más queridas de la saga. Se ubica entre el primer Thief y The Metal Age, con nuevas facciones y un toque de terror lovecraftiano. Además, el remaster admite mods y campañas de la comunidad.\n\nPara quienes nunca lo jugaron, es buena oportunidad de conocer uno de los padres del sigilo en primera persona.",
-      "fuentes": [
-        {
-          "nombre": "GamingOnLinux",
-          "url": "https://www.gamingonlinux.com/2026/11/thief-the-dark-project-remastered-launches-december-3-with-pre-orders-up/"
-        },
-        {
-          "nombre": "Shacknews",
-          "url": "https://www.shacknews.com/article/151238/thief-the-dark-project-remastered-gets-december-release-date"
-        },
-        {
-          "nombre": "Steam",
-          "url": "https://store.steampowered.com/app/4200960/Thief_The_Dark_Project_Remastered/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-04-ocarina-of-time-switch-2-famitsu-37",
-      "fecha": "2026-11-04",
-      "titulo": "Primera nota para Zelda: Ocarina of Time en Switch 2: Famitsu le da 37 de 40",
-      "juego": "The Legend of Zelda: Ocarina of Time",
-      "etiqueta": "#Zelda",
-      "imagen": "",
-      "contenido": "A un día de su estreno, ya llegó la primera reseña de la nueva versión de The Legend of Zelda: Ocarina of Time para Nintendo Switch 2. La revista japonesa Famitsu le dio 37 de 40 puntos, con notas de 10, 9, 9 y 9 de sus cuatro críticos.\n\nSegún lo recogido por varios medios, los analistas destacaron el nuevo control de cámara con dos sticks, una progresión y unos controles más amigables, y un alto nivel de detalle gráfico. En el lado negativo, algunos sintieron que el diseño se queda algo simple frente a los juegos actuales y que ciertos momentos pueden confundir.\n\nComo referencia, el original de Nintendo 64 fue el primer juego en la historia de Famitsu en sacar un 40 perfecto, y la versión de 3DS de 2011 obtuvo el mismo 37. El juego sale este jueves 5 de noviembre, en exclusiva para Switch 2, a 69.99 dólares en formato físico y 59.99 en la eShop.\n\n¿Lo van a jugar de lanzamiento o esperan más reseñas?",
-      "fuentes": [
-        {
-          "nombre": "Nintendo Life",
-          "url": "https://www.nintendolife.com/news/2026/11/the-first-review-for-zelda-ocarina-of-time-switch-2-is-in"
-        },
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/zelda-ocarina-of-time-switch-2-remake-review-published-in-famitsu/"
         }
       ]
     }
