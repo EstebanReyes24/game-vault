@@ -1,6 +1,44 @@
 {
-  "actualizado": "2026-11-19T10:52:43Z",
+  "actualizado": "2026-11-20T10:52:18Z",
   "borradores": [
+    {
+      "id": "2026-11-20-psn-caida-horas-antes-gta-vi",
+      "fecha": "2026-11-20",
+      "titulo": "PlayStation Network se cayó horas antes del estreno de GTA VI",
+      "juego": "Grand Theft Auto VI",
+      "etiqueta": "#PSN",
+      "imagen": "",
+      "contenido": "La víspera del lanzamiento más esperado de la década, PlayStation Network tuvo una caída que dejó a miles de jugadores sin poder iniciar sesión. El miércoles 18 de noviembre, poco después de la 1 de la tarde (hora del este de EE. UU.), Downdetector empezó a acumular reportes que pasaron de 4.000 en cuestión de hora y media. Hubo fallos al conectarse, errores de servidor y problemas para descargar juegos y actualizaciones.\n\nLa página de estado de Sony avisó que los usuarios podían tener dificultades para abrir juegos, aplicaciones y funciones en línea, y hacia las 3:15 de la tarde ya marcaba todos los servicios funcionando con normalidad. La compañía no ha explicado qué provocó el problema, ni lo ha relacionado oficialmente con GTA VI.\n\nEl susto llegó justo cuando millones de personas estaban precargando el juego de Rockstar, que se desbloqueó a medianoche en PS5 y Xbox Series X|S. Sobre ventas, ni Rockstar ni Take-Two han dado cifras oficiales todavía; lo que circula son estimaciones de firmas externas como Sensor Tower, así que conviene tomarlas con calma hasta que hable la editora.\n\n¿A alguien le tocó quedarse sin conexión justo esa noche?",
+      "fuentes": [
+        {
+          "nombre": "Newsweek",
+          "url": "https://newsweek.com/playstation-users-report-access-issues-hours-before-gta-vi-launch-12736310"
+        },
+        {
+          "nombre": "The Daily Beast",
+          "url": "https://www.thedailybeast.com/gamers-revolt-as-playstation-outage-hits-hours-before-gta-6-release"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-20-xbox-black-friday-2026-hasta-80",
+      "fecha": "2026-11-20",
+      "titulo": "Arranca el Black Friday de Xbox con más de 2.000 juegos rebajados hasta un 80 %",
+      "juego": "Gears of War: E-Day",
+      "etiqueta": "#BlackFriday",
+      "imagen": "",
+      "contenido": "Xbox ya tiene en marcha su rebaja de Black Friday, que la propia Microsoft describe como la más grande del año. La oferta empezó el 19 de noviembre e incluye más de 2.000 juegos para Xbox y PC con descuentos de hasta el 80 %, además de rebajas en accesorios.\n\nEntre los títulos confirmados están Final Fantasy VII Remake Intergrade con un 80 % de descuento, NBA 2K27 con un 55 % y Madden NFL 27 a mitad de precio. También bajan las ediciones premium de juegos recientes de la casa: Gears of War: E-Day (30 %), Forza Horizon 6 (25 %) y Halo: Campaign Evolved (20 %), junto con Grounded 2, Crimson Desert y The Blood of Dawnwalker, todos con un 20 %.\n\nLa rebaja coincide con las de Nintendo y PlayStation, así que es buen momento para comparar antes de comprar. Si tienen Game Pass, revisen primero si el juego que quieren ya está en el catálogo o tiene descuento extra para miembros.\n\n¿Qué juego tienen en la mira esta semana?",
+      "fuentes": [
+        {
+          "nombre": "Xbox Wire",
+          "url": "https://news.xbox.com/en-us/2026/11/16/xbox-black-friday-sale-2026/"
+        },
+        {
+          "nombre": "Pure Xbox",
+          "url": "https://www.purexbox.com/news/2026/11/xbox-announces-black-friday-sale-2026-reveals-nine-included-games"
+        }
+      ]
+    },
     {
       "id": "2026-11-19-gta-vi-lanzamiento-99-metacritic",
       "fecha": "2026-11-19",
@@ -803,44 +841,6 @@
         {
           "nombre": "Nintendo Everything",
           "url": "https://nintendoeverything.com/nintendo-switch-2-and-switch-update-23-5-0-out-now-patch-notes-new-gifting-feature-and-more/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-09-ps-plus-extra-dragon-quest-iii-dynasty-warriors-origins",
-      "fecha": "2026-11-09",
-      "titulo": "Dragon Quest III HD-2D Remake y Dynasty Warriors: Origins llegan a PS Plus Extra",
-      "juego": "Dragon Quest III HD-2D Remake",
-      "etiqueta": "#PSPlus",
-      "imagen": "",
-      "contenido": "Sony adelantó dos de los juegos que se sumarán a PlayStation Plus Extra en las próximas semanas. Según publicó el blog oficial de PlayStation en Japón, Dragon Quest III HD-2D Remake entrará al catálogo el 17 de noviembre, mientras que Dynasty Warriors: Origins llegará en diciembre. Ambos estarán en los niveles Extra y Premium, y el anuncio vino acompañado de una PlayStation Portal en negro medianoche exclusiva para Japón.\n\nAunque la noticia salió de la división japonesa, las incorporaciones al catálogo suelen coincidir en todas las regiones, así que lo normal es que también aparezcan en América y Europa. La lista completa de noviembre para Extra y Premium se revelará este miércoles 11 de noviembre, y los juegos empezarán a estar disponibles a partir del martes 17.\n\nEs una buena oportunidad para quien los dejó pasar: Dragon Quest III HD-2D Remake reimagina el clásico de 1988 con el mismo estilo visual de Octopath Traveler, y Dynasty Warriors: Origins es el reinicio de la saga musou que Koei Tecmo lanzó a inicios de 2025. ¿Cuál de los dos tienen en la lista?",
-      "fuentes": [
-        {
-          "nombre": "Push Square",
-          "url": "https://pushsquare.com/news/2026/11/2-upcoming-ps-plus-extra-games-announced-early"
-        },
-        {
-          "nombre": "PlayStation LifeStyle",
-          "url": "https://www.playstationlifestyle.net/2026/11/09/ps-plus-extra-november-december-games-revealed-early"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-09-gta-vi-selfridges-londres-tienda",
-      "fecha": "2026-11-09",
-      "titulo": "GTA VI toma Selfridges en Londres con más de 60 productos y una fila virtual enorme",
-      "juego": "Grand Theft Auto VI",
-      "etiqueta": "#GTAVI",
-      "imagen": "",
-      "contenido": "A diez días del lanzamiento de Grand Theft Auto VI, la promoción del juego llegó a Londres. Los grandes almacenes Selfridges, que habían anunciado la experiencia en sus redes oficiales, abrieron este lunes 9 de noviembre un espacio dedicado al juego en su tienda principal de la ciudad, con la fachada iluminada con los colores de GTA VI y vitrinas decoradas con un deportivo ficticio.\n\nLa tienda ofrece más de 60 artículos de mercancía, y más de la mitad son exclusivos de Selfridges: camisetas, gorras, tazas, llaveros, un juego de dardos y chaquetas universitarias, entre otros. Los precios van desde 5 libras por un vaso de chupito hasta 2.500 libras por la chaqueta más cara. La colección también salió a la venta en línea, donde, según VGC, la fila virtual superó las 100.000 personas y algunos artículos ya aparecían agotados esa misma mañana.\n\nEs una muestra más del tamaño de esta campaña, que ya transformó partes de Miami y que tendrá al Miami Heat jugando como «Vice City» el 18 de noviembre, la víspera del estreno. GTA VI sale el 19 de noviembre en PS5 y Xbox Series X|S, y la precarga abre mañana, 10 de noviembre. ¿Ustedes gastarían en mercancía del juego?",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://videogameschronicle.com/news/selfridges-london-gta6"
-        },
-        {
-          "nombre": "GTA BOOM",
-          "url": "https://www.gtaboom.com/selfridges-is-opening-a-grand-theft-auto-vi-experience-in-london-on-november-9-47d2"
         }
       ]
     }
