@@ -1,6 +1,71 @@
 {
-  "actualizado": "2026-11-20T10:52:18Z",
+  "actualizado": "2026-11-21T10:52:34Z",
   "borradores": [
+    {
+      "id": "2026-11-21-gta-vi-3790-millones-primer-dia",
+      "fecha": "2026-11-21",
+      "titulo": "GTA VI factura 3.790 millones de dólares en su primer día, según Rockstar",
+      "juego": "Grand Theft Auto VI",
+      "etiqueta": "#GTAVI",
+      "imagen": "",
+      "contenido": "Ya hay cifras oficiales del estreno de GTA VI. Rockstar y Take-Two anunciaron este 20 de noviembre que el juego generó unos 3.790 millones de dólares en ventas al público durante su primer día, contando hasta el cierre del 19 de noviembre, cuando salió en PS5 y Xbox Series X|S. Además, aseguran que se vendieron 32,5 millones de copias antes del lanzamiento, un récord para cualquier plataforma.\n\nLa compañía lo presenta como \"el lanzamiento de entretenimiento más grande de la historia\", por encima de cualquier juego o película. Para ponerlo en perspectiva: GTA V, que salió en 2013, rondó los 800 millones de dólares en sus primeras 24 horas, así que su sucesor multiplica esa cifra por más de cuatro. El comunicado también recuerda que GTA V ya va por casi 235 millones de unidades y que la saga completa se acerca a los 480 millones.\n\nUn detalle importante: se trata de ventas al detalle estimadas por la propia empresa, no de ingresos netos de Take-Two, y el anuncio no desglosa cuántas copias se vendieron solo el día del estreno. Aun así, el dato confirma lo que muchos esperaban: GTA VI no es solo el juego del año, sino un fenómeno que redefine lo que puede lograr un lanzamiento. ¿Ya lo están jugando o esperan la versión de PC?",
+      "fuentes": [
+        {
+          "nombre": "KeenGamer",
+          "url": "https://www.keengamer.com/articles/news/gta-6-sells-32-5-million-pre-order-copies-makes-3-79-billion-on-day-one/"
+        },
+        {
+          "nombre": "Men's Journal",
+          "url": "https://www.mensjournal.com/news/gta-6-3-79-billion-day-one-sales-rockstar"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-21-steam-machine-512gb-venta-libre-2tb-lista-cerrada",
+      "fecha": "2026-11-21",
+      "titulo": "Steam Machine: el modelo de 512 GB ya se vende sin reserva y Valve cierra la lista del de 2 TB",
+      "juego": "Counter-Strike 2",
+      "etiqueta": "#SteamMachine",
+      "imagen": "",
+      "contenido": "Valve cambió la forma de vender su Steam Machine. Según su anuncio oficial en Steam, ya atendió a todas las personas que tenían reserva del modelo de 512 GB, así que ahora cualquiera puede añadirlo al carrito y comprarlo directamente mientras haya existencias. Cuando se agote, aparecerá como sin stock y no se abrirá otra lista de espera.\n\nEl modelo de 2 TB es otra historia. Valve ya envió las invitaciones de compra a quienes tenían reserva, pero la demanda sigue por encima de la producción, por lo que cerró la lista de espera a nuevos interesados. Quienes ya estaban apuntados conservan su lugar, aunque la empresa advierte que eso no garantiza una unidad. También pueden pasarse al modelo de 512 GB, pero perderían su puesto en la fila.\n\nLa razón, según Valve, son los problemas de suministro de componentes y unos costos de memoria y almacenamiento que siguen subiendo \"a niveles sin precedentes\". Por eso no sabe cuántas unidades más podrá fabricar ni a qué precio, y espera dar más detalles en enero. Recordemos que la consola-PC de Valve arrancó en 1.049 dólares. ¿La compraron o siguen esperando?",
+      "fuentes": [
+        {
+          "nombre": "GamingOnLinux",
+          "url": "https://www.gamingonlinux.com/2026/11/while-stock-lasts-you-can-now-just-buy-a-512gb-steam-machine/"
+        },
+        {
+          "nombre": "Notebookcheck",
+          "url": "https://notebookcheck.net/Steam-Machine-512GB-can-now-be-purchased-directly-as-Valve-closes-waitlist-for-the-2TB-model.1454763.0.html"
+        },
+        {
+          "nombre": "Valve (Steam)",
+          "url": "https://steamcommunity.com/groups/steam_hardware/announcements/detail/687522235410285039"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-21-deltarune-capitulo-6-completo-capitulo-7-empieza",
+      "fecha": "2026-11-21",
+      "titulo": "Deltarune: el capítulo 6 ya se puede jugar de principio a fin y arranca el capítulo 7",
+      "juego": "Deltarune",
+      "etiqueta": "#Deltarune",
+      "imagen": "",
+      "contenido": "Toby Fox volvió con buenas noticias para la comunidad de Deltarune. En su boletín de otoño, el creador de Undertale explicó que el capítulo 6 ya es un borrador estructuralmente completo que se puede jugar de inicio a fin: todos los mapas, eventos y combates están hechos, y la localización y las primeras pruebas ya deberían haber comenzado.\n\nEso sí, no hay que esperarlo mañana. Fox reconoce que algunas escenas importantes y varios detalles todavía están poco pulidos, y que las pruebas completas tendrán que esperar a que se corrijan. Describe esta entrega como un capítulo bastante corto y deja claro que no piensa apresurarlo. Tampoco dio una fecha de lanzamiento.\n\nAl mismo tiempo, el equipo que terminó su parte del capítulo 6 ya pasó a trabajar en el capítulo 7, cuyo desarrollo, según Fox, \"apenas acaba de empezar\". Incluso le leyó al equipo los eventos y diálogos de ese capítulo, pero se detuvo justo en un momento clave para guardarse el resto. Los capítulos 1 al 5 ya están disponibles en Switch, Switch 2, PS5 y PC. ¿Cuál es su teoría para el final?",
+      "fuentes": [
+        {
+          "nombre": "Nintendo Everything",
+          "url": "https://nintendoeverything.com/toby-fox-shares-status-update-on-chapter-6-and-first-report-on-chapter-7/"
+        },
+        {
+          "nombre": "Final Weapon",
+          "url": "https://finalweapon.net/2026/11/19/toby-fox-deltarune-chapter-6-7-progress-updates/"
+        },
+        {
+          "nombre": "Gamereactor",
+          "url": "https://www.gamereactor.eu/deltarune-chapter-6-structurally-complete-toby-fox/"
+        }
+      ]
+    },
     {
       "id": "2026-11-20-psn-caida-horas-antes-gta-vi",
       "fecha": "2026-11-20",
@@ -761,86 +826,6 @@
         {
           "nombre": "Niche Gamer",
           "url": "https://nichegamer.com/arc-raiders-tops-17-million-sales-as-nexon-forecasts-slower-fourth-quarter-revenue/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-10-take-two-resultados-gta-vi-reservas",
-      "fecha": "2026-11-10",
-      "titulo": "Take-Two: las reservas de GTA VI superan sus expectativas a diez días del lanzamiento",
-      "juego": "Grand Theft Auto VI",
-      "etiqueta": "#GTAVI",
-      "imagen": "",
-      "contenido": "Take-Two presentó este lunes los resultados de su segundo trimestre fiscal y, como era de esperarse, todo gira alrededor de Grand Theft Auto VI. La compañía asegura que las reservas siguen alcanzando niveles sin precedentes, y su director ejecutivo, Strauss Zelnick, dijo que van muy por encima de lo que esperaban. Eso sí, aclaró que no hablarán de éxito hasta que el juego esté en la calle.\n\nEn números, el trimestre dejó 1.600 millones de dólares en reservas netas (net bookings), un 18% menos que hace un año, con el gasto recurrente dentro de los juegos representando el 81% del total. Aun así, Take-Two mantiene su previsión de entre 8.000 y 8.200 millones para el año fiscal, una cifra que solo se explica con GTA VI. Mientras tanto, GTA V sigue vendiendo: ya suma unos 235 millones de copias, con cerca de 5 millones en los últimos tres meses.\n\nGTA VI sale el 19 de noviembre en PS5 y Xbox Series X|S, y la precarga arranca justo estos días. Con una previsión anual que depende casi por completo de un solo juego, las próximas dos semanas son clave para Rockstar y su casa matriz. ¿Ya tienen el espacio libre en el disco?",
-      "fuentes": [
-        {
-          "nombre": "Take-Two (comunicado de resultados)",
-          "url": "https://www.sec.gov/Archives/edgar/data/0000946581/000162828026072175/ttwo2q27earningsrelease.htm"
-        },
-        {
-          "nombre": "Push Square",
-          "url": "https://pushsquare.com/news/2026/11/gta-6-pre-orders-outperform-even-take-twos-expectations-gta-5-just-keeps-on-selling"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-10-capcom-ventas-onimusha-resident-evil-requiem",
-      "fecha": "2026-11-10",
-      "titulo": "Onimusha: Way of the Sword vende 1,7 millones y Resident Evil Requiem llega a 8,5 millones",
-      "juego": "Onimusha: Way of the Sword",
-      "etiqueta": "#Capcom",
-      "imagen": "",
-      "contenido": "Capcom actualizó su lista oficial de títulos más vendidos con datos hasta el 30 de septiembre, y trae varias novedades. La más llamativa es Onimusha: Way of the Sword, que entra por primera vez con 1,7 millones de copias tras su lanzamiento el 4 de septiembre en PS5, Xbox Series X|S, Switch 2 y PC. También se estrena en la lista Mega Man Zero/ZX Legacy Collection, que alcanza el millón.\n\nResident Evil sigue siendo la gallina de los huevos de oro: la saga vendió alrededor de 5 millones de unidades en solo tres meses. Resident Evil Requiem sube a 8,5 millones, Resident Evil 4 Remake suma 1,1 millones más hasta los 17,1 millones y Resident Evil 2 Remake llega a 20,3 millones, cada vez más cerca de Monster Hunter World (22,5 millones), el juego más vendido de la compañía.\n\nEn otras sagas, Monster Hunter Wilds alcanza 12,2 millones, Street Fighter 6 llega a 7,5 millones y Pragmata sube a 2,7 millones. Son cifras que confirman el buen momento de Capcom, sostenido tanto por sus estrenos como por un catálogo que no deja de venderse con cada rebaja. ¿Será Resident Evil 2 el próximo rey de la compañía?",
-      "fuentes": [
-        {
-          "nombre": "Capcom (Platinum Titles)",
-          "url": "http://www.capcom.co.jp/ir/english/finance/million.html"
-        },
-        {
-          "nombre": "Gematsu",
-          "url": "https://www.gematsu.com/2026/11/capcom-platinum-titles-sales-update-as-of-september-30-2026"
-        },
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/capcom-just-sold-5-million-copies-of-resident-evil-games-in-3-months"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-10-skydance-games-despidos-reorganizacion",
-      "fecha": "2026-11-10",
-      "titulo": "Skydance Games confirma despidos y recorta proyectos tras la fusión con Warner Bros.",
-      "juego": "Skydance's BEHEMOTH",
-      "etiqueta": "#Despidos",
-      "imagen": "",
-      "contenido": "Skydance Games, la nueva división de videojuegos nacida tras la compra de Warner Bros. Discovery por parte de Paramount Skydance, confirmó una ronda de despidos. Un portavoz explicó a Variety que la empresa está aplicando una reorganización en varias áreas de su negocio y que tomó la difícil decisión de reducir algunos de sus proyectos.\n\nLa compañía no ha dicho cuántas personas perdieron su empleo ni qué juegos se ven afectados. Por lo que han contado los propios trabajadores en LinkedIn, los recortes golpean sobre todo a los equipos que venían de Paramount Games y Skydance Interactive, el estudio de realidad virtual detrás de Behemoth. Uno de sus ingenieros principales dijo que el estudio perdió \"muchísimo talento\" y compartió los nombres de una veintena de compañeros que buscan trabajo.\n\nLa preocupación ahora está en el resto de la casa: Warner Bros. Games, con estudios como NetherRealm (Mortal Kombat) y Rocksteady (Batman: Arkham), pasó a formar parte de Skydance Games. Por ahora no hay confirmación de que esos equipos estén afectados, pero el mensaje de reducir proyectos deja muchas preguntas abiertas sobre el futuro de esas franquicias.",
-      "fuentes": [
-        {
-          "nombre": "Shacknews",
-          "url": "https://shacknews.com/article/151306/skydance-games-layoffs"
-        },
-        {
-          "nombre": "Variety",
-          "url": "https://variety.com/2026/gaming/news/skydance-games-warner-bros-layoffs-1236943276"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-10-switch-2-actualizacion-23-5-regalar-juegos",
-      "fecha": "2026-11-10",
-      "titulo": "Switch y Switch 2 se actualizan y preparan la opción de regalar juegos desde la eShop",
-      "juego": "Mario Kart World",
-      "etiqueta": "#Switch2",
-      "imagen": "",
-      "contenido": "Nintendo lanzó la versión 23.5.0 del sistema para Switch 2 y la Switch original, y la novedad más interesante es una que todavía no se puede usar: la posibilidad de regalar juegos y contenidos de la Nintendo eShop. Según las notas oficiales, la función permitirá comprar productos para otros miembros del grupo familiar de la cuenta Nintendo, y se activará con una actualización de la eShop prevista para el 17 de noviembre.\n\nEn otras palabras, por ahora el regalo queda limitado a la familia, no a cualquier amigo de la lista. Aun así, es un paso que muchos venían pidiendo, y llega justo a tiempo para las compras de fin de año.\n\nLa actualización también trae mejoras de accesibilidad exclusivas de Switch 2: ahora se pueden ajustar estas opciones desde la configuración inicial de la consola, y el portugués de Portugal se suma a los idiomas de texto a voz, incluida la conversión de texto a voz de GameChat. Como siempre, se completan con ajustes generales de estabilidad. ¿Les gustaría que Nintendo abra los regalos a cualquier amigo?",
-      "fuentes": [
-        {
-          "nombre": "Nintendo Life",
-          "url": "https://www.nintendolife.com/news/2026/11/nintendo-switch-2-system-update-23-5-0-is-now-live-here-are-the-full-patch-notes"
-        },
-        {
-          "nombre": "Nintendo Everything",
-          "url": "https://nintendoeverything.com/nintendo-switch-2-and-switch-update-23-5-0-out-now-patch-notes-new-gifting-feature-and-more/"
         }
       ]
     }
