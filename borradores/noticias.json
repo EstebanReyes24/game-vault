@@ -1,6 +1,63 @@
 {
-  "actualizado": "2026-11-21T10:52:34Z",
+  "actualizado": "2026-11-22T10:46:52Z",
   "borradores": [
+    {
+      "id": "2026-11-22-stellaris-willpower-lanzamiento-23-noviembre",
+      "fecha": "2026-11-22",
+      "titulo": "Stellaris: Willpower llega mañana y convierte las éticas en ideologías que cruzan fronteras",
+      "juego": "Stellaris",
+      "etiqueta": "#Stellaris",
+      "imagen": "",
+      "contenido": "Paradox Interactive lanza este lunes 23 de noviembre Willpower, la nueva expansión de Stellaris para PC, desarrollada junto al estudio Abrakam. Cuesta 24,99 dólares (o 24,99 euros) por separado y también viene incluida en el pase de expansiones de la temporada 10.\n\nLa idea central es que las ideologías dejan de ser algo interno de cada imperio: ahora se pueden propagar más allá de tus fronteras usando bases estelares, hiperrelés y unos nuevos faros ideológicos, con un sistema de impulso que evita que una sola idea se coma la galaxia. Las salas galácticas se podrán reubicar y llega una nueva ambición, Force of Will, que te da la victoria si derrotas a todos los Imperios Caídos.\n\nLa diplomacia también cambia, con leyes de federación, denuncias en la Comunidad Galáctica, espionaje y un nuevo casus belli de corte ideológico. Además trae tres orígenes nuevos (Golden Generation, Lost Makers y Great Mosaic), cívicas, eventos, paragones y un set de naves inquisidoras. Junto a la expansión sale la actualización gratuita 4.6, Corona Borealis, con corrección de errores para todos los jugadores.\n\nStellaris lleva diez años recibiendo contenido y sigue encontrando formas de reinventarse. ¿Ustedes conquistan a cañonazos o con ideas?",
+      "fuentes": [
+        {
+          "nombre": "Paradox Interactive (comunicado oficial)",
+          "url": "https://www.paradoxinteractive.com/media/press-releases/paradox-interactive/willpower-expansion-for-stellaris-to-launch-on-november-23"
+        },
+        {
+          "nombre": "GamingOnLinux",
+          "url": "https://www.gamingonlinux.com/2026/10/stellaris-willpower-expansion-set-for-launch-on-november-23/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-22-steam-awards-2026-nominaciones-nuevas-categorias",
+      "fecha": "2026-11-22",
+      "titulo": "Los Steam Awards abren nominaciones mañana con dos categorías nuevas en su décima edición",
+      "juego": "Hollow Knight: Silksong",
+      "etiqueta": "#SteamAwards",
+      "imagen": "",
+      "contenido": "Valve confirmó en su cuenta oficial de Steam que las nominaciones para los Steam Awards 2026 se abren este lunes 23 de noviembre. Es la décima edición de los premios que decide la propia comunidad, y para celebrarlo habrá arte especial y dos categorías nuevas, con lo que el total sube a 14.\n\nLa primera novedad es un premio Hall of Fame, que elegirá al mejor juego entre los ganadores de las diez ediciones anteriores. La segunda, This is My Job Now, reconoce a los simuladores de oficios y rutinas de trabajo, un género que no para de crecer en Steam. Como siempre, los jugadores proponen a los candidatos en cada categoría y la votación final se hará durante las rebajas de invierno, que arrancan el 17 de diciembre. Por ahora Valve no ha dicho cuándo cierra el plazo de nominaciones.\n\nEn paralelo, entre el 26 y el 30 de noviembre habrá descuentos de Black Friday en Steam, aunque no es una venta oficial de la tienda: cada estudio decide sus propias rebajas.\n\nEl año pasado el Juego del Año fue Hollow Knight: Silksong. ¿Qué juego nominarían ustedes este año?",
+      "fuentes": [
+        {
+          "nombre": "Critical Hits",
+          "url": "https://criticalhits.com.br/games/steam-awards-2026-ganha-duas-categorias-ineditas/"
+        },
+        {
+          "nombre": "Digital Citizen",
+          "url": "https://www.digitalcitizen.life/steam-black-friday-2026-november-26-30-steam-awards-nominations-autumn-sale/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-22-ubisoft-motherbrain-filial-ia-generativa",
+      "fecha": "2026-11-22",
+      "titulo": "Ubisoft crea Motherbrain, una filial dedicada a la IA generativa, tras despedir a 166 personas",
+      "juego": "Teammates",
+      "etiqueta": "#Ubisoft",
+      "imagen": "",
+      "contenido": "Ubisoft confirmó en su último informe de resultados la creación de Motherbrain, una nueva filial dedicada a la inteligencia artificial aplicada a la jugabilidad. Según Yves Guillemot, director ejecutivo de la compañía, se trata del mismo equipo que creó Teammates, el experimento jugable con personajes controlados por IA generativa que Ubisoft presentó a finales de 2025 y con los que el jugador puede conversar.\n\nMotherbrain forma parte del nuevo modelo operativo que la editora francesa puso en marcha en enero de 2026, un proceso de reestructuración que incluyó la cancelación de seis juegos. El anuncio coincide con el despido de 166 trabajadores en sus estudios de Montreal y Quebec. Ubisoft sostiene que su IA está pensada para apoyar a los desarrolladores, no para reemplazarlos.\n\nPor ahora no está claro si el trabajo de Motherbrain saldrá como productos propios o se integrará en otras franquicias de la compañía. Lo que sí deja claro es hacia dónde apunta Ubisoft en medio de sus recortes, y el momento elegido ha generado críticas en la prensa y entre los jugadores.\n\n¿Les interesa jugar con personajes que respondan con IA, o prefieren que los estudios inviertan en otra cosa?",
+      "fuentes": [
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/ubisoft-has-founded-a-studio-dedicated-to-generative-ai-in-games/"
+        },
+        {
+          "nombre": "MobileSyrup",
+          "url": "https://mobilesyrup.com/2026/11/19/ubisoft-genai-subsidiary-motherbrain-canadian-layoffs/"
+        }
+      ]
+    },
     {
       "id": "2026-11-21-gta-vi-3790-millones-primer-dia",
       "fecha": "2026-11-21",
@@ -746,86 +803,6 @@
         {
           "nombre": "Game World Observer",
           "url": "https://gameworldobserver.com/2026/11/11/black-forest-games-has-left-thq-nordic-and-embracer-group"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-11-fairgames-cancelado-haven-sony",
-      "fecha": "2026-11-11",
-      "titulo": "Sony cancela Fairgame$ y Haven Studios pasa a apoyar a otros equipos de PlayStation",
-      "juego": "Fairgame$",
-      "etiqueta": "#Fairgames",
-      "imagen": "",
-      "contenido": "PlayStation detuvo el desarrollo de Fairgame$, el shooter multijugador de atracos que Haven Studios preparaba para PS5 y PC desde que se presentó en mayo de 2023. La noticia la reveló Bloomberg a partir de un correo interno de los ejecutivos Sean Decker y John Doyle, y luego un portavoz de Sony la confirmó.\n\nSegún ese mensaje, la prueba con miles de jugadores no alcanzó las metas de valoración ni de retención que se habían fijado, y el difícil momento de los shooters competitivos también pesó en la decisión. La parte positiva es que no habrá despidos: Haven seguirá en pie y se dedicará a colaborar con otros estudios de PlayStation Studios mientras explora nuevas ideas.\n\nEl proyecto llevaba tiempo dando señales de problemas. Jade Raymond, cofundadora del estudio, salió en 2025, y Sony ya venía recortando su apuesta por los juegos como servicio después del tropiezo de Concord en 2024 y de cancelar títulos como el multijugador de The Last of Us.\n\nCon esto, la lista de proyectos en línea de PlayStation sigue encogiéndose. ¿Creen que Sony hace bien en volver a enfocarse en sus aventuras para un jugador?",
-      "fuentes": [
-        {
-          "nombre": "Bloomberg",
-          "url": "https://www.bloomberg.com/news/articles/2026-11-10/playstation-cancels-online-shooting-title-fairgames"
-        },
-        {
-          "nombre": "PC Gamer",
-          "url": "https://www.pcgamer.com/gaming-industry/sony-cancels-another-live-service-game-ahead-of-release-but-at-least-there-wont-be-any-layoffs-this-time/"
-        },
-        {
-          "nombre": "Gematsu",
-          "url": "https://www.gematsu.com/2026/11/fairgame-canceled"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-11-ps-plus-app-pc-cierra-death-stranding-2",
-      "fecha": "2026-11-11",
-      "titulo": "La app de PS Plus para PC cierra el 10 de diciembre y Death Stranding 2 llega al catálogo",
-      "juego": "Death Stranding 2: On the Beach",
-      "etiqueta": "#PSPlus",
-      "imagen": "",
-      "contenido": "Sony anunció que la aplicación de PlayStation Plus para PC dejará de estar disponible el 10 de diciembre de 2026. Con ella desaparece la opción de jugar en la nube desde Windows que incluía el nivel Premium. La razón es sencilla: según la propia compañía, menos del 0,4 % de los suscriptores Premium que podían usarla lo hacían.\n\nEl aviso llegó junto con el catálogo de noviembre para Extra y Premium. Lo más llamativo es Death Stranding 2: On the Beach, que entra el 17 de noviembre en PS5 junto a Atomfall y Dragon Quest III HD-2D Remake. El 24 de noviembre se suman Like a Dragon: Pirate Yakuza in Hawaii, Trepang2, MotoGP 26 y Cricket 26, mientras que Hell Let Loose llega este 11 de noviembre. Los de Premium reciben además Legacy of Kain: Soul Reaver 2 y Freedom Wars Remastered en la sección de clásicos.\n\nLa disponibilidad exacta puede variar según la región, así que conviene revisar la tienda local. Si usaban PS Plus en la computadora, tienen menos de un mes para aprovecharla.",
-      "fuentes": [
-        {
-          "nombre": "Shacknews",
-          "url": "https://www.shacknews.com/article/151319/playstation-plus-pc-app-shutdown"
-        },
-        {
-          "nombre": "Noisy Pixel",
-          "url": "https://noisypixel.net/playstation-plus-november-2026-game-catalog-pc-cloud-streaming-ends/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-11-outer-worlds-2-dlc-side-effects-guaranteed-2-diciembre",
-      "fecha": "2026-11-11",
-      "titulo": "The Outer Worlds 2 recibe su primera expansión, Side Effects Guaranteed, el 2 de diciembre",
-      "juego": "The Outer Worlds 2",
-      "etiqueta": "#OuterWorlds2",
-      "imagen": "",
-      "contenido": "Obsidian y Xbox Game Studios pusieron fecha a la primera expansión de historia de The Outer Worlds 2: Side Effects Guaranteed sale el 2 de diciembre a 14,99 dólares. También viene incluida en la Edición Premium y en su mejora, que traen un pase con dos expansiones.\n\nLa trama arranca con una señal de auxilio que lleva a la tripulación hasta una nave abandonada, con su gente en animación suspendida tras una infección. Buscar la cura nos lleva a Elysium Valley, una región nueva de Eden donde viven antiguos súbditos olvidados del Protectorado, con enemigos nuevos esperando.\n\nEn lo jugable, el nivel máximo sube de 30 a 36, hay más de 15 ventajas nuevas, cuatro defectos adicionales, armas, armaduras, trajes para cada compañero y una emisora de radio con 20 canciones. Quien no quiera rejugar la campaña podrá empezar directamente en la expansión con una partida personalizada desde el menú principal.\n\nEs la primera de dos partes: la segunda llegará en primavera de 2027 y tendrá en cuenta las decisiones que tomemos en esta. Una buena excusa para volver a Arcadia antes de que termine el año.",
-      "fuentes": [
-        {
-          "nombre": "Xbox Wire",
-          "url": "https://news.xbox.com/en-us/2026/11/10/side-effects-guaranteed-the-outer-worlds-2-dlc/"
-        },
-        {
-          "nombre": "Gematsu",
-          "url": "https://www.gematsu.com/2026/11/the-outer-worlds-2-dlc-side-effects-guaranteed-launches-december-2"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-11-arc-raiders-17-millones-nexon-resultados",
-      "fecha": "2026-11-11",
-      "titulo": "ARC Raiders supera los 17 millones de copias y Nexon prevé un cierre de año más tranquilo",
-      "juego": "ARC Raiders",
-      "etiqueta": "#ARCRaiders",
-      "imagen": "",
-      "contenido": "Nexon presentó sus resultados del tercer trimestre de 2026 y confirmó que ARC Raiders, el shooter de extracción de Embark Studios, ya vendió más de 17 millones de unidades. La compañía destacó que la actualización Frozen Trail de octubre hizo regresar a jugadores que lo habían dejado y empujó nuevas ventas.\n\nEl trimestre fue bueno para la editora: ingresó 138.400 millones de yenes, un 17 % más que hace un año, con MapleStory marcando un récord trimestral. Además, Dave the Diver superó los 10 millones de unidades en septiembre, un logro enorme para un juego que empezó como proyecto pequeño.\n\nEso sí, Nexon espera un cuarto trimestre más flojo, con ingresos entre 107.700 y 118.900 millones de yenes, por debajo del mismo periodo del año pasado, cuando ARC Raiders acababa de salir. Aun así, calcula que 2026 cerrará con ingresos y beneficio operativo récord.\n\nPara ARC Raiders, el ritmo de ventas se ha calmado tras su explosivo primer año, pero el juego sigue vivo con actualizaciones. ¿Todavía lo están jugando?",
-      "fuentes": [
-        {
-          "nombre": "Nexon (comunicado oficial)",
-          "url": "https://www.gamespress.com/en-US/Nexon-Releases-Earnings-for-Third-Quarter-2026"
-        },
-        {
-          "nombre": "Niche Gamer",
-          "url": "https://nichegamer.com/arc-raiders-tops-17-million-sales-as-nexon-forecasts-slower-fourth-quarter-revenue/"
         }
       ]
     }
