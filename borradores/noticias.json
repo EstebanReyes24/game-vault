@@ -1,6 +1,63 @@
 {
-  "actualizado": "2026-11-24T10:47:04Z",
+  "actualizado": "2026-11-25T10:52:40Z",
   "borradores": [
+    {
+      "id": "2026-11-25-witcher-4-acuerdo-sony-marketing-ps-plus",
+      "fecha": "2026-11-25",
+      "titulo": "CD Projekt firma con Sony: PlayStation acompañará el marketing de The Witcher 4",
+      "juego": "The Witcher 4",
+      "etiqueta": "#TheWitcher4",
+      "imagen": "",
+      "contenido": "CD Projekt Red cerró nuevos acuerdos con Sony Interactive Entertainment. Lo anunció su director financiero, Piotr Nielubowicz, durante la presentación de resultados del tercer trimestre de 2026 el 24 de noviembre, el mismo día en que se firmaron los contratos. Los acuerdos cubren la presencia de los juegos del estudio en PlayStation y en las suscripciones de PlayStation Plus, además de una colaboración en la campaña de marketing de The Witcher 4.\n\nPor ahora no se sabe qué juegos llegarán a PS Plus ni cuándo, y ninguna de las dos compañías ha hablado de exclusividad. The Witcher 4 sigue previsto para 2028 en PC, PS5 y Xbox Series X|S, así que la versión de Xbox, en principio, se mantiene. Según la compañía, la alianza ayudará a sus resultados de este año y de los próximos.\n\nEn la misma llamada le preguntaron por GTA VI, y Nielubowicz respondió que espera un salto entre The Witcher 3 y The Witcher 4 comparable al que dio Rockstar con su nueva entrega. Es una promesa ambiciosa para el juego que abre la nueva saga protagonizada por Ciri.\n\n¿Les preocupa que este tipo de acuerdos termine en contenido exclusivo para una sola consola?",
+      "fuentes": [
+        {
+          "nombre": "MIXED",
+          "url": "https://mixed-news.com/en/witcher-4-sony-playstation-marketing-partnership-cd-projekt/"
+        },
+        {
+          "nombre": "Tbreak",
+          "url": "https://tbreak.com/witcher-4-sony-playstation-marketing-deal/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-exoprimal-cierre-servidores-29-septiembre-2027",
+      "fecha": "2026-11-25",
+      "titulo": "Exoprimal cerrará sus servidores el 29 de septiembre de 2027 y dejará de ser jugable",
+      "juego": "Exoprimal",
+      "etiqueta": "#Exoprimal",
+      "imagen": "",
+      "contenido": "Capcom anunció que Exoprimal, su juego de acción por equipos contra hordas de dinosaurios, cerrará sus servidores el 29 de septiembre de 2027. A partir de esa fecha ya no se podrá jugar, porque depende por completo de la conexión en línea.\n\nEl cierre será por etapas. Los niveles premium de los pases de supervivencia de las temporadas 1 a 4 ya se retiraron de las tiendas el 24 de noviembre. El juego, sus contenidos descargables y el resto de productos dejarán de venderse el 30 de marzo de 2027. Desde ahí, quien ya lo tenga podrá seguir jugando unos seis meses más, hasta el apagón final. Capcom se disculpó con los jugadores en su comunicado, pero no explicó los motivos.\n\nExoprimal salió el 14 de julio de 2023 en PS5, PS4, Xbox Series X|S, Xbox One y PC (Steam y Microsoft Store) con un precio de 59,99 dólares en su versión estándar.\n\nEs otro ejemplo de un juego de pago que, por depender de servidores, tiene fecha de caducidad. ¿Llegaron a darle una oportunidad?",
+      "fuentes": [
+        {
+          "nombre": "Capcom (Exoprimal, comunicado oficial)",
+          "url": "https://info.exoprimal.com/en/pages/important_261125_001/"
+        },
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/exoprimal-to-end-service-on-september-29-2027"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-25-evo-japan-2027-juegos-marvel-tokon",
+      "fecha": "2026-11-25",
+      "titulo": "EVO Japan 2027 confirma sus siete juegos y Marvel Tokon debuta en el torneo",
+      "juego": "Street Fighter 6",
+      "etiqueta": "#EVOJapan",
+      "imagen": "",
+      "contenido": "La organización de EVO anunció los juegos oficiales de EVO Japan 2027, que se celebrará del 29 de abril al 1 de mayo en el Tokyo Big Sight, en Tokio. Serán siete títulos en total.\n\nLa lista: Fatal Fury: City of the Wolves, Granblue Fantasy Versus: Rising, Guilty Gear: Strive, Marvel Tokon: Fighting Souls, Street Fighter 6, Tekken 8 y Virtua Fighter 5 R.E.V.O. World Stage. Guilty Gear: Strive suma su sexta aparición en el evento japonés, mientras que Street Fighter 6 y Tekken 8 llegan a su cuarta. Fatal Fury y Virtua Fighter repiten por segunda vez.\n\nLa gran novedad es Marvel Tokon: Fighting Souls, el juego de peleas por equipos de Arc System Works con personajes de Marvel, que estará por primera vez en EVO Japan. Es la única incorporación nueva respecto a los veteranos de la lista.\n\nEVO Japan suele ser una de las primeras grandes citas del calendario de juegos de pelea. ¿Cuál de estos siete van a seguir?",
+      "fuentes": [
+        {
+          "nombre": "EVO Japan (cuenta oficial)",
+          "url": "https://twitter.com/evojapan_info/status/2125207900528521553"
+        },
+        {
+          "nombre": "Gematsu",
+          "url": "https://www.gematsu.com/2026/11/evo-japan-2027-title-lineup-announced"
+        }
+      ]
+    },
     {
       "id": "2026-11-24-nioh-3-complete-edition-xbox-28-enero",
       "fecha": "2026-11-24",
@@ -673,86 +730,6 @@
         {
           "nombre": "Gaming Route",
           "url": "https://gamingroute.com/epic-free-games-alien-isolation/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-14-marvel-rivals-temporada-11-doomsday-nightcrawler",
-      "fecha": "2026-11-14",
-      "titulo": "Marvel Rivals arranca su temporada 11, Doomsday, con Nightcrawler como nuevo estratega",
-      "juego": "Marvel Rivals",
-      "etiqueta": "#MarvelRivals",
-      "imagen": "",
-      "contenido": "Marvel Rivals ya está en su temporada 11, bautizada como Doomsday, que comenzó el 13 de noviembre. La gran novedad jugable es Nightcrawler, el mutante de los X-Men, que entra como estratega (el rol de apoyo del juego) con habilidades basadas en teletransportarse por el mapa. NetEase también confirmó a Drácula como otro personaje nuevo de esta temporada, aunque por ahora ha contado muy poco de él.\n\nLa historia gira alrededor de una incursión en la que chocan dos líneas temporales de Nueva York, con el Doctor Doom como villano de fondo. De ahí sale el contenido más ambicioso: el modo Chrono-Annihilation, con partidas de 18 contra 18 en un mapa propio, Incursion Point, que llega con la actualización del 26 de noviembre.\n\nComo el juego cumple su segundo año, hay eventos de aniversario con premios por iniciar sesión: completarlos da 2.500 unidades y un traje legendario de Deadpool gratis. Además, el 19 de noviembre abre en Times Square un espacio con seis minijuegos. En lo competitivo, las finales de Marvel Rivals Ignite 2026 se juegan del 23 al 29 de noviembre en Estocolmo con un millón de dólares en premios.\n\n¿Van a darle una oportunidad a Nightcrawler como support o siguen fieles a su main?",
-      "fuentes": [
-        {
-          "nombre": "Comunicado de NetEase (Gamespress)",
-          "url": "https://www.gamespress.com/BAMF-Nightcrawler-and-Dracula-Join-the-Marvel-Rivals-Battle-as-Season-"
-        },
-        {
-          "nombre": "GosuGamers",
-          "url": "https://www.gosugamers.net/entertainment/news/79487-marvel-rivals-season-11-adds-nightcrawler-teases-dracula-as-second-playable-hero"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-14-blood-of-dawnwalker-actualizacion-1-2-nueva-partida-plus",
-      "fecha": "2026-11-14",
-      "titulo": "The Blood of Dawnwalker recibe Nueva Partida+ la próxima semana y sube el nivel máximo a 100",
-      "juego": "The Blood of Dawnwalker",
-      "etiqueta": "#Dawnwalker",
-      "imagen": "",
-      "contenido": "Rebel Wolves, el estudio fundado por veteranos de The Witcher, anunció en la cuenta oficial del juego que la actualización 1.2 de The Blood of Dawnwalker llega la próxima semana. Todavía no hay día exacto, pero ya se sabe lo más importante: trae el modo Nueva Partida+, la función que más pedía la comunidad desde el lanzamiento en septiembre.\n\nEl modo se desbloquea al terminar el epílogo y permite empezar otra vez conservando el nivel, las habilidades desbloqueadas y el inventario. Los objetos tendrán versiones especiales para esta segunda vuelta, con estadísticas mejoradas, y el nivel máximo sube hasta 100.\n\nEl parche no es solo para quienes ya acabaron la historia. Los enemigos se reequilibran en todas las regiones, con cambios en su vida y en la frecuencia con la que usan sus habilidades, y se ajusta el terreno para que moverse sea más fluido. Quienes tengan la Eclipse Edition reciben además una banda sonora ampliada con temas nuevos, que también llegarán a plataformas de streaming.\n\nEs la segunda gran actualización del juego tras la 1.1 de octubre, que añadió un nuevo nivel de dificultad y más de mil correcciones. ¿Alguien se anima a una segunda vuelta con Coen?",
-      "fuentes": [
-        {
-          "nombre": "Gamereactor",
-          "url": "https://www.gamereactor.eu/blood-of-dawnwalker-new-game-plus-update-1-2/"
-        },
-        {
-          "nombre": "GamesRadar+",
-          "url": "https://www.gamesradar.com/games/rpg/the-blood-of-dawnwalker-is-getting-new-game-next-week-with-patch-bringing-the-level-cap-for-the-ex-witcher-devs-vampire-rpg-up-to-100/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-14-ue-digital-fairness-act-cajas-botin-menores",
-      "fecha": "2026-11-14",
-      "titulo": "La UE propone prohibir las cajas de botín a menores y la industria responde con dureza",
-      "juego": "EA Sports FC 26",
-      "etiqueta": "#CajasDeBotín",
-      "imagen": "",
-      "contenido": "La Comisión Europea presentó esta semana la Ley de Equidad Digital (Digital Fairness Act), una propuesta que podría cambiar cómo se monetizan muchos juegos en Europa. Para los menores de 18 años, plantea prohibir las cajas de botín de pago y las compras que hagan falta para avanzar o ganar. En juegos dirigidos a ese público, las monedas virtuales vendrían desactivadas por defecto y solo se podrían activar con permiso de madres, padres o tutores.\n\nLos adultos podrían seguir comprando cajas de botín, pero con las probabilidades visibles antes de pagar y opciones sencillas para desactivarlas. Además, toda moneda virtual tendría que mostrar su valor en dinero real, y el jugador podría apagar notificaciones y rachas pensadas para que vuelva a diario. En casos grandes, las multas podrían llegar al 6 % de la facturación anual global.\n\nLa reacción no se hizo esperar: la Federación Europea de Desarrolladores de Juegos y Video Games Europe la calificaron como un posible \"game over\" para la industria europea y alegan que duplica normas que ya existen. Ojo: todavía es solo una propuesta. Ahora la deben debatir el Parlamento Europeo y los gobiernos de la UE, y puede cambiar bastante antes de convertirse en ley.\n\nAunque es una norma europea, sus efectos podrían notarse en las versiones de otros países. ¿Ustedes están a favor de limitar las cajas de botín?",
-      "fuentes": [
-        {
-          "nombre": "Euronews",
-          "url": "https://www.euronews.com/2026/11/11/eu-targets-subscription-traps-addictive-design-and-hidden-fees-with-new-digital-rules"
-        },
-        {
-          "nombre": "Game Developer",
-          "url": "https://www.gamedeveloper.com/business/european-union-proposes-digital-fairness-act-which-could-have-major-effects-on-game-development"
-        },
-        {
-          "nombre": "Comisión Europea",
-          "url": "https://ec.europa.eu/commission/presscorner/detail/en/ip_26_2407"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-14-witcher-3-songs-of-the-past-ia-voz-geralt-polaco",
-      "fecha": "2026-11-14",
-      "titulo": "CD Projekt usa IA, con permiso del actor, para la voz polaca de Geralt en Songs of the Past",
-      "juego": "The Witcher 3: Wild Hunt",
-      "etiqueta": "#TheWitcher3",
-      "imagen": "",
-      "contenido": "CD Projekt Red confirmó que usó inteligencia artificial para ajustar algunas líneas de Geralt en el doblaje polaco de Songs of the Past, la nueva expansión de The Witcher 3 prevista para 2027. El caso es muy particular: Jacek Rozenek, la voz polaca del brujo, sufrió un derrame cerebral en 2019 que lo dejó sin poder hablar. Volvió a actuar en 2022, pero su voz suena hoy más grave y áspera que hace una década.\n\nPara que las frases nuevas no desentonaran con las miles que grabó en su día, Rozenek grabó sus líneas con normalidad y el estudio las pasó por herramientas de Respeecher entrenadas con su trabajo anterior en la saga. El actor dio su consentimiento, sigue contratado y cobra por el trabajo. Según Mikołaj Szwed, productor de localización, fue una excepción que solo se consideró por la salud de Rozenek, y lo defendió como un uso ético de la IA, con consentimiento y con un buen fin.\n\nNo es la primera vez: el estudio ya recurrió a Respeecher en Phantom Liberty, la expansión de Cyberpunk 2077, para recrear la voz de un actor fallecido con permiso de su familia. Llega en plena discusión sobre la IA en los videojuegos. ¿Les parece un uso aceptable?",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/the-witcher-3-expansion-uses-ai-to-adjust-geralts-polish-voiceover-because-the-actor-suffered-a-stroke/"
-        },
-        {
-          "nombre": "Game Developer",
-          "url": "https://www.gamedeveloper.com/production/polish-voice-actor-for-geralt-returns-for-the-witcher-3-with-ai"
         }
       ]
     }
