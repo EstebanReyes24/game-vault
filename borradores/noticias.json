@@ -1,6 +1,105 @@
 {
-  "actualizado": "2026-11-26T10:52:57Z",
+  "actualizado": "2026-11-27T10:47:16Z",
   "borradores": [
+    {
+      "id": "2026-11-27-mario-kart-world-1-9-ocho-pistas",
+      "fecha": "2026-11-27",
+      "titulo": "Mario Kart World 1.9.0 ya está disponible: ocho pistas nuevas gratis y repeticiones",
+      "juego": "Mario Kart World",
+      "etiqueta": "#MarioKartWorld",
+      "imagen": "",
+      "contenido": "Nintendo lanzó la actualización 1.9.0 de Mario Kart World en Switch 2, y es de las grandes: ocho circuitos nuevos sin costo extra. Son versiones remezcladas de pistas clásicas, todas con el sufijo \"2\": Airship Fortress, Desert Hills, Salty Salty Speedway, DK Pass, Koopa Troopa Beach, Shy Guy Bazaar, Mario Bros. Circuit y Wario Stadium. Se pueden correr en VS, contrarreloj y en carreras online o locales.\n\nEl modo Knockout Tour también suma dos rutas para 24 jugadores: Feather Rally, que va de Mario Bros. Circuit a Boo Cinema, y Lucky Cat Rally, de Great ? Block Ruins a Sky-High Sundae.\n\nLa otra novedad fuerte es un apartado de Repeticiones en el menú principal. El juego guarda solo las últimas carreras y batallas, y borra las más viejas cuando se llena el espacio. Ojo: las partidas de versiones anteriores no se guardan, y si abandonas una carrera a mitad, tampoco. El parche añade además misiones de interruptor P en el modo libre online, confeti en los resultados y una lista larga de correcciones.\n\n¿Cuál de estas pistas clásicas es tu favorita?",
+      "fuentes": [
+        {
+          "nombre": "Game Informer",
+          "url": "https://gameinformer.com/2026/11/25/new-mario-kart-world-update-adds-8-more-tracks-two-new-knockout-tour-routes-and-more"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/mario-kart-world-gets-a-new-free-update-adding-eight-new-tracks-and-other-features/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-rockstar-votacion-sindicato-rechazada",
+      "fecha": "2026-11-27",
+      "titulo": "Los trabajadores de Rockstar votan en contra de reconocer al sindicato tras GTA VI",
+      "juego": "Grand Theft Auto VI",
+      "etiqueta": "#Rockstar",
+      "imagen": "",
+      "contenido": "Una semana después del lanzamiento de GTA VI, la plantilla de Rockstar Games rechazó el acuerdo de reconocimiento sindical. La votación se hizo del 12 al 26 de noviembre, participó algo más del 93 % del personal habilitado (1.544 votos) y el resultado fue claro: 75 % en contra y 25 % a favor.\n\nEl acuerdo, impulsado por el IWGB Game Workers Union, habría formalizado la negociación colectiva sobre horas extra, bonos, despidos y uso de IA. Con este resultado, Rockstar no estará obligada a reunirse de forma regular con representantes sindicales. Jennifer Kolbe, jefa de publicación del estudio, dijo que el voto muestra apoyo a mantener \"relaciones directas\" y diálogo abierto con la empresa.\n\nEl tema llega con historia detrás: en octubre de 2025 Rockstar despidió a más de 30 empleados. El sindicato lo considera un caso de represión sindical, mientras que el estudio lo niega, y el caso sigue pendiente ante un tribunal laboral. Quienes apoyaban el acuerdo dicen que seguirán luchando.\n\nEs un recordatorio de que el juego más grande del año también tiene una conversación laboral abierta detrás.",
+      "fuentes": [
+        {
+          "nombre": "PC Gamer",
+          "url": "https://www.pcgamer.com/gaming-industry/rockstar-workers-vote-overwhelmingly-against-union-recognition/"
+        },
+        {
+          "nombre": "Kotaku",
+          "url": "https://kotaku.com/rockstar-games-union-vote-fails-as-75-percent-of-devs-vote-no-2001000621"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-space-marine-2-decimation-weekly-clash",
+      "fecha": "2026-11-27",
+      "titulo": "Space Marine 2 recibe Decimation: PvP semanal, seis armas heroicas y un Vanguard renovado",
+      "juego": "Warhammer 40,000: Space Marine 2",
+      "etiqueta": "#SpaceMarine2",
+      "imagen": "https://cdn.focus-home.com/fhi-fastforward-admin/resources/games/warhammer-40000-space-marine-2/images/26112026_a351387ffdb541d6897b6cdf2fe59dc0.jpeg",
+      "contenido": "Focus Entertainment y Saber Interactive publicaron la actualización Decimation (parche 16.0) de Warhammer 40,000: Space Marine 2. Es gratuita y ya está disponible en PS5, Xbox Series X|S y PC.\n\nLa novedad principal es Weekly Clash, un modo PvP con reglas que rotan: partidas con una sola clase, con una sola arma o con granadas casi ilimitadas. El modo Asedio contra el Caos suma un nuevo sector con las oleadas 11 a 15, y llegan seis armas heroicas: Omnissian Axe, Bolt Rifle, Las Fusil, Plasma Incinerator, Heavy Bolt Pistol y Heavy Bolter. También hay cuatro cascos heroicos que se desbloquean con logros.\n\nLa clase Vanguard recibe un rediseño con cancelación de ataques, patadas a corta distancia y una mecánica de venganza, además de cambios en su gancho y en su árbol de habilidades. Quienes tengan el Season Pass 3 ya pueden usar dos paquetes cosméticos: Deathwatch Champion y Mortifactors.\n\nDos años después de su estreno, el juego sigue recibiendo contenido gratis de peso.",
+      "fuentes": [
+        {
+          "nombre": "Focus Entertainment",
+          "url": "https://www.focus-entmt.com/en/news/warhammer-40000-space-marine-2s-decimation-update-is-out"
+        },
+        {
+          "nombre": "Steam (notas del parche 16.0)",
+          "url": "https://store.steampowered.com/news/app/2183900/view/685271704309596216"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-dawn-of-war-iv-demo-painter-steam",
+      "fecha": "2026-11-27",
+      "titulo": "Dawn of War IV lanza gratis su demo del pintor en Steam, a una semana del estreno",
+      "juego": "Warhammer 40,000: Dawn of War IV",
+      "etiqueta": "#DawnOfWarIV",
+      "imagen": "",
+      "contenido": "Deep Silver y King Art Games pusieron en Steam una demo gratuita de Warhammer 40,000: Dawn of War IV dedicada solo al editor de pintura. No trae batallas, pero sí permite personalizar los colores de unidades de las cuatro facciones del juego, y lo que crees se puede pasar al juego completo.\n\nEl estudio lo presenta como el pintor más completo de la historia de Dawn of War, una función con mucho peso para los fans de Warhammer que llevan años pintando miniaturas de verdad. También se pueden compartir los diseños de ejército con otros jugadores mediante códigos.\n\nEl juego completo de estrategia en tiempo real llega a PC el 3 de diciembre, después de un retraso de dos meses anunciado en agosto. La demo sirve para ir preparando tu ejército antes del estreno y, de paso, para comprobar cómo corre en tu equipo.\n\n¿Ya tienes en mente los colores de tu capítulo?",
+      "fuentes": [
+        {
+          "nombre": "Steam (noticia oficial)",
+          "url": "https://store.steampowered.com/news/app/2272360/view/696530703376975318"
+        },
+        {
+          "nombre": "Simulation Daily",
+          "url": "https://simulationdaily.com/news/today-in-gaming-news-november-26-2026/"
+        },
+        {
+          "nombre": "Game Developer (comunicado)",
+          "url": "https://www.gamedeveloper.com/press-release/dawn-of-war-iv-now-launches-on-december-3"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-27-cities-skylines-2-actualizacion-gratis-2-diciembre",
+      "fecha": "2026-11-27",
+      "titulo": "Cities: Skylines II tendrá una actualización gratis con cuatro biomas el 2 de diciembre",
+      "juego": "Cities: Skylines II",
+      "etiqueta": "#CitiesSkylines2",
+      "imagen": "https://images.ctfassets.net/u73tyf0fa8v1/YifPr5O2fk7FHU6bu2zWD/1b506f16b2a51425f4002359f56bcc41/CITIES_SKYLINESII_2023KEYART_MASTER_1.1_CLEAN21.webp",
+      "contenido": "Paradox detalló la actualización gratuita que acompañará a Park Adventures, la expansión de Cities: Skylines II hecha por Iceflake Studios. Las dos llegan el 2 de diciembre a PC, PS5 y Xbox Series X|S.\n\nLa actualización gratis añade cuatro biomas al editor de recursos (alpino, árido, mediterráneo y tropical), con árboles y plantas nuevas como bambú, cerezos, olivos y cactus saguaro. También trae vallas personalizables, nuevas superficies como ladrillo o piedra y objetos de campamento.\n\nEl ocio de la ciudad gana más control: los paneles mostrarán la capacidad y el atractivo de cada lugar, y habrá avisos cuando un sitio no tenga visitas, esté lleno o necesite mantenimiento. Además, la pestaña de parques se desbloquea antes (en el hito 2 en vez del 4), se podrán crear líneas de transporte con un solo vehículo, el reescalado por defecto pasa a FSR 3 y vuelve el soporte para FSR 4.\n\nPark Adventures, la parte de pago, se centra en zoológicos, parques temáticos y distritos de ocio.",
+      "fuentes": [
+        {
+          "nombre": "Paradox Interactive",
+          "url": "https://www.paradoxinteractive.com/games/cities-skylines-ii/news/park-adventures-free-update"
+        },
+        {
+          "nombre": "ConsolePCGaming",
+          "url": "https://consolepcgaming.com/cities-skylines-iis-free-update-will-add-4-biomes-and-new-city-tools-on-dec-2/"
+        }
+      ]
+    },
     {
       "id": "2026-11-26-ps-plus-diciembre-tony-hawk-xenoverse-amnesia",
       "fecha": "2026-11-26",
@@ -673,94 +772,6 @@
         {
           "nombre": "Vandal",
           "url": "https://vandal.elespanol.com/noticia/2026321010/ya-puedes-probar-gratis-uno-de-los-mejores-juegos-de-switch-2-nintendo-lanza-una-demo-de-splatoon-raiders/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-16-xbox-25-anos-animaciones-arranque-clasicas",
-      "fecha": "2026-11-16",
-      "titulo": "Xbox cumple 25 años y recupera las animaciones de arranque de la primera Xbox y la 360",
-      "juego": "Halo: Combat Evolved",
-      "etiqueta": "#Xbox25",
-      "imagen": "",
-      "contenido": "Xbox celebró este 15 de noviembre sus 25 años con un regalo pensado para los nostálgicos: las consolas Xbox One y Xbox Series X|S ya pueden arrancar con la animación de la Xbox original de 2001 y con dos versiones de la de Xbox 360, la de 2005 y la de 2010. La cuenta oficial de Xbox confirmó el despliegue durante el domingo, y no hace falta descargar nada aparte.\n\nPara cambiarla, basta con ir a Configuración, luego Sistema y después Inicio, donde las tres clásicas aparecen junto a las de Xbox One, Xbox One X, Series X|S y la reciente \"We are Xbox\". Microsoft no ha explicado por qué escogió esas tres y no otras.\n\nEl mismo día, Xbox Wire publicó gratis en línea una revista especial por el aniversario, con repaso a la historia de la marca, recuerdos de sus franquicias y algunos detalles inéditos de juegos en camino, como Bowerstone, la capital del nuevo Fable.\n\nEs un detalle pequeño, pero para quien creció con el ruido de la Xbox negra o con los anillos verdes de la 360, pesa bastante. ¿Con cuál se quedan ustedes?",
-      "fuentes": [
-        {
-          "nombre": "Xbox Wire",
-          "url": "https://news.xbox.com/en-us/2026/11/15/xbox-25th-anniversary-the-magazine/"
-        },
-        {
-          "nombre": "Pure Xbox",
-          "url": "https://www.purexbox.com/news/2026/11/three-classic-startup-animations-are-rolling-out-today-on-xbox-november-15"
-        },
-        {
-          "nombre": "Tbreak",
-          "url": "https://tbreak.com/xbox-original-boot-up-animation-returns/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-16-worlds-2026-bilibili-gaming-campeon-gen-g",
-      "fecha": "2026-11-16",
-      "titulo": "Bilibili Gaming gana Worlds 2026 ante Gen.G y devuelve a China el título de League of Legends",
-      "juego": "League of Legends",
-      "etiqueta": "#Worlds2026",
-      "imagen": "",
-      "contenido": "Bilibili Gaming es el nuevo campeón del mundo de League of Legends. El equipo chino venció 3-1 a Gen.G en la gran final de Worlds 2026, jugada el sábado 14 de noviembre en el Barclays Center de Brooklyn, Nueva York. Gen.G se llevó el primer mapa, pero BLG reaccionó y ganó los tres siguientes, incluido un segundo juego de 53 minutos, el más largo del torneo.\n\nEl MVP de la final fue el mid laner Knight, que conquista su primer Mundial en su sexta participación y se convierte en el primer mid nacido en China en levantar la copa. Es además el primer título de BLG y el primero de la liga china (LPL) desde que EDward Gaming ganó en 2021, lo que corta la racha de cuatro campeonatos seguidos de Corea. En el camino, BLG eliminó a los cuatro equipos coreanos que se cruzó, incluido T1 en semifinales.\n\nEl campeón se lleva un millón de dólares de una bolsa de cinco millones, y Gen.G, 800.000 como subcampeón. ¿Empieza una nueva era china en LoL o fue un año aislado?",
-      "fuentes": [
-        {
-          "nombre": "KeenGamer",
-          "url": "https://www.keengamer.com/articles/features/reportages/bilibili-gaming-beat-gen-g-3-1-to-win-worlds-2026/"
-        },
-        {
-          "nombre": "Latin Times",
-          "url": "https://www.latintimes.com/bilibili-gaming-gana-worlds-2026-derrota-geng-601364"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-16-doom-dark-ages-revelations-slaughter-mode",
-      "fecha": "2026-11-16",
-      "titulo": "Doom: The Dark Ages estrena hoy Slaughter Mode, un modo infinito gratis para Revelations",
-      "juego": "DOOM: The Dark Ages",
-      "etiqueta": "#DOOM",
-      "imagen": "",
-      "contenido": "id Software lanza hoy, 16 de noviembre, Slaughter Mode, un nuevo modo de supervivencia para Doom: The Dark Ages en PS5, Xbox Series X|S y PC. Es gratis, pero solo para quienes tengan la expansión de pago Revelations, la Premium Edition o su mejora; los dueños del juego base solo no pueden jugarlo.\n\nLa idea es sencilla y peligrosa: oleadas infinitas de demonios cada vez más duras, con encuentros, jefes y arenas al azar. Cada ronda completada da calaveras, y en los puntos de control hay que decidir entre asegurarlas o arriesgarlas para subir un multiplicador. Si mueres arriesgando, pierdes todo lo que no habías guardado. Esos puntos de control también desbloquean nuevos inicios para las siguientes partidas.\n\nLas calaveras se canjean por skins exclusivas del Slayer, aspectos de armas que se pueden usar en todo el juego, iconos de perfil y temas de la banda sonora IDKFA de Andrew Hulshult. También habrá desafíos semanales con recompensas extra.\n\nUna buena excusa para volver a Revelations. ¿Cuántas rondas creen que aguantan?",
-      "fuentes": [
-        {
-          "nombre": "Xbox Wire",
-          "url": "https://news.xbox.com/en-us/2026/11/15/xbox-25th-anniversary-the-magazine/"
-        },
-        {
-          "nombre": "Noisy Pixel",
-          "url": "https://noisypixel.net/doom-the-dark-ages-slaughter-mode-november-16-endless-combat-rewards/"
-        },
-        {
-          "nombre": "Final Weapon",
-          "url": "https://finalweapon.net/2026/11/12/doom-the-dark-ages-revelations-slaughter-mode/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-16-god-of-war-sons-of-sparta-ps4-modos-hermes-erebus",
-      "fecha": "2026-11-16",
-      "titulo": "God of War: Sons of Sparta llega hoy a PS4 con dos modos nuevos, Hermes y Erebus",
-      "juego": "God of War: Sons of Sparta",
-      "etiqueta": "#GodOfWar",
-      "imagen": "",
-      "contenido": "God of War: Sons of Sparta, el plataformas de acción en 2D que salió por sorpresa en PS5 el pasado 12 de febrero, ya está disponible en PS4 desde la medianoche de este 16 de noviembre, hora local. Junto con esa versión llega una actualización gratuita que también reciben quienes ya lo tienen en PS5.\n\nLa actualización añade dos modos. Hermes está pensado para speedrun, con un cronómetro por tramos en pantalla, y se puede activar desde el principio metiendo un código en el menú de inicio que recuerda al clásico de Konami. Erebus, en cambio, es para los masoquistas: Kratos y todos los enemigos mueren de un solo golpe. El modo se elige al empezar una partida y no se puede cambiar después en esa ranura de guardado.\n\nEl juego, desarrollado por Mega Cat Studios con Santa Monica Studio, sigue a un Kratos joven y a su hermano Deimos en Laconia, con combate de lanza y escudo y un estilo retro. Llevarlo a PS4 abre la puerta a quienes todavía no dan el salto de consola. ¿Alguien se anima con Erebus?",
-      "fuentes": [
-        {
-          "nombre": "Game Informer",
-          "url": "https://gameinformer.com/2026/11/13/god-of-war-sons-of-sparta-gets-ps4-version-and-new-content-next-monday"
-        },
-        {
-          "nombre": "Noisy Pixel",
-          "url": "https://noisypixel.net/god-of-war-sons-of-sparta-ps4-release-new-modes/"
-        },
-        {
-          "nombre": "Game Rant",
-          "url": "https://gamerant.com/god-of-war-sons-of-sparta-update-ps4-port/"
         }
       ]
     }
