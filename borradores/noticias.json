@@ -1,6 +1,75 @@
 {
-  "actualizado": "2026-11-27T10:47:16Z",
+  "actualizado": "2026-11-28T10:52:06Z",
   "borradores": [
+    {
+      "id": "2026-11-28-silksong-sea-of-sorrow-11-diciembre",
+      "fecha": "2026-11-28",
+      "titulo": "Silksong: Sea of Sorrow llega gratis el 11 de diciembre y nace Team Cherry Presents",
+      "juego": "Hollow Knight: Silksong",
+      "etiqueta": "#Silksong",
+      "imagen": "",
+      "contenido": "Ya hay fecha: Sea of Sorrow, la primera gran expansión de Hollow Knight: Silksong, saldrá el 11 de diciembre y será gratuita para todos los que tengan el juego. Team Cherry lo confirmó en su blog oficial tras el directo Cherry Time del 27 de noviembre, donde explicó que Hornet navegará por encima y por debajo del océano de Pharloom, visitando islas, fuertes y cavernas profundas. La banda sonora nueva vuelve a estar a cargo de Christopher Larkin.\n\nEl estudio australiano no se quedó ahí. También presentó Team Cherry Presents, un sello con el que apoyará juegos de estudios amigos. Los tres primeros son Blokkan: Secret of the Walking City, Radio Rain y The Botanist and the Translator, aunque por ahora no hay fechas ni plataformas. Además, el equipo suma un cuarto integrante: Huy Le, que ya ayudó con los ports de Silksong y funciones como el autoguardado, será director técnico y dará soporte a esos proyectos.\n\nPara un estudio que tardó años en sacar Silksong, tener una expansión gratis lista en menos de dos semanas es una sorpresa agradable. ¿Ustedes la van a jugar el mismo día o esperan a terminar la aventura principal?",
+      "fuentes": [
+        {
+          "nombre": "Team Cherry (blog oficial)",
+          "url": "https://www.teamcherry.com.au/blog/its-cherry-time"
+        },
+        {
+          "nombre": "VideoGamer",
+          "url": "https://www.videogamer.com/news/hollow-knight-silksong-sea-of-sorrow-release-date/"
+        },
+        {
+          "nombre": "Screen Rant",
+          "url": "https://screenrant.com/hollow-knight-silksong-sea-sorrow-release-date-december/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-28-marvelous-retiro-anticipado-65-empleos",
+      "fecha": "2026-11-28",
+      "titulo": "Marvelous, creadora de Story of Seasons y Rune Factory, busca recortar 65 empleos",
+      "juego": "Story of Seasons: Grand Bazaar",
+      "etiqueta": "#Marvelous",
+      "imagen": "",
+      "contenido": "Marvelous, la editora japonesa detrás de Story of Seasons y Rune Factory, anunció el 27 de noviembre un programa de retiro anticipado voluntario con el que quiere reducir su plantilla en 65 personas. El recorte afecta a su negocio de juegos de consola, es decir, los títulos de precio completo que no son para móviles ni juegos como servicio.\n\nSegún el comunicado de la empresa, el mercado ha cambiado: los proyectos son cada vez más grandes y tardan más en desarrollarse, así que busca un modelo más flexible que combine el desarrollo interno con la subcontratación. Las solicitudes estarán abiertas del 14 de diciembre al 8 de enero de 2027, tanto para empleados fijos como para contratados, y quienes se acojan saldrán antes del 31 de marzo. Recibirán un pago especial único y ayuda para buscar empleo si la piden. La compañía calcula un costo de unos 220 millones de yenes (alrededor de 1,4 millones de dólares).\n\nMarvelous insiste en que las consolas siguen siendo uno de sus negocios principales y no ha dicho que ningún juego en desarrollo se vea afectado. Aun así, es otra señal de que la presión por costos que vive la industria también llega a los estudios japoneses medianos.",
+      "fuentes": [
+        {
+          "nombre": "Marvelous (comunicado oficial)",
+          "url": "https://corp.marv.jp/img/261127_career_transition.pdf"
+        },
+        {
+          "nombre": "AUTOMATON WEST",
+          "url": "https://automaton-media.com/en/news/developer-marvelous-seeking-65-voluntary-resignations-as-it-restructures-its-console-game-business/"
+        },
+        {
+          "nombre": "VGC",
+          "url": "https://www.videogameschronicle.com/news/story-of-seasons-and-rune-factory-developer-marvelous-is-offering-early-retirement-as-it-tries-to-cut-65-jobs/"
+        }
+      ]
+    },
+    {
+      "id": "2026-11-28-pokemon-go-champions-celebration-8-diciembre",
+      "fecha": "2026-11-28",
+      "titulo": "Pokémon GO y Pokémon Champions se unen del 8 al 14 de diciembre con incursiones y regalos",
+      "juego": "Pokémon GO",
+      "etiqueta": "#PokemonGO",
+      "imagen": "",
+      "contenido": "Pokémon GO celebrará a Pokémon Champions con un evento especial que irá del 8 de diciembre a las 10:00 al 14 de diciembre a las 20:00, hora local. La idea es conectar los dos juegos: si mandas a Pokémon HOME un Pokémon atrapado en GO y luego lo envías de visita a Champions, recibirás un regalo en el buzón de este último.\n\nDurante esos días habrá incursiones temáticas: Bagon, Litten y Frigibax en las de una estrella; Raichu, Garchomp y Rillaboom en las de tres; y legendarios como Latias, Latios, Heatran y Regieleki en las de cinco, algunos con fondos especiales exclusivos del evento. También aparecerán más Charmander, Starly y Grookey en estado salvaje, y Kecleon en las PokéParadas.\n\nEl evento trae un GO Pass gratuito con bonificaciones por rango: más energía para transferir a HOME, caramelos dobles por captura y 3.000 puntos de experiencia extra por incursión. Hay versión Deluxe por 4,99 dólares con más recompensas. Es una buena excusa para quienes juegan competitivo en Champions y quieren sacarle provecho a su colección de GO.",
+      "fuentes": [
+        {
+          "nombre": "Pokémon GO (blog oficial)",
+          "url": "https://pokemongo.com/news/pokemon-champions-celebration-event-2026"
+        },
+        {
+          "nombre": "Gamers Heroes",
+          "url": "https://www.gamersheroes.com/gaming-news/pokemon-go-pokemon-champions-celebration-event-beginning-december-8/"
+        },
+        {
+          "nombre": "Nintendo Life",
+          "url": "https://www.nintendolife.com/news/2026/11/pokemon-champions-x-pokemon-go-collab-taking-place-next-month"
+        }
+      ]
+    },
     {
       "id": "2026-11-27-mario-kart-world-1-9-ocho-pistas",
       "fecha": "2026-11-27",
@@ -692,86 +761,6 @@
         {
           "nombre": "HappyGamer",
           "url": "https://happygamer.com/game-pass-november-2026-wave-2-174805/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-17-nba-2k27-gta-vi-temporada-3-vice-city",
-      "fecha": "2026-11-17",
-      "titulo": "NBA 2K27 se llena de Vice City: su temporada 3 es una colaboración con GTA VI",
-      "juego": "NBA 2K27",
-      "etiqueta": "#NBA2K27",
-      "imagen": "",
-      "contenido": "2K anunció que la temporada 3 de NBA 2K27, que arranca el 27 de noviembre, gira por completo alrededor de Grand Theft Auto VI. Será una temporada más larga de lo normal, de siete semanas, que se extiende hasta el 15 de enero, y llega apenas ocho días después del lanzamiento del juego de Rockstar.\n\nEl cambio se nota en The City: habrá un parque inspirado en Vice City, camisetas de Vice City y Los Santos, uniformes de Burger Shot y Cluckin' Bell, eventos temporales como Conquer Leonida y Vice Run, un modo 5 contra 5 llamado Neon vs Noir y cartas temáticas en MyTEAM. También sale una Vice City Edition digital, con Bam Adebayo del Miami Heat en la portada, por 39,99 dólares en PS5, Xbox Series X|S, Switch 2 y PC.\n\nLo más llamativo es para quien no tiene NBA 2K27: los miembros de GTA+ en PS5 y Xbox Series X|S podrán jugar la edición estándar sin costo extra entre el 27 de noviembre y el 15 de enero. Como las reservas de GTA VI incluyen un mes de GTA+, mucha gente tendrá acceso. Ojo: ese mes se renueva solo si no se desactiva.\n\nTake-Two está usando su lanzamiento más grande para empujar al resto de su catálogo. ¿Le darían una oportunidad a 2K por esta vía?",
-      "fuentes": [
-        {
-          "nombre": "Final Weapon",
-          "url": "https://finalweapon.net/2026/11/16/nba-2k27-releases-grand-theft-auto-vi-collaboration-on-november-27/"
-        },
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/gta-6-subscription-will-include-nba-2k27-for-free-on-ps5"
-        },
-        {
-          "nombre": "ComicBook",
-          "url": "https://comicbook.com/gaming/news/nba-2k27-reveals-major-new-crossover-with-gta-6/"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-17-star-wars-galactic-racer-pantalla-dividida-free-play",
-      "fecha": "2026-11-17",
-      "titulo": "Star Wars: Galactic Racer tendrá pantalla dividida para cuatro jugadores a inicios de 2027",
-      "juego": "Star Wars: Galactic Racer",
-      "etiqueta": "#GalacticRacer",
-      "imagen": "",
-      "contenido": "Fuse Games y Secret Mode confirmaron desde la cuenta oficial del juego que Star Wars: Galactic Racer recibirá multijugador local a pantalla dividida a principios de 2027. Una captura del trabajo en progreso muestra la pantalla partida en cuatro, así que podrán correr hasta cuatro personas en la misma consola.\n\nJunto con eso llega Free Play, un modo nuevo que prepara un equipo dedicado. La idea es simple: escoger vehículo, personaje, planeta y pista, y correr solo o con hasta tres amigos en el sofá. El estudio adelantó que este modo también tendrá otros tipos de carrera, aunque todavía no ha enseñado gameplay ni ha detallado en qué plataformas llegará primero.\n\nGalactic Racer salió el 6 de octubre en PS5, Xbox Series X|S y PC, y la falta de juego local era una de las quejas más repetidas en un género que vive de jugar con amigos al lado. Si cumple, el juego de carreras de Star Wars puede tener una segunda vida durante las fiestas del próximo año. ¿Lo jugarían más con pantalla dividida?",
-      "fuentes": [
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/the-great-star-wars-galactic-racer-will-soon-be-even-better-major-new-features-announced"
-        },
-        {
-          "nombre": "Gematsu",
-          "url": "https://www.gematsu.com/2026/11/star-wars-galactic-racer-to-add-split-screen-supported-free-play-mode-in-early-2027"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-17-grammys-2027-nominados-banda-sonora-videojuegos",
-      "fecha": "2026-11-17",
-      "titulo": "Ghost of Yotei y Wolverine, entre los nominados al Grammy a banda sonora de videojuego",
-      "juego": "Ghost of Yotei",
-      "etiqueta": "#Grammys",
-      "imagen": "",
-      "contenido": "La Academia de la Grabación publicó las nominaciones de los Grammy 2027, y la categoría de mejor banda sonora para videojuegos y otros medios interactivos viene cargada de lanzamientos grandes de este año.\n\nLos cinco nominados son Ghost of Yotei, con música de Toma Otowa; Marvel's Wolverine, de David Fleming; 007 First Light, de Joe Henson y Alexis Smith bajo el nombre The Flight; Star Wars Zero Company, de Gordy Haab; y Avatar: Frontiers of Pandora – From the Ashes, de John Paesano. La ceremonia se celebrará en febrero de 2027.\n\nLlama la atención que dos de los cinco nominados sean exclusivos de PlayStation y que haya dos licencias de cine de por medio, Star Wars y Avatar. La categoría existe desde la edición de 2023 y poco a poco se ha convertido en una vitrina para compositores que normalmente pasan desapercibidos fuera de la comunidad gamer.\n\n¿Cuál de estas bandas sonoras se merece el gramófono?",
-      "fuentes": [
-        {
-          "nombre": "Push Square",
-          "url": "https://www.pushsquare.com/news/2026/11/grammy-awards-reveal-this-years-nominees-for-best-video-game-soundtrack"
-        },
-        {
-          "nombre": "IG News",
-          "url": "https://news.instant-gaming.com/en/articles/23057-here-are-the-nominees-for-best-video-game-soundtrack-at-the-2027-grammy-awards"
-        }
-      ]
-    },
-    {
-      "id": "2026-11-17-splatoon-raiders-demo-gratis-switch-2",
-      "fecha": "2026-11-17",
-      "titulo": "Splatoon Raiders ya tiene demo gratis en Switch 2 con tres niveles",
-      "juego": "Splatoon Raiders",
-      "etiqueta": "#SplatoonRaiders",
-      "imagen": "",
-      "contenido": "Nintendo lanzó por sorpresa una demo gratuita de Splatoon Raiders en la eShop de Switch 2. La prueba incluye tres niveles de las islas Spirhalite y tres configuraciones de equipo ya armadas para jugar con Deep Cut, así que sirve para hacerse una idea del combate sin tener que pasar por la parte de progresión.\n\nSplatoon Raiders salió el 23 de julio como exclusivo de Switch 2. A diferencia de la saga principal, aquí no hay multijugador competitivo: es un juego de acción en tercera persona centrado en incursiones contra la máquina, con una campaña que se puede jugar solo o en cooperativo y que pasa de las 20 horas.\n\nLa demo llega en buen momento, justo antes de la temporada de ofertas y regalos de fin de año, y para quien tenía dudas por el cambio de enfoque es la forma más fácil de salir de ellas. Nintendo no ha detallado si el progreso de la demo pasa al juego completo. ¿Alguien ya la probó?",
-      "fuentes": [
-        {
-          "nombre": "VGC",
-          "url": "https://www.videogameschronicle.com/news/a-free-demo-for-splatoon-raiders-is-now-available-on-switch-2/"
-        },
-        {
-          "nombre": "Vandal",
-          "url": "https://vandal.elespanol.com/noticia/2026321010/ya-puedes-probar-gratis-uno-de-los-mejores-juegos-de-switch-2-nintendo-lanza-una-demo-de-splatoon-raiders/"
         }
       ]
     }
